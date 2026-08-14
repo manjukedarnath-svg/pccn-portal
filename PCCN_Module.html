@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Module — PCCN Certificate Course</title>
+<link rel="stylesheet" href="pccn-styles.css">
+</head>
+<body>
+
+<nav class="pccn-nav">
+  <div class="pccn-nav-inner">
+    <a href="PCCN_Landing_Page.html" class="pccn-brand" style="text-decoration:none;">
+      <span class="pccn-brand-mark">P</span>
+      <span class="pccn-brand-word"><b>PCCN</b><span>Certificate Course</span></span>
+    </a>
+    <div class="pccn-nav-links">
+      <a href="PCCN_Landing_Page.html">Home</a>
+      <a href="PCCN_Course_Hub.html" class="active">Curriculum</a>
+      <a href="PCCN_Online_Sessions.html">Online Sessions</a>
+      <a href="PCCN_Faculty.html">Faculty</a>
+    </div>
+    <div class="pccn-nav-actions">
+      <a href="PCCN_Login.html" class="pill-outline">Log In</a>
+      <a href="https://www.piccindia.com" target="_blank" rel="noopener" class="btn btn-pink btn-sm">Register</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="mod-header" id="modHeader">
+    <div class="wrap-narrow">
+      <a href="PCCN_Course_Hub.html" class="back">← All modules</a>
+      <div class="meyebrow" id="modEyebrow"></div>
+      <h1 id="modTitle"></h1>
+      <p id="modSubtitle"></p>
+    </div>
+  </div>
+
+  <div class="mod-body">
+    <div>
+      <div class="mod-label">Sessions for this module</div>
+      <div class="sessions3-grid" id="sessionsGrid"></div>
+
+      <div id="stripWrap"></div>
+
+      <div class="mod-label">Learning objectives</div>
+      <div class="obj-card" id="objCard"></div>
+
+      <div class="mod-label" id="accordionLabel"></div>
+      <div class="accordion" id="accordionWrap"></div>
+
+      <div id="panelWrap"></div>
+
+      <div class="mod-label pink">Case scenario</div>
+      <div class="case-card" id="caseCard"></div>
+
+      <div id="gridWrap"></div>
+
+      <div class="mod-label" id="quizLabel"></div>
+      <div class="quiz-card" id="quizCard"></div>
+
+      <div class="mod-nav-row">
+        <a class="mod-nav-btn prev" id="prevBtn"><div class="navlabel">← Previous</div><div class="navtitle" id="prevLabel">—</div></a>
+        <a class="mod-nav-btn next" id="nextBtn"><div class="navlabel">Next →</div><div class="navtitle" id="nextLabel">—</div></a>
+      </div>
+    </div>
+
+    <div class="mod-sidebar">
+      <div class="side-card" id="factsCard">
+        <div class="slabel">Framework</div>
+        <div class="sval" id="factFramework"></div>
+        <div class="slabel">Duration</div>
+        <div class="sval" id="factDuration"></div>
+        <div class="slabel">Format</div>
+        <div class="sval">Live + video + sim</div>
+      </div>
+      <div class="side-siblings">
+        <div class="slabel" id="siblingsLabel"></div>
+        <div id="siblingsList"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="pccn-footer">
+  <div class="pccn-footer-inner">
+    <span>PCCN — Pediatric Critical Care Nursing Certificate Course · IAP Intensive Care Chapter</span>
+    <span><a href="https://www.piccindia.com" target="_blank" rel="noopener">www.piccindia.com</a> · stepin.iapicc@gmail.com</span>
+  </div>
+</footer>
+
+<script src="pccn-modules-data.js"></script>
+<script>
+(function(){
+  function nn(n){ return String(n).padStart(2,'0'); }
+  function qs(name){
+    var m = new RegExp('[?&]'+name+'=([^&]*)').exec(window.location.search);
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+
+  var modN = parseInt(qs('m'), 10) || 1;
+  var mod = PCCN_MODULES.find(function(x){ return x.n === modN; }) || PCCN_MODULES[0];
+  modN = mod.n;
+  var P = PCCN_PILLARS[mod.pillar];
+  var STORAGE_KEY = 'pccn_mod' + nn(modN) + '_progress_v3';
+
+  document.title = mod.short + ' — PCCN Certificate Course';
+
+  // ---- header ----
+  document.getElementById('modHeader').style.background = 'linear-gradient(135deg,' + P.color + ',' + P.deep + ')';
+  document.getElementById('modEyebrow').textContent = 'Module ' + nn(modN) + ' · Pillar ' + mod.pillar + ' — ' + P.name;
+  document.getElementById('modTitle').textContent = mod.short;
+  document.getElementById('modSubtitle').textContent = (mod.subtitle || '').replace(/<[^>]+>/g, '');
+
+  // ---- sessions ----
+  var sessionsGrid = document.getElementById('sessionsGrid');
+  (mod.sessions || []).forEach(function(s){
+    var card = document.createElement('div');
+    card.className = 'session3-card';
+    card.innerHTML =
+      '<div class="stag">' + s.tag + '</div>' +
+      '<div class="stitle">' + s.title + '</div>' +
+      '<div class="sbody">' + s.body + '</div>' +
+      '<div class="smeta">' + s.meta + '</div>';
+    sessionsGrid.appendChild(card);
+  });
+
+  // ---- strip ----
+  if (mod.strip) {
+    var strip = mod.strip;
+    var stripHtml =
+      '<div class="strip-card"><div class="slabel">' + strip.label + '</div><div class="stitle">' + strip.title + '</div><div class="strip-items">' +
+      strip.items.map(function(it){
+        return '<div class="strip-item"><div class="sletter" style="background:' + it.color + ';">' + it.letter + '</div><div class="sname">' + it.name + '</div><div class="sdetail">' + it.detail + '</div></div>';
+      }).join('') +
+      '</div><div class="strip-foot">' + strip.footnote + '</div></div>';
+    document.getElementById('stripWrap').innerHTML = stripHtml;
+  }
+
+  // ---- objectives ----
+  var objCard = document.getElementById('objCard');
+  (mod.objectives || []).forEach(function(o){
+    var d = document.createElement('div');
+    d.className = 'obj-item';
+    d.innerHTML = '✓ &nbsp;' + o;
+    objCard.appendChild(d);
+  });
+
+  // ---- accordion ----
+  document.getElementById('accordionLabel').textContent = mod.accordionLabel || 'Core content';
+  var accWrap = document.getElementById('accordionWrap');
+  (mod.accordion || []).forEach(function(sec, i){
+    var item = document.createElement('div');
+    item.className = 'acc-item';
+
+    var head = document.createElement('button');
+    head.type = 'button';
+    head.className = 'acc-head';
+    head.innerHTML =
+      '<span class="aletter" style="color:' + sec.color + ';">' + sec.letter + '</span>' +
+      '<span class="atitle">' + sec.title + '</span>' +
+      '<span class="ahint">' + (sec.hint || '') + '</span>' +
+      '<span class="achev">▼</span>';
+
+    var panel = document.createElement('div');
+    panel.className = 'acc-panel' + (i === 0 ? ' open' : '');
+    var panelHtml = (sec.bullets || []).map(function(b){ return '<div class="acc-bullet">· ' + b + '</div>'; }).join('');
+    if (sec.compare) {
+      var colsClass = sec.compare.cols.length === 3 ? ' cols3' : '';
+      panelHtml += '<div class="acc-compare' + colsClass + '">' + sec.compare.cols.map(function(c){
+        return '<div class="acc-compare-col" style="background:' + c.bg + ';"><div class="clabel" style="color:' + c.color + ';">' + c.label + '</div>' + c.body + '</div>';
+      }).join('') + '</div>';
+      if (sec.compare.foot) panelHtml += '<div class="acc-callout" style="border-color:' + sec.color + ';background:' + sec.color + '11;">' + sec.compare.foot + '</div>';
+    }
+    if (sec.callout) {
+      panelHtml += '<div class="acc-callout" style="border-color:' + sec.color + ';background:' + sec.color + '15;">' + sec.callout + '</div>';
+    }
+    panel.innerHTML = panelHtml;
+
+    head.addEventListener('click', function(){
+      panel.classList.toggle('open');
+      head.querySelector('.achev').textContent = panel.classList.contains('open') ? '▲' : '▼';
+    });
+
+    item.appendChild(head);
+    item.appendChild(panel);
+    accWrap.appendChild(item);
+  });
+
+  // ---- panel (reference card) ----
+  if (mod.panel) {
+    var pnl = mod.panel;
+    var panelHtml2 =
+      '<div class="mod-label">' + pnl.label + '</div>' +
+      '<div class="panel-card"><div class="pintro">' + pnl.intro + '</div>' +
+      '<div class="panel-cards-row">' + pnl.cards.map(function(c){
+        return '<div class="panel-mini-card" style="border-top-color:' + c.color + ';"><div class="mlabel" style="color:' + c.color + ';">' + c.label + '</div>' + c.body + '</div>';
+      }).join('') + '</div>' +
+      '<div class="panel-scale">' + pnl.scale.map(function(s){
+        return '<div class="panel-scale-row" style="background:' + s.bg + ';"><span class="sclabel" style="color:' + s.fg + ';">' + s.label + '</span><span class="scbody">' + s.body + '</span></div>';
+      }).join('') + '</div>' +
+      '<div class="panel-foot">' + pnl.foot + '</div></div>';
+    document.getElementById('panelWrap').innerHTML = panelHtml2;
+  }
+
+  // ---- case study ----
+  var cs = mod.caseStudy;
+  var caseHtml = '<div class="case-quote">' + cs.quote + '</div>';
+  if (cs.cards) {
+    caseHtml += '<div class="case-vitals">' + cs.cards.map(function(c){
+      return '<div class="case-vital-card" style="border-top-color:' + c.color + ';"><div class="vlabel" style="color:' + c.color + ';">' + c.label + '</div>' + c.body + '</div>';
+    }).join('') + '</div>';
+  }
+  caseHtml += '<div class="case-analysis"><strong>Your analysis:</strong> ' + cs.analysis + '</div>';
+  document.getElementById('caseCard').innerHTML = caseHtml;
+
+  // ---- grid reference ----
+  if (mod.grid) {
+    var g = mod.grid;
+    var gridHtml =
+      '<div class="mod-label">' + g.label + '</div>' +
+      '<div class="grid-ref"><div class="gintro">' + g.intro + '</div>' +
+      '<div class="grid-ref-items">' + g.items.map(function(it){
+        return '<div class="grid-ref-item" style="border-color:' + it.color + ';"><div class="gkey">' + it.key + '</div><div class="gbody">' + it.body + '</div></div>';
+      }).join('') + '</div>' +
+      '<div class="grid-ref-foot">' + g.foot + '</div></div>';
+    document.getElementById('gridWrap').innerHTML = gridHtml;
+  }
+
+  // ---- quiz ----
+  document.getElementById('quizLabel').textContent = 'Module quiz — ' + mod.quiz.length + ' questions · >50% to progress';
+  var quizCard = document.getElementById('quizCard');
+  var picks = {};
+  var submitted = false;
+
+  function renderQuiz(){
+    quizCard.innerHTML = '';
+    mod.quiz.forEach(function(q, qi){
+      var qDiv = document.createElement('div');
+      qDiv.className = 'quiz-q';
+      var optsHtml = q.options.map(function(opt, oi){
+        var picked = picks[qi] === oi;
+        var cls = 'quiz-opt' + (submitted ? ' disabled' : '') + (picked && !submitted ? ' picked' : '');
+        var mark = '';
+        if (submitted) {
+          if (oi === q.answer) { cls += ' correct'; mark = '✓ Correct'; }
+          else if (picked) { cls += ' wrong'; mark = '✗ Your answer'; }
+        }
+        return '<div class="' + cls + '" data-qi="' + qi + '" data-oi="' + oi + '"><span class="qdot"></span><span class="qopt-text">' + opt + '</span><span class="qmark">' + mark + '</span></div>';
+      }).join('');
+      qDiv.innerHTML = '<div class="qtext">' + (qi + 1) + '. ' + q.text + '</div><div class="quiz-opts">' + optsHtml + '</div>';
+      if (submitted) {
+        var why = document.createElement('div');
+        why.className = 'rwhy';
+        why.textContent = q.why;
+        qDiv.appendChild(why);
+      }
+      quizCard.appendChild(qDiv);
+    });
+
+    if (!submitted) {
+      var allAnswered = Object.keys(picks).length >= mod.quiz.length;
+      var btn = document.createElement('button');
+      btn.className = 'quiz-submit';
+      btn.textContent = 'Submit Answers';
+      btn.disabled = !allAnswered;
+      btn.addEventListener('click', function(){
+        if (Object.keys(picks).length < mod.quiz.length) return;
+        submitted = true;
+        var score = mod.quiz.filter(function(q, i){ return picks[i] === q.answer; }).length;
+        var pass = (score / mod.quiz.length) > 0.5;
+        try{
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({ score: score, total: mod.quiz.length, pass: pass, date: Date.now() }));
+        }catch(e){}
+        renderQuiz();
+      });
+      quizCard.appendChild(btn);
+
+      quizCard.querySelectorAll('.quiz-opt').forEach(function(el){
+        el.addEventListener('click', function(){
+          if (submitted) return;
+          picks[el.getAttribute('data-qi')] = parseInt(el.getAttribute('data-oi'), 10);
+          renderQuiz();
+        });
+      });
+    } else {
+      var score = mod.quiz.filter(function(q, i){ return picks[i] === q.answer; }).length;
+      var pass = (score / mod.quiz.length) > 0.5;
+      var pct = Math.round(score / mod.quiz.length * 100);
+      var banner = document.createElement('div');
+      banner.className = 'result-banner';
+      banner.style.background = pass ? '#EBF8F4' : '#FBEAF2';
+      banner.style.borderColor = pass ? '#1B9E7E' : '#D4327A';
+      banner.innerHTML =
+        '<div class="rtitle" style="color:' + (pass ? '#0F7159' : '#A81F5B') + ';">' + (pass ? '✓ Passed — ' : '✗ Not yet — ') + score + '/' + mod.quiz.length + ' (' + pct + '%)</div>' +
+        '<span class="try-again">Try Again</span>';
+      quizCard.appendChild(banner);
+      banner.querySelector('.try-again').addEventListener('click', function(){
+        picks = {}; submitted = false; renderQuiz();
+      });
+    }
+  }
+  renderQuiz();
+
+  // ---- prev/next ----
+  var prev = PCCN_MODULES.find(function(x){ return x.n === modN - 1; });
+  var next = PCCN_MODULES.find(function(x){ return x.n === modN + 1; });
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  if (prev) { prevBtn.href = 'PCCN_Module.html?m=' + prev.n; document.getElementById('prevLabel').textContent = nn(prev.n) + ' — ' + prev.short; }
+  else { prevBtn.classList.add('disabled'); }
+  if (next) { nextBtn.href = 'PCCN_Module.html?m=' + next.n; document.getElementById('nextLabel').textContent = nn(next.n) + ' — ' + next.short; }
+  else { nextBtn.classList.add('disabled'); }
+
+  // ---- sidebar ----
+  document.getElementById('factsCard').style.borderColor = P.color;
+  document.getElementById('factFramework').textContent = mod.framework;
+  document.getElementById('factDuration').textContent = mod.duration;
+  document.getElementById('siblingsLabel').textContent = 'Pillar ' + mod.pillar + ' · ' + P.name;
+  var sibList = document.getElementById('siblingsList');
+  PCCN_MODULES.filter(function(x){ return x.pillar === mod.pillar; }).forEach(function(sib){
+    var a = document.createElement('a');
+    a.className = 'sibling-row' + (sib.n === modN ? ' current' : '');
+    a.href = 'PCCN_Module.html?m=' + sib.n;
+    a.innerHTML = '<span class="snum" style="color:' + (sib.n === modN ? P.color : '#8A7796') + ';">' + nn(sib.n) + '</span><span class="sname">' + sib.short + '</span>';
+    sibList.appendChild(a);
+  });
+
+  window.scrollTo(0, 0);
+})();
+</script>
+
+</body>
+</html>

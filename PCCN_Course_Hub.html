@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curriculum — PCCN Certificate Course</title>
+<link rel="stylesheet" href="pccn-styles.css">
+</head>
+<body>
+
+<nav class="pccn-nav">
+  <div class="pccn-nav-inner">
+    <a href="PCCN_Landing_Page.html" class="pccn-brand" style="text-decoration:none;">
+      <span class="pccn-brand-mark">P</span>
+      <span class="pccn-brand-word"><b>PCCN</b><span>Certificate Course</span></span>
+    </a>
+    <div class="pccn-nav-links">
+      <a href="PCCN_Landing_Page.html">Home</a>
+      <a href="PCCN_Course_Hub.html" class="active">Curriculum</a>
+      <a href="PCCN_Online_Sessions.html">Online Sessions</a>
+      <a href="PCCN_Faculty.html">Faculty</a>
+    </div>
+    <div class="pccn-nav-actions">
+      <a href="PCCN_Login.html" class="pill-outline">Log In</a>
+      <a href="https://www.piccindia.com" target="_blank" rel="noopener" class="btn btn-pink btn-sm">Register</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="page-header">
+    <div class="wrap">
+      <span class="eyebrow on-dark">Curriculum</span>
+      <h1>Twelve modules, four pillars</h1>
+      <p>Each module pairs a live webinar with recorded lectures, a virtual simulation and an assessed quiz — pass mark 50%.</p>
+    </div>
+  </div>
+
+  <div class="wrap" style="padding:48px 28px 100px;">
+    <div id="pillarBlocks"></div>
+
+    <div class="pathway-recap">
+      <div class="rlabel">Certification pathway</div>
+      <div class="pathway-recap-grid">
+        <div class="pathway-recap-item" style="border-color:#1B9E7E;"><div class="snum">Step 1</div><div class="stitle">Pre-test &gt; 50%</div></div>
+        <div class="pathway-recap-item" style="border-color:#3AABCC;"><div class="snum">Step 2</div><div class="stitle">70% attendance</div></div>
+        <div class="pathway-recap-item" style="border-color:#D4882A;"><div class="snum">Step 3</div><div class="stitle">Hands-on workshop</div></div>
+        <div class="pathway-recap-item" style="border-color:#D6246E;"><div class="snum">Step 4</div><div class="stitle">Final exam &gt; 50%</div></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="pccn-footer">
+  <div class="pccn-footer-inner">
+    <span>PCCN — Pediatric Critical Care Nursing Certificate Course · IAP Intensive Care Chapter</span>
+    <span><a href="https://www.piccindia.com" target="_blank" rel="noopener">www.piccindia.com</a> · stepin.iapicc@gmail.com</span>
+  </div>
+</footer>
+
+<script src="pccn-modules-data.js"></script>
+<script>
+(function(){
+  function nn(n){ return String(n).padStart(2,'0'); }
+  function statusFor(m){
+    try{
+      var saved = JSON.parse(localStorage.getItem('pccn_mod'+nn(m.n)+'_progress_v3') || 'null');
+      if(!saved) return {label:'Not started', color:'#8A7796'};
+      if(saved.pass) return {label:'Passed '+saved.score+'/'+saved.total, color:'#0F7159'};
+      return {label:'Retry needed '+saved.score+'/'+saved.total, color:'#A81F5B'};
+    }catch(e){ return {label:'Not started', color:'#8A7796'}; }
+  }
+
+  var container = document.getElementById('pillarBlocks');
+  Object.keys(PCCN_PILLARS).forEach(function(pn){
+    var p = PCCN_PILLARS[pn];
+    var mods = PCCN_MODULES.filter(function(m){ return m.pillar == pn; });
+    var block = document.createElement('div');
+    block.className = 'pillar-block';
+    var head = document.createElement('div');
+    head.className = 'pillar-block-head';
+    head.innerHTML = '<span class="pillar-chip" style="background:'+p.color+';">'+pn+'</span><h3>'+p.name+'</h3><span class="rule"></span>';
+    block.appendChild(head);
+    var grid = document.createElement('div');
+    grid.className = 'mod-grid3';
+    mods.forEach(function(m){
+      var s = statusFor(m);
+      var a = document.createElement('a');
+      a.className = 'mod-card-lg';
+      a.href = 'PCCN_Module.html?m=' + m.n;
+      a.style.borderTopColor = p.color;
+      a.innerHTML =
+        '<div class="mlabel" style="color:'+p.color+';">Module '+nn(m.n)+'</div>' +
+        '<div class="mtitle">'+m.short+'</div>' +
+        '<div class="msub">'+m.subtitle+'</div>' +
+        '<div class="mfoot"><span>'+m.duration+'</span><span class="mstatus" style="color:'+s.color+';">'+s.label+'</span></div>';
+      grid.appendChild(a);
+    });
+    block.appendChild(grid);
+    container.appendChild(block);
+  });
+})();
+</script>
+
+</body>
+</html>

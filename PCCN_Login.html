@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In — PCCN Certificate Course</title>
+<link rel="stylesheet" href="pccn-styles.css">
+</head>
+<body>
+
+<nav class="pccn-nav dark">
+  <div class="pccn-nav-inner">
+    <a href="PCCN_Landing_Page.html" class="pccn-brand" style="text-decoration:none;">
+      <span class="pccn-brand-mark">P</span>
+      <span class="pccn-brand-word"><b>PCCN</b><span>Certificate Course</span></span>
+    </a>
+    <div class="pccn-nav-links">
+      <a href="PCCN_Landing_Page.html">Home</a>
+      <a href="PCCN_Course_Hub.html">Curriculum</a>
+      <a href="PCCN_Online_Sessions.html">Online Sessions</a>
+      <a href="PCCN_Faculty.html">Faculty</a>
+    </div>
+    <div class="pccn-nav-actions">
+      <a href="https://www.piccindia.com" target="_blank" rel="noopener" class="btn btn-pink btn-sm">Register</a>
+    </div>
+  </div>
+</nav>
+
+<main class="login-wrap">
+  <div class="login-card">
+    <div class="login-head">
+      <div class="pccn-brand-mark" style="margin:0 auto 14px;width:40px;height:40px;font-size:1.1rem;">P</div>
+      <h2>Welcome back</h2>
+      <p>Log in to continue your PCCN course</p>
+    </div>
+    <form id="loginForm">
+      <input type="text" class="login-field" placeholder="Email or fellow ID">
+      <input type="password" class="login-field" placeholder="Password" style="margin-bottom:6px;">
+      <button type="submit" class="btn btn-pink btn-block" style="margin-top:6px;">Log In</button>
+    </form>
+    <div class="login-foot">Not registered yet? <a href="https://www.piccindia.com" target="_blank" rel="noopener" style="color:var(--pink);font-weight:700;">Register now</a></div>
+  </div>
+</main>
+
+<footer class="pccn-footer">
+  <div class="pccn-footer-inner">
+    <span>PCCN — Pediatric Critical Care Nursing Certificate Course · IAP Intensive Care Chapter</span>
+    <span><a href="https://www.piccindia.com" target="_blank" rel="noopener">www.piccindia.com</a> · stepin.iapicc@gmail.com</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  window.location.href = 'PCCN_My_Courses.html';
+});
+</script>
+
+</body>
+</html>

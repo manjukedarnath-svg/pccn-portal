@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My PCCN Progress — Dashboard</title>
+<link rel="stylesheet" href="pccn-styles.css">
+</head>
+<body>
+
+<nav class="pccn-nav dark">
+  <div class="pccn-nav-inner">
+    <a href="PCCN_Landing_Page.html" class="pccn-brand" style="text-decoration:none;">
+      <span class="pccn-brand-mark">P</span>
+      <span class="pccn-brand-word"><b>PCCN</b><span>Certificate Course</span></span>
+    </a>
+    <div class="pccn-nav-links">
+      <a href="PCCN_Landing_Page.html">Home</a>
+      <a href="PCCN_Course_Hub.html">Curriculum</a>
+      <a href="PCCN_Online_Sessions.html">Online Sessions</a>
+      <a href="PCCN_Faculty.html">Faculty</a>
+    </div>
+    <div class="pccn-nav-actions">
+      <a href="https://www.piccindia.com" target="_blank" rel="noopener" class="btn btn-pink btn-sm">Register</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="dash-header">
+    <div class="dash-header-inner">
+      <div>
+        <span class="eyebrow on-dark">Welcome back</span>
+        <h1>Your PCCN progress</h1>
+      </div>
+      <div class="countdown-chip">
+        <b id="countdownNum">—</b>
+        <span id="countdownLabel">days to<br>course start</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-body">
+    <div>
+      <div class="dash-stats">
+        <div class="dash-stat-card"><div class="dlabel">Pre-test</div><div class="dval" style="color:var(--ink-muted);font-size:1.05rem;">Not yet available</div></div>
+        <div class="dash-stat-card"><div class="dlabel">Attendance</div><div class="dval" style="color:var(--ink-muted);font-size:1.05rem;">Not yet available</div></div>
+        <div class="dash-stat-card"><div class="dlabel">Modules complete</div><div class="dval" id="completeCount" style="color:var(--good-ink);">0 / 12</div></div>
+      </div>
+
+      <div class="dash-modlabel">Module progress</div>
+      <div id="moduleList"></div>
+    </div>
+
+    <div class="dash-side">
+      <div class="dslabel">Certification pathway</div>
+      <div id="trackerList"></div>
+    </div>
+  </div>
+</main>
+
+<footer class="pccn-footer">
+  <div class="pccn-footer-inner">
+    <span>PCCN — Pediatric Critical Care Nursing Certificate Course · IAP Intensive Care Chapter</span>
+    <span><a href="https://www.piccindia.com" target="_blank" rel="noopener">www.piccindia.com</a> · stepin.iapicc@gmail.com</span>
+  </div>
+</footer>
+
+<script src="pccn-modules-data.js"></script>
+<script>
+(function(){
+  function nn(n){ return String(n).padStart(2,'0'); }
+  function statusFor(m){
+    try{
+      var saved = JSON.parse(localStorage.getItem('pccn_mod'+nn(m.n)+'_progress_v3') || 'null');
+      if(!saved) return {label:'Not started', color:'#8A7796', bg:'#F6F0F5', pass:false, score:null};
+      if(saved.pass) return {label:'Complete', color:'#0F7159', bg:'#EBF8F4', pass:true, score:saved.score+'/'+saved.total};
+      return {label:'Retry needed', color:'#A81F5B', bg:'#FBEAF2', pass:false, score:saved.score+'/'+saved.total};
+    }catch(e){ return {label:'Not started', color:'#8A7796', bg:'#F6F0F5', pass:false, score:null}; }
+  }
+
+  var list = document.getElementById('moduleList');
+  var completeCount = 0;
+  PCCN_MODULES.forEach(function(m){
+    var p = PCCN_PILLARS[m.pillar];
+    var s = statusFor(m);
+    if(s.pass) completeCount++;
+    var a = document.createElement('a');
+    a.className = 'dash-mod-row';
+    a.href = 'PCCN_Module.html?m=' + m.n;
+    a.innerHTML =
+      '<span class="dbadge" style="background:'+s.bg+';color:'+s.color+';">'+nn(m.n)+'</span>' +
+      '<span class="dtitle">'+m.short+'</span>' +
+      '<span class="dstatus" style="color:'+s.color+';">'+s.label+'</span>' +
+      '<span class="dscore">'+(s.score || '—')+'</span>';
+    list.appendChild(a);
+  });
+  document.getElementById('completeCount').textContent = completeCount + ' / 12';
+
+  var pathway = [
+    { title:'Pre-test &gt; 50%', status:'Not yet available' },
+    { title:'70% attendance', status:'Not yet available' },
+    { title:'Hands-on workshop', status:'TBD · Zone-wise' },
+    { title:'Final exam &gt; 50%', status: completeCount >= 12 ? 'All modules complete' : 'Not yet available' }
+  ];
+  var trackerList = document.getElementById('trackerList');
+  pathway.forEach(function(s, i){
+    var done = i === 3 && completeCount >= 12;
+    var row = document.createElement('div');
+    row.className = 'tracker-step';
+    row.innerHTML =
+      '<div class="tracker-rail">' +
+        '<div class="tracker-mark" style="background:'+(done?'#0F7159':'#fff')+';color:'+(done?'#fff':'#8A7796')+';border-color:'+(done?'#0F7159':'#EEE4EC')+';">'+(done?'✓':(i+1))+'</div>' +
+        (i < 3 ? '<span class="tracker-line" style="background:#EEE4EC;"></span>' : '') +
+      '</div>' +
+      '<div class="tracker-content"><div class="ttitle">'+s.title+'</div><div class="tstatus">'+s.status+'</div></div>';
+    trackerList.appendChild(row);
+  });
+
+  var courseStart = new Date('2026-08-15T00:00:00');
+  var today = new Date();
+  var days = Math.ceil((courseStart - today) / 86400000);
+  document.getElementById('countdownNum').textContent = days > 0 ? days : '0';
+  if (days === 1) document.getElementById('countdownLabel').innerHTML = 'day to<br>course start';
+  else if (days <= 0) document.getElementById('countdownLabel').innerHTML = 'Course<br>has started';
+})();
+</script>
+
+</body>
+</html>
