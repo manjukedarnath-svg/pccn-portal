@@ -47,10 +47,15 @@
       <div class="mod-label">Learning objectives</div>
       <div class="obj-card" id="objCard"></div>
 
+      <div class="mod-label" id="pretestLabel" style="display:none;"></div>
+      <div class="quiz-card" id="pretestCard" style="display:none;"></div>
+
       <div class="mod-label" id="accordionLabel"></div>
       <div class="accordion" id="accordionWrap"></div>
 
       <div id="panelWrap"></div>
+
+      <div id="panel2Wrap"></div>
 
       <div class="mod-label pink">Case scenario</div>
       <div class="case-card" id="caseCard"></div>
@@ -147,6 +152,65 @@
     objCard.appendChild(d);
   });
 
+  // ---- pretest (optional, diagnostic only — not graded) ----
+  if (mod.pretest && mod.pretest.length) {
+    var pretestLabelEl = document.getElementById('pretestLabel');
+    pretestLabelEl.style.display = '';
+    pretestLabelEl.textContent = 'Quick pre-test — ' + mod.pretest.length + ' questions · baseline only, not graded';
+    var pretestCardEl = document.getElementById('pretestCard');
+    pretestCardEl.style.display = '';
+    var pretestPicks = {};
+    var pretestSubmitted = false;
+
+    function renderPretest(){
+      pretestCardEl.innerHTML = '';
+      mod.pretest.forEach(function(q, qi){
+        var qDiv = document.createElement('div');
+        qDiv.className = 'quiz-q';
+        var optsHtml = q.options.map(function(opt, oi){
+          var picked = pretestPicks[qi] === oi;
+          var cls = 'quiz-opt' + (pretestSubmitted ? ' disabled' : '') + (picked && !pretestSubmitted ? ' picked' : '');
+          return '<div class="' + cls + '" data-qi="' + qi + '" data-oi="' + oi + '"><span class="qdot"></span><span class="qopt-text">' + opt + '</span></div>';
+        }).join('');
+        qDiv.innerHTML = '<div class="qtext">' + (qi + 1) + '. ' + q.text + '</div><div class="quiz-opts">' + optsHtml + '</div>';
+        pretestCardEl.appendChild(qDiv);
+      });
+
+      if (!pretestSubmitted) {
+        var allAnswered = Object.keys(pretestPicks).length >= mod.pretest.length;
+        var btn = document.createElement('button');
+        btn.className = 'quiz-submit';
+        btn.textContent = 'See my baseline';
+        btn.disabled = !allAnswered;
+        btn.addEventListener('click', function(){
+          if (Object.keys(pretestPicks).length < mod.pretest.length) return;
+          pretestSubmitted = true;
+          renderPretest();
+        });
+        pretestCardEl.appendChild(btn);
+
+        pretestCardEl.querySelectorAll('.quiz-opt').forEach(function(el){
+          el.addEventListener('click', function(){
+            if (pretestSubmitted) return;
+            pretestPicks[el.getAttribute('data-qi')] = parseInt(el.getAttribute('data-oi'), 10);
+            renderPretest();
+          });
+        });
+      } else {
+        var score = mod.pretest.filter(function(q, i){ return pretestPicks[i] === q.answer; }).length;
+        var banner = document.createElement('div');
+        banner.className = 'result-banner';
+        banner.style.background = '#F5FAFD';
+        banner.style.borderColor = '#2C9CD1';
+        banner.innerHTML =
+          '<div class="rtitle" style="color:#1F7CA8;">Baseline: ' + score + ' / ' + mod.pretest.length + '</div>' +
+          '<span style="font-size:.85rem;color:var(--ink-muted);">No pass/fail here — just noting where to focus as you go through the module below.</span>';
+        pretestCardEl.appendChild(banner);
+      }
+    }
+    renderPretest();
+  }
+
   // ---- accordion ----
   document.getElementById('accordionLabel').textContent = mod.accordionLabel || 'Core content';
   var accWrap = document.getElementById('accordionWrap');
@@ -202,6 +266,22 @@
       }).join('') + '</div>' +
       '<div class="panel-foot">' + pnl.foot + '</div></div>';
     document.getElementById('panelWrap').innerHTML = panelHtml2;
+  }
+
+  // ---- panel2 (secondary reference card, e.g. emergency preparedness) ----
+  if (mod.panel2) {
+    var pnl2 = mod.panel2;
+    var panel2Html =
+      '<div class="mod-label">' + pnl2.label + '</div>' +
+      '<div class="panel-card"><div class="pintro">' + pnl2.intro + '</div>' +
+      '<div class="panel-cards-row">' + pnl2.cards.map(function(c){
+        return '<div class="panel-mini-card" style="border-top-color:' + c.color + ';"><div class="mlabel" style="color:' + c.color + ';">' + c.label + '</div>' + c.body + '</div>';
+      }).join('') + '</div>' +
+      (pnl2.scale ? '<div class="panel-scale">' + pnl2.scale.map(function(s){
+        return '<div class="panel-scale-row" style="background:' + s.bg + ';"><span class="sclabel" style="color:' + s.fg + ';">' + s.label + '</span><span class="scbody">' + s.body + '</span></div>';
+      }).join('') + '</div>' : '') +
+      '<div class="panel-foot">' + pnl2.foot + '</div></div>';
+    document.getElementById('panel2Wrap').innerHTML = panel2Html;
   }
 
   // ---- case study ----
