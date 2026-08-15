@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Board View — Registered Candidates — PCCN Certificate Course</title>
+<link rel="stylesheet" href="pccn-styles.css">
+</head>
+<body>
+
+<nav class="pccn-nav dark">
+  <div class="pccn-nav-inner">
+    <a href="PCCN_Landing_Page.html" class="pccn-brand" style="text-decoration:none;">
+      <span class="pccn-brand-mark">P</span>
+      <span class="pccn-brand-word"><b>PCCN</b><span>Certificate Course</span></span>
+    </a>
+    <div class="pccn-nav-links">
+      <a href="PCCN_Landing_Page.html">Home</a>
+      <a href="PCCN_Course_Hub.html">Curriculum</a>
+      <a href="PCCN_Online_Sessions.html">Online Sessions</a>
+      <a href="PCCN_Faculty.html">Faculty</a>
+    </div>
+    <button type="button" class="pccn-nav-toggle" id="navToggleBtn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    <div class="pccn-nav-actions" id="navAuthArea">
+      <a href="PCCN_Login.html" class="pill-outline">Log In</a>
+    </div>
+  </div>
+</nav>
+<script src="pccn-nav.js"></script>
+
+<main>
+  <div class="dash-header">
+    <div class="dash-header-inner">
+      <div>
+        <span class="eyebrow on-dark">Committee · read-only</span>
+        <h1>Registered candidates</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap-narrow" style="padding:36px 28px 100px;">
+
+    <div id="bvLoading" style="text-align:center;color:var(--ink-muted);padding:60px 0;">Checking access…</div>
+
+    <div id="bvDenied" style="display:none;background:#fff;border:1px solid var(--border);border-radius:14px;padding:32px;text-align:center;">
+      <h2 style="font-size:1.15rem;margin-bottom:10px;">This view is restricted</h2>
+      <p style="color:var(--ink-soft);font-size:.92rem;line-height:1.6;margin:0;">
+        You're signed in, but this account isn't on the committee access list.
+        If you believe you should have access, ask the course coordinator to add your account.
+      </p>
+      <a href="PCCN_Login.html?next=PCCN_Board_View.html" class="btn btn-pink btn-sm" style="margin-top:18px;">Log in with a different account</a>
+    </div>
+
+    <div id="bvContent" style="display:none;">
+      <div class="dash-stats" style="grid-template-columns:1fr 1fr;margin-bottom:28px;">
+        <div class="dash-stat-card"><div class="dlabel">Total registered</div><div class="dval" id="bvCount" style="color:var(--good-ink);">0</div></div>
+        <div class="dash-stat-card"><div class="dlabel">Last updated</div><div class="dval" id="bvUpdated" style="color:var(--ink-muted);font-size:.98rem;">—</div></div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+        <div class="dash-modlabel" style="margin-bottom:0;">Candidates (website accounts)</div>
+        <button type="button" id="bvExportBtn" class="reckoner-print-btn" style="margin-bottom:0;">Export as CSV</button>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+        <table class="ref-table" style="margin:0;">
+          <thead>
+            <tr><th>Name</th><th>Email</th><th>Registered</th></tr>
+          </thead>
+          <tbody id="bvTableBody"></tbody>
+        </table>
+      </div>
+
+      <p style="font-size:.8rem;color:var(--ink-muted);line-height:1.6;margin-top:16px;">
+        This list is pulled directly from the website's sign-in accounts. It reflects who has created a login on the site, not who has completed the Google Form course enrolment.
+      </p>
+    </div>
+
+  </div>
+</main>
+
+<footer class="pccn-footer">
+  <div class="pccn-footer-inner">
+    <span>PCCN — Pediatric Critical Care Nursing Certificate Course · IAP Intensive Care Chapter</span>
+    <span><a href="https://www.piccindia.com" target="_blank" rel="noopener">www.piccindia.com</a> · stepin.iapicc@gmail.com</span>
+  </div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="pccn-firebase-config.js"></script>
+<script src="pccn-auth.js"></script>
+<script>
+(function(){
+  if (window.PCCN_AUTH) {
+    PCCN_AUTH.requireLogin();
+    PCCN_AUTH.onChange(function(user){
+      if (user) checkAccessAndLoad(user);
+    });
+  }
+
+  var rows = []; // cached for CSV export
+
+  function fmtDate(ts){
+    if (!ts || !ts.toDate) return '—';
+    var d = ts.toDate();
+    return d.toLocaleDateString(undefined, { day:'numeric', month:'short', year:'numeric' });
+  }
+
+  function checkAccessAndLoad(user){
+    var db = PCCN_AUTH.db();
+    if (!db) { showDenied(); return; }
+
+    db.collection('admins').doc(user.uid).get().then(function(adminDoc){
+      if (!adminDoc.exists) { showDenied(); return; }
+      return db.collection('users').orderBy('createdAt', 'desc').get().then(function(snap){
+        rows = [];
+        snap.forEach(function(doc){
+          var d = doc.data();
+          rows.push({ name: d.name || '—', email: d.email || '—', registered: fmtDate(d.createdAt) });
+        });
+        renderTable();
+      });
+    }).catch(function(err){
+      console.warn('PCCN board view: access check failed —', err.message);
+      showDenied();
+    });
+  }
+
+  function showDenied(){
+    document.getElementById('bvLoading').style.display = 'none';
+    document.getElementById('bvDenied').style.display = 'block';
+  }
+
+  function renderTable(){
+    document.getElementById('bvLoading').style.display = 'none';
+    document.getElementById('bvContent').style.display = 'block';
+    document.getElementById('bvCount').textContent = rows.length;
+    document.getElementById('bvUpdated').textContent = new Date().toLocaleString(undefined, { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+
+    var tbody = document.getElementById('bvTableBody');
+    tbody.innerHTML = '';
+    if (!rows.length) {
+      tbody.innerHTML = '<tr><td colspan="3" style="color:var(--ink-muted);text-align:center;padding:24px;">No candidates have registered yet.</td></tr>';
+      return;
+    }
+    rows.forEach(function(r){
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td>'+escapeHtml(r.name)+'</td><td>'+escapeHtml(r.email)+'</td><td>'+escapeHtml(r.registered)+'</td>';
+      tbody.appendChild(tr);
+    });
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+
+  document.getElementById('bvExportBtn').addEventListener('click', function(){
+    var csv = 'Name,Email,Registered\n' + rows.map(function(r){
+      return '"'+r.name.replace(/"/g,'""')+'","'+r.email.replace(/"/g,'""')+'","'+r.registered+'"';
+    }).join('\n');
+    var blob = new Blob([csv], { type: 'text/csv' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'pccn-registered-candidates.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+})();
+</script>
+
+</body>
+</html>
