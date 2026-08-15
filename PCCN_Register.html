@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account — PCCN Certificate Course</title>
+<link rel="stylesheet" href="pccn-styles.css">
+</head>
+<body>
+
+<nav class="pccn-nav dark">
+  <div class="pccn-nav-inner">
+    <a href="PCCN_Landing_Page.html" class="pccn-brand" style="text-decoration:none;">
+      <span class="pccn-brand-mark">P</span>
+      <span class="pccn-brand-word"><b>PCCN</b><span>Certificate Course</span></span>
+    </a>
+    <div class="pccn-nav-links">
+      <a href="PCCN_Landing_Page.html">Home</a>
+      <a href="PCCN_Course_Hub.html">Curriculum</a>
+      <a href="PCCN_Online_Sessions.html">Online Sessions</a>
+      <a href="PCCN_Faculty.html">Faculty</a>
+    </div>
+    <div class="pccn-nav-actions" id="navAuthArea">
+      <a href="PCCN_Login.html" class="pill-outline">Log In</a>
+    </div>
+  </div>
+</nav>
+
+<main class="login-wrap">
+  <div class="login-card">
+    <div class="login-head">
+      <div class="pccn-brand-mark" style="margin:0 auto 14px;width:40px;height:40px;font-size:1.1rem;">P</div>
+      <h2>Create your account</h2>
+      <p>Track your PCCN progress across every device</p>
+    </div>
+    <div id="regError" style="display:none;background:var(--bad-bg);color:var(--bad-ink);border-radius:10px;padding:11px 14px;font-size:.85rem;margin-bottom:14px;"></div>
+    <form id="regForm">
+      <input type="text" id="regName" class="login-field" placeholder="Full name" required autocomplete="name">
+      <input type="email" id="regEmail" class="login-field" placeholder="Email" required autocomplete="email">
+      <input type="password" id="regPassword" class="login-field" placeholder="Password (min. 6 characters)" required autocomplete="new-password" minlength="6">
+      <input type="password" id="regPassword2" class="login-field" placeholder="Confirm password" style="margin-bottom:6px;" required autocomplete="new-password" minlength="6">
+      <button type="submit" class="btn btn-pink btn-block" id="regSubmitBtn" style="margin-top:6px;">Create Account</button>
+    </form>
+    <div class="login-foot">Already have an account? <a href="PCCN_Login.html" style="color:var(--pink);font-weight:700;">Log in</a></div>
+  </div>
+</main>
+
+<footer class="pccn-footer">
+  <div class="pccn-footer-inner">
+    <span>PCCN — Pediatric Critical Care Nursing Certificate Course · IAP Intensive Care Chapter</span>
+    <span><a href="https://www.piccindia.com" target="_blank" rel="noopener">www.piccindia.com</a> · stepin.iapicc@gmail.com</span>
+  </div>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="pccn-firebase-config.js"></script>
+<script src="pccn-auth.js"></script>
+<script>
+(function(){
+  function qs(name){
+    var m = new RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+  var nextPage = qs('next') || 'PCCN_My_Courses.html';
+
+  if (window.PCCN_AUTH) {
+    PCCN_AUTH.onChange(function(user){
+      if (user) window.location.href = nextPage;
+    });
+  }
+
+  var errBox = document.getElementById('regError');
+  function showError(msg){ errBox.textContent = msg; errBox.style.display = 'block'; }
+
+  document.getElementById('regForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    if (!window.PCCN_AUTH) { showError('Sign-up is not configured yet on this site.'); return; }
+    var name = document.getElementById('regName').value.trim();
+    var email = document.getElementById('regEmail').value.trim();
+    var password = document.getElementById('regPassword').value;
+    var password2 = document.getElementById('regPassword2').value;
+
+    if (password !== password2) { showError('Passwords do not match.'); return; }
+    if (password.length < 6) { showError('Password must be at least 6 characters.'); return; }
+
+    var btn = document.getElementById('regSubmitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Creating account…';
+
+    PCCN_AUTH.auth().createUserWithEmailAndPassword(email, password)
+      .then(function(cred){
+        return cred.user.updateProfile({ displayName: name }).then(function(){
+          var db = PCCN_AUTH.db();
+          if (db) {
+            return db.collection('users').doc(cred.user.uid).set({
+              name: name,
+              email: email,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          }
+        });
+      })
+      .then(function(){
+        window.location.href = nextPage;
+      })
+      .catch(function(err){
+        btn.disabled = false;
+        btn.textContent = 'Create Account';
+        if (err.code === 'auth/email-already-in-use') {
+          showError('An account already exists for that email — try logging in instead.');
+        } else if (err.code === 'auth/invalid-email') {
+          showError('That doesn\'t look like a valid email address.');
+        } else if (err.code === 'auth/weak-password') {
+          showError('That password is too weak — please use at least 6 characters.');
+        } else {
+          showError('Could not create account: ' + err.message);
+        }
+      });
+  });
+})();
+</script>
+
+</body>
+</html>
