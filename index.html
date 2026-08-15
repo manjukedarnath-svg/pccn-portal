@@ -4,7 +4,472 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PCCN — Pediatric Critical Care Nursing Certificate Course</title>
-<link rel="stylesheet" href="pccn-styles.css">
+<style>
+/* ==========================================================================
+   PCCN Portal — shared design system
+   Source: design handoff "Pediatric Course Assessment and Redesign" (README
+   + PCCN Portal.html prototype). Fraunces (display) + Poppins (body/UI),
+   deep plum / magenta-pink brand, four pillar accent colors.
+   Styles are inlined in this page.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,500&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap');
+
+:root{
+  /* plum scale */
+  --plum-900:#1F0938;
+  --plum-800:#2C0E4F;
+  --plum-700:#3E1266;
+  --plum-600:#4A1A73;
+  --plum-500:#6B1C72;
+  --rose-deep:#A8265F;
+
+  /* accents */
+  --pink:#D6246E;
+  --pink-dark:#B01A59;
+  --gold:#E39A1F;
+  --gold-soft:#F0D9A8;
+  --teal-text:#7FE3CE;
+  --cream:#F6F0F5;
+  --page-bg:#FBF8FA;
+
+  /* ink */
+  --ink:#2C0E4F;
+  --ink-body:#4A3860;
+  --ink-soft:#6B5D82;
+  --ink-muted:#8A7796;
+
+  /* borders */
+  --border:#EEE4EC;
+  --border-hover:#D8C2E0;
+  --hairline:#F3EAF1;
+
+  /* status */
+  --good:#1B9E7E;
+  --good-bg:#EBF8F4;
+  --good-ink:#0F7159;
+  --bad:#D4327A;
+  --bad-bg:#FBEAF2;
+  --bad-ink:#A81F5B;
+
+  /* pillars */
+  --p1:#1B9E7E; --p1-deep:#157A62; --p1-ink:#0F7159; --p1-tint:#EBF8F4;
+  --p2:#D4327A; --p2-deep:#B0205E; --p2-ink:#A81F5B; --p2-tint:#FBEAF2;
+  --p3:#D4882A; --p3-deep:#B0661A; --p3-ink:#8A5410; --p3-tint:#FBF1E4;
+  --p4:#3AABCC; --p4-deep:#2189A8; --p4-ink:#1D7E9B; --p4-tint:#E2F2F8;
+
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+
+  --grad-hero:linear-gradient(140deg,#2C0E4F 0%,#3E1266 45%,#6B1C72 78%,#A8265F 100%);
+  --grad-dark:linear-gradient(140deg,#2C0E4F 0%,#4A1A73 100%);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+body{margin:0;background:var(--page-bg);font-family:var(--sans);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;}
+a{color:var(--pink);text-decoration:none;}
+a:hover{color:var(--ink);text-decoration:underline;}
+img,svg{display:block;max-width:100%;}
+:focus-visible{outline:3px solid var(--p4);outline-offset:2px;border-radius:4px;}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;margin:0;color:var(--ink);letter-spacing:-.01em;}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+.wrap-narrow{max-width:1000px;margin:0 auto;padding:0 28px;}
+.wrap-sessions{max-width:900px;margin:0 auto;padding:0 28px;}
+.wrap-dash{max-width:1100px;margin:0 auto;padding:0 28px;}
+@media (max-width:640px){.wrap,.wrap-narrow,.wrap-sessions,.wrap-dash{padding:0 18px;}}
+
+main{flex:1;}
+
+/* ---------------- nav ---------------- */
+.pccn-nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.pccn-nav.dark{background:rgba(31,9,56,.9);border-bottom-color:rgba(255,255,255,.1);}
+.pccn-nav-inner{max-width:1180px;margin:0 auto;padding:0 28px;height:64px;display:flex;align-items:center;gap:28px;}
+@media (max-width:640px){.pccn-nav-inner{padding:0 18px;gap:14px;}}
+.pccn-brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.pccn-brand-mark{width:34px;height:34px;border-radius:9px;background:var(--grad-dark);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:700;font-size:.95rem;flex:none;}
+.pccn-brand-word{line-height:1.05;}
+.pccn-brand-word b{font-family:var(--serif);font-weight:700;font-size:1.05rem;color:var(--ink);display:block;}
+.pccn-nav.dark .pccn-brand-word b{color:#fff;}
+.pccn-brand-word span{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);}
+.pccn-nav.dark .pccn-brand-word span{color:rgba(255,255,255,.5);}
+.pccn-nav-links{display:flex;align-items:center;gap:4px;flex:1;overflow-x:auto;}
+.pccn-nav-links a{padding:8px 14px;border-radius:8px;font-size:.9rem;font-weight:600;color:var(--ink-body);white-space:nowrap;}
+.pccn-nav-links a:hover{background:rgba(214,36,110,.08);text-decoration:none;}
+.pccn-nav-links a.active{color:var(--pink);background:#FBEAF2;}
+.pccn-nav.dark .pccn-nav-links a{color:rgba(255,255,255,.65);}
+.pccn-nav.dark .pccn-nav-links a.active{color:#F374B0;background:rgba(255,255,255,.1);}
+.pccn-nav-actions{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+
+/* ---------------- buttons / pills ---------------- */
+.btn{display:inline-block;padding:15px 30px;border-radius:999px;font-family:var(--sans);font-size:1rem;font-weight:700;cursor:pointer;border:none;text-decoration:none;}
+.btn:hover{text-decoration:none;}
+.btn-pink{color:#fff;background:var(--pink);box-shadow:0 8px 24px rgba(214,36,110,.4);}
+.btn-pink:hover{background:var(--pink-dark);color:#fff;}
+.btn-outline-white{color:#fff;border:1.5px solid rgba(255,255,255,.35);background:transparent;}
+.btn-outline-white:hover{border-color:#fff;color:#fff;}
+.btn-outline-ink{color:var(--ink);border:1.5px solid var(--border-hover);background:transparent;}
+.btn-outline-ink:hover{background:var(--ink);color:#fff;}
+.btn-white{color:var(--ink);background:#fff;}
+.btn-white:hover{background:var(--gold-soft);color:var(--ink);}
+.btn-sm{padding:9px 18px;font-size:.86rem;}
+.btn-block{display:block;width:100%;text-align:center;}
+.pill-outline{padding:9px 16px;border-radius:999px;font-size:.86rem;font-weight:700;color:var(--ink);border:1.5px solid var(--border-hover);}
+.pccn-nav.dark .pill-outline{color:#fff;border-color:rgba(255,255,255,.3);}
+
+/* ---------------- eyebrow / section head ---------------- */
+.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pink);margin-bottom:10px;display:block;}
+.eyebrow.on-dark{color:var(--teal-text);}
+.eyebrow.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:6px 14px 6px 10px;margin-bottom:20px;color:#F0D9A8;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;}
+.eyebrow.badge .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);}
+.section-head{max-width:640px;margin:0 auto 48px;text-align:center;}
+.section-head.left{text-align:left;margin-left:0;}
+.section-head h2{font-size:clamp(1.8rem,2.6vw,2.4rem);margin:0 0 14px;}
+.section-head p{font-size:1.05rem;color:var(--ink-soft);line-height:1.6;margin:0;}
+.section-head-row{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:32px;}
+.section-head-row .link-more{font-weight:700;font-size:.95rem;white-space:nowrap;}
+
+/* ---------------- page section rhythm ---------------- */
+.pccn-section{max-width:1180px;margin:0 auto;padding:80px 28px 20px;}
+.pccn-section:last-of-type{padding-bottom:100px;}
+@media (max-width:720px){.pccn-section{padding:48px 20px 8px;}}
+.page-header{background:var(--grad-dark);padding:60px 28px 44px;}
+.page-header .wrap{max-width:1180px;}
+.page-header h1{color:#fff;font-size:clamp(2rem,3.2vw,2.7rem);margin:0 0 12px;}
+.page-header p{color:rgba(255,255,255,.62);font-size:1.05rem;max-width:640px;line-height:1.6;margin:0;}
+
+/* ---------------- hero (home) ---------------- */
+.hero{position:relative;overflow:hidden;background:var(--grad-hero);padding:76px 28px 0;}
+.hero-pulse{position:absolute;bottom:0;left:0;right:0;height:60px;opacity:.08;pointer-events:none;}
+.hero-grid{max-width:1180px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1.15fr 1fr;gap:52px;align-items:center;padding-bottom:64px;}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+.hero h1{color:#fff;font-size:clamp(2.4rem,4.2vw,3.6rem);line-height:1.04;margin:0 0 18px;}
+.hero-sub{font-size:1.15rem;line-height:1.6;color:rgba(255,255,255,.68);max-width:520px;margin-bottom:30px;}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:36px;}
+.hero-stats{display:flex;flex-wrap:wrap;gap:28px;}
+.hero-stat b{font-family:var(--serif);font-size:1.9rem;font-weight:700;color:#fff;line-height:1;display:block;}
+.hero-stat span{font-size:.78rem;letter-spacing:.06em;color:rgba(255,255,255,.5);margin-top:3px;display:block;}
+.hero-video{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.45);cursor:pointer;border:1px solid rgba(255,255,255,.15);}
+.hero-video img{width:100%;aspect-ratio:16/9;object-fit:cover;}
+.hero-video-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,4,38,.55) 0%,transparent 45%);}
+.hero-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.hero-play-btn{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.35);transition:transform .15s,background .15s;}
+.hero-video:hover .hero-play-btn{transform:scale(1.08);}
+.hero-play-btn .tri{width:0;height:0;border-style:solid;border-width:13px 0 13px 22px;border-color:transparent transparent transparent #fff;margin-left:6px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2));}
+.hero-video-caption{position:absolute;left:18px;bottom:14px;color:#fff;font-size:.82rem;font-weight:600;letter-spacing:.04em;}
+
+@media (max-width:640px){
+  .hero{padding:44px 20px 0;}
+  .hero-grid{gap:32px;padding-bottom:44px;}
+  .hero-sub{font-size:1.02rem;}
+  .btn{padding:14px 24px;font-size:.95rem;}
+  .hero-stats{gap:18px 24px;}
+  .pccn-section{padding:56px 20px;}
+  .fee-panel{padding:22px;}
+}
+/* ---------------- stats strip ---------------- */
+.stats-strip{background:var(--plum-900);padding:22px 28px;}
+.stats-strip-inner{max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;}
+.stats-strip-item{display:flex;align-items:center;gap:10px;font-size:.9rem;color:rgba(255,255,255,.72);}
+.stats-strip-item .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+.stats-strip-item strong{color:#fff;}
+
+/* ---------------- pillar cards (home) ---------------- */
+.pillar-grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+@media (max-width:900px){.pillar-grid4{grid-template-columns:1fr 1fr;}}
+@media (max-width:520px){.pillar-grid4{grid-template-columns:1fr;}}
+.pillar-card{cursor:pointer;border-radius:14px;overflow:hidden;background:#fff;border:1px solid var(--border);box-shadow:0 2px 8px rgba(44,14,79,.04);transition:box-shadow .2s,transform .2s;text-decoration:none;color:inherit;display:block;}
+.pillar-card:hover{box-shadow:0 14px 30px rgba(44,14,79,.14);transform:translateY(-3px);text-decoration:none;}
+.pillar-card-photo{position:relative;height:130px;overflow:hidden;background-size:cover;background-position:center;}
+.pillar-card-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(20,4,38,.55) 100%);}
+.pillar-card-num{position:absolute;left:14px;top:12px;width:30px;height:30px;border-radius:8px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;z-index:1;}
+.pillar-card-body{padding:16px;}
+.pillar-card-body .name{font-family:var(--serif);font-weight:600;font-size:1.05rem;line-height:1.3;margin-bottom:6px;}
+.pillar-card-body .count{font-size:.82rem;color:var(--ink-muted);}
+
+/* ---------------- module teaser / curriculum cards ---------------- */
+.mod-teaser-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+@media (max-width:900px){.mod-teaser-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:520px){.mod-teaser-grid{grid-template-columns:1fr;}}
+.mod-card{display:block;text-decoration:none;color:inherit;cursor:pointer;border:1px solid var(--border);border-top:3px solid var(--p1);border-radius:10px;padding:14px 16px;background:#fff;transition:border-color .15s;}
+.mod-card:hover{border-color:var(--border-hover);text-decoration:none;}
+.mod-card .mlabel{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;}
+.mod-card .mtitle{font-family:var(--serif);font-weight:600;font-size:1rem;line-height:1.25;color:var(--ink);}
+
+.mod-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media (max-width:820px){.mod-grid3{grid-template-columns:1fr 1fr;}}
+@media (max-width:520px){.mod-grid3{grid-template-columns:1fr;}}
+.mod-card-lg{display:block;text-decoration:none;color:inherit;cursor:pointer;border:1px solid var(--border);border-top:3px solid var(--p1);border-radius:12px;padding:18px 20px;background:#fff;transition:box-shadow .15s,transform .15s;}
+.mod-card-lg:hover{box-shadow:0 10px 24px rgba(44,14,79,.1);transform:translateY(-2px);text-decoration:none;}
+.mod-card-lg .mlabel{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.mod-card-lg .mtitle{font-family:var(--serif);font-weight:600;font-size:1.1rem;line-height:1.28;margin-bottom:8px;color:var(--ink);}
+.mod-card-lg .msub{font-size:.85rem;color:var(--ink-soft);line-height:1.55;margin-bottom:12px;}
+.mod-card-lg .mfoot{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--hairline);font-size:.75rem;color:var(--ink-muted);}
+.mod-card-lg .mstatus{font-weight:700;}
+
+.pillar-block{margin-bottom:44px;}
+.pillar-block-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.pillar-chip{width:34px;height:34px;border-radius:9px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;font-size:.95rem;}
+.pillar-block-head h3{font-family:var(--serif);font-weight:600;font-size:1.3rem;}
+.pillar-block-head .rule{flex:1;height:1px;background:var(--border);}
+
+/* ---------------- pathway / step cards ---------------- */
+.pathway-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+@media (max-width:820px){.pathway-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:480px){.pathway-grid{grid-template-columns:1fr;}}
+.pathway-card{border:1px solid var(--border);border-radius:12px;padding:20px 18px;background:#fff;}
+.pathway-card .pnum{width:34px;height:34px;border-radius:9px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:14px;}
+.pathway-card .ptitle{font-family:var(--serif);font-weight:600;font-size:1.05rem;margin-bottom:6px;}
+.pathway-card .pdesc{font-size:.85rem;color:var(--ink-soft);line-height:1.5;}
+
+.pathway-recap{background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px 32px;}
+.pathway-recap .rlabel{font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--good-ink);margin-bottom:16px;}
+.pathway-recap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+@media (max-width:820px){.pathway-recap-grid{grid-template-columns:1fr 1fr;}}
+.pathway-recap-item{border-left:3px solid var(--p1);padding:4px 0 4px 14px;}
+.pathway-recap-item .snum{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:3px;}
+.pathway-recap-item .stitle{font-family:var(--serif);font-weight:600;font-size:1.02rem;}
+
+/* ---------------- sessions banner (home) ---------------- */
+.sessions-banner{background:var(--grad-dark);border-radius:20px;padding:44px 48px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;}
+@media (max-width:720px){.sessions-banner{grid-template-columns:1fr;padding:32px 26px;}}
+.sessions-banner h3{color:#fff;font-size:1.6rem;line-height:1.25;margin-bottom:10px;}
+.sessions-banner p{font-size:.98rem;color:rgba(255,255,255,.62);max-width:520px;line-height:1.55;margin:0;}
+
+/* ---------------- faculty teaser (home) ---------------- */
+.faculty-teaser{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;background:var(--cream);border-radius:20px;padding:40px 44px;}
+@media (max-width:720px){.faculty-teaser{grid-template-columns:1fr;}}
+.faculty-teaser img{width:100%;border-radius:14px;}
+.pull-quote{font-family:var(--serif);font-style:italic;font-size:1.3rem;line-height:1.5;color:var(--ink);margin-bottom:18px;}
+.faculty-teaser-names{display:flex;flex-direction:column;gap:6px;font-size:.9rem;color:var(--ink-soft);}
+
+/* ---------------- fees (home) ---------------- */
+.fees-card{border:1px solid var(--border);border-radius:20px;padding:44px 48px;background:#fff;display:grid;grid-template-columns:1.2fr 1fr;gap:44px;}
+@media (max-width:720px){.fees-card{grid-template-columns:1fr;padding:30px 26px;}}
+.fees-dates{display:flex;flex-direction:column;gap:12px;}
+.fees-date-row{display:flex;align-items:baseline;gap:12px;padding-bottom:10px;border-bottom:1px solid var(--hairline);}
+.fees-date-row .flabel{font-size:.85rem;font-weight:700;color:var(--ink-muted);width:150px;flex-shrink:0;}
+.fees-date-row .fval{font-size:.98rem;font-weight:600;}
+.fee-panel{background:var(--cream);border-radius:14px;padding:28px;}
+.fee-panel .flabel{font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--plum-600);margin-bottom:14px;}
+.fee-panel .amount{font-family:var(--serif);font-size:2.4rem;font-weight:700;color:var(--ink);line-height:1;}
+.fee-panel .note{font-size:.8rem;color:var(--ink-muted);margin:4px 0 20px;}
+.fee-panel .desc{font-size:.85rem;color:var(--ink-soft);line-height:1.6;margin-bottom:20px;}
+
+/* ---------------- sessions page ---------------- */
+.session-block{margin-bottom:32px;}
+.session-block-head{display:flex;align-items:center;gap:16px;margin-bottom:14px;}
+.session-block-head .sname{font-size:1.1rem;letter-spacing:.1em;font-weight:700;color:var(--pink);}
+.session-block-head .sdur{font-size:.95rem;font-weight:600;color:var(--ink-soft);}
+.session-block-head .rule{flex:1;height:1px;background:var(--border);}
+.topic-row{display:flex;align-items:center;gap:16px;padding:12px 18px;border-radius:10px;}
+.topic-row .ttime{flex:0 0 50px;font-size:1.05rem;font-weight:800;text-align:right;}
+.topic-row .tbar{flex:0 0 3px;align-self:stretch;border-radius:2px;}
+.topic-row .tbody{flex:1;}
+.topic-row .ttitle{display:block;font-weight:700;font-size:1.02rem;}
+.topic-row .tdesc{display:block;font-size:.85rem;color:#7A6288;margin-top:2px;}
+.topic-row .ttag{flex:0 0 auto;padding:4px 12px;border-radius:999px;font-size:.72rem;font-weight:700;letter-spacing:.04em;}
+.sessions-note{background:var(--cream);border-radius:14px;padding:22px 26px;text-align:center;font-size:.9rem;color:var(--ink-soft);}
+
+/* ---------------- faculty page ---------------- */
+.bearer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:44px;}
+@media (max-width:720px){.bearer-grid{grid-template-columns:1fr 1fr;}}
+.bearer-card{background:#fff;border:1px solid var(--border);border-top:4px solid var(--plum-600);border-radius:12px;padding:18px 16px;}
+.bearer-card .bname{font-family:var(--serif);font-weight:600;font-size:1.05rem;margin-bottom:5px;}
+.bearer-card .brole{font-size:.78rem;color:var(--ink-muted);letter-spacing:.04em;}
+.committee-row{display:grid;grid-template-columns:200px 1fr;gap:18px;padding:16px 0;border-bottom:1px solid var(--border);align-items:baseline;}
+@media (max-width:560px){.committee-row{grid-template-columns:1fr;gap:4px;}}
+.committee-row .clabel{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pink);}
+.committee-row .cnames{font-size:.98rem;font-weight:500;}
+
+/* ---------------- module detail ---------------- */
+.mod-header{padding:50px 28px 40px;}
+.mod-header .back{font-size:.85rem;font-weight:700;color:rgba(255,255,255,.7);}
+.mod-header .back:hover{color:#fff;}
+.mod-header .meyebrow{font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.65);margin:16px 0 10px;}
+.mod-header h1{color:#fff;font-size:clamp(1.9rem,3vw,2.5rem);margin:0 0 12px;}
+.mod-header p{font-size:1.02rem;color:rgba(255,255,255,.65);max-width:640px;line-height:1.6;margin:0;}
+
+.mod-body{max-width:1000px;margin:0 auto;padding:44px 28px 100px;display:grid;grid-template-columns:2fr 1fr;gap:32px;align-items:start;}
+@media (max-width:820px){.mod-body{grid-template-columns:1fr;}}
+
+.mod-label{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--good-ink);margin-bottom:14px;}
+.mod-label.pink{color:var(--pink);}
+
+.obj-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:32px;}
+.obj-item{font-size:.95rem;color:var(--ink-body);line-height:1.5;padding:8px 0;border-bottom:1px solid var(--hairline);}
+.obj-item:last-child{border-bottom:none;}
+
+.sessions3-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px;}
+@media (max-width:720px){.sessions3-grid{grid-template-columns:1fr;}}
+.session3-card{border:1px solid var(--border);border-radius:12px;padding:16px 18px;background:#fff;}
+.session3-card .stag{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:6px;}
+.session3-card .stitle{font-family:var(--serif);font-weight:600;font-size:1rem;margin-bottom:6px;}
+.session3-card .sbody{font-size:.85rem;color:var(--ink-soft);line-height:1.5;margin-bottom:8px;}
+.session3-card .smeta{font-size:.75rem;color:var(--ink-muted);}
+
+.strip-card{background:var(--grad-dark);border-radius:16px;padding:26px 28px;margin-bottom:32px;}
+.strip-card .slabel{font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-text);margin-bottom:8px;}
+.strip-card .stitle{font-family:var(--serif);color:#fff;font-size:1.15rem;font-weight:600;margin-bottom:20px;line-height:1.4;}
+.strip-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin-bottom:16px;}
+.strip-item{text-align:center;}
+.strip-item .sletter{width:34px;height:34px;border-radius:9px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;margin:0 auto 8px;}
+.strip-item .sname{font-size:.82rem;font-weight:700;color:#fff;margin-bottom:3px;}
+.strip-item .sdetail{font-size:.72rem;color:rgba(255,255,255,.55);line-height:1.4;}
+.strip-foot{font-size:.8rem;color:rgba(255,255,255,.55);line-height:1.5;border-top:1px solid rgba(255,255,255,.12);padding-top:14px;}
+
+.accordion{border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:32px;background:#fff;}
+.acc-item{border-bottom:1px solid var(--hairline);}
+.acc-item:last-child{border-bottom:none;}
+.acc-head{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;background:none;border:none;width:100%;text-align:left;font-family:var(--sans);}
+.acc-head:hover{background:#FBF7FC;}
+.acc-head .aletter{font-family:var(--serif);font-size:1.2rem;font-weight:700;width:28px;flex-shrink:0;text-align:center;}
+.acc-head .atitle{font-family:var(--serif);font-size:1.05rem;font-weight:600;flex:1;min-width:0;color:var(--ink);}
+.acc-head .ahint{font-size:.82rem;color:var(--ink-muted);}
+.acc-head .achev{font-size:.8rem;color:var(--ink-muted);flex-shrink:0;}
+.acc-panel{padding:0 18px 16px 58px;display:none;}
+.acc-panel.open{display:block;}
+.acc-bullet{font-size:.92rem;color:var(--ink-body);line-height:1.5;padding:5px 0;border-bottom:1px solid var(--cream);}
+.acc-bullet:last-of-type{border-bottom:none;}
+.acc-callout{margin-top:10px;padding:10px 12px;border-radius:0 6px 6px 0;font-size:.88rem;color:var(--ink-body);line-height:1.5;border-left:3px solid;}
+.acc-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+@media (max-width:560px){.acc-compare{grid-template-columns:1fr;}}
+.acc-compare.cols3{grid-template-columns:repeat(3,1fr);}
+@media (max-width:720px){.acc-compare.cols3{grid-template-columns:1fr;}}
+.acc-compare-col{border-radius:10px;padding:12px 14px;font-size:.85rem;line-height:1.5;}
+.acc-compare-col .clabel{font-weight:700;font-size:.85rem;margin-bottom:6px;}
+
+.panel-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:32px;}
+.panel-card .pintro{font-size:.92rem;color:var(--ink-body);line-height:1.6;margin-bottom:16px;}
+.panel-cards-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+@media (max-width:720px){.panel-cards-row{grid-template-columns:1fr;}}
+.panel-mini-card{border-radius:10px;padding:12px 14px;font-size:.85rem;line-height:1.5;border-top:3px solid;background:var(--cream);}
+.panel-mini-card .mlabel{font-weight:700;font-size:.85rem;margin-bottom:6px;}
+.panel-scale{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.panel-scale-row{display:flex;gap:12px;align-items:baseline;padding:8px 12px;border-radius:8px;}
+.panel-scale-row .sclabel{font-weight:700;font-size:.82rem;flex:0 0 160px;}
+.panel-scale-row .scbody{font-size:.85rem;line-height:1.5;}
+.panel-foot{font-size:.85rem;color:var(--ink-body);line-height:1.6;padding-top:12px;border-top:1px solid var(--hairline);}
+
+.case-card{background:linear-gradient(135deg,#2C0E4F,#4A1A73);border-radius:14px;padding:22px 24px;margin-bottom:32px;}
+.case-quote{font-family:var(--serif);font-style:italic;font-size:1.05rem;color:rgba(255,255,255,.82);line-height:1.6;margin-bottom:14px;}
+.case-vitals{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+@media (max-width:720px){.case-vitals{grid-template-columns:1fr;}}
+.case-vital-card{background:rgba(255,255,255,.07);border-radius:10px;padding:12px 14px;font-size:.85rem;color:rgba(255,255,255,.85);line-height:1.5;border-top:3px solid;}
+.case-vital-card .vlabel{font-weight:700;font-size:.82rem;margin-bottom:6px;}
+.case-analysis{font-size:.88rem;color:rgba(255,255,255,.55);line-height:1.5;}
+.case-analysis strong{color:rgba(255,255,255,.8);}
+
+.grid-ref{background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:32px;}
+.grid-ref .gintro{font-size:.9rem;color:var(--ink-soft);line-height:1.6;margin-bottom:16px;}
+.grid-ref-items{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+@media (max-width:640px){.grid-ref-items{grid-template-columns:1fr;}}
+.grid-ref-item{border-left:3px solid;padding:8px 0 8px 12px;}
+.grid-ref-item .gkey{font-size:.78rem;font-weight:700;color:var(--ink-muted);margin-bottom:2px;}
+.grid-ref-item .gbody{font-size:.9rem;font-weight:600;color:var(--ink);}
+.grid-ref-foot{font-size:.85rem;color:var(--ink-body);line-height:1.6;padding-top:12px;border-top:1px solid var(--hairline);}
+
+.quiz-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px 22px 22px;margin-bottom:32px;}
+.quiz-q{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--hairline);}
+.quiz-q:last-of-type{border-bottom:none;margin-bottom:4px;padding-bottom:4px;}
+.quiz-q .qtext{font-family:var(--serif);font-size:1.02rem;font-weight:600;line-height:1.5;margin-bottom:10px;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.quiz-opt{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:1.5px solid var(--border);background:#fff;border-radius:8px;cursor:pointer;font-size:.92rem;color:var(--ink-body);line-height:1.4;}
+.quiz-opt .qdot{flex:0 0 14px;width:14px;height:14px;margin-top:2px;border-radius:50%;border:2px solid var(--border-hover);background:transparent;}
+.quiz-opt .qopt-text{flex:1;min-width:0;}
+.quiz-opt .qmark{font-size:.7rem;font-weight:700;flex-shrink:0;}
+.quiz-opt.picked{border-color:var(--pink);background:#FDF3F7;}
+.quiz-opt.picked .qdot{border-color:var(--pink);background:var(--pink);}
+.quiz-opt.correct{border-color:var(--good);background:var(--good-bg);}
+.quiz-opt.correct .qdot{border-color:var(--good);background:var(--good);}
+.quiz-opt.wrong{border-color:var(--bad);background:var(--bad-bg);}
+.quiz-opt.wrong .qdot{border-color:var(--bad);background:var(--bad);}
+.quiz-opt.disabled{cursor:default;}
+.quiz-submit{display:inline-block;padding:12px 28px;background:var(--pink);color:#fff;font-weight:700;font-size:.95rem;border-radius:999px;cursor:pointer;border:none;font-family:var(--sans);}
+.quiz-submit:hover{background:var(--pink-dark);}
+.quiz-submit:disabled{opacity:.4;cursor:default;}
+.quiz-submit:disabled:hover{background:var(--pink);}
+.result-banner{padding:16px 18px;border-radius:10px;border:1.5px solid;}
+.result-banner .rtitle{font-family:var(--serif);font-size:1.15rem;font-weight:700;margin-bottom:12px;}
+.result-banner .rwhy{font-size:.85rem;line-height:1.5;color:var(--ink-body);margin:10px 0 12px;}
+.try-again{display:inline-block;padding:9px 20px;border-radius:999px;border:1.5px solid var(--good);color:var(--good-ink);font-weight:700;font-size:.9rem;cursor:pointer;background:#fff;font-family:var(--sans);}
+.try-again:hover{background:var(--good-bg);}
+
+.mod-nav-row{display:flex;gap:12px;margin-top:24px;}
+.mod-nav-btn{flex:1;border-radius:10px;padding:14px 16px;text-decoration:none;}
+.mod-nav-btn:hover{text-decoration:none;}
+.mod-nav-btn.prev{background:#fff;border:1px solid var(--border);color:var(--ink);}
+.mod-nav-btn.prev:hover{border-color:var(--border-hover);}
+.mod-nav-btn.next{background:var(--plum-800);text-align:right;}
+.mod-nav-btn.next:hover{background:var(--plum-600);}
+.mod-nav-btn .navlabel{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-muted);margin-bottom:2px;}
+.mod-nav-btn.next .navlabel{color:var(--teal-text);}
+.mod-nav-btn .navtitle{font-family:var(--serif);font-weight:600;color:var(--ink);}
+.mod-nav-btn.next .navtitle{color:#fff;}
+.mod-nav-btn.disabled{opacity:.4;pointer-events:none;}
+
+.mod-sidebar{position:sticky;top:88px;display:flex;flex-direction:column;gap:14px;}
+.side-card{background:#fff;border-radius:14px;padding:18px;border:1.5px solid var(--border);}
+.side-card .slabel{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-muted);margin-bottom:8px;}
+.side-card .sval{font-weight:700;font-size:.95rem;margin-bottom:14px;}
+.side-card .sval:last-child{margin-bottom:0;}
+.side-siblings{background:var(--cream);border-radius:14px;padding:18px;}
+.side-siblings .slabel{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--plum-600);font-weight:700;margin-bottom:10px;}
+.sibling-row{display:flex;align-items:center;gap:9px;padding:8px 0;border-top:1px solid #E9DCE7;text-decoration:none;color:inherit;}
+.sibling-row:hover{color:var(--pink);text-decoration:none;}
+.sibling-row .snum{font-size:.7rem;font-weight:700;flex-shrink:0;}
+.sibling-row .sname{font-size:.88rem;min-width:0;}
+.sibling-row.current .sname{font-weight:700;}
+
+/* ---------------- login ---------------- */
+.login-wrap{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;background:var(--grad-dark);padding:60px 28px;}
+.login-card{background:#fff;border-radius:20px;padding:44px 40px;width:100%;max-width:400px;box-shadow:0 30px 70px rgba(0,0,0,.35);}
+.login-card .lmark{height:40px;margin:0 auto 14px;}
+.login-head{text-align:center;margin-bottom:28px;}
+.login-head h2{font-size:1.3rem;}
+.login-head p{font-size:.85rem;color:var(--ink-muted);margin-top:4px;}
+.login-field{padding:13px 16px;border-radius:10px;border:1.5px solid var(--border);font-size:.95rem;font-family:var(--sans);width:100%;margin-bottom:14px;}
+.login-foot{text-align:center;margin-top:18px;font-size:.85rem;color:var(--ink-muted);}
+
+/* ---------------- dashboard ---------------- */
+.dash-header{background:var(--grad-dark);padding:44px 28px 36px;}
+.dash-header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.dash-header h1{color:#fff;font-size:clamp(1.7rem,2.6vw,2.2rem);}
+.countdown-chip{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:14px 22px;}
+.countdown-chip b{font-family:var(--serif);font-size:1.6rem;font-weight:700;color:#fff;}
+.countdown-chip span{font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.4;}
+.dash-body{max-width:1100px;margin:0 auto;padding:36px 28px 100px;display:grid;grid-template-columns:2fr 1fr;gap:24px;align-items:start;}
+@media (max-width:820px){.dash-body{grid-template-columns:1fr;}}
+.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;}
+@media (max-width:560px){.dash-stats{grid-template-columns:1fr;}}
+.dash-stat-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;}
+.dash-stat-card .dlabel{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px;}
+.dash-stat-card .dval{font-family:var(--serif);font-size:1.6rem;font-weight:700;}
+.dash-modlabel{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;}
+.dash-mod-row{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:#fff;border:1px solid var(--border);text-decoration:none;color:inherit;margin-bottom:8px;}
+.dash-mod-row:hover{border-color:var(--border-hover);text-decoration:none;}
+.dash-mod-row .dbadge{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex-shrink:0;}
+.dash-mod-row .dtitle{flex:1;font-weight:600;font-size:.92rem;color:var(--ink);}
+.dash-mod-row .dstatus{font-size:.78rem;font-weight:700;}
+.dash-mod-row .dscore{font-size:.85rem;color:var(--ink-muted);width:60px;text-align:right;}
+.dash-side{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;position:sticky;top:88px;}
+.dash-side .dslabel{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--good-ink);margin-bottom:18px;}
+.tracker-step{display:flex;gap:14px;}
+.tracker-rail{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.tracker-mark{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;border:2px solid;}
+.tracker-line{flex:1;width:2px;min-height:26px;}
+.tracker-content{padding-bottom:22px;}
+.tracker-content .ttitle{font-weight:700;font-size:.92rem;}
+.tracker-content .tstatus{font-size:.78rem;color:var(--ink-muted);margin-top:2px;}
+
+/* ---------------- footer ---------------- */
+.pccn-footer{margin-top:auto;background:var(--plum-900);padding:36px 28px;color:rgba(255,255,255,.5);font-size:.85rem;}
+.pccn-footer-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.pccn-footer a{color:rgba(255,255,255,.7);}
+
+</style>
 </head>
 <body>
 
@@ -12,7 +477,7 @@
   <div class="pccn-nav-inner">
     <a href="PCCN_Landing_Page.html" class="pccn-brand" style="text-decoration:none;">
       <span class="pccn-brand-mark">P</span>
-      <span class="pccn-brand-word"><b>PCCN</b><span>The definitive course</span></span>
+      <span class="pccn-brand-word"><b style="color:var(--pink);">PCCN</b><span>Certificate Course</span></span>
     </a>
     <div class="pccn-nav-links">
       <a href="PCCN_Landing_Page.html" class="active">Home</a>
@@ -20,20 +485,12 @@
       <a href="PCCN_Online_Sessions.html">Online Sessions</a>
       <a href="PCCN_Faculty.html">Faculty</a>
     </div>
-    <button type="button" class="pccn-nav-toggle" id="navToggleBtn" aria-label="Toggle menu"><span></span><span></span><span></span></button>
     <div class="pccn-nav-actions" id="navAuthArea">
       <a href="PCCN_Login.html" class="pill-outline">Log In</a>
       <a href="PCCN_Register.html" class="btn btn-pink btn-sm">Register</a>
     </div>
   </div>
 </nav>
-<script src="pccn-nav.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="pccn-firebase-config.js"></script>
-<script src="pccn-auth.js"></script>
 
 <main>
 
@@ -42,14 +499,15 @@
     <div class="hero-grid">
       <div>
         <span class="eyebrow badge"><span class="dot"></span>IAP Intensive Care Chapter · Certificate Course</span>
-        <h1><span class="hero-highlight">Pediatric Critical Care Nursing</span></h1>
-        <p class="hero-definitive">The definitive course for care of the critically ill child.</p>
-        <p class="hero-tagline">"Excellence is not a destination, but a journey — built every day at the bedside, with courage, compassion, and skill."</p>
+        <h1><span style="background:rgba(255,255,255,.94);color:#B01A59;padding:2px 14px;border-radius:10px;box-decoration-break:clone;-webkit-box-decoration-break:clone;">Pediatric Critical Care Nursing</span></h1>
+        <div style="font-family:var(--serif);font-size:1.4rem;color:#fff;margin:18px 0 12px;font-weight:500;line-height:1.3;">The definitive course for care of the critically ill child.</div>
+        <div style="font-family:var(--serif);font-style:italic;font-size:1rem;color:rgba(255,255,255,.72);margin-bottom:4px;">&ldquo;Excellence is not a destination, but a journey &mdash; built every day at the bedside, with courage, compassion, and skill.&rdquo;</div>
         <p class="hero-sub">Four pillars, twelve modules, a hands-on workshop and an assessed pathway to certification — built by PICU faculty, for the nurse who is the variable in a 3am crisis.</p>
         <div class="hero-ctas">
-          <a href="https://forms.gle/gBBTLdxTkjCAv7MSA" target="_blank" rel="noopener" class="btn btn-pink">Register Now →</a>
-          <a href="PCCN_Course_Hub.html" class="btn btn-outline-white">Explore Curriculum</a>
+          <a href="https://forms.gle/gBBTLdxTkjCAv7MSA" target="_blank" rel="noopener" class="btn btn-pink">Enroll Now →</a>
+          <a href="PCCN_Register.html" class="btn btn-outline-white">Register · PCCN Portal</a>
         </div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.55);margin:-22px 0 30px;line-height:1.6;"><strong style="color:#F0D9A8;">Enroll</strong> — pay the course fee &amp; secure your seat (Google Form) &nbsp;·&nbsp; <strong style="color:#F0D9A8;">Register</strong> — create your PCCN portal account</div>
         <div class="hero-stats">
           <div class="hero-stat"><b>12</b><span>Modules</span></div>
           <div class="hero-stat"><b>4</b><span>Pillars</span></div>
@@ -58,11 +516,11 @@
         </div>
       </div>
       <div>
-        <a class="hero-video" href="PCCN_Course_Hub.html" aria-label="Explore the full curriculum">
+        <a class="hero-video" href="PCCN_Launch_Video.html" aria-label="Watch the launch video">
           <img src="https://cdn.gamma.app/9zullb661y6pjtu/design-anything/nBXKhe8XJQ2v7WIMMthMx/BHRsE8uEYv0rCZtFaPKub.png" alt="PCCN launch film">
           <div class="hero-video-overlay"></div>
           <div class="hero-play"><div class="hero-play-btn"><div class="tri"></div></div></div>
-          <div class="hero-video-caption">Explore the full 12-module curriculum →</div>
+          <div class="hero-video-caption" style="font-size:.95rem;">▶&nbsp; Watch the launch video below</div>
         </a>
       </div>
     </div>
@@ -80,6 +538,17 @@
       <div class="stats-strip-item"><span class="dot"></span><span><strong>8 hrs</strong> CNE credit on completion</span></div>
     </div>
   </div>
+
+  <!-- PARTNER LOGOS -->
+  <section style="background:#fff;border-top:1px solid #F3EAF1;border-bottom:1px solid #F3EAF1;padding:34px 28px;">
+    <div style="max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:56px;flex-wrap:wrap;">
+      <div style="font-size:.72rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#8A7796;flex-basis:100%;text-align:center;margin-bottom:4px;">Brought to you by</div>
+      <img src="assets/logos/iap.png" alt="Indian Academy of Pediatrics" style="height:clamp(46px,9vw,74px);width:auto;" title="Indian Academy of Pediatrics">
+      <img src="assets/logos/iap-icc.png" alt="IAP Intensive Care Chapter" style="height:clamp(40px,8vw,64px);width:auto;" title="IAP Intensive Care Chapter">
+      <img src="assets/logos/stepin.png" alt="STEP IN — Structured Training and Empowerment Program for pediatric Intensive care Nurses" style="height:clamp(50px,10vw,80px);width:auto;" title="STEP IN">
+      <img src="assets/logos/pccncc.png" alt="PCCNCC — Pediatric Critical Care Nursing Coordination Committee" style="height:clamp(50px,10vw,80px);width:auto;" title="PCCNCC">
+    </div>
+  </section>
 
   <!-- FOUR PILLARS -->
   <section class="pccn-section">
@@ -108,7 +577,7 @@
     <div class="sessions-banner">
       <div>
         <span class="eyebrow on-dark">Live online sessions</span>
-        <h3>Two live sessions, 7 hours — a refresher before the hands-on workshop</h3>
+        <h3>2 live refresher sessions prior to the hands-on workshop</h3>
         <p>Interactive webinars covering assessment fundamentals, arrhythmias, ventilation and a live gamified knowledge check — closing with the Kahoot assessment.</p>
       </div>
       <a href="PCCN_Online_Sessions.html" class="btn btn-white">View schedule →</a>
@@ -143,6 +612,7 @@
         <div class="pull-quote">"Every child who deteriorates at 3am depends on the nurse at the bedside — she is the variable that changes the outcome."</div>
         <div class="faculty-teaser-names">
           <div><strong style="color:var(--ink);">Dr J. Ebor Jacob</strong> — Chairperson 2026</div>
+          <div><strong style="color:var(--ink);">Dr Vinayak Patki</strong> — Chairperson Elect 2027</div>
           <div><strong style="color:var(--ink);">Dr Arun Bansal</strong> — Chairperson 2025</div>
         </div>
       </div>
@@ -165,20 +635,16 @@
       </div>
       <div class="fee-panel">
         <div class="flabel">Course fee</div>
-        <div style="display:flex;gap:28px;margin-bottom:6px;">
-          <div>
-            <div class="note" style="margin:0 0 2px;">IDPCCN Fellows</div>
-            <div class="amount" style="font-size:2rem;color:var(--pink-dark);">₹1,000</div>
-          </div>
-          <div>
-            <div class="note" style="margin:0 0 2px;">All other nurses</div>
-            <div class="amount" style="font-size:2rem;">₹1,500</div>
-          </div>
+        <div style="display:flex;gap:30px;align-items:flex-end;flex-wrap:wrap;margin-bottom:4px;">
+          <div><div style="font-size:.78rem;font-weight:700;color:var(--ink-muted);margin-bottom:4px;">IDPCCN Fellows</div><div class="amount">₹1,000</div></div>
+          <div><div style="font-size:.78rem;font-weight:700;color:var(--ink-muted);margin-bottom:4px;">All other nurses</div><div class="amount">₹1,500</div></div>
         </div>
         <div class="note">(Not Inclusive of Hands On Workshop)</div>
+        <div style="display:inline-block;background:#FBF1E4;color:#8A5410;font-weight:700;font-size:.82rem;border-radius:999px;padding:6px 14px;margin:4px 0 8px;">⏳ Last 2 seats left in Batch 1</div>
         <div class="desc">Includes digital manual, lifetime access to all lecture videos, bedside ready reckoner and hands-on kit. PCCN Certificate on completion — counts toward the IDPCCN Fellowship.</div>
-        <a href="https://forms.gle/gBBTLdxTkjCAv7MSA" target="_blank" rel="noopener" class="btn btn-pink btn-block">Register Now →</a>
-        <div style="font-size:.72rem;color:var(--ink-muted);line-height:1.55;margin-top:14px;">Email the payment screenshot or attach it to the Google Form — <strong style="color:var(--ink-body);">mandatory to confirm your seat</strong>. Bank: Federal Bank · IFSC FDRL0002445. Queries: 9986634300 / 9008566112.</div>
+        <a href="https://forms.gle/gBBTLdxTkjCAv7MSA" target="_blank" rel="noopener" class="btn btn-pink btn-block">Enroll Now → <span style="font-weight:400;font-size:.8rem;">(pay &amp; secure your seat)</span></a>
+        <a href="PCCN_Register.html" class="btn btn-block" style="margin-top:10px;background:#fff;border:1.5px solid var(--border-hover);color:var(--ink);">Register → <span style="font-weight:400;font-size:.8rem;">(join the PCCN portal)</span></a>
+        <div style="font-size:.78rem;color:var(--ink-muted);margin-top:14px;line-height:1.6;">Email the payment screenshot or attach it to the Google Form — <strong>mandatory to confirm your seat</strong>. Bank: Federal Bank · IFSC FDRL0002445. Queries: 9986634300 / 9008566112.</div>
       </div>
     </div>
   </section>
@@ -192,7 +658,1358 @@
   </div>
 </footer>
 
-<script src="pccn-modules-data.js"></script>
+<script>
+// PCCN Certificate Course — content for all 12 modules.
+// Pillars: 1 Assessment & Acute Stabilisation (teal) · 2 Life Support & Interventions (magenta)
+//          3 Specialised Systems (amber) · 4 Safety & Professionalism (blue)
+
+var PCCN_PILLARS = {
+  1: { name: 'Assessment & Acute Stabilisation', color: '#1B9E7E', tint: '#EBF8F4', deep: '#157A62' },
+  2: { name: 'Life Support & Interventions', color: '#D4327A', tint: '#FBEAF2', deep: '#B0205E' },
+  3: { name: 'Specialised Systems', color: '#D4882A', tint: '#FBF1E4', deep: '#B0661A' },
+  4: { name: 'Safety & Professionalism', color: '#3AABCC', tint: '#E2F2F8', deep: '#2189A8' }
+};
+
+var PCCN_MODULES = [
+  {
+    n: 1, pillar: 1,
+    title: 'Systematic Assessment<br>& Initial Recognition',
+    short: 'Initial Assessment',
+    subtitle: 'From the doorstep to the bedside — PAT, ABCDE and the DIRECT approach to identifying and managing the sick child.',
+    framework: 'DIRECT · PAT · ABCDE',
+    tools: 'PEWS · SAMPLE · EII',
+    duration: '1 hr live + 2–3 hrs self-study',
+    pat: true,
+    sessions: [
+      { tag: 'Session A · Live', title: 'Live Webinar', body: 'Faculty-led case walkthroughs with a 3-month-old in respiratory distress, followed by panel discussion.', meta: '1 hr · Attendance mandatory' },
+      { tag: 'Session B · Recorded', title: 'Recorded Lectures', body: 'Short focused videos — PAT, ABCDE walkthrough, PEWS scoring, SAMPLE history. Watch at your own pace.', meta: '2–3 hrs · Self-paced' },
+      { tag: 'Session C · Simulation', title: 'Virtual Simulation', body: 'Scenario drills — identify the sick child, escalation drills, code-blue breakout, ISBAR handover practice.', meta: '45 min · Scenario-based' }
+    ],
+    strip: {
+      label: 'The DIRECT Approach — your systematic structure for every sick child',
+      title: 'Detect · Intervene · Reassess · Effective Communication · Transport',
+      items: [
+        { letter: 'D', name: 'Detection', detail: 'PAT · ABCDE<br>PEWS scoring', color: '#1B9E7E' },
+        { letter: 'I', name: 'Intervention', detail: 'Immediate life-saving<br>action when detected', color: '#D4327A' },
+        { letter: 'R', name: 'Reassessment', detail: 'Ongoing EII cycle<br>Track response', color: '#3AABCC' },
+        { letter: 'EC', name: 'Effective Communication', detail: 'ISBAR · Teamwork<br>70% errors = poor comm.', color: '#D4882A' },
+        { letter: 'T', name: 'Transport', detail: 'Weigh benefits vs risks<br>Identify right centre', color: '#9B6BB5' }
+      ],
+      footnote: 'At any point during Detection — if a life-threatening problem is found → <strong style="color:rgba(255,255,255,0.65)">immediate Intervention</strong> before completing the assessment. Reassessment is ongoing, not a single step.'
+    },
+    accordionLabel: 'Step 2 · Primary Assessment — ABCDE (hands-on, systematic)',
+    accordion: [
+      { letter: 'A', title: 'Airway', hint: 'Maintainable? Open? Obstructed?', color: '#1B9E7E',
+        bullets: ['Look for chest/abdomen movement — is there normal rise?', 'Listen for airflow — normal vs gurgling, stridor, silence', '<strong>Maintainable:</strong> head tilt–chin lift (or jaw thrust in spinal injury)', '<strong>Secretions:</strong> suction — clear the airway before continuing', '<strong>Adjuncts:</strong> oropharyngeal (absent gag) or nasopharyngeal (semi-conscious) airway', '<strong>Non-maintainable:</strong> advanced airway — BVM, LMA, or RSI intubation'],
+        callout: '<strong>SOAPME before intubation:</strong> Suction · Oxygen · Airway adjuncts · Positioning (tragus–manubrium in line) · Medications (ketamine + midazolam/fentanyl + rocuronium) · Equipment &amp; Monitoring (SpO₂, ECG, EtCO₂)' },
+      { letter: 'B', title: 'Breathing — 5-point assessment', hint: 'Distress vs Failure?', color: '#D4327A',
+        bullets: ['<strong>1. Respiratory rate</strong> — age-appropriate? &gt;60/min or &lt;10/min in any child is dangerous', '<strong>2. Air entry</strong> — equal bilateral? Decreased = localised pathology (pneumonia, effusion)', '<strong>3. Breath sounds</strong> — stridor (upper airway) · wheeze (lower airway) · crepitations/grunting (parenchymal)', '<strong>4. Work of breathing</strong> — ala nasi, subcostal/intercostal recessions, see-saw breathing, head bobbing', '<strong>5. SpO₂</strong> — &lt;94% in room air = supplemental O₂ required; target 95–98%'],
+        compare: { cols: [
+          { label: 'Respiratory Distress', color: '#D4882A', bg: '#FBF1E4', body: '↑ Respiratory rate<br>↑ Work of breathing<br>Retractions, ala nasi<br>SpO₂ may be normal<br><em>Child is compensating</em>' },
+          { label: 'Respiratory Failure ⚠', color: '#D4327A', bg: '#FAE6EF', body: '↓ Effort, silent chest<br>See-saw breathing<br>Head bobbing, grunting<br>SpO₂ falling despite effort<br><em>Escalate immediately</em>' }
+        ] } },
+      { letter: 'C', title: 'Circulation — 5-point assessment', hint: 'Compensated vs hypotensive shock?', color: '#D4882A',
+        bullets: ['<strong>1. Pulse rate &amp; rhythm</strong> — HR &lt;60 at any age is ominous', '<strong>2. Pulse volume</strong> — central vs peripheral difference (carotid vs radial) = first sign of shock', '<strong>3. Capillary refill time</strong> — press sternum 5 sec; normal ≤2 sec; &gt;2 sec = poor perfusion', '<strong>4. Skin</strong> — cool peripheries, mottling, colour change = early shock', '<strong>5. Blood pressure</strong> — minimum SBP rule 60–70–80–90 by age; MAP = 1.5 × age + 40'],
+        compare: { cols: [
+          { label: 'Compensated Shock', color: '#1B9E7E', bg: '#E9F6F2', body: 'Normal BP<br>Tachycardia<br>CRT &gt;2s · cold peripheries<br>Treat aggressively — may deteriorate fast' },
+          { label: 'Decompensating →', color: '#D4882A', bg: '#FCF3E8', body: 'BP falling<br>Worsening tachycardia<br>Weak peripheral pulses<br>Altered mental status' },
+          { label: 'Hypotensive Shock ⚠', color: '#D4327A', bg: '#FAE6EF', body: 'Low BP<br>Absent peripheral pulses<br>Metabolic acidosis<br>Fluid + inotropes now' }
+        ], foot: 'Minimum SBP: 60 (neonate) → 70 → 80 → 90 (adolescent) · MAP = 1.5 × age + 40' } },
+      { letter: 'D', title: 'Disability — neurological status', hint: 'AVPU · GCS · pupils · glucose', color: '#9B6BB5',
+        bullets: ['<strong>AVPU:</strong> Alert · Voice · Pain · Unresponsive — P and U require emergency escalation', '<strong>GCS:</strong> eyes, verbal, motor — correlates with severity and duration of hypoxia', '<strong>Pupils:</strong> size, equality, reaction — unequal or dilated pupils is ominous', '<strong>Seizures:</strong> check for active seizure or post-ictal state', '<strong>Blood glucose:</strong> check every drowsy child — &lt;60 mg/dL needs immediate treatment'],
+        callout: 'Disability signs are indicators of <em>brain perfusion</em> — they reflect the downstream effects of hypoxia and circulatory compromise. Treat the cause, not just the score.' },
+      { letter: 'E', title: 'Exposure — full body inspection', hint: 'Do not miss what is hidden', color: '#3AABCC',
+        bullets: ['Expose completely — remove all clothing and covers', '<strong>Trauma:</strong> bruising, bleeding, burns — document location and pattern', '<strong>Rashes:</strong> petechiae, purpura (HSP, ITP, meningococcaemia), urticaria (anaphylaxis)', '<strong>Temperature:</strong> prevent hypothermia — re-cover promptly after exposure', 'Note any non-accidental injury pattern — safeguarding awareness'],
+        callout: 'Exposure is often rushed or skipped under time pressure — a missed petechial rash or abdominal compartment can change the diagnosis entirely.' }
+    ],
+    panel: {
+      label: 'PEWS · Paediatric Early Warning Score — ward-based deterioration detection',
+      intro: 'PEWS is a simple bedside scoring system that gives nurses an <strong style="color:#1A1030">objective language</strong> to communicate concern to doctors — <em>"PEWS increased from 2 to 5"</em> carries far more weight than "the child doesn\'t look right." It captures subtle deterioration before obvious collapse.',
+      cards: [
+        { label: 'Behaviour / Neurology', color: '#1B9E7E', body: 'Level of consciousness<br>Responsiveness to environment<br>Agitation or irritability<br>Scored 0–3' },
+        { label: 'Cardiovascular', color: '#D4882A', body: 'Heart rate<br>Perfusion / skin colour<br>Capillary refill time<br>Scored 0–3' },
+        { label: 'Respiratory', color: '#D4327A', body: 'Respiratory rate<br>Effort / work of breathing<br>Oxygen requirement<br>Scored 0–3' }
+      ],
+      scale: [
+        { label: 'Score 0–1', bg: '#EBF8F4', fg: '#1B9E7E', body: 'Routine monitoring. Normal observation frequency.' },
+        { label: 'Score 2–3', bg: '#FBF1E4', fg: '#D4882A', body: 'Increased monitoring. Inform nurse-in-charge.' },
+        { label: 'Score 4–5', bg: '#FAE6EF', fg: '#D4327A', body: 'Urgent senior review. Rapid response activation.' },
+        { label: 'Score ≥6', bg: '#2C1654', fg: '#C4A8D8', body: 'PICU transfer. Consider intubation. Call now.' }
+      ],
+      foot: '<strong style="color:#1A1030">ISBAR escalation:</strong> "PEWS increased from 2 to 5" is far more powerful than "the child doesn\'t look right." Parental concern also counts — a mother saying <em>"something is wrong"</em> should trigger reassessment even with a low score.'
+    },
+    caseStudy: {
+      quote: '"3-month-old infant — progressive abdominal distension ×20 days, cough ×1 week, intermittent fever ×1 week, irritable cry and decreased oral intake ×5 days. On arrival — irritable, febrile."',
+      cards: [
+        { label: 'A · Airway', color: '#1B9E7E', body: '<strong>Maintainable</strong><br>No stridor<br>No secretions' },
+        { label: 'B · Breathing', color: '#D4327A', body: '<strong>RR 67/min</strong><br>Subcostal retractions +<br>B/L AE equal, crepitations +<br><strong>SpO₂ 96% on RA</strong>' },
+        { label: 'C · Circulation', color: '#D4882A', body: '<strong>HR 165/min</strong><br>Peripheries cold<br>Pulses palpable<br><strong>CRT 4 sec</strong><br>NIBP 72/50 mmHg' }
+      ],
+      analysis: 'Respiratory distress — parenchymal (crepitations, high RR, retractions). Compensated septic shock (cold peripheries, CRT 4s, tachycardia, borderline BP). Underlying: metabolic liver disease.'
+    },
+    grid: {
+      label: 'Step 3 · Secondary Assessment — SAMPLE history',
+      intro: 'After the primary survey is complete and the child is stable — gather a focused history using SAMPLE.',
+      items: [
+        { key: 'S — Signs &amp; Symptoms', color: '#1B9E7E', body: 'Presenting complaint and onset' },
+        { key: 'A — Allergies', color: '#9B6BB5', body: 'Drugs, foods, environment' },
+        { key: 'M — Medications', color: '#D4327A', body: 'Current drugs, doses, recent changes' },
+        { key: 'P — Past History', color: '#D4882A', body: 'Previous illness, hospitalisations, surgery' },
+        { key: 'L — Last Meal', color: '#2189A8', body: 'Time and content — important for RSI' },
+        { key: 'E — Events Leading To', color: '#8B7FA0', body: 'What happened just before presentation?' }
+      ],
+      foot: '<strong style="color:#1A1030">Investigations:</strong> blood glucose, CBC, CRP, electrolytes, liver/kidney function, blood gas, lactate. Add CXR (respiratory), ECG/ECHO (cardiac), USG (UTI/abdomen) as indicated.'
+    },
+    objectives: [
+      'Apply the Paediatric Assessment Triangle within 30–60 seconds — no touch, no stethoscope',
+      'Distinguish a life-threatening emergency from a non-life-threatening problem at the doorstep',
+      'Perform a 5-point breathing assessment including distress vs failure differentiation',
+      'Perform a 5-point circulation assessment and classify compensated vs hypotensive shock',
+      'Use AVPU, pupils and blood glucose for rapid neurological assessment',
+      'Score PEWS across three domains and trigger escalation at the correct threshold',
+      'Complete a SAMPLE history and identify the relevant investigations to order',
+      'Follow the DIRECT approach as a complete framework for the sick child'
+    ],
+    videoTopics: ['1. PAT', '2. ABCDE', '3. PEWS', '4. SAMPLE', '5. Live Case'],
+    quiz: [
+      { answer: 1, text: 'During a Paediatric Assessment Triangle (PAT), which three components are assessed without touching the child?',
+        options: ['Airway, Breathing, Circulation', 'Appearance, Work of Breathing, Circulation to Skin', 'Tone, Pulse Rate, Respiratory Rate', 'AVPU, SpO₂, Capillary Refill'],
+        why: 'The PAT uses Appearance, Work of Breathing and Circulation to the Skin — a visual, no-touch, no-stethoscope assessment done within 30–60 seconds at the doorstep.' },
+      { answer: 1, text: 'A 2-year-old has RR 68/min, subcostal retractions, bilateral crepitations and SpO₂ 92% on room air. The most appropriate immediate action is:',
+        options: ['Obtain IV access and send blood cultures', 'Apply supplemental O₂ via non-rebreathing mask targeting SpO₂ 95–98%', 'Perform immediate RSI intubation', 'Request a chest X-ray before starting oxygen'],
+        why: 'SpO₂ below 94% requires immediate supplemental oxygen. Investigations and imaging follow stabilisation — oxygen first.' },
+      { answer: 2, text: 'In the DIRECT approach, what does Reassessment (R) specifically refer to?',
+        options: ['Repeating the PAT at the doorstep', 'Reviewing investigation results before any intervention', 'Ongoing EII cycle — tracking progression and response to intervention, detecting new problems', 'Re-doing the SAMPLE history after stabilisation'],
+        why: 'Reassessment is an ongoing Evaluate–Identify–Intervene cycle: continuous, tracking response to treatment and detecting new problems.' },
+      { answer: 2, text: 'A child has HR 180/min, CRT 4 seconds, cold peripheries and BP 78/48 mmHg. This best describes:',
+        options: ['Compensated shock — BP is still within normal range', 'Respiratory failure — a high heart rate indicates hypoxia', 'Hypotensive (decompensated) shock — requires aggressive fluid resuscitation and inotropes', 'Normal haemodynamics for a febrile child'],
+        why: 'Low BP with altered perfusion and tachycardia is hypotensive (decompensated) shock, requiring aggressive fluid resuscitation and inotrope support.' }
+    ]
+  },
+
+  {
+    n: 2, pillar: 1,
+    title: 'Respiratory Support<br>& Oxygen Therapy',
+    short: 'Respiratory Support',
+    subtitle: 'Recognising the child who is failing to breathe — and escalating oxygen delivery from nasal prongs to non-invasive ventilation.',
+    framework: 'Escalation ladder · FiO₂ targets',
+    tools: 'SpO₂ · ABG · HFNC · CPAP',
+    duration: '1 hr live + 2 hrs self-study',
+    sessions: [
+      { tag: 'Session A · Live', title: 'Live Webinar', body: 'Escalating a bronchiolitic infant from prongs to HFNC to CPAP — what to change, when, and what to watch.', meta: '1 hr · Attendance mandatory' },
+      { tag: 'Session B · Recorded', title: 'Recorded Lectures', body: 'Oxygen delivery devices, FiO₂ ranges, humidification, HFNC circuit setup, NIV interface fitting.', meta: '2 hrs · Self-paced' },
+      { tag: 'Session C · Simulation', title: 'Virtual Simulation', body: 'Device selection drills — pick the right interface for four deteriorating children and defend the choice.', meta: '45 min · Scenario-based' }
+    ],
+    strip: {
+      label: 'The Oxygen Escalation Ladder — step up when the child does not respond',
+      title: 'Prongs → Face mask → NRBM → HFNC → CPAP/NIV → Invasive ventilation',
+      items: [
+        { letter: '1', name: 'Nasal prongs', detail: '0.5–4 L/min<br>FiO₂ 24–40%', color: '#1B9E7E' },
+        { letter: '2', name: 'Face mask', detail: '5–10 L/min<br>FiO₂ 40–60%', color: '#3AABCC' },
+        { letter: '3', name: 'Non-rebreathing', detail: '10–15 L/min<br>FiO₂ 90–100%', color: '#D4882A' },
+        { letter: '4', name: 'HFNC', detail: '1–2 L/kg/min<br>Heated, humidified', color: '#D4327A' },
+        { letter: '5', name: 'CPAP / NIV', detail: 'Recruits alveoli<br>Reduces work of breathing', color: '#9B6BB5' }
+      ],
+      footnote: 'Escalate on <strong style="color:rgba(255,255,255,0.65)">work of breathing and trend</strong>, not on SpO₂ alone. A child maintaining saturation at the cost of exhausting effort is failing — and will fail suddenly.'
+    },
+    accordionLabel: 'Core content · Device by device',
+    accordion: [
+      { letter: '1', title: 'Low-flow oxygen — prongs and masks', hint: 'First-line, awake, mild distress', color: '#1B9E7E',
+        bullets: ['Nasal prongs: 0.5–2 L/min in infants, up to 4 L/min in older children', 'Above 2 L/min in infants, dry gas causes mucosal drying and epistaxis — humidify', 'Simple face mask needs a minimum 5 L/min to flush exhaled CO₂ from the mask', 'FiO₂ delivered is variable — it depends on the child\'s inspiratory flow and mouth breathing', 'Check prong position and nares hourly; secure without pressure on the philtrum'],
+        callout: 'Low-flow devices give an <em>unpredictable</em> FiO₂. If you cannot say what FiO₂ the child is receiving, you cannot judge whether they are improving — move to a controlled device.' },
+      { letter: '2', title: 'Non-rebreathing mask', hint: 'High FiO₂ for the acutely hypoxic child', color: '#D4882A',
+        bullets: ['Requires 10–15 L/min to keep the reservoir bag inflated at all times', 'Inflate the reservoir bag fully before applying to the child', 'Delivers 90–100% FiO₂ — the highest achievable without positive pressure', 'A collapsing bag on inspiration means flow is too low — increase it immediately', 'Not a long-term device; it does not reduce work of breathing'],
+        callout: 'The non-rebreathing mask treats <em>hypoxaemia</em>. It does nothing for <em>hypercapnia</em> or for the exhausted child — those need positive pressure.' },
+      { letter: '3', title: 'High-flow nasal cannula (HFNC)', hint: 'Heated, humidified, flow-dependent PEEP', color: '#D4327A',
+        bullets: ['Flow 1–2 L/kg/min for the first 10 kg, then titrate; max per unit protocol', 'Gas is heated to 34–37 °C and fully humidified — comfort and mucociliary function preserved', 'Generates a modest PEEP effect and washes out nasopharyngeal dead space', 'FiO₂ set independently of flow — you know exactly what you are delivering', 'Prong should occlude no more than half the nostril diameter — leak is intentional'],
+        compare: { cols: [
+          { label: 'HFNC responding', color: '#1B9E7E', bg: '#E9F6F2', body: 'RR falling within 1–2 hrs<br>Retractions reducing<br>FiO₂ requirement falling<br>Child settled, feeding' },
+          { label: 'HFNC failing ⚠', color: '#D4327A', bg: '#FAE6EF', body: 'RR unchanged or rising<br>Persistent retractions<br>FiO₂ climbing<br>Rising CO₂, drowsiness<br><em>Escalate to NIV / intubation</em>' }
+        ] } },
+      { letter: '4', title: 'CPAP and non-invasive ventilation', hint: 'Positive pressure without a tube', color: '#9B6BB5',
+        bullets: ['CPAP delivers a single continuous pressure — recruits alveoli, improves oxygenation', 'BiPAP adds an inspiratory pressure — helps ventilation and CO₂ clearance', 'Interface fit is the whole intervention: correct size, minimal leak, no pressure necrosis', 'Inspect nasal bridge, columella and cheeks every 2–4 hrs; use protective dressings', 'Contraindicated in a depressed conscious level, vomiting, or facial trauma'],
+        callout: 'NIV failure is a <em>clinical</em> judgement made early, not a blood gas made late. Falling conscious level, rising CO₂ or persistent effort after 1–2 hrs means prepare for intubation.' },
+      { letter: '5', title: 'Nursing the child on respiratory support', hint: 'What actually changes the outcome', color: '#3AABCC',
+        bullets: ['Position: head up, nurse in the position of comfort — do not force supine', 'Suction only when clinically indicated, not by the clock', 'Feeding: NG feeds are usually safe on HFNC; withhold if effort is severe or gut is not working', 'Document RR, effort score, SpO₂, FiO₂ and flow together — a number without its FiO₂ is meaningless', 'Family presence reduces agitation, and agitation increases oxygen consumption'],
+        callout: 'The single most useful chart entry you make is <strong>the trend</strong>: RR and FiO₂ side by side over hours. It predicts failure earlier than any single reading.' }
+    ],
+    panel: {
+      label: 'Reading the blood gas — the four-step method',
+      intro: 'You do not need to be the person who changes the ventilator to be the person who spots the problem. Read every gas in the same order, every time.',
+      cards: [
+        { label: 'Step 1 · pH', color: '#1B9E7E', body: 'Acidotic &lt;7.35<br>Alkalotic &gt;7.45<br>Normal 7.35–7.45<br><em>Is there a problem?</em>' },
+        { label: 'Step 2 · PaCO₂', color: '#D4327A', body: 'Normal 35–45 mmHg<br>High = hypoventilation<br>Low = hyperventilation<br><em>Is it respiratory?</em>' },
+        { label: 'Step 3 · HCO₃⁻ / Lactate', color: '#D4882A', body: 'Normal 22–26 mmol/L<br>Low = metabolic acidosis<br>Lactate &gt;2 = perfusion<br><em>Is it metabolic?</em>' }
+      ],
+      scale: [
+        { label: 'Respiratory acidosis', bg: '#FAE6EF', fg: '#D4327A', body: '↓ pH with ↑ CO₂. Ventilation is inadequate.' },
+        { label: 'Metabolic acidosis', bg: '#FBF1E4', fg: '#D4882A', body: '↓ pH with ↓ HCO₃⁻. Think perfusion, sepsis, DKA.' },
+        { label: 'Compensating', bg: '#EBF8F4', fg: '#1B9E7E', body: 'pH near normal, both values shifted the same way.' },
+        { label: 'Mixed picture', bg: '#2C1654', fg: '#C4A8D8', body: 'Both deranged against each other — sickest group.' }
+      ],
+      foot: '<strong style="color:#1A1030">Step 4 · Oxygenation:</strong> read PaO₂ against the FiO₂ the child was receiving. A PaO₂ of 80 mmHg on room air is normal; the same value on 100% oxygen is severe respiratory failure.'
+    },
+    caseStudy: {
+      quote: '"7-month-old, day 4 of coryza — poor feeding for 24 hrs, working hard to breathe. Currently on nasal prongs 2 L/min. Called to review because the nurse feels she is tiring."',
+      cards: [
+        { label: 'A · Airway', color: '#1B9E7E', body: '<strong>Patent</strong><br>Nasal secretions +<br>Cleared with suction' },
+        { label: 'B · Breathing', color: '#D4327A', body: '<strong>RR 72/min</strong><br>Marked subcostal recession<br>Widespread wheeze + creps<br><strong>SpO₂ 90% on 2 L</strong>' },
+        { label: 'C · Circulation', color: '#D4882A', body: '<strong>HR 172/min</strong><br>CRT 2 sec<br>Warm peripheries<br>BP 84/52 mmHg' }
+      ],
+      analysis: 'Bronchiolitis with impending respiratory failure — the effort, not the saturation, is the emergency. Escalate directly to HFNC at 2 L/kg/min with FiO₂ titrated to SpO₂ 92–96%, NG tube for decompression, and reassess RR and effort at 1 hr. Prepare for CPAP.'
+    },
+    grid: {
+      label: 'Quick reference · Device selection at a glance',
+      intro: 'Match the device to the problem, not to what is nearest to the bedside.',
+      items: [
+        { key: 'Mild hypoxaemia, comfortable', color: '#1B9E7E', body: 'Nasal prongs 0.5–2 L/min' },
+        { key: 'Moderate hypoxaemia', color: '#3AABCC', body: 'Face mask 5–10 L/min' },
+        { key: 'Severe acute hypoxaemia', color: '#D4882A', body: 'Non-rebreathing mask 10–15 L/min' },
+        { key: 'Increased work of breathing', color: '#D4327A', body: 'HFNC 1–2 L/kg/min' },
+        { key: 'Alveolar collapse, poor oxygenation', color: '#9B6BB5', body: 'CPAP 5–8 cmH₂O' },
+        { key: 'Hypercapnia with effort', color: '#2189A8', body: 'BiPAP — or prepare for intubation' }
+      ],
+      foot: '<strong style="color:#1A1030">Never step down two rungs at once</strong> and never wean device and FiO₂ simultaneously — change one variable, then reassess.'
+    },
+    objectives: [
+      'Differentiate respiratory distress from respiratory failure at the bedside',
+      'Select the appropriate oxygen delivery device for a given severity of hypoxaemia',
+      'State the flow range and approximate FiO₂ delivered by each device',
+      'Set up and monitor a child on high-flow nasal cannula, including flow by weight',
+      'Recognise the clinical signs of HFNC and NIV failure early',
+      'Prevent pressure injury from non-invasive interfaces',
+      'Interpret a basic arterial blood gas using the four-step method',
+      'Document respiratory observations so that trend, not snapshot, drives escalation'
+    ],
+    videoTopics: ['1. Devices', '2. HFNC', '3. NIV', '4. ABG', '5. Live Case'],
+    quiz: [
+      { answer: 2, text: 'A 6-kg infant is started on high-flow nasal cannula. Which flow rate is appropriate?',
+        options: ['2 L/min', '4 L/min', '6–12 L/min', '25 L/min'],
+        why: 'HFNC is dosed at 1–2 L/kg/min. For a 6-kg infant that is 6–12 L/min.' },
+      { answer: 1, text: 'A child on a non-rebreathing mask has a reservoir bag that collapses on each breath. You should:',
+        options: ['Reduce the flow to prevent barotrauma', 'Increase the flow rate until the bag stays inflated', 'Change to nasal prongs', 'Remove the reservoir bag'],
+        why: 'A collapsing reservoir means flow is below the child\'s inspiratory demand. Increase the flow (usually 10–15 L/min) so the bag remains inflated throughout the breath.' },
+      { answer: 2, text: 'Which finding most strongly suggests HFNC failure at the 2-hour review?',
+        options: ['SpO₂ 94% on FiO₂ 0.35', 'Heart rate down from 175 to 150', 'Unchanged respiratory rate with rising FiO₂ requirement and new drowsiness', 'Infant now tolerating NG feeds'],
+        why: 'Failure is a clinical trend: no fall in respiratory rate, escalating FiO₂ and a falling conscious level indicate the need to escalate to NIV or intubation.' },
+      { answer: 0, text: 'pH 7.21, PaCO₂ 71 mmHg, HCO₃⁻ 25 mmol/L in a tiring asthmatic child indicates:',
+        options: ['Acute respiratory acidosis — inadequate ventilation', 'Metabolic acidosis from dehydration', 'Respiratory alkalosis from hyperventilation', 'A normally compensated gas'],
+        why: 'Low pH with a high PaCO₂ and a near-normal bicarbonate is an acute respiratory acidosis — the child is no longer ventilating adequately.' }
+    ]
+  },
+
+  {
+    n: 3, pillar: 1,
+    title: 'Shock &<br>Haemodynamic Support',
+    short: 'Shock & Hemodynamics',
+    subtitle: 'Recognising shock before the blood pressure falls — fluid resuscitation, inotropes and the first golden hour.',
+    framework: 'Golden hour bundle',
+    tools: 'Lactate · CRT · ScvO₂ · Inotropes',
+    duration: '1 hr live + 2–3 hrs self-study',
+    sessions: [
+      { tag: 'Session A · Live', title: 'Live Webinar', body: 'The septic shock golden hour, minute by minute — who does what, and what delays kill.', meta: '1 hr · Attendance mandatory' },
+      { tag: 'Session B · Recorded', title: 'Recorded Lectures', body: 'Shock types, fluid boluses by weight, inotrope preparation and double-checking, arterial line care.', meta: '2–3 hrs · Self-paced' },
+      { tag: 'Session C · Simulation', title: 'Virtual Simulation', body: 'Fluid-refractory shock drill — recognise, escalate, prepare adrenaline, hand over with ISBAR.', meta: '45 min · Scenario-based' }
+    ],
+    strip: {
+      label: 'The Golden Hour Bundle — every element within 60 minutes of recognition',
+      title: 'Recognise · Access · Fluids · Antibiotics · Inotropes · Reassess',
+      items: [
+        { letter: '0', name: 'Recognise', detail: 'PAT + perfusion<br>Lactate, glucose', color: '#1B9E7E' },
+        { letter: '5', name: 'Access', detail: 'Two large IVs<br>or IO within 5 min', color: '#3AABCC' },
+        { letter: '15', name: 'Fluids', detail: '10–20 mL/kg boluses<br>Reassess after each', color: '#D4882A' },
+        { letter: '30', name: 'Antibiotics', detail: 'Broad spectrum<br>after cultures', color: '#D4327A' },
+        { letter: '60', name: 'Inotropes', detail: 'If fluid-refractory<br>Adrenaline peripherally', color: '#9B6BB5' }
+      ],
+      footnote: 'Delay to antibiotics and delay to inotropes are both independently associated with mortality. <strong style="color:rgba(255,255,255,0.65)">Do not wait for a central line</strong> to start adrenaline — dilute peripheral infusion is acceptable in the first hour.'
+    },
+    accordionLabel: 'Core content · Recognition to resuscitation',
+    accordion: [
+      { letter: '1', title: 'Recognising shock early', hint: 'Blood pressure is the last thing to change', color: '#1B9E7E',
+        bullets: ['Shock is inadequate <em>tissue perfusion</em> — not a blood pressure number', 'Earliest signs: tachycardia, cool peripheries, prolonged CRT, narrowing pulse volume', 'Altered mental state and reduced urine output signal established organ hypoperfusion', 'Children maintain BP through vasoconstriction until 30–40% volume loss — then crash fast', 'Lactate &gt;2 mmol/L supports the diagnosis; a normal lactate does not exclude it'],
+        callout: 'In paediatrics, <strong>hypotension is a late and pre-terminal finding</strong>. If you wait for the blood pressure to fall before escalating, you have waited too long.' },
+      { letter: '2', title: 'The four types of shock', hint: 'The type dictates the treatment', color: '#D4327A',
+        bullets: ['<strong>Hypovolaemic</strong> — gastroenteritis, haemorrhage, burns. Most common in children. Fluids.', '<strong>Distributive</strong> — sepsis, anaphylaxis, spinal. Vasodilated, warm or cold. Fluids + vasoactives.', '<strong>Cardiogenic</strong> — myocarditis, arrhythmia, congenital lesion. Fluids may worsen. Small boluses, inotropes.', '<strong>Obstructive</strong> — tamponade, tension pneumothorax, PE. Fluids will not fix it; relieve the obstruction.', 'Sepsis may present as <em>cold shock</em> (vasoconstricted, low output) or <em>warm shock</em> (vasodilated, bounding pulses)'],
+        compare: { cols: [
+          { label: 'Cold shock', color: '#2189A8', bg: '#E2F2F8', body: 'Cool peripheries<br>CRT &gt;2s, mottled<br>Narrow pulse pressure<br>Low cardiac output<br><em>Adrenaline</em>' },
+          { label: 'Warm shock', color: '#D4327A', bg: '#FAE6EF', body: 'Warm, flushed<br>Bounding pulses<br>Wide pulse pressure<br>Low systemic resistance<br><em>Noradrenaline</em>' }
+        ] } },
+      { letter: '3', title: 'Fluid resuscitation', hint: 'Bolus, reassess, repeat — or stop', color: '#D4882A',
+        bullets: ['Balanced crystalloid 10–20 mL/kg over 5–20 min depending on severity', 'Use 10 mL/kg boluses in cardiogenic shock, severe malnutrition and neonates', '<strong>Reassess after every bolus</strong> — HR, CRT, liver size, lung crepitations, conscious level', 'Signs of fluid overload: new crepitations, hepatomegaly, rising oxygen need, gallop rhythm', 'Fluid-refractory shock = shock persisting after 40–60 mL/kg — start inotropes now'],
+        callout: 'Push-pull with a three-way tap and syringe delivers a bolus far faster than a gravity bag in a small child. Know where your rapid infusion kit is <em>before</em> you need it.' },
+      { letter: '4', title: 'Inotropes and vasoactive drugs', hint: 'Preparation, safety, monitoring', color: '#9B6BB5',
+        bullets: ['<strong>Adrenaline</strong> — first line in cold shock; increases contractility and heart rate', '<strong>Noradrenaline</strong> — first line in warm shock; raises systemic vascular resistance', '<strong>Dobutamine / milrinone</strong> — inodilators for myocardial dysfunction', 'All are high-alert drugs: independent double-check of drug, concentration, weight and rate', 'Never flush or bolus an inotrope line; never run it with incompatible drugs'],
+        callout: 'Extravasation of adrenaline or noradrenaline causes tissue necrosis. Check the site <em>hourly</em>, document it, and escalate blanching or pain immediately — phentolamine is the antidote.' },
+      { letter: '5', title: 'Monitoring the response', hint: 'What tells you it is working', color: '#3AABCC',
+        bullets: ['Therapeutic goals: CRT ≤2 s, normal pulses, warm peripheries, urine output &gt;1 mL/kg/hr', 'Normal conscious level and falling lactate are the most reassuring markers of recovery', 'Hourly urine output via catheter is the cheapest continuous perfusion monitor you have', 'Arterial line: zero at the phlebostatic axis, check waveform before trusting the number', 'Escalate if goals are not met within 1 hr despite fluids and escalating inotropes'],
+        callout: 'A rising urine output and a falling lactate together mean perfusion is genuinely restored. A "normal" blood pressure on high-dose vasopressors does not.' }
+    ],
+    panel: {
+      label: 'Vascular access under pressure',
+      intro: 'Access is the rate-limiting step of every resuscitation. The rule is simple: two attempts or 90 seconds, then intraosseous.',
+      cards: [
+        { label: 'Peripheral IV', color: '#1B9E7E', body: 'Two attempts maximum<br>Largest bore that will pass<br>Antecubital fossa preferred<br>Secure and splint' },
+        { label: 'Intraosseous', color: '#D4327A', body: 'Proximal tibia, 1–2 cm below<br>and medial to tuberosity<br>Any drug, any fluid<br>Pressure bag needed' },
+        { label: 'Central venous', color: '#9B6BB5', body: 'Not first-line in the crash<br>Enables high-dose inotropes<br>Full sterile bundle<br>Confirm tip position' }
+      ],
+      scale: [
+        { label: 'Urine output', bg: '#EBF8F4', fg: '#1B9E7E', body: 'Target &gt;1 mL/kg/hr. Hourly, catheterised.' },
+        { label: 'Lactate', bg: '#FBF1E4', fg: '#D4882A', body: 'Clearance matters more than the single value.' },
+        { label: 'CRT', bg: '#FAE6EF', fg: '#D4327A', body: 'Sternal, 5-second press. Target ≤2 seconds.' },
+        { label: 'Conscious level', bg: '#2C1654', fg: '#C4A8D8', body: 'The most sensitive perfusion monitor of all.' }
+      ],
+      foot: '<strong style="color:#1A1030">Do not delay drugs for access route.</strong> An intraosseous needle takes under a minute and accepts adrenaline, fluids, blood and antibiotics at full dose.'
+    },
+    caseStudy: {
+      quote: '"4-year-old, 16 kg — fever and vomiting ×2 days, now drowsy and not passing urine since morning. Purpuric rash noted on the shins. Triaged as urgent."',
+      cards: [
+        { label: 'A · Airway', color: '#1B9E7E', body: '<strong>Patent</strong><br>Responds to voice<br>No stridor' },
+        { label: 'B · Breathing', color: '#D4327A', body: '<strong>RR 44/min</strong><br>Clear chest<br>Deep sighing breaths<br><strong>SpO₂ 97% on RA</strong>' },
+        { label: 'C · Circulation', color: '#D4882A', body: '<strong>HR 178/min</strong><br>CRT 5 sec, mottled<br>Absent radial pulses<br><strong>BP 68/40 mmHg</strong><br>Lactate 5.8 mmol/L' }
+      ],
+      analysis: 'Hypotensive cold septic shock with purpura — likely meningococcaemia. Golden hour: IO or two IVs within 5 min, 20 mL/kg balanced crystalloid with reassessment, cultures then antibiotics within 30 min, and peripheral dilute adrenaline if still shocked after 40 mL/kg. Deep sighing breaths are compensating for metabolic acidosis, not a lung problem.'
+    },
+    grid: {
+      label: 'Weight-based quick reference · 16-kg child',
+      intro: 'Calculate once, write it on the board, and let the whole team work from the same numbers.',
+      items: [
+        { key: 'Fluid bolus 10 mL/kg', color: '#1B9E7E', body: '160 mL over 5–20 min' },
+        { key: 'Fluid bolus 20 mL/kg', color: '#3AABCC', body: '320 mL over 5–20 min' },
+        { key: 'Fluid-refractory threshold', color: '#D4882A', body: 'After 640–960 mL (40–60 mL/kg)' },
+        { key: 'Minimum acceptable SBP', color: '#D4327A', body: '70 + (2 × age) = 78 mmHg' },
+        { key: 'Target urine output', color: '#9B6BB5', body: '&gt;16 mL/hr' },
+        { key: 'Adrenaline start dose', color: '#2189A8', body: '0.05–0.1 mcg/kg/min, titrate to effect' }
+      ],
+      foot: '<strong style="color:#1A1030">MAP target:</strong> 1.5 × age + 40 = 46 mmHg minimum for a 4-year-old. Below this, cerebral and renal perfusion are not protected.'
+    },
+    objectives: [
+      'Recognise compensated shock before the blood pressure falls',
+      'Classify shock as hypovolaemic, distributive, cardiogenic or obstructive',
+      'Distinguish cold from warm septic shock and name the first-line vasoactive for each',
+      'Deliver weight-based fluid boluses and reassess for both response and overload',
+      'Identify fluid-refractory shock and the point at which inotropes must start',
+      'Prepare and double-check high-alert vasoactive infusions safely',
+      'Escalate to intraosseous access without delay when IV access fails',
+      'Use urine output, lactate clearance and conscious level to judge response'
+    ],
+    videoTopics: ['1. Recognition', '2. Shock types', '3. Fluids', '4. Inotropes', '5. Live Case'],
+    quiz: [
+      { answer: 2, text: 'In a child, which of the following is the LAST sign of shock to appear?',
+        options: ['Tachycardia', 'Prolonged capillary refill time', 'Hypotension', 'Cool peripheries'],
+        why: 'Children compensate by vasoconstricting and increasing heart rate. Hypotension appears late and is a pre-terminal sign.' },
+      { answer: 1, text: 'A 12-kg child remains shocked after 480 mL of crystalloid. The next priority is:',
+        options: ['Give a further 500 mL bolus and reassess in an hour', 'Start an inotrope — this is fluid-refractory shock', 'Wait for the central line before any vasoactive drug', 'Repeat the lactate before making any change'],
+        why: '480 mL is 40 mL/kg. Shock persisting beyond 40–60 mL/kg is fluid-refractory and requires inotropes — peripheral dilute adrenaline is acceptable while access is secured.' },
+      { answer: 0, text: 'A septic child is warm and flushed with bounding pulses and a wide pulse pressure. The appropriate first-line vasoactive is:',
+        options: ['Noradrenaline', 'Adrenaline', 'Dobutamine', 'Milrinone'],
+        why: 'This is warm shock — low systemic vascular resistance. Noradrenaline is first line; adrenaline is first line in cold shock.' },
+      { answer: 3, text: 'Peripheral IV access has failed after two attempts in a shocked 3-year-old. You should:',
+        options: ['Attempt a third and fourth peripheral cannula', 'Give oral rehydration while waiting for the doctor', 'Wait for ultrasound-guided central access', 'Insert an intraosseous needle in the proximal tibia'],
+        why: 'After two attempts or 90 seconds, intraosseous access is indicated. It accepts fluids, blood, antibiotics and inotropes at full dose.' }
+    ]
+  },
+
+  {
+    n: 4, pillar: 2,
+    title: 'Arrhythmias<br>& Paediatric CPR',
+    short: 'Arrhythmias & CPR',
+    subtitle: 'Recognising the rhythm, delivering high-quality compressions, and running the shockable and non-shockable algorithms.',
+    framework: 'PALS algorithms',
+    tools: 'ECG · Defibrillator · CPR feedback',
+    duration: '1 hr live + 3 hrs self-study',
+    sessions: [
+      { tag: 'Session A · Live', title: 'Live Webinar', body: 'Four monitor traces, four decisions — rhythm recognition drills with the faculty panel.', meta: '1 hr · Attendance mandatory' },
+      { tag: 'Session B · Recorded', title: 'Recorded Lectures', body: 'Compression mechanics, defibrillator setup, pad placement by age, drug doses in arrest.', meta: '3 hrs · Self-paced' },
+      { tag: 'Session C · Simulation', title: 'Virtual Simulation', body: 'Full code-blue run — VF arrest with role allocation, timed pauses and post-arrest handover.', meta: '45 min · Scenario-based' }
+    ],
+    strip: {
+      label: 'The Arrest Cycle — two minutes at a time, every time',
+      title: 'Compress · Ventilate · Rhythm check · Shock or drug · Rotate',
+      items: [
+        { letter: 'C', name: 'Compress', detail: '100–120/min<br>⅓ chest depth', color: '#D4327A' },
+        { letter: 'V', name: 'Ventilate', detail: '15:2 uncuffed<br>10/min if intubated', color: '#3AABCC' },
+        { letter: 'R', name: 'Rhythm check', detail: 'Every 2 min<br>&lt;10 sec pause', color: '#D4882A' },
+        { letter: 'S', name: 'Shock or drug', detail: '4 J/kg shockable<br>Adrenaline non-shockable', color: '#9B6BB5' },
+        { letter: 'H', name: 'Reversible causes', detail: '4 Hs · 4 Ts<br>Search every cycle', color: '#1B9E7E' }
+      ],
+      footnote: 'Compression quality is the intervention that changes survival. <strong style="color:rgba(255,255,255,0.65)">Every second of pause costs coronary perfusion pressure</strong> that takes several compressions to rebuild.'
+    },
+    accordionLabel: 'Core content · Rhythm to resuscitation',
+    accordion: [
+      { letter: '1', title: 'High-quality CPR', hint: 'Depth · rate · recoil · no interruption', color: '#D4327A',
+        bullets: ['Rate 100–120 compressions per minute — count aloud or use a metronome', 'Depth at least one third of the anteroposterior chest diameter (≈4 cm infant, ≈5 cm child)', '<strong>Full recoil</strong> between compressions — leaning prevents venous return', 'Hand position: two thumbs encircling (infant, two rescuers), heel of one or two hands (child)', 'Rotate the compressor every 2 minutes — quality falls measurably before fatigue is felt'],
+        callout: 'Ratio 15:2 with a bag-valve-mask. Once an advanced airway is in place, compressions become <em>continuous</em> with 10 breaths per minute — no pausing to ventilate.' },
+      { letter: '2', title: 'Shockable rhythms — VF and pulseless VT', hint: 'Defibrillate immediately', color: '#9B6BB5',
+        bullets: ['Ventricular fibrillation: chaotic, no identifiable complexes, no pulse', 'Pulseless ventricular tachycardia: broad regular complexes, no pulse', 'Shock energy 4 J/kg, unsynchronised, then resume compressions <em>immediately</em>', 'Adrenaline after the second shock, then every 3–5 min; amiodarone 5 mg/kg after the third', 'Do not re-check the pulse straight after a shock — resume CPR for 2 minutes first'],
+        callout: 'The pause around a shock should be under 5 seconds: charge <em>while compressions continue</em>, clear, shock, and hands back on the chest without checking the monitor.' },
+      { letter: '3', title: 'Non-shockable rhythms — asystole and PEA', hint: 'CPR, adrenaline, find the cause', color: '#1B9E7E',
+        bullets: ['Asystole: flat line — confirm leads, gain and connections before concluding', 'PEA: organised electrical activity with no palpable pulse', 'Adrenaline 10 mcg/kg IV or IO as soon as access allows, then every 3–5 min', 'No shock is indicated — defibrillating asystole causes harm and delays compressions', 'Outcome depends almost entirely on finding and treating the reversible cause'],
+        compare: { cols: [
+          { label: '4 Hs', color: '#1B9E7E', bg: '#E9F6F2', body: 'Hypoxia<br>Hypovolaemia<br>Hypo/hyperkalaemia &amp; metabolic<br>Hypothermia' },
+          { label: '4 Ts', color: '#D4327A', bg: '#FAE6EF', body: 'Tension pneumothorax<br>Tamponade<br>Toxins<br>Thrombosis' }
+        ] } },
+      { letter: '4', title: 'Bradycardia and tachyarrhythmias with a pulse', hint: 'The pre-arrest window', color: '#D4882A',
+        bullets: ['<strong>Bradycardia in children is usually hypoxic</strong> — oxygenate and ventilate first', 'HR &lt;60 with poor perfusion despite oxygenation → start CPR', 'Atropine only for vagally mediated or drug-induced bradycardia', 'SVT, stable: vagal manoeuvres, then adenosine 0.1 mg/kg rapid push with immediate flush', 'SVT or VT with poor perfusion: synchronised cardioversion 0.5–1 J/kg, escalating to 2 J/kg'],
+        callout: 'Adenosine has a half-life of under 10 seconds. It must be given as a <em>rapid push immediately followed by a saline flush</em>, ideally through a proximal large-bore cannula, with the ECG running.' },
+      { letter: '5', title: 'Defibrillator safety and the nurse\'s role', hint: 'Pads, energy, clearing, documentation', color: '#3AABCC',
+        bullets: ['Paediatric pads under 10 kg or 1 year; adult pads above — anterolateral placement', 'Alternative anteroposterior placement if the chest is too small for separation', 'Dry the chest; remove transdermal patches; avoid pads over an implanted device', 'Announce "charging — stand clear", visually sweep the bed, then shock', 'Record time of each shock, energy, drug doses and rhythm at every cycle'],
+        callout: 'The person recording times is not a spare pair of hands — <strong>accurate timing of adrenaline and shocks is a clinical intervention</strong> and determines the quality of the whole resuscitation.' }
+    ],
+    panel: {
+      label: 'Post-arrest care — the first hour after ROSC',
+      intro: 'Return of spontaneous circulation is the beginning of the treatment, not the end of it. Secondary injury happens in the hours that follow.',
+      cards: [
+        { label: 'Oxygenation', color: '#1B9E7E', body: 'Target SpO₂ 94–98%<br>Avoid hyperoxia<br>Wean FiO₂ deliberately<br>Normocapnia 35–45 mmHg' },
+        { label: 'Haemodynamics', color: '#D4327A', body: 'Treat hypotension aggressively<br>Fluids + inotropes<br>MAP above age minimum<br>Watch for arrhythmia' },
+        { label: 'Neuroprotection', color: '#9B6BB5', body: 'Avoid fever strictly<br>Normoglycaemia<br>Treat seizures early<br>Head up, neck midline' }
+      ],
+      scale: [
+        { label: 'Avoid hyperoxia', bg: '#EBF8F4', fg: '#1B9E7E', body: '100% oxygen after ROSC worsens reperfusion injury.' },
+        { label: 'Avoid hypocapnia', bg: '#FBF1E4', fg: '#D4882A', body: 'Over-ventilation reduces cerebral blood flow.' },
+        { label: 'Avoid fever', bg: '#FAE6EF', fg: '#D4327A', body: 'Every degree above normal worsens brain injury.' },
+        { label: 'Avoid hypoglycaemia', bg: '#2C1654', fg: '#C4A8D8', body: 'Check glucose early and hourly until stable.' }
+      ],
+      foot: '<strong style="color:#1A1030">Family and team:</strong> arrange a family update by a named person, and a team debrief within 24 hours. Both are part of the standard of care, not optional extras.'
+    },
+    caseStudy: {
+      quote: '"9-year-old, 30 kg — collapsed during a school sports day. Bystander CPR started. On arrival unresponsive, no pulse. Monitor attached, defibrillator at the bedside."',
+      cards: [
+        { label: 'Rhythm', color: '#9B6BB5', body: '<strong>Ventricular fibrillation</strong><br>Chaotic, no complexes<br>No palpable pulse<br>Shockable' },
+        { label: 'Immediate action', color: '#D4327A', body: '<strong>Shock 4 J/kg = 120 J</strong><br>Unsynchronised<br>Resume CPR at once<br>2-min cycle' },
+        { label: 'Drugs', color: '#1B9E7E', body: '<strong>Adrenaline after shock 2</strong><br>300 mcg IV/IO<br>Amiodarone after shock 3<br>150 mg (5 mg/kg)' }
+      ],
+      analysis: 'Witnessed VF arrest — the highest-survival group if defibrillation is early and compression pauses are short. Charge during compressions, keep the peri-shock pause under 5 seconds, rotate compressors at every rhythm check, and search the 4 Hs and 4 Ts each cycle. Consider a primary cardiac channelopathy.'
+    },
+    grid: {
+      label: 'Weight-based arrest doses · 30-kg child',
+      intro: 'Write these on the board before the next cycle. Recalculating under pressure is where errors happen.',
+      items: [
+        { key: 'Defibrillation 4 J/kg', color: '#9B6BB5', body: '120 J, unsynchronised' },
+        { key: 'Synchronised cardioversion', color: '#D4882A', body: '1 J/kg = 30 J, then 60 J' },
+        { key: 'Adrenaline 10 mcg/kg', color: '#D4327A', body: '300 mcg (3 mL of 1:10,000)' },
+        { key: 'Amiodarone 5 mg/kg', color: '#3AABCC', body: '150 mg after third shock' },
+        { key: 'Adenosine 0.1 mg/kg', color: '#1B9E7E', body: '3 mg rapid push + flush' },
+        { key: 'Fluid bolus 10 mL/kg', color: '#2189A8', body: '300 mL if hypovolaemia suspected' }
+      ],
+      foot: '<strong style="color:#1A1030">Compression targets:</strong> rate 100–120/min, depth ≥5 cm, full recoil, rotate every 2 minutes, and keep every pause under 10 seconds.'
+    },
+    objectives: [
+      'Deliver compressions at the correct rate, depth and recoil for age',
+      'Keep peri-shock and rhythm-check pauses under 10 seconds',
+      'Distinguish shockable from non-shockable rhythms on the monitor',
+      'State the correct defibrillation and cardioversion energies by weight',
+      'Prepare and administer adrenaline, amiodarone and adenosine safely in arrest',
+      'Recognise that paediatric bradycardia is usually hypoxic and treat accordingly',
+      'Search the 4 Hs and 4 Ts systematically at every cycle',
+      'Deliver post-ROSC care that avoids hyperoxia, hypocapnia, fever and hypoglycaemia'
+    ],
+    videoTopics: ['1. CPR quality', '2. Shockable', '3. Non-shockable', '4. Post-ROSC', '5. Live Case'],
+    quiz: [
+      { answer: 1, text: 'Which rhythm requires immediate defibrillation?',
+        options: ['Asystole', 'Pulseless ventricular tachycardia', 'Pulseless electrical activity', 'Sinus bradycardia with a pulse'],
+        why: 'VF and pulseless VT are shockable. Asystole and PEA are treated with CPR, adrenaline and correction of reversible causes.' },
+      { answer: 2, text: 'A 20-kg child is in VF. The correct first shock energy is:',
+        options: ['20 J', '40 J', '80 J', '200 J'],
+        why: 'Defibrillation is 4 J/kg. For 20 kg that is 80 J, delivered unsynchronised with immediate resumption of compressions.' },
+      { answer: 0, text: 'A 3-year-old has a heart rate of 48/min with poor perfusion despite effective oxygenation and ventilation. You should:',
+        options: ['Start chest compressions', 'Give adenosine', 'Deliver a synchronised shock', 'Observe and repeat observations in 15 minutes'],
+        why: 'A heart rate below 60 with poor perfusion that persists despite oxygenation and ventilation is an indication to start CPR.' },
+      { answer: 3, text: 'After ROSC, which target is correct?',
+        options: ['FiO₂ 1.0 maintained for 6 hours', 'Deliberate hyperventilation to a PaCO₂ of 25 mmHg', 'Permissive fever up to 39 °C', 'SpO₂ 94–98% with normocapnia and strict fever avoidance'],
+        why: 'Post-arrest care avoids hyperoxia, hypocapnia and fever — all three worsen reperfusion and neurological injury.' }
+    ]
+  },
+
+  {
+    n: 5, pillar: 2,
+    title: 'Procedures<br>& Airway Management',
+    short: 'Procedures & Airway',
+    subtitle: 'Assisting safely with intubation, lines and drains — preparation, positioning, monitoring and the nurse\'s checklist.',
+    framework: 'SOAPME · Sterile bundles',
+    tools: 'EtCO₂ · Laryngoscope · Ultrasound',
+    duration: '1 hr live + 2–3 hrs self-study',
+    sessions: [
+      { tag: 'Session A · Live', title: 'Live Webinar', body: 'A rapid sequence intubation from the nurse\'s side of the bed — preparation, drugs, roles and rescue.', meta: '1 hr · Attendance mandatory' },
+      { tag: 'Session B · Recorded', title: 'Recorded Lectures', body: 'Tube sizing, SOAPME preparation, central line and arterial line bundles, chest drain care.', meta: '2–3 hrs · Self-paced' },
+      { tag: 'Session C · Simulation', title: 'Virtual Simulation', body: 'Difficult airway drill and a failed-intubation rescue sequence with closed-loop communication.', meta: '45 min · Scenario-based' }
+    ],
+    strip: {
+      label: 'SOAPME — the intubation checklist you complete before the drugs are drawn',
+      title: 'Suction · Oxygen · Airway · Positioning · Medications · Equipment',
+      items: [
+        { letter: 'S', name: 'Suction', detail: 'Working, sized<br>Within reach', color: '#1B9E7E' },
+        { letter: 'O', name: 'Oxygen', detail: 'Pre-oxygenate<br>BVM tested', color: '#3AABCC' },
+        { letter: 'A', name: 'Airway', detail: 'Tube + 0.5 sizes<br>Blades, stylet, LMA', color: '#D4882A' },
+        { letter: 'P', name: 'Positioning', detail: 'Tragus–manubrium<br>Shoulder roll if infant', color: '#D4327A' },
+        { letter: 'ME', name: 'Meds &amp; Monitoring', detail: 'Induction, paralytic<br>SpO₂ · ECG · EtCO₂', color: '#9B6BB5' }
+      ],
+      footnote: 'The checklist is read <strong style="color:rgba(255,255,255,0.65)">out loud, by the nurse, before induction</strong> — including the plan if the first attempt fails and who will do what.'
+    },
+    accordionLabel: 'Core content · Procedure by procedure',
+    accordion: [
+      { letter: '1', title: 'Preparing for intubation', hint: 'Sizing, drugs, roles', color: '#1B9E7E',
+        bullets: ['Uncuffed tube size = (age/4) + 4; cuffed = (age/4) + 3.5. Prepare half a size either side', 'Depth at lip ≈ tube size × 3 (e.g. size 4.0 → 12 cm)', 'Pre-oxygenate for 3 minutes; apply nasal oxygen during the attempt where possible', 'Draw induction agent, paralytic and a vasopressor — hypotension after induction is common', 'Assign roles aloud: intubator, airway assistant, drugs, monitor, timekeeper, documenter'],
+        callout: '<strong>Positioning is the cheapest intervention with the largest effect.</strong> Align the tragus with the manubrium: a shoulder roll for older children, an occipital pad for infants with prominent occiputs.' },
+      { letter: '2', title: 'During and after the attempt', hint: 'Confirming and securing', color: '#D4327A',
+        bullets: ['Call out the SpO₂ and elapsed time every 15 seconds during the attempt', 'Stop and re-oxygenate if SpO₂ falls below 90% or 30 seconds elapse', '<strong>Confirm placement with waveform EtCO₂</strong> — auscultation and mist alone are insufficient', 'Note depth at the lip, secure the tube, and document the number at every handover', 'Post-intubation: chest X-ray, sedation infusion, NG tube, pressure area check'],
+        compare: { cols: [
+          { label: 'Correct placement', color: '#1B9E7E', bg: '#E9F6F2', body: 'Sustained EtCO₂ waveform<br>Equal bilateral air entry<br>Chest rise symmetrical<br>SpO₂ recovering' },
+          { label: 'Oesophageal / dislodged ⚠', color: '#D4327A', bg: '#FAE6EF', body: 'No or fading EtCO₂<br>Gastric distension<br>No chest rise<br>Falling SpO₂<br><em>Remove and ventilate</em>' }
+        ] } },
+      { letter: '3', title: 'The DOPES check for sudden deterioration', hint: 'Any ventilated child who crashes', color: '#D4882A',
+        bullets: ['<strong>D</strong>isplacement — tube out, too deep, or in the oesophagus. Check depth and EtCO₂.', '<strong>O</strong>bstruction — secretions, kinking, biting. Suction and inspect.', '<strong>P</strong>neumothorax — unequal air entry, tracheal shift, high pressures.', '<strong>E</strong>quipment — circuit disconnection, ventilator failure, empty oxygen.', '<strong>S</strong>tacked breaths — inadequate expiratory time causing gas trapping. Disconnect and allow exhalation.'],
+        callout: 'When in doubt, <strong>disconnect from the ventilator and hand-ventilate with a bag</strong>. It converts an ambiguous alarm into direct information about compliance and resistance.' },
+      { letter: '4', title: 'Central and arterial lines', hint: 'Insertion bundle and ongoing care', color: '#9B6BB5',
+        bullets: ['Full insertion bundle: hand hygiene, maximal barrier precautions, chlorhexidine, sterile field, checklist', 'Position and drape the child; provide sedation and monitoring throughout', 'Confirm tip position on imaging before infusing vasoactive drugs', 'Arterial line: zero at the phlebostatic axis, assess the waveform, check distal perfusion hourly', 'Daily review of ongoing necessity — the line comes out the day it is no longer needed'],
+        callout: 'The most effective CLABSI prevention is not the dressing — it is the <em>daily question</em>: does this child still need this line today?' },
+      { letter: '5', title: 'Chest drains and other procedures', hint: 'Set-up, safety, troubleshooting', color: '#3AABCC',
+        bullets: ['Keep the drainage system upright and below the level of the insertion site at all times', 'Swinging with respiration means the drain is patent; bubbling means an ongoing air leak', 'Never clamp a bubbling drain — tension pneumothorax can develop within minutes', 'Have clamps, sterile gauze and an occlusive dressing at the bedside for accidental disconnection', 'Record hourly drainage volume and character; escalate sudden high output or fresh blood'],
+        callout: 'For lumbar puncture, arrange positioning, monitoring and analgesia — and remember that a child who cannot be positioned safely should not be punctured.' }
+    ],
+    panel: {
+      label: 'Procedural sedation and analgesia',
+      intro: 'Every invasive procedure in a child needs a plan for pain and distress. Untreated procedural pain has measurable long-term effects.',
+      cards: [
+        { label: 'Non-pharmacological', color: '#1B9E7E', body: 'Parental presence<br>Sucrose in infants<br>Distraction, play<br>Warmth and swaddling' },
+        { label: 'Local &amp; topical', color: '#3AABCC', body: 'Topical anaesthetic cream<br>Buffered lidocaine<br>Cold spray<br>Plan the timing ahead' },
+        { label: 'Systemic', color: '#D4327A', body: 'Ketamine, midazolam<br>Fentanyl, morphine<br>Airway skills mandatory<br>Full monitoring' }
+      ],
+      scale: [
+        { label: 'Before', bg: '#EBF8F4', fg: '#1B9E7E', body: 'Fasting status, consent, monitoring, resus trolley checked.' },
+        { label: 'During', bg: '#FBF1E4', fg: '#D4882A', body: 'Continuous SpO₂ and ECG; a dedicated observer.' },
+        { label: 'After', bg: '#FAE6EF', fg: '#D4327A', body: 'Recovery observations until baseline; discharge criteria.' },
+        { label: 'Document', bg: '#2C1654', fg: '#C4A8D8', body: 'Drug, dose, times, pain score, adverse events.' }
+      ],
+      foot: '<strong style="color:#1A1030">One rule:</strong> the person giving procedural sedation must not be the person performing the procedure. If staffing does not allow that, the procedure waits.'
+    },
+    caseStudy: {
+      quote: '"2-year-old, 12 kg — severe bronchopneumonia, now exhausted on CPAP with a rising CO₂. Decision made to intubate. You are the airway assistant."',
+      cards: [
+        { label: 'Tube &amp; depth', color: '#1B9E7E', body: '<strong>Uncuffed 4.5</strong><br>(2/4) + 4 = 4.5<br>Prepare 4.0 and 5.0<br>Depth ≈ 13.5 cm at lip' },
+        { label: 'Drugs drawn', color: '#D4327A', body: '<strong>Ketamine 2 mg/kg</strong> = 24 mg<br>Fentanyl 1 mcg/kg = 12 mcg<br>Rocuronium 1 mg/kg = 12 mg<br>Adrenaline diluted, ready' },
+        { label: 'Monitoring', color: '#9B6BB5', body: '<strong>SpO₂ · ECG · NIBP</strong><br>Waveform EtCO₂ attached<br>Suction on and tested<br>BVM with reservoir checked' }
+      ],
+      analysis: 'SOAPME read aloud before induction, with the failed-attempt plan stated: two attempts by the first intubator, then LMA and senior call. Pre-oxygenate 3 minutes, call SpO₂ and time every 15 seconds, confirm with waveform EtCO₂, secure, document depth, then chest X-ray and sedation infusion.'
+    },
+    grid: {
+      label: 'Airway sizing quick reference',
+      intro: 'Calculate and lay out three tube sizes before every intubation — the one you expect, and half a size either side.',
+      items: [
+        { key: 'Uncuffed tube size', color: '#1B9E7E', body: '(Age / 4) + 4' },
+        { key: 'Cuffed tube size', color: '#3AABCC', body: '(Age / 4) + 3.5' },
+        { key: 'Depth at lip (oral)', color: '#D4882A', body: 'Tube size × 3 cm' },
+        { key: 'Suction catheter size', color: '#D4327A', body: 'Tube size × 2 (Fr)' },
+        { key: 'Laryngoscope blade', color: '#9B6BB5', body: 'Straight in infants, curved in children' },
+        { key: 'Attempt limit', color: '#2189A8', body: '30 sec or SpO₂ &lt;90% — stop, re-oxygenate' }
+      ],
+      foot: '<strong style="color:#1A1030">Always at the bedside:</strong> working suction, a tested bag-valve-mask with reservoir, an appropriately sized LMA, and a diluted vasopressor.'
+    },
+    objectives: [
+      'Complete and read aloud a SOAPME checklist before intubation',
+      'Calculate tube size and insertion depth for any age',
+      'Position a child correctly for laryngoscopy, including infants',
+      'Confirm tube placement using waveform capnography',
+      'Apply the DOPES sequence to a ventilated child who deteriorates suddenly',
+      'Assist with central and arterial line insertion using the full sterile bundle',
+      'Manage a chest drain safely and recognise when not to clamp it',
+      'Plan non-pharmacological and pharmacological analgesia for every procedure'
+    ],
+    videoTopics: ['1. SOAPME', '2. Intubation', '3. DOPES', '4. Lines & drains', '5. Live Case'],
+    quiz: [
+      { answer: 1, text: 'What is the correct uncuffed tube size for a 4-year-old?',
+        options: ['4.0', '5.0', '6.0', '6.5'],
+        why: 'Uncuffed size = (age/4) + 4 = (4/4) + 4 = 5.0. Prepare 4.5 and 5.5 as alternatives.' },
+      { answer: 2, text: 'The most reliable bedside confirmation of endotracheal tube placement is:',
+        options: ['Misting of the tube', 'Auscultation of both axillae', 'A sustained waveform end-tidal CO₂ trace', 'Chest rise on hand ventilation'],
+        why: 'Sustained waveform capnography is the standard of confirmation. Misting, auscultation and chest rise can all be misleading.' },
+      { answer: 0, text: 'A ventilated child suddenly desaturates with high airway pressures. Applying DOPES, your first actions are:',
+        options: ['Disconnect and hand-ventilate while checking tube displacement and obstruction', 'Increase the FiO₂ and wait for the blood gas', 'Give a fluid bolus', 'Deepen sedation and re-check in ten minutes'],
+        why: 'Disconnecting and hand-ventilating gives immediate information on compliance and resistance while displacement and obstruction are excluded.' },
+      { answer: 3, text: 'A chest drain is bubbling continuously. You should:',
+        options: ['Clamp the drain and inform the doctor', 'Milk the tubing to clear the leak', 'Raise the drainage bottle above the insertion site', 'Leave it unclamped, document the leak and escalate'],
+        why: 'Bubbling indicates an ongoing air leak. Clamping risks a tension pneumothorax — leave it unclamped, document and escalate.' }
+    ]
+  },
+
+  {
+    n: 6, pillar: 2,
+    title: 'Mechanical<br>Ventilation',
+    short: 'Mechanical Ventilation',
+    subtitle: 'Understanding modes, reading the numbers, protecting the lung and nursing the ventilated child through to extubation.',
+    framework: 'Lung-protective ventilation',
+    tools: 'PIP · PEEP · Vt · Graphics',
+    duration: '1 hr live + 3 hrs self-study',
+    sessions: [
+      { tag: 'Session A · Live', title: 'Live Webinar', body: 'Reading the ventilator with the team — what each number means and which alarm needs you now.', meta: '1 hr · Attendance mandatory' },
+      { tag: 'Session B · Recorded', title: 'Recorded Lectures', body: 'Modes explained, lung-protective targets, ARDS strategy, weaning and extubation readiness.', meta: '3 hrs · Self-paced' },
+      { tag: 'Session C · Simulation', title: 'Virtual Simulation', body: 'Alarm triage drill — six alarms, six decisions, and one child who needs disconnecting now.', meta: '45 min · Scenario-based' }
+    ],
+    strip: {
+      label: 'Lung-protective ventilation — the targets that reduce ventilator-induced injury',
+      title: 'Low volume · Limited pressure · Adequate PEEP · Permissive hypercapnia',
+      items: [
+        { letter: 'Vt', name: 'Tidal volume', detail: '5–7 mL/kg<br>Ideal body weight', color: '#1B9E7E' },
+        { letter: 'ΔP', name: 'Driving pressure', detail: 'Plateau − PEEP<br>Keep &lt;15 cmH₂O', color: '#3AABCC' },
+        { letter: 'P', name: 'Plateau pressure', detail: 'Target &lt;28–30<br>cmH₂O', color: '#D4882A' },
+        { letter: 'PEEP', name: 'PEEP', detail: '5–8 baseline<br>Higher in ARDS', color: '#D4327A' },
+        { letter: 'pH', name: 'Permissive hypercapnia', detail: 'Accept pH ≥7.20<br>Avoid over-ventilation', color: '#9B6BB5' }
+      ],
+      footnote: 'The ventilator does not cure the lung — it buys time while the lung heals. <strong style="color:rgba(255,255,255,0.65)">Every setting is a compromise</strong> between adequate gas exchange and avoiding further injury.'
+    },
+    accordionLabel: 'Core content · Settings, alarms and nursing care',
+    accordion: [
+      { letter: '1', title: 'Modes and what they control', hint: 'Volume, pressure, support', color: '#1B9E7E',
+        bullets: ['<strong>Volume control</strong> — you set the tidal volume; pressure varies with compliance', '<strong>Pressure control</strong> — you set the pressure; volume varies with compliance. Watch the delivered Vt.', '<strong>SIMV</strong> — mandatory breaths synchronised with the child\'s own effort', '<strong>Pressure support</strong> — the child triggers every breath; the ventilator assists each one', 'Mode matters less than whether the delivered volume and pressure are within safe limits'],
+        callout: 'Whatever the mode, ask the same three questions at every check: <em>what volume is being delivered, at what pressure, and is the child working with or against the machine?</em>' },
+      { letter: '2', title: 'The numbers you record every hour', hint: 'And what a change in each means', color: '#3AABCC',
+        bullets: ['<strong>PIP</strong> — rising means worsening compliance or increased resistance; investigate, do not just accept', '<strong>PEEP</strong> — keeps alveoli open; sudden loss means a leak or disconnection', '<strong>Tidal volume</strong> — falling Vt in pressure control is an early sign of deterioration', '<strong>Minute ventilation</strong> — the driver of CO₂ clearance', '<strong>FiO₂ and SpO₂ together</strong> — a saturation without its FiO₂ tells you nothing'],
+        compare: { cols: [
+          { label: 'Rising PIP, low Vt', color: '#D4882A', bg: '#FBF1E4', body: 'Worsening compliance<br>Secretions, collapse<br>Pneumothorax<br>Abdominal distension' },
+          { label: 'Falling PIP, high Vt', color: '#3AABCC', bg: '#E2F2F8', body: 'Improving compliance<br>Or a circuit leak<br>Or tube dislodgement<br>Check EtCO₂ and chest rise' }
+        ] } },
+      { letter: '3', title: 'Alarms — triage in order', hint: 'Which alarms mean go now', color: '#D4327A',
+        bullets: ['<strong>Apnoea / disconnection</strong> — immediate; check the child first, then the circuit', '<strong>High pressure</strong> — obstruction, secretions, biting, pneumothorax, stacked breaths', '<strong>Low pressure / low volume</strong> — leak, extubation, cuff deflation, disconnection', '<strong>High rate</strong> — pain, agitation, hypoxia, fever, inadequate support', 'Never silence an alarm you have not explained — silencing without diagnosis is the classic critical incident'],
+        callout: 'The correct first response to a confusing ventilator alarm is to <strong>look at the child</strong>: chest movement, colour, saturation, EtCO₂ trace. The machine describes; the child decides.' },
+      { letter: '4', title: 'Nursing the ventilated child', hint: 'The bundle that prevents harm', color: '#9B6BB5',
+        bullets: ['Head of bed 30° unless contraindicated — reduces aspiration and VAP risk', 'Oral care with chlorhexidine or per unit protocol, 6–12 hourly', 'Suction only when clinically indicated; pre-oxygenate, limit to 10 seconds, closed system where available', 'Cuff pressure 20–25 cmH₂O; document tube depth at every handover', 'Daily sedation review, spontaneous breathing trial assessment, early mobilisation, VTE and ulcer prophylaxis'],
+        callout: 'Ventilator-associated pneumonia is prevented by the <em>whole</em> bundle delivered every time — head elevation, oral care, sedation review and readiness assessment. Partial delivery is non-compliance.' },
+      { letter: '5', title: 'Weaning and extubation', hint: 'Readiness, the trial, and what follows', color: '#D4882A',
+        bullets: ['Readiness: cause resolving, FiO₂ ≤0.4, PEEP ≤5–6, haemodynamically stable, awake and triggering', 'Spontaneous breathing trial on minimal support for 30–120 min with close observation', 'Failure signs: rising RR, falling Vt, tachycardia, sweating, agitation, rising CO₂', 'Before extubation: NBM, suction, steroids if stridor risk, adrenaline nebuliser ready, resus trolley checked', 'Post-extubation: HFNC or CPAP support, watch for stridor, do not feed until swallow is safe'],
+        callout: 'Extubation failure and reintubation carry real risk. A well-planned extubation with support ready is safer than an optimistic one — but <em>unnecessary delay</em> also causes harm.' }
+    ],
+    panel: {
+      label: 'Reading the graphics — pressure, flow and volume',
+      intro: 'You do not need to change settings to use the waveforms. They show you problems before the numbers or the alarms do.',
+      cards: [
+        { label: 'Pressure–time', color: '#1B9E7E', body: 'Shows PIP and plateau<br>A rising slope = resistance<br>Sudden spikes = coughing<br>Baseline = PEEP' },
+        { label: 'Flow–time', color: '#D4882A', body: 'Expiratory flow not reaching<br>baseline = gas trapping<br>Sawtooth = secretions<br>Notching = asynchrony' },
+        { label: 'Volume–time', color: '#D4327A', body: 'Expired &lt; inspired = leak<br>Rising baseline = trapping<br>Confirms delivered Vt<br>Cuff or circuit check' }
+      ],
+      scale: [
+        { label: 'Gas trapping', bg: '#EBF8F4', fg: '#1B9E7E', body: 'Expiratory flow cut short. Lengthen expiratory time.' },
+        { label: 'Secretions', bg: '#FBF1E4', fg: '#D4882A', body: 'Sawtooth flow pattern. Suction and reassess.' },
+        { label: 'Leak', bg: '#FAE6EF', fg: '#D4327A', body: 'Expired volume less than inspired. Check cuff and circuit.' },
+        { label: 'Asynchrony', bg: '#2C1654', fg: '#C4A8D8', body: 'Child fighting the ventilator. Review support and sedation.' }
+      ],
+      foot: '<strong style="color:#1A1030">Escalate the waveform, not just the number.</strong> "Expiratory flow is not returning to baseline and the PIP is climbing" is a far more actionable handover than "the ventilator keeps alarming".'
+    },
+    caseStudy: {
+      quote: '"5-year-old, 18 kg — ARDS following severe pneumonia, day 2 of ventilation. FiO₂ 0.65, PEEP 10, pressure control. The ventilator has begun alarming high pressure and the delivered volume has fallen."',
+      cards: [
+        { label: 'Settings', color: '#1B9E7E', body: '<strong>Vt target 5–7 mL/kg</strong><br>= 90–126 mL<br>Delivered now 68 mL<br>PEEP 10, FiO₂ 0.65' },
+        { label: 'Findings', color: '#D4327A', body: '<strong>PIP risen 26 → 34</strong><br>Sawtooth flow trace<br>Coarse creps right side<br>SpO₂ 89%' },
+        { label: 'Action', color: '#9B6BB5', body: '<strong>Hand-ventilate</strong><br>DOPES sequence<br>Suction — thick plug<br>Recruit, reassess Vt' }
+      ],
+      analysis: 'Falling tidal volume with rising PIP and a sawtooth flow trace points to airway obstruction from secretions rather than a lung problem. Suction resolves it; if the volume does not recover, exclude pneumothorax and tube displacement. Maintain lung-protective targets and accept permissive hypercapnia to pH 7.20.'
+    },
+    grid: {
+      label: 'Target settings quick reference · 18-kg child',
+      intro: 'Know the safe window for this child before the round starts, so a drift out of it is obvious.',
+      items: [
+        { key: 'Tidal volume 5–7 mL/kg', color: '#1B9E7E', body: '90–126 mL' },
+        { key: 'Plateau pressure', color: '#3AABCC', body: 'Keep below 28–30 cmH₂O' },
+        { key: 'Driving pressure', color: '#D4882A', body: 'Plateau − PEEP, below 15 cmH₂O' },
+        { key: 'PEEP baseline', color: '#D4327A', body: '5–8 cmH₂O; higher in ARDS' },
+        { key: 'Cuff pressure', color: '#9B6BB5', body: '20–25 cmH₂O, checked per shift' },
+        { key: 'Suction catheter', color: '#2189A8', body: 'Tube size × 2 Fr, ≤10 seconds' }
+      ],
+      foot: '<strong style="color:#1A1030">Permissive hypercapnia:</strong> accept a raised PaCO₂ and a pH down to about 7.20 rather than injure the lung with higher volumes and pressures.'
+    },
+    objectives: [
+      'Describe the common ventilation modes and what each one controls',
+      'State lung-protective targets for tidal volume, plateau and driving pressure',
+      'Record and interpret hourly PIP, PEEP, tidal volume and FiO₂ together',
+      'Triage ventilator alarms and identify those requiring immediate action',
+      'Recognise gas trapping, secretions, leak and asynchrony on the waveforms',
+      'Deliver the full ventilator care bundle to prevent VAP',
+      'Assess readiness for weaning and support a spontaneous breathing trial',
+      'Prepare for extubation and recognise early post-extubation failure'
+    ],
+    videoTopics: ['1. Modes', '2. Numbers', '3. Alarms', '4. Weaning', '5. Live Case'],
+    quiz: [
+      { answer: 1, text: 'The lung-protective tidal volume target for a 20-kg child is approximately:',
+        options: ['40–60 mL', '100–140 mL', '200–240 mL', '300 mL'],
+        why: 'Lung-protective ventilation uses 5–7 mL/kg — for 20 kg that is 100–140 mL.' },
+      { answer: 2, text: 'On pressure-control ventilation, the delivered tidal volume falls while PIP rises. This most likely indicates:',
+        options: ['Improving lung compliance', 'A circuit leak', 'Worsening compliance or airway obstruction', 'Excessive sedation'],
+        why: 'Rising pressure with falling volume means the lung or airway is harder to ventilate — secretions, collapse, pneumothorax or abdominal distension.' },
+      { answer: 0, text: 'A ventilator alarms and you cannot immediately explain it. The correct first action is:',
+        options: ['Look at the child — chest movement, colour, SpO₂ and EtCO₂', 'Silence the alarm and continue the medication round', 'Increase the FiO₂ to 1.0 and document', 'Change the ventilator circuit'],
+        why: 'The machine describes; the child decides. Assess the child first, then work through the circuit. Never silence an unexplained alarm.' },
+      { answer: 3, text: 'Which set of findings best indicates readiness for a spontaneous breathing trial?',
+        options: ['FiO₂ 0.8, PEEP 12, deeply sedated', 'Rising noradrenaline requirement, PEEP 10', 'New fever with rising CRP and FiO₂ 0.6', 'FiO₂ 0.35, PEEP 5, haemodynamically stable, awake and triggering'],
+        why: 'Readiness requires the cause to be resolving, low FiO₂ and PEEP, haemodynamic stability and an awake, triggering child.' }
+    ]
+  },
+
+  {
+    n: 7, pillar: 3,
+    title: 'Neurological<br>Emergencies',
+    short: 'Neuro Emergencies',
+    subtitle: 'Status epilepticus, raised intracranial pressure and the coma work-up — protecting the brain that is still recoverable.',
+    framework: 'Time-based seizure protocol',
+    tools: 'GCS · AVPU · Pupils · ICP',
+    duration: '1 hr live + 2–3 hrs self-study',
+    sessions: [
+      { tag: 'Session A · Live', title: 'Live Webinar', body: 'A status epilepticus timeline — what should have happened at 5, 10 and 20 minutes, and what actually did.', meta: '1 hr · Attendance mandatory' },
+      { tag: 'Session B · Recorded', title: 'Recorded Lectures', body: 'Seizure pharmacology by weight, ICP physiology, paediatric GCS, neuro-observation technique.', meta: '2–3 hrs · Self-paced' },
+      { tag: 'Session C · Simulation', title: 'Virtual Simulation', body: 'Raised ICP drill — recognise the triad, position, ventilate, escalate, prepare hyperosmolar therapy.', meta: '45 min · Scenario-based' }
+    ],
+    strip: {
+      label: 'Status epilepticus — a protocol driven by the clock, not by appearance',
+      title: '0 min ABC · 5 min benzodiazepine · 10 min repeat · 20 min second line · 40 min anaesthesia',
+      items: [
+        { letter: '0', name: 'ABC + glucose', detail: 'Airway, oxygen<br>Check glucose now', color: '#1B9E7E' },
+        { letter: '5', name: 'First benzo', detail: 'Midazolam or<br>lorazepam', color: '#3AABCC' },
+        { letter: '10', name: 'Second benzo', detail: 'One repeat only<br>Prepare second line', color: '#D4882A' },
+        { letter: '20', name: 'Second line', detail: 'Levetiracetam,<br>phenytoin, valproate', color: '#D4327A' },
+        { letter: '40', name: 'Anaesthesia', detail: 'Intubate, infusion<br>PICU, EEG', color: '#9B6BB5' }
+      ],
+      footnote: 'Note the time the seizure started and <strong style="color:rgba(255,255,255,0.65)">call out elapsed minutes aloud</strong>. The commonest failure in status epilepticus is not the wrong drug — it is the right drug given late.'
+    },
+    accordionLabel: 'Core content · Emergency by emergency',
+    accordion: [
+      { letter: '1', title: 'Status epilepticus', hint: 'Stop the seizure, protect the brain', color: '#1B9E7E',
+        bullets: ['Convulsive seizure lasting over 5 minutes, or recurrent seizures without recovery between', 'Airway, high-flow oxygen, position on the side, suction ready — do not force anything into the mouth', '<strong>Check blood glucose immediately</strong> — hypoglycaemia is a fully reversible cause', 'Midazolam 0.15 mg/kg IV or 0.3 mg/kg buccal; only one repeat dose of benzodiazepine', 'Monitor for respiratory depression after every dose — have the bag-valve-mask ready'],
+        callout: 'Two benzodiazepine doses maximum. Beyond that, further benzodiazepines cause apnoea without stopping the seizure — <strong>move to the second-line agent</strong>.' },
+      { letter: '2', title: 'Raised intracranial pressure', hint: 'Recognise, position, escalate', color: '#D4327A',
+        bullets: ['Early: headache, vomiting, irritability, drowsiness, deteriorating conscious level', 'Cushing triad (late): hypertension, bradycardia, irregular breathing — impending herniation', 'Unequal or sluggish pupils, abnormal posturing, falling GCS are emergencies', 'Nurse head up 30°, neck midline, avoid neck-line compression and tight tapes', 'Cluster care carefully — every suction, turn and noise raises ICP transiently'],
+        compare: { cols: [
+          { label: 'Lowers ICP', color: '#1B9E7E', bg: '#E9F6F2', body: 'Head up 30°, neck midline<br>Normocapnia<br>Normothermia<br>Adequate sedation<br>Treat pain and seizures' },
+          { label: 'Raises ICP ⚠', color: '#D4327A', bg: '#FAE6EF', body: 'Neck flexion or rotation<br>Coughing, straining<br>Fever, pain, agitation<br>Prolonged suctioning<br>Clustered heavy handling' }
+        ] } },
+      { letter: '3', title: 'Neurological observation', hint: 'Doing it consistently is the skill', color: '#D4882A',
+        bullets: ['Use the paediatric GCS below 5 years — the verbal scale differs from the adult version', 'AVPU for rapid assessment; GCS for trending; both need the same observer technique', 'Pupils: size, equality, reaction to light — document actual size in millimetres', 'Limb power and tone, posturing, and any focal or asymmetric finding', 'A <strong>2-point fall in GCS is an emergency</strong> — escalate immediately, do not wait for the next round'],
+        callout: 'Neuro observations are only useful if performed identically each time. Where possible, the same nurse repeats them across the shift and hands over technique as well as numbers.' },
+      { letter: '4', title: 'The child with altered consciousness', hint: 'A structured work-up', color: '#9B6BB5',
+        bullets: ['Immediate reversibles: glucose, oxygen, perfusion, temperature, opioid or toxin exposure', 'Infection: meningitis and encephalitis — do not delay antibiotics for imaging or lumbar puncture', 'Metabolic: sodium, ammonia, liver function, inborn errors in young infants', 'Trauma and non-accidental injury — examine fully and document findings carefully', 'Imaging before lumbar puncture where raised ICP is suspected'],
+        callout: 'In an unexplained coma, <strong>hypoglycaemia and meningitis are the two diagnoses you cannot afford to miss</strong>, because both are treatable within minutes and both are commonly delayed.' },
+      { letter: '5', title: 'Neuroprotective nursing care', hint: 'The bundle that preserves function', color: '#3AABCC',
+        bullets: ['Strict normothermia — treat fever promptly and actively', 'Normoglycaemia — avoid both hypo- and hyperglycaemia', 'Normocapnia — over-ventilation reduces cerebral blood flow; under-ventilation raises ICP', 'Adequate analgesia and sedation, with a documented sedation score', 'Seizure watch, eye care, pressure area care, and family communication with an unresponsive child'],
+        callout: 'Speak to the unresponsive child and support the family to do the same. Presence, familiar voices and touch are part of neurological care, not decoration around it.' }
+    ],
+    panel: {
+      label: 'Paediatric GCS — what differs below 5 years',
+      intro: 'The eye and motor scales are unchanged. The verbal scale is what changes, and getting it wrong falsely reassures the whole team.',
+      cards: [
+        { label: 'Eye opening (4)', color: '#1B9E7E', body: '4 Spontaneous<br>3 To speech<br>2 To pain<br>1 None' },
+        { label: 'Verbal — infant (5)', color: '#D4327A', body: '5 Coos, babbles<br>4 Irritable cry<br>3 Cries to pain<br>2 Moans to pain<br>1 None' },
+        { label: 'Motor (6)', color: '#9B6BB5', body: '6 Spontaneous / obeys<br>5 Localises pain<br>4 Withdraws<br>3 Flexion<br>2 Extension<br>1 None' }
+      ],
+      scale: [
+        { label: 'GCS 13–15', bg: '#EBF8F4', fg: '#1B9E7E', body: 'Mild. Continue regular observation.' },
+        { label: 'GCS 9–12', bg: '#FBF1E4', fg: '#D4882A', body: 'Moderate. Increase frequency, senior review.' },
+        { label: 'GCS ≤8', bg: '#FAE6EF', fg: '#D4327A', body: 'Airway at risk. Anticipate intubation.' },
+        { label: 'Fall of ≥2', bg: '#2C1654', fg: '#C4A8D8', body: 'Emergency at any starting score. Escalate now.' }
+      ],
+      foot: '<strong style="color:#1A1030">Record the components, not just the total.</strong> A GCS of 9 made of E3 V2 M4 is a very different child from E1 V4 M4 — and the trend within components predicts deterioration first.'
+    },
+    caseStudy: {
+      quote: '"3-year-old, 14 kg — brought in convulsing. Family report the seizure began about 12 minutes before arrival. Still convulsing on the trolley. One dose of buccal midazolam given at home."',
+      cards: [
+        { label: 'Immediate', color: '#1B9E7E', body: '<strong>Airway + O₂</strong><br>Left lateral, suction<br>Glucose 3.1 mmol/L<br>Treat hypoglycaemia now' },
+        { label: 'Seizure drugs', color: '#D4327A', body: '<strong>1 benzo already given</strong><br>Midazolam 0.15 mg/kg<br>= 2.1 mg IV — final benzo<br>Prepare levetiracetam' },
+        { label: 'Second line', color: '#9B6BB5', body: '<strong>Levetiracetam 40 mg/kg</strong><br>= 560 mg over 15 min<br>Anaesthetist alerted<br>PICU bed requested' }
+      ],
+      analysis: 'This is established status epilepticus at 12 minutes with a home dose already given — one further benzodiazepine only, then straight to the second-line agent while the anaesthetist is called. Hypoglycaemia is a coexisting reversible cause and must be corrected immediately. Someone must own the clock and call out elapsed time.'
+    },
+    grid: {
+      label: 'Weight-based seizure doses · 14-kg child',
+      intro: 'Have these calculated and drawn before the 10-minute mark, not after it.',
+      items: [
+        { key: 'Midazolam IV 0.15 mg/kg', color: '#1B9E7E', body: '2.1 mg (max 2 doses total)' },
+        { key: 'Midazolam buccal 0.3 mg/kg', color: '#3AABCC', body: '4.2 mg if no IV access' },
+        { key: 'Levetiracetam 40 mg/kg', color: '#D4882A', body: '560 mg over 15 min' },
+        { key: 'Phenytoin 20 mg/kg', color: '#D4327A', body: '280 mg over 20 min, ECG monitoring' },
+        { key: 'Dextrose 10% 2 mL/kg', color: '#9B6BB5', body: '28 mL for hypoglycaemia' },
+        { key: '3% saline 3 mL/kg', color: '#2189A8', body: '42 mL for raised ICP, per protocol' }
+      ],
+      foot: '<strong style="color:#1A1030">Phenytoin must be given slowly with ECG monitoring</strong> — rapid infusion causes hypotension and arrhythmia. Never mix it with glucose-containing fluid.'
+    },
+    objectives: [
+      'Define status epilepticus and initiate the time-based protocol from minute zero',
+      'Limit benzodiazepines to two doses and move to second-line agents on time',
+      'Check and treat hypoglycaemia as an immediate reversible cause',
+      'Recognise early and late signs of raised intracranial pressure',
+      'Position and handle a child to minimise intracranial pressure rises',
+      'Perform paediatric GCS correctly and record component scores',
+      'Escalate a fall of two or more GCS points immediately',
+      'Deliver the neuroprotective bundle: normothermia, normoglycaemia, normocapnia, analgesia'
+    ],
+    videoTopics: ['1. Status', '2. Raised ICP', '3. Neuro obs', '4. Coma', '5. Live Case'],
+    quiz: [
+      { answer: 2, text: 'A child has received two doses of benzodiazepine and is still convulsing at 20 minutes. The next step is:',
+        options: ['A third dose of midazolam', 'Buccal midazolam in addition', 'A second-line agent such as levetiracetam or phenytoin', 'Observe for a further 10 minutes'],
+        why: 'Only two benzodiazepine doses are given. Further doses cause respiratory depression without terminating the seizure — move to a second-line agent.' },
+      { answer: 1, text: 'Which nursing measure helps lower raised intracranial pressure?',
+        options: ['Neck flexed and rotated to the side for line access', 'Head of bed elevated 30° with the neck midline', 'Clustering all care into a single long episode', 'Routine hourly deep suctioning'],
+        why: 'Head-up 30° with a midline neck promotes venous drainage. Flexion, rotation, clustered handling and unnecessary suctioning all raise ICP.' },
+      { answer: 3, text: 'A child\'s GCS falls from 13 to 10 over one hour. You should:',
+        options: ['Document and reassess at the next scheduled round', 'Reduce the sedation and re-score in 4 hours', 'Record only the total score in the notes', 'Escalate immediately as a significant deterioration'],
+        why: 'A fall of two or more GCS points is an emergency at any starting score and requires immediate escalation.' },
+      { answer: 0, text: 'In an unexplained paediatric coma, which two diagnoses must be excluded first because both are rapidly treatable?',
+        options: ['Hypoglycaemia and meningitis', 'Migraine and epilepsy', 'Anaemia and hypothyroidism', 'Constipation and dehydration'],
+        why: 'Hypoglycaemia and CNS infection are both treatable within minutes and are the most commonly delayed diagnoses in altered consciousness.' }
+    ]
+  },
+
+  {
+    n: 8, pillar: 3,
+    title: 'Renal, Fluid<br>& Metabolic Care',
+    short: 'Renal & Metabolic',
+    subtitle: 'Fluid balance done properly, acute kidney injury, electrolyte emergencies, DKA and the child on dialysis.',
+    framework: 'Intake–output discipline',
+    tools: 'Fluid chart · Electrolytes · CRRT',
+    duration: '1 hr live + 2–3 hrs self-study',
+    sessions: [
+      { tag: 'Session A · Live', title: 'Live Webinar', body: 'A DKA admission hour by hour, and an AKI case where the fluid chart made the diagnosis.', meta: '1 hr · Attendance mandatory' },
+      { tag: 'Session B · Recorded', title: 'Recorded Lectures', body: 'Maintenance fluid calculation, AKI staging, potassium and sodium emergencies, dialysis basics.', meta: '2–3 hrs · Self-paced' },
+      { tag: 'Session C · Simulation', title: 'Virtual Simulation', body: 'Hyperkalaemia drill and a fluid-overload recognition exercise using real chart data.', meta: '45 min · Scenario-based' }
+    ],
+    strip: {
+      label: 'Fluid balance — the four questions you answer every shift',
+      title: 'What went in · What came out · What is the balance · What does it mean',
+      items: [
+        { letter: 'IN', name: 'Total intake', detail: 'Feeds, fluids, drugs<br>flushes, blood', color: '#1B9E7E' },
+        { letter: 'OUT', name: 'Total output', detail: 'Urine, drains, stool<br>vomit, losses', color: '#3AABCC' },
+        { letter: 'Δ', name: 'Balance', detail: 'Per shift and<br>cumulative', color: '#D4882A' },
+        { letter: 'kg', name: 'Weight', detail: 'Daily, same time<br>same scales', color: '#D4327A' },
+        { letter: '?', name: 'Interpretation', detail: 'Overloaded, dry<br>or just right', color: '#9B6BB5' }
+      ],
+      footnote: '<strong style="color:rgba(255,255,255,0.65)">Drug and flush volumes are intake.</strong> In a small infant on multiple infusions they can exceed the prescribed maintenance fluid — and are the most commonly missed entry on the chart.'
+    },
+    accordionLabel: 'Core content · Fluids to dialysis',
+    accordion: [
+      { letter: '1', title: 'Maintenance fluids and adjustments', hint: 'Holliday–Segar and when to deviate', color: '#1B9E7E',
+        bullets: ['4 mL/kg/hr for the first 10 kg, 2 mL/kg/hr for the next 10, 1 mL/kg/hr thereafter', 'Use isotonic fluid with glucose in most children — hypotonic fluid causes hyponatraemia', 'Increase for fever, burns and high losses; restrict in SIADH, cardiac and renal failure', 'Subtract the volume delivered by infusions and drugs from the prescribed maintenance', 'Recalculate whenever the weight, the losses or the clinical state changes'],
+        callout: 'A 15-kg child needs 4×10 + 2×5 = <strong>50 mL/hr</strong>. If infusions already deliver 20 mL/hr, the maintenance bag runs at 30 mL/hr — not 50.' },
+      { letter: '2', title: 'Recognising overload and dehydration', hint: 'The chart plus the child', color: '#D4327A',
+        bullets: ['Overload: weight gain, periorbital and dependent oedema, new crepitations, rising oxygen need', 'Overload in the ventilated child shows first as a rising FiO₂ requirement, not as swelling', 'Dehydration: sunken eyes, dry mucosa, reduced skin turgor, tachycardia, low urine output', 'Estimate deficit from acute weight change where a recent weight is available', '<strong>Report a trend</strong> of positive balance early — do not wait for the shift total'],
+        compare: { cols: [
+          { label: 'Fluid overload', color: '#3AABCC', bg: '#E2F2F8', body: 'Weight up<br>Positive balance<br>Oedema, hepatomegaly<br>New crepitations<br>Rising FiO₂ need' },
+          { label: 'Hypovolaemia', color: '#D4327A', bg: '#FAE6EF', body: 'Weight down<br>Negative balance<br>Dry mucosa, sunken eyes<br>Tachycardia, CRT &gt;2s<br>Urine &lt;1 mL/kg/hr' }
+        ] } },
+      { letter: '3', title: 'Acute kidney injury', hint: 'Staging, causes, nursing priorities', color: '#D4882A',
+        bullets: ['Staged by rise in creatinine and fall in urine output over time', 'Pre-renal (hypoperfusion) is the commonest cause in PICU and is often reversible', 'Priorities: restore perfusion, stop nephrotoxins, review every drug dose for renal clearance', 'Strict hourly urine output, daily weight, meticulous balance charting', 'Watch for hyperkalaemia, acidosis, hypertension and overload as complications'],
+        callout: 'Check every prescription against renal function. Aminoglycosides, NSAIDs, contrast and high-dose vancomycin are the usual culprits in worsening AKI.' },
+      { letter: '4', title: 'Electrolyte emergencies', hint: 'Potassium, sodium, glucose, calcium', color: '#9B6BB5',
+        bullets: ['<strong>Hyperkalaemia</strong> — ECG changes first: peaked T waves, wide QRS. Calcium, insulin-dextrose, salbutamol, then removal.', '<strong>Hypokalaemia</strong> — arrhythmia risk; never give a rapid potassium bolus, always dilute and infuse', '<strong>Hyponatraemia</strong> — correct slowly; rapid correction causes osmotic demyelination', '<strong>Hypernatraemia</strong> — correct slowly; rapid correction causes cerebral oedema', '<strong>Hypocalcaemia</strong> — tetany, seizures, prolonged QT; common after massive transfusion'],
+        callout: 'The two absolute rules: <strong>potassium is never given as a rapid push</strong>, and <strong>sodium is never corrected quickly</strong> — no more than 8–10 mmol/L in 24 hours.' },
+      { letter: '5', title: 'DKA and the child on dialysis', hint: 'High-risk, protocol-driven care', color: '#3AABCC',
+        bullets: ['DKA: fluids first and cautiously, insulin infusion after, never an insulin bolus in children', 'Cerebral oedema is the leading cause of death in paediatric DKA — headache and falling GCS are red flags', 'Add glucose to the fluid once blood glucose falls below the protocol threshold; do not stop insulin', 'Peritoneal dialysis: strict asepsis, cloudy effluent means peritonitis, chart every cycle in and out', 'CRRT: circuit patency, filtration fluid balance to the millilitre, watch for hypothermia and hypocalcaemia'],
+        callout: 'In DKA, a child who develops a headache and becomes drowsy several hours into treatment is developing <em>cerebral oedema</em> until proven otherwise. Escalate immediately.' }
+    ],
+    panel: {
+      label: 'Hyperkalaemia — recognition and the sequence',
+      intro: 'Hyperkalaemia kills through arrhythmia, and the ECG changes before the child looks unwell. The sequence is stabilise, shift, then remove.',
+      cards: [
+        { label: 'Stabilise the heart', color: '#1B9E7E', body: 'Calcium gluconate 10%<br>0.5 mL/kg slow IV<br>Protects the myocardium<br>Does not lower K⁺' },
+        { label: 'Shift into cells', color: '#D4882A', body: 'Insulin with dextrose<br>Salbutamol nebulised<br>Sodium bicarbonate<br>Monitor glucose closely' },
+        { label: 'Remove from body', color: '#D4327A', body: 'Diuretics if urine output<br>Binding resins<br>Dialysis / CRRT<br>Stop all K⁺ intake' }
+      ],
+      scale: [
+        { label: 'Peaked T waves', bg: '#EBF8F4', fg: '#1B9E7E', body: 'Earliest ECG change. Act now, do not wait.' },
+        { label: 'Flat P, wide QRS', bg: '#FBF1E4', fg: '#D4882A', body: 'Progressive. Give calcium immediately.' },
+        { label: 'Sine wave', bg: '#FAE6EF', fg: '#D4327A', body: 'Pre-arrest. Full treatment plus arrest readiness.' },
+        { label: 'Stop all K⁺', bg: '#2C1654', fg: '#C4A8D8', body: 'Check every fluid, feed and drug for potassium.' }
+      ],
+      foot: '<strong style="color:#1A1030">Recheck after treatment.</strong> Insulin-dextrose and salbutamol only move potassium into cells for a few hours — without removal it will rebound, usually on the next shift.'
+    },
+    caseStudy: {
+      quote: '"11-year-old, 34 kg — newly diagnosed type 1 diabetes. pH 7.08, glucose 31 mmol/L, ketones 5.8, drowsy but rousable. Four hours into the DKA protocol she reports a severe headache."',
+      cards: [
+        { label: 'On admission', color: '#1B9E7E', body: '<strong>pH 7.08</strong><br>Glucose 31 mmol/L<br>Na⁺ 129, K⁺ 5.2<br>Deep sighing breaths' },
+        { label: 'Treatment', color: '#3AABCC', body: '<strong>Cautious fluids first</strong><br>Insulin infusion, no bolus<br>Hourly glucose &amp; neuro obs<br>Strict fluid balance' },
+        { label: 'Hour 4 · red flag', color: '#D4327A', body: '<strong>Severe headache</strong><br>GCS 15 → 13<br>Rising BP, falling HR<br><em>Cerebral oedema</em>' }
+      ],
+      analysis: 'A headache with a falling GCS several hours into DKA treatment is cerebral oedema until proven otherwise — the leading cause of death in paediatric DKA. Escalate immediately, reduce fluid rate per protocol, head up, prepare hyperosmolar therapy, and do not delay for imaging.'
+    },
+    grid: {
+      label: 'Maintenance fluid quick reference',
+      intro: 'Holliday–Segar, then subtract what the infusions are already delivering.',
+      items: [
+        { key: 'First 10 kg', color: '#1B9E7E', body: '4 mL/kg/hr' },
+        { key: 'Next 10 kg', color: '#3AABCC', body: '2 mL/kg/hr' },
+        { key: 'Each kg above 20', color: '#D4882A', body: '1 mL/kg/hr' },
+        { key: 'Example · 15 kg', color: '#D4327A', body: '40 + 10 = 50 mL/hr total' },
+        { key: 'Example · 34 kg', color: '#9B6BB5', body: '40 + 20 + 14 = 74 mL/hr total' },
+        { key: 'Target urine output', color: '#2189A8', body: '&gt;1 mL/kg/hr (&gt;2 in infants)' }
+      ],
+      foot: '<strong style="color:#1A1030">Use isotonic fluid.</strong> Hypotonic maintenance fluid is a recognised cause of hospital-acquired hyponatraemia, seizures and death in children.'
+    },
+    objectives: [
+      'Calculate maintenance fluids using Holliday–Segar and adjust for clinical state',
+      'Account for drug and flush volumes as intake on the fluid chart',
+      'Recognise fluid overload and hypovolaemia from the chart and the child together',
+      'Describe the causes and nursing priorities of acute kidney injury',
+      'Identify hyperkalaemia on the ECG and follow the stabilise–shift–remove sequence',
+      'State the safe rate of sodium correction and the risks of correcting too fast',
+      'Deliver DKA care safely and recognise cerebral oedema early',
+      'Support a child on peritoneal dialysis or CRRT with accurate balance charting'
+    ],
+    videoTopics: ['1. Fluids', '2. AKI', '3. Electrolytes', '4. DKA', '5. Live Case'],
+    quiz: [
+      { answer: 1, text: 'What is the maintenance fluid rate for a 26-kg child?',
+        options: ['52 mL/hr', '66 mL/hr', '104 mL/hr', '130 mL/hr'],
+        why: '4×10 + 2×10 + 1×6 = 40 + 20 + 6 = 66 mL/hr.' },
+      { answer: 0, text: 'Which finding most suggests fluid overload in a ventilated child?',
+        options: ['Rising oxygen requirement with new periorbital oedema and weight gain', 'Capillary refill of 2 seconds', 'Urine output of 1.5 mL/kg/hr', 'Serum sodium of 138 mmol/L'],
+        why: 'A rising FiO₂ requirement with oedema and weight gain indicates a positive fluid balance affecting gas exchange — often the first sign in a ventilated child.' },
+      { answer: 2, text: 'A child has a potassium of 7.4 mmol/L with peaked T waves. The first drug to give is:',
+        options: ['Insulin with dextrose', 'Nebulised salbutamol', 'Calcium gluconate', 'A binding resin'],
+        why: 'Calcium stabilises the myocardium immediately. It does not lower potassium — shifting and removal follow.' },
+      { answer: 3, text: 'Four hours into DKA treatment a child develops a severe headache and the GCS falls by two points. This suggests:',
+        options: ['Expected improvement as ketosis resolves', 'Hypoglycaemia from the insulin infusion', 'Simple dehydration headache', 'Cerebral oedema — escalate immediately'],
+        why: 'Headache with falling GCS during DKA treatment indicates cerebral oedema, the leading cause of death in paediatric DKA. Treat without waiting for imaging.' }
+    ]
+  },
+
+  {
+    n: 9, pillar: 3,
+    title: 'Polytrauma<br>& Massive Transfusion',
+    short: 'Polytrauma & MBTP',
+    subtitle: 'The primary trauma survey, damage control resuscitation, and running a massive blood transfusion protocol safely.',
+    framework: 'ATLS-based primary survey',
+    tools: 'Log roll · MBTP · Blood warmer',
+    duration: '1 hr live + 2–3 hrs self-study',
+    sessions: [
+      { tag: 'Session A · Live', title: 'Live Webinar', body: 'A trauma reception from the nurse\'s perspective — roles, sequence and the errors that recur.', meta: '1 hr · Attendance mandatory' },
+      { tag: 'Session B · Recorded', title: 'Recorded Lectures', body: 'Primary survey, cervical spine protection, log roll technique, blood component ratios, tranexamic acid.', meta: '2–3 hrs · Self-paced' },
+      { tag: 'Session C · Simulation', title: 'Virtual Simulation', body: 'Massive transfusion drill — activate, check, warm, deliver, monitor for complications, hand over.', meta: '45 min · Scenario-based' }
+    ],
+    strip: {
+      label: 'The primary trauma survey — with cervical spine protection throughout',
+      title: 'cABCDE · Catastrophic haemorrhage first, then the usual order',
+      items: [
+        { letter: 'c', name: 'Catastrophic bleed', detail: 'Direct pressure<br>Tourniquet if needed', color: '#D4327A' },
+        { letter: 'A', name: 'Airway + C-spine', detail: 'Manual in-line<br>stabilisation', color: '#1B9E7E' },
+        { letter: 'B', name: 'Breathing', detail: 'Tension pneumothorax<br>Chest injury', color: '#3AABCC' },
+        { letter: 'C', name: 'Circulation', detail: 'Access, blood<br>not crystalloid', color: '#D4882A' },
+        { letter: 'DE', name: 'Disability + Exposure', detail: 'GCS, pupils<br>Log roll, keep warm', color: '#9B6BB5' }
+      ],
+      footnote: 'Children have a proportionally larger head, a more compliant chest wall and a higher surface-area-to-mass ratio. <strong style="color:rgba(255,255,255,0.65)">They compensate longer, crash faster, and get cold quicker</strong> than adults.'
+    },
+    accordionLabel: 'Core content · Reception to definitive care',
+    accordion: [
+      { letter: '1', title: 'Trauma reception and team roles', hint: 'Prepared before arrival', color: '#1B9E7E',
+        bullets: ['Pre-alert: allocate roles aloud, calculate weight-based doses, warm the room and the fluids', 'Airway nurse, circulation nurse, drugs nurse, scribe — each states their role', 'Lay out sized equipment: tubes, cannulae, IO needle, cervical collar, blood warmer', 'Zero the monitor, prepare the rapid infuser, check suction and the resus trolley', 'Anticipate hypothermia from the first minute: warm blankets, warmed fluids, raise room temperature'],
+        callout: 'The scribe is a clinical role. <strong>Times of drugs, blood units, imaging and observations</strong> determine both the resuscitation quality and the safety of the handover that follows.' },
+      { letter: '2', title: 'Cervical spine and the log roll', hint: 'Protecting what cannot be seen', color: '#D4327A',
+        bullets: ['Manual in-line stabilisation from the moment of arrival until cleared', 'Correctly sized collar; an ill-fitting collar is worse than none and raises ICP', 'Log roll needs a minimum of four people, with one controlling the head and calling the move', 'Inspect and palpate the whole spine and back during the roll — one opportunity, use it fully', 'Remove the child from a hard board as soon as safe — pressure injury develops within an hour'],
+        callout: 'Children may have spinal cord injury <em>without</em> radiographic abnormality. A normal image does not clear the spine — clinical clearance follows a documented protocol.' },
+      { letter: '3', title: 'Damage control resuscitation', hint: 'Blood, not crystalloid', color: '#D4882A',
+        bullets: ['Limit crystalloid — it dilutes clotting factors and worsens the coagulopathy', 'Give blood components early in haemorrhagic shock; activate the protocol on clinical grounds', 'Permissive hypotension is <strong>not</strong> used in children with head injury — perfuse the brain', 'Tranexamic acid within 3 hours of injury per local protocol', 'Definitive control of bleeding is surgical or interventional — resuscitation buys time only'],
+        compare: { cols: [
+          { label: 'Lethal triad', color: '#D4327A', bg: '#FAE6EF', body: 'Hypothermia<br>Acidosis<br>Coagulopathy<br>Each worsens the others<br><em>Prevent, do not treat</em>' },
+          { label: 'Nursing counters', color: '#1B9E7E', bg: '#E9F6F2', body: 'Warm everything<br>Restore perfusion early<br>Blood over crystalloid<br>Early TXA<br>Rapid surgical referral' }
+        ] } },
+      { letter: '4', title: 'Massive transfusion protocol', hint: 'Activation, checking, delivery', color: '#9B6BB5',
+        bullets: ['Activate on clinical criteria — do not wait for a haemoglobin result', 'Balanced ratio of red cells, plasma and platelets per local protocol', 'All blood through a warmer; cold blood causes arrhythmia and worsens coagulopathy', 'Two-person positive identification for every single unit, every time, without shortcuts', 'Monitor for hypocalcaemia, hyperkalaemia, acidosis, hypothermia and TACO/TRALI'],
+        callout: 'Citrate in stored blood binds calcium. <strong>Ionised calcium must be monitored and replaced</strong> during massive transfusion — hypocalcaemia causes hypotension and arrhythmia.' },
+      { letter: '5', title: 'Neurotrauma and ongoing care', hint: 'Protecting the injured brain', color: '#3AABCC',
+        bullets: ['Avoid hypoxia and hypotension — both independently worsen head injury outcome', 'Head up 30°, neck midline, collar not compressing venous drainage', 'Normocapnia, normothermia, normoglycaemia; treat seizures promptly', 'Paediatric GCS with component scores, pupils, and limb assessment at set intervals', 'Structured handover to imaging, theatre or PICU using the same tool as the ward'],
+        callout: 'A single episode of hypotension or hypoxia measurably worsens outcome after paediatric head injury. Preventing both is the core nursing intervention, not an adjunct to it.' }
+    ],
+    panel: {
+      label: 'Transfusion reaction — recognise and act',
+      intro: 'Stop the transfusion first and assess second. Every reaction is treated as potentially serious until it is proven otherwise.',
+      cards: [
+        { label: 'Acute haemolytic', color: '#D4327A', body: 'Fever, loin pain<br>Dark urine, hypotension<br>Usually an ID error<br>Stop, resuscitate, report' },
+        { label: 'Allergic / anaphylaxis', color: '#D4882A', body: 'Urticaria, wheeze<br>Facial swelling<br>Hypotension<br>Adrenaline if severe' },
+        { label: 'TACO / TRALI', color: '#3AABCC', body: 'Dyspnoea, hypoxia<br>TACO: overload signs<br>TRALI: within 6 hrs<br>Stop, support, escalate' }
+      ],
+      scale: [
+        { label: '1 · Stop', bg: '#FAE6EF', fg: '#D4327A', body: 'Stop the transfusion. Keep IV access with saline.' },
+        { label: '2 · Assess', bg: '#FBF1E4', fg: '#D4882A', body: 'ABC, full observations, compare the identity details.' },
+        { label: '3 · Escalate', bg: '#EBF8F4', fg: '#1B9E7E', body: 'Call for help. Treat anaphylaxis or shock as needed.' },
+        { label: '4 · Report', bg: '#2C1654', fg: '#C4A8D8', body: 'Return unit and set, send samples, complete the report.' }
+      ],
+      foot: '<strong style="color:#1A1030">The commonest cause of a fatal transfusion reaction is a patient identification error</strong> — which is why the two-person check at the bedside is never delegated, abbreviated or done from memory.'
+    },
+    caseStudy: {
+      quote: '"7-year-old, 24 kg — pedestrian versus car. Pre-alert 8 minutes. Reported prolonged extrication, obvious femoral deformity, GCS 12 at scene, tachycardic."',
+      cards: [
+        { label: 'Preparation', color: '#1B9E7E', body: '<strong>Roles allocated</strong><br>Room and fluids warmed<br>Blood warmer primed<br>Doses pre-calculated' },
+        { label: 'On arrival', color: '#D4327A', body: '<strong>HR 168, BP 82/44</strong><br>CRT 4 sec, cold<br>GCS 11 (E3 V3 M5)<br>Thigh swollen, tense' },
+        { label: 'Actions', color: '#9B6BB5', body: '<strong>MBTP activated</strong><br>Blood not crystalloid<br>TXA within 3 hrs<br>Splint, warm, CT, theatre' }
+      ],
+      analysis: 'Haemorrhagic shock with a femoral fracture and a head injury. Activate the massive transfusion protocol on clinical grounds, give warmed blood components rather than crystalloid, and avoid permissive hypotension because of the head injury. Prevent the lethal triad from the first minute: warm everything, restore perfusion, give TXA early.'
+    },
+    grid: {
+      label: 'Trauma quick reference · 24-kg child',
+      intro: 'Pre-calculate on the pre-alert, write on the board, and work from one shared set of numbers.',
+      items: [
+        { key: 'Packed red cells 10 mL/kg', color: '#D4327A', body: '240 mL, warmed' },
+        { key: 'Fresh frozen plasma 10 mL/kg', color: '#9B6BB5', body: '240 mL' },
+        { key: 'Platelets 10 mL/kg', color: '#D4882A', body: '240 mL' },
+        { key: 'Tranexamic acid', color: '#1B9E7E', body: '15 mg/kg = 360 mg, within 3 hrs' },
+        { key: 'Calcium gluconate 10%', color: '#3AABCC', body: '0.5 mL/kg = 12 mL if ionised Ca²⁺ low' },
+        { key: 'Minimum acceptable SBP', color: '#2189A8', body: '70 + (2 × 7) = 84 mmHg' }
+      ],
+      foot: '<strong style="color:#1A1030">Warm everything:</strong> blood, fluids, blankets, the room. Hypothermia is the entry point to the lethal triad and is entirely preventable by nursing action.'
+    },
+    objectives: [
+      'Prepare a trauma reception with allocated roles and pre-calculated doses',
+      'Perform the cABCDE primary survey with continuous cervical spine protection',
+      'Log roll a child safely with adequate personnel and head control',
+      'Explain damage control resuscitation and why crystalloid is limited',
+      'Activate and run a massive transfusion protocol on clinical criteria',
+      'Monitor for hypocalcaemia, hyperkalaemia, hypothermia and acidosis during transfusion',
+      'Recognise and act on a transfusion reaction using the stop–assess–escalate–report sequence',
+      'Protect the injured brain by preventing hypoxia and hypotension'
+    ],
+    videoTopics: ['1. Primary survey', '2. Log roll', '3. MBTP', '4. Neurotrauma', '5. Live Case'],
+    quiz: [
+      { answer: 2, text: 'In paediatric haemorrhagic shock, why is large-volume crystalloid limited?',
+        options: ['It is more expensive than blood', 'It cannot be warmed', 'It dilutes clotting factors and worsens the coagulopathy', 'It causes hyperkalaemia'],
+        why: 'Crystalloid dilutes clotting factors and contributes to acidosis and hypothermia — the lethal triad. Blood components are given early instead.' },
+      { answer: 1, text: 'During massive transfusion, which electrolyte abnormality is caused by citrate in stored blood?',
+        options: ['Hypernatraemia', 'Hypocalcaemia', 'Hypophosphataemia', 'Hypermagnesaemia'],
+        why: 'Citrate binds ionised calcium, causing hypocalcaemia with hypotension and arrhythmia. Ionised calcium must be monitored and replaced.' },
+      { answer: 0, text: 'A child develops fever, loin pain and dark urine 10 minutes into a red cell transfusion. Your first action is:',
+        options: ['Stop the transfusion immediately and keep IV access with saline', 'Slow the transfusion and give paracetamol', 'Complete the unit then send samples', 'Give an antihistamine and continue'],
+        why: 'This suggests acute haemolysis, usually from an identification error. Stop the transfusion first, maintain access, resuscitate, then escalate and report.' },
+      { answer: 3, text: 'Which statement about permissive hypotension in children is correct?',
+        options: ['It is the standard approach in all paediatric trauma', 'It applies only to children under 1 year', 'It replaces the need for blood products', 'It is avoided in children with head injury, where cerebral perfusion must be maintained'],
+        why: 'Permissive hypotension is not used where there is a head injury — cerebral perfusion pressure must be preserved to avoid secondary brain injury.' }
+    ]
+  },
+
+  {
+    n: 10, pillar: 4,
+    title: 'Infection Prevention<br>& Bundle Care',
+    short: 'Infection Control',
+    subtitle: 'Hand hygiene, care bundles, antimicrobial stewardship and waste segregation — the least glamorous work with the largest effect.',
+    framework: 'Care bundles · 5 moments',
+    tools: 'CLABSI · VAP · CAUTI audit',
+    duration: '1 hr live + 2 hrs self-study',
+    sessions: [
+      { tag: 'Session A · Live', title: 'Live Webinar', body: 'Bundle audit results from real units — where compliance breaks down and what fixed it.', meta: '1 hr · Attendance mandatory' },
+      { tag: 'Session B · Recorded', title: 'Recorded Lectures', body: 'Five moments, PPE sequence, isolation categories, bundle elements, waste segregation, sharps safety.', meta: '2 hrs · Self-paced' },
+      { tag: 'Session C · Simulation', title: 'Virtual Simulation', body: 'Breakout rooms — each group audits one bundle at a simulated bedside and reports back.', meta: '45 min · Breakout groups' }
+    ],
+    strip: {
+      label: 'The five moments of hand hygiene — the single most effective intervention in the unit',
+      title: 'Before patient · Before aseptic task · After body fluid · After patient · After surroundings',
+      items: [
+        { letter: '1', name: 'Before patient contact', detail: 'Protects the child<br>from your hands', color: '#1B9E7E' },
+        { letter: '2', name: 'Before aseptic task', detail: 'Protects from<br>their own flora', color: '#3AABCC' },
+        { letter: '3', name: 'After body fluid risk', detail: 'Protects you<br>and the unit', color: '#D4882A' },
+        { letter: '4', name: 'After patient contact', detail: 'Protects the next<br>child you touch', color: '#D4327A' },
+        { letter: '5', name: 'After surroundings', detail: 'The bed rail counts<br>as the patient', color: '#9B6BB5' }
+      ],
+      footnote: 'Alcohol rub for 20–30 seconds when hands are visibly clean; <strong style="color:rgba(255,255,255,0.65)">soap and water for 40–60 seconds</strong> when soiled, after body fluids, and for <em>C. difficile</em> and spore-forming organisms.'
+    },
+    accordionLabel: 'Core content · Bundle by bundle',
+    accordion: [
+      { letter: '1', title: 'Central line bundle — CLABSI prevention', hint: 'Insertion and daily maintenance', color: '#1B9E7E',
+        bullets: ['Insertion: hand hygiene, maximal barrier precautions, chlorhexidine skin prep, sterile field, checklist', 'Scrub the hub for 15 seconds before every single access — every time, no exceptions', 'Dressing intact, dated, changed per protocol; document the site appearance each shift', 'Minimise line entries; use needle-free connectors correctly', '<strong>Daily review of ongoing necessity</strong> — remove the line the day it is not needed'],
+        callout: 'Bundles are scored <strong>all-or-nothing</strong>. Four of five elements delivered is recorded as non-compliant, because the missing element is the one the organism uses.' },
+      { letter: '2', title: 'Ventilator bundle — VAP prevention', hint: 'Every element, every shift', color: '#D4327A',
+        bullets: ['Head of bed elevated 30–45° unless clinically contraindicated', 'Oral care with chlorhexidine or per protocol, 6–12 hourly, documented', 'Cuff pressure 20–25 cmH₂O checked each shift', 'Daily sedation interruption and assessment of extubation readiness', 'Closed suction system where available; suction only when clinically indicated'],
+        callout: 'The bundle element most often missed is the <em>daily readiness assessment</em> — and it is the one that shortens ventilation days most, which is what actually prevents pneumonia.' },
+      { letter: '3', title: 'Catheter bundle and other devices', hint: 'CAUTI prevention and device discipline', color: '#D4882A',
+        bullets: ['Insert only for a clear indication; document that indication in the notes', 'Aseptic insertion, closed drainage system maintained at all times', 'Keep the bag below bladder level and off the floor; avoid dependent loops', 'Daily meatal hygiene with soap and water; no routine antiseptics or bladder washouts', 'Daily review of necessity — the catheter comes out as soon as the indication ends'],
+        compare: { cols: [
+          { label: 'Bundle compliant', color: '#1B9E7E', bg: '#E9F6F2', body: 'Every element delivered<br>Documented each shift<br>Daily necessity review<br>Audited and fed back' },
+          { label: 'Non-compliant ⚠', color: '#D4327A', bg: '#FAE6EF', body: 'Any element missed<br>Undocumented care<br>Device left "just in case"<br>No feedback loop' }
+        ] } },
+      { letter: '4', title: 'PPE, isolation and outbreak response', hint: 'Right precautions, right order', color: '#9B6BB5',
+        bullets: ['<strong>Contact</strong> precautions: gloves and gown; dedicated equipment; e.g. MRSA, <em>C. difficile</em>', '<strong>Droplet</strong> precautions: surgical mask within 1–2 m; e.g. influenza, pertussis', '<strong>Airborne</strong> precautions: N95/FFP2, negative pressure room; e.g. tuberculosis, measles', 'Donning and doffing order matters — doffing is where self-contamination happens', 'Cohort during outbreaks, restrict movement, escalate clusters to infection control the same day'],
+        callout: 'Antimicrobial stewardship is a nursing role: <strong>send cultures before the first dose</strong>, give antibiotics on time, question duplicate cover, and prompt the review or de-escalation date.' },
+      { letter: '5', title: 'Waste segregation and sharps safety', hint: 'Colour-coded, at the point of use', color: '#3AABCC',
+        bullets: ['Segregate at the point of generation — never re-sort waste later', 'Follow the local colour code exactly; mixed waste multiplies cost and risk', 'Sharps into a puncture-proof container at the bedside, filled to the line only, never above', '<strong>Never recap a needle</strong>; never pass a sharp hand to hand; use the safety device', 'Needlestick: wash, encourage bleeding, report immediately, start the post-exposure protocol'],
+        callout: 'Most sharps injuries happen during disposal, not during use. The container being <em>within arm\'s reach at the point of use</em> is the intervention — walking with a used sharp is the risk.' }
+    ],
+    panel: {
+      label: 'Antimicrobial stewardship — the nurse\'s five actions',
+      intro: 'Stewardship is not only a prescriber activity. Five nursing actions determine whether it works on the ward.',
+      cards: [
+        { label: 'Cultures first', color: '#1B9E7E', body: 'Send blood, urine, respiratory<br>samples <em>before</em> the first dose<br>Label accurately<br>Chase the results' },
+        { label: 'On time, every time', color: '#D4882A', body: 'First dose within the hour<br>Correct interval maintained<br>Escalate missed doses<br>Document actual times' },
+        { label: 'Prompt review', color: '#D4327A', body: 'Day 3 review date<br>Question duplicate cover<br>IV to oral switch<br>Stop date documented' }
+      ],
+      scale: [
+        { label: 'Right drug', bg: '#EBF8F4', fg: '#1B9E7E', body: 'Matches the guideline and the culture result.' },
+        { label: 'Right dose', bg: '#FBF1E4', fg: '#D4882A', body: 'By weight, adjusted for renal function.' },
+        { label: 'Right duration', bg: '#FAE6EF', fg: '#D4327A', body: 'A stop or review date on every prescription.' },
+        { label: 'Right route', bg: '#2C1654', fg: '#C4A8D8', body: 'IV to oral as soon as the child can absorb.' }
+      ],
+      foot: '<strong style="color:#1A1030">Resistance is generated at the bedside</strong> — by missed doses, unnecessary duration and cultures never sent. Each of those is a nursing-controlled variable.'
+    },
+    caseStudy: {
+      quote: '"Unit audit — three CLABSI events in eight weeks in a six-bed PICU. All three children had femoral central lines in place for more than seven days. Bundle compliance recorded as 88%."',
+      cards: [
+        { label: 'The finding', color: '#1B9E7E', body: '<strong>88% "compliant"</strong><br>Scored per element<br>not all-or-nothing<br>True compliance 46%' },
+        { label: 'The gaps', color: '#D4327A', body: '<strong>Hub scrub inconsistent</strong><br>Dressings undated<br>No daily necessity review<br>Lines left "in case"' },
+        { label: 'The change', color: '#9B6BB5', body: '<strong>All-or-nothing scoring</strong><br>Line necessity on the round<br>Weekly feedback to staff<br>Zero events in 12 weeks' }
+      ],
+      analysis: 'Element-level scoring hid the real failure: no single bedside had every element delivered. Recording bundles all-or-nothing, putting line necessity on the daily round and feeding results back weekly changed behaviour where an education session alone had not.'
+    },
+    grid: {
+      label: 'Isolation precautions at a glance',
+      intro: 'Match the precaution to the transmission route, and check before you enter — not after.',
+      items: [
+        { key: 'Standard', color: '#1B9E7E', body: 'All patients, all times. Hand hygiene, gloves for body fluids.' },
+        { key: 'Contact', color: '#3AABCC', body: 'Gloves + gown. MRSA, VRE, C. difficile, scabies.' },
+        { key: 'Droplet', color: '#D4882A', body: 'Surgical mask within 1–2 m. Influenza, pertussis, RSV.' },
+        { key: 'Airborne', color: '#D4327A', body: 'N95/FFP2 + negative pressure. TB, measles, varicella.' },
+        { key: 'Protective', color: '#9B6BB5', body: 'For the neutropenic child. Restrict visitors with infection.' },
+        { key: 'Escalate a cluster', color: '#2189A8', body: 'Two or more linked cases — infection control the same day.' }
+      ],
+      foot: '<strong style="color:#1A1030">Doffing is the dangerous step.</strong> Practise the removal sequence until it is automatic — most PPE self-contamination happens on the way out, not on the way in.'
+    },
+    objectives: [
+      'Apply the five moments of hand hygiene during routine PICU care',
+      'Deliver the central line, ventilator and catheter bundles in full, every shift',
+      'Explain why bundle compliance is scored all-or-nothing',
+      'Perform a daily device-necessity review and act on it',
+      'Select the correct isolation precautions for a given transmission route',
+      'Don and doff PPE in the correct sequence without self-contamination',
+      'Carry out the five nursing actions of antimicrobial stewardship',
+      'Segregate clinical waste correctly and handle sharps safely at the point of use'
+    ],
+    videoTopics: ['1. Hand hygiene', '2. Bundles', '3. PPE', '4. Stewardship', '5. Live Case'],
+    quiz: [
+      { answer: 1, text: 'A central line bundle has four of its five elements delivered. This is recorded as:',
+        options: ['80% compliant', 'Non-compliant', 'Compliant with exception', 'Not auditable'],
+        why: 'Bundles are all-or-nothing. Unless every element is delivered the bundle is recorded as non-compliant.' },
+      { answer: 2, text: 'Which agent is required for hand hygiene when caring for a child with Clostridioides difficile?',
+        options: ['Alcohol rub only', 'Alcohol rub followed by gloves', 'Soap and water', 'Chlorhexidine spray'],
+        why: 'Alcohol does not kill C. difficile spores. Soap and water with mechanical removal is required.' },
+      { answer: 0, text: 'Which ventilator bundle element most directly shortens ventilation days?',
+        options: ['Daily sedation interruption with assessment of extubation readiness', 'Changing the ventilator circuit every 24 hours', 'Routine deep suctioning every 2 hours', 'Prophylactic antibiotics for all ventilated children'],
+        why: 'Daily sedation review and readiness assessment shortens ventilation duration — the main driver of VAP risk. Routine circuit changes and deep suctioning are not recommended.' },
+      { answer: 3, text: 'Following a needlestick injury, the correct immediate sequence is:',
+        options: ['Recap the needle, then report at the end of the shift', 'Apply antiseptic and squeeze the wound hard, then continue working', 'Complete the medication round, then attend occupational health', 'Wash the site, encourage bleeding, report immediately and start post-exposure protocol'],
+        why: 'Wash, allow bleeding, report immediately and follow the post-exposure protocol. Delay reduces the effectiveness of prophylaxis.' }
+    ]
+  },
+
+  {
+    n: 11, pillar: 4,
+    title: 'Medication Safety<br>in the PICU',
+    short: 'Medication Safety',
+    subtitle: 'Why paediatric medication errors happen, how the Swiss cheese model explains them, and the checks that actually stop them.',
+    framework: 'Swiss cheese model',
+    tools: 'Double check · High-alert list',
+    duration: '1 hr live + 2 hrs self-study',
+    sessions: [
+      { tag: 'Session A · Live', title: 'Live Webinar', body: 'Four real error cases analysed as system failures rather than individual mistakes.', meta: '1 hr · Attendance mandatory' },
+      { tag: 'Session B · Recorded', title: 'Recorded Lectures', body: 'Weight-based dosing, high-alert drugs, infusion calculation, smart pump use, reporting culture.', meta: '2 hrs · Self-paced' },
+      { tag: 'Session C · Simulation', title: 'Virtual Simulation', body: 'Breakout rooms — find the latent conditions in each case and add the missing defence.', meta: '45 min · Breakout groups' }
+    ],
+    strip: {
+      label: 'The Swiss cheese model — errors reach the child only when every defence has a hole',
+      title: 'Prescribing · Transcribing · Dispensing · Preparation · Administration · Monitoring',
+      items: [
+        { letter: 'Rx', name: 'Prescribing', detail: 'Wrong dose, weight<br>or drug choice', color: '#1B9E7E' },
+        { letter: 'T', name: 'Transcribing', detail: 'Copy errors<br>Unclear units', color: '#3AABCC' },
+        { letter: 'D', name: 'Dispensing', detail: 'Look-alike names<br>Wrong strength', color: '#D4882A' },
+        { letter: 'P', name: 'Preparation', detail: 'Dilution and<br>calculation errors', color: '#D4327A' },
+        { letter: 'A', name: 'Administration', detail: 'Wrong route, rate<br>patient or time', color: '#9B6BB5' }
+      ],
+      footnote: 'Children are the highest-risk group: <strong style="color:rgba(255,255,255,0.65)">every dose is calculated</strong> from weight, dilutions are non-standard, and the therapeutic margin in a 3-kg infant is unforgiving. The answer is system defences, not individual vigilance.'
+    },
+    accordionLabel: 'Core content · Where errors happen and what stops them',
+    accordion: [
+      { letter: '1', title: 'Why paediatric dosing is high risk', hint: 'The maths is the hazard', color: '#1B9E7E',
+        bullets: ['Every dose is individually calculated — there is no standard adult tablet to fall back on', 'Weight-based dosing errors are the largest single category of paediatric medication error', 'Tenfold errors from a misplaced decimal point are the classic catastrophic mistake', 'Always write a leading zero (0.5 mg) and never a trailing zero (5 mg, not 5.0 mg)', 'Use the current documented weight — not an estimate, not last month\'s, not the parent\'s recollection'],
+        callout: 'Never use "u" for units or a bare decimal point without a leading zero. <strong>10U reads as 100</strong>, and <strong>.5 mg reads as 5 mg</strong> — both have killed children.' },
+      { letter: '2', title: 'High-alert drugs', hint: 'The drugs that cause harm when they go wrong', color: '#D4327A',
+        bullets: ['Insulin, potassium chloride, heparin, opioids, neuromuscular blockers, concentrated electrolytes', 'Vasoactive infusions: adrenaline, noradrenaline, dopamine, milrinone', 'Chemotherapy and immunosuppressants; anticoagulants', 'Store separately, label distinctly, and restrict concentrated forms to protocol', 'Independent double-check for all of these, at preparation <em>and</em> at administration'],
+        compare: { cols: [
+          { label: 'True independent check', color: '#1B9E7E', bg: '#E9F6F2', body: 'Second nurse calculates alone<br>Compares result after<br>Checks drug, weight, dose,<br>concentration, rate, pump<br>Documents the check' },
+          { label: 'Not a check ⚠', color: '#D4327A', bg: '#FAE6EF', body: 'Watching the first person<br>Being told the answer<br>Signing without recalculating<br>Checking after connection<br>Assuming the pump is right' }
+        ] } },
+      { letter: '3', title: 'Infusion calculation and pump safety', hint: 'Where the decimal point hides', color: '#D4882A',
+        bullets: ['State every infusion in mcg/kg/min or mg/kg/hr — never as "mL/hr" alone in handover', 'Confirm the concentration and the total volume as well as the rate', 'Use standard concentrations wherever the unit protocol allows; non-standard needs a double-check', 'Use the drug library and soft limits on smart pumps; investigate every override', 'Label every line and every syringe at both ends — trace the line by hand before any bolus'],
+        callout: 'Never flush or bolus down a line carrying a vasoactive or a neuromuscular blocker. <strong>Trace the line with your hand from syringe to child</strong> before you push anything.' },
+      { letter: '4', title: 'Safe administration at the bedside', hint: 'The rights, and the ones people skip', color: '#9B6BB5',
+        bullets: ['Right patient, drug, dose, route, time — plus right documentation, reason and response', 'Positively identify the child every time — two identifiers, not recognition', 'Minimise interruption during preparation; a "do not disturb" period reduces error measurably', 'Check allergies before every first dose and at every prescription change', 'Document immediately after administration, never in advance'],
+        callout: 'The most frequently skipped "right" is <strong>right response</strong> — did the drug do what it was meant to do, and was that recorded? Monitoring is part of administration, not a separate task.' },
+      { letter: '5', title: 'Reporting and learning culture', hint: 'A near miss reported is a defence added', color: '#3AABCC',
+        bullets: ['Report near misses as well as errors that reached the child — the learning is identical', 'Reporting must be blame-free to be useful; blame produces silence, not safety', 'Look for latent conditions: staffing, look-alike packaging, unclear charts, interruption-heavy layout', 'Feed changes back to the staff who reported — otherwise reporting stops', 'Just culture distinguishes human error and system failure from genuine reckless behaviour'],
+        callout: 'A unit with a rising incident report rate and a falling harm rate is <em>getting safer</em>. A unit with no reports is not safe — it is silent.' }
+    ],
+    panel: {
+      label: 'The independent double check — how it is actually done',
+      intro: 'The evidence for double-checking depends entirely on it being independent. Done as observation, it adds delay and no safety.',
+      cards: [
+        { label: 'Separately', color: '#1B9E7E', body: 'Second nurse reads the chart<br>and calculates alone<br>Without being told the answer<br>Then compares' },
+        { label: 'Completely', color: '#D4882A', body: 'Drug, concentration, weight<br>Dose, volume, rate<br>Route, line traced<br>Pump programming' },
+        { label: 'Before connection', color: '#D4327A', body: 'Check before it reaches<br>the child, not after<br>Both nurses document<br>Discrepancy = stop' }
+      ],
+      scale: [
+        { label: 'Weight', bg: '#EBF8F4', fg: '#1B9E7E', body: 'Current, documented, in kilograms.' },
+        { label: 'Calculation', bg: '#FBF1E4', fg: '#D4882A', body: 'Performed independently by both nurses.' },
+        { label: 'Concentration', bg: '#FAE6EF', fg: '#D4327A', body: 'Confirmed on the vial, not assumed.' },
+        { label: 'Pump', bg: '#2C1654', fg: '#C4A8D8', body: 'Rate, volume and library entry verified.' }
+      ],
+      foot: '<strong style="color:#1A1030">If the two results differ, stop.</strong> Do not average, do not defer to seniority, do not proceed while it is sorted out — recalculate from the chart together.'
+    },
+    caseStudy: {
+      quote: '"Night shift, two nurses short. A 3.4-kg infant is prescribed morphine 100 mcg/kg. The ampoule is 10 mg in 1 mL. The nurse prepares the dose, is interrupted twice by monitor alarms, and the second nurse signs the chart while walking past."',
+      cards: [
+        { label: 'Correct dose', color: '#1B9E7E', body: '<strong>100 mcg/kg × 3.4 kg</strong><br>= 340 mcg<br>= 0.34 mg<br>Needs dilution to measure' },
+        { label: 'The holes', color: '#D4327A', body: '<strong>Understaffing</strong><br>Twice interrupted<br>High-alert drug<br>Check not independent<br>Undiluted concentrate' },
+        { label: 'The defences', color: '#9B6BB5', body: '<strong>Standard dilution</strong><br>Protected preparation time<br>True independent check<br>Smart pump limits<br>Near-miss reporting' }
+      ],
+      analysis: 'Every element of the Swiss cheese lined up: an infant needing a sub-milligram dose from a concentrated ampoule, a distracted preparation, and a signature instead of a check. The fix is systemic — standard dilutions, an interruption-free preparation period, and a check that is genuinely independent.'
+    },
+    grid: {
+      label: 'Safe practice quick reference',
+      intro: 'These six rules prevent the majority of catastrophic paediatric medication errors.',
+      items: [
+        { key: 'Leading zero, no trailing zero', color: '#1B9E7E', body: '0.5 mg — never .5 mg or 5.0 mg' },
+        { key: 'Write "units" in full', color: '#3AABCC', body: 'Never "u" — 10u reads as 100' },
+        { key: 'Current documented weight', color: '#D4882A', body: 'In kilograms, never estimated' },
+        { key: 'Independent double check', color: '#D4327A', body: 'Calculated separately, before connection' },
+        { key: 'Trace the line by hand', color: '#9B6BB5', body: 'Syringe to child, before any bolus' },
+        { key: 'State infusions by weight', color: '#2189A8', body: 'mcg/kg/min — never "mL/hr" alone' }
+      ],
+      foot: '<strong style="color:#1A1030">Report the near miss.</strong> The error that almost happened tells you exactly which defence is thin — and it costs nothing to fix before it reaches a child.'
+    },
+    objectives: [
+      'Explain why paediatric patients are the highest-risk group for medication error',
+      'Identify the six stages at which medication errors occur',
+      'Name the high-alert drug groups used in the PICU',
+      'Perform a genuine independent double check and describe what does not count as one',
+      'Calculate weight-based doses and infusion rates without decimal-point error',
+      'Apply safe writing conventions for doses, units and concentrations',
+      'Trace and label lines to prevent wrong-route and wrong-line administration',
+      'Report near misses and identify the latent conditions behind an error'
+    ],
+    videoTopics: ['1. Why children', '2. High-alert', '3. Infusions', '4. Reporting', '5. Live Case'],
+    quiz: [
+      { answer: 1, text: 'An "independent double check" of an infusion means:',
+        options: ['A second nurse watches the first calculate', 'A second nurse calculates and verifies separately, then compares', 'The doctor signs the prescription chart', 'The smart pump confirms the rate'],
+        why: 'The second checker must calculate independently. Observing the first person repeats their assumptions rather than testing them.' },
+      { answer: 2, text: 'Which is the single largest category of paediatric medication error?',
+        options: ['Wrong route administration', 'Omitted doses', 'Weight-based dose calculation errors', 'Allergy documentation failures'],
+        why: 'Because every paediatric dose is calculated from weight, calculation errors — especially tenfold decimal errors — are the largest category.' },
+      { answer: 0, text: 'Which way of writing a dose is safe?',
+        options: ['0.5 mg', '.5 mg', '5.0 mg', '10u'],
+        why: 'Always use a leading zero and never a trailing zero. ".5" can be read as 5, "5.0" as 50, and "10u" as 100.' },
+      { answer: 3, text: 'A unit sees a rising number of incident reports and a falling rate of actual patient harm. This most likely indicates:',
+        options: ['Deteriorating standards of care', 'A need to restrict reporting to serious events', 'Excessive documentation burden', 'A maturing safety culture where near misses are being reported and fixed'],
+        why: 'Rising reports with falling harm is the signature of a functioning blame-free reporting culture — near misses are surfacing and defences are being added.' }
+    ]
+  },
+
+  {
+    n: 12, pillar: 4,
+    title: 'Professionalism<br>& Crisis Resource Management',
+    short: 'Professionalism & CRM',
+    subtitle: 'Communication, teamwork, ethics, end-of-life care and looking after yourself — the skills that determine how the rest are delivered.',
+    framework: 'CRM principles · ISBAR',
+    tools: 'ISBAR · Debrief · Escalation',
+    duration: '1 hr live + 2 hrs self-study',
+    sessions: [
+      { tag: 'Session A · Live', title: 'Live Webinar', body: 'Panel with PICU nurse leaders on speaking up, escalating past resistance, and surviving a bad shift.', meta: '1 hr · Attendance mandatory' },
+      { tag: 'Session B · Recorded', title: 'Recorded Lectures', body: 'CRM principles, ISBAR structure, breaking bad news, end-of-life care, moral distress and resilience.', meta: '2 hrs · Self-paced' },
+      { tag: 'Session C · Simulation', title: 'Virtual Simulation', body: 'ISBAR handover practice and a graded-assertiveness drill where the senior is wrong.', meta: '45 min · Scenario-based' }
+    ],
+    strip: {
+      label: 'Crisis Resource Management — the non-technical skills that make technical skills work',
+      title: 'Roles · Communication · Resources · Situation awareness · Support · Reassess',
+      items: [
+        { letter: 'R', name: 'Role clarity', detail: 'Say your role aloud<br>One leader', color: '#1B9E7E' },
+        { letter: 'C', name: 'Closed-loop comms', detail: 'Name, task,<br>read back, confirm', color: '#3AABCC' },
+        { letter: 'R', name: 'Resources', detail: 'Call for help early<br>Know what you have', color: '#D4882A' },
+        { letter: 'S', name: 'Situation awareness', detail: 'Step back<br>Look at the whole', color: '#D4327A' },
+        { letter: 'S', name: 'Speak up', detail: 'Graded assertiveness<br>Anyone can stop the line', color: '#9B6BB5' }
+      ],
+      footnote: 'Around <strong style="color:rgba(255,255,255,0.65)">70% of serious clinical incidents involve a communication failure</strong>, not a knowledge failure. These are trainable skills, and they are what this module examines.'
+    },
+    accordionLabel: 'Core content · Skill by skill',
+    accordion: [
+      { letter: '1', title: 'Closed-loop communication and role clarity', hint: 'The mechanics of a well-run crisis', color: '#1B9E7E',
+        bullets: ['One clearly identified leader, who states that they are leading', 'Everyone states their own role out loud at the start — no assumed allocations', 'Direct every instruction to a <strong>named person</strong>, never to the room', 'The receiver reads the instruction back, then reports when it is complete', 'The leader keeps hands off where possible in order to maintain the overview'],
+        callout: '"Someone get adrenaline" is not a instruction — it is a hope. <strong>"Priya, draw 300 micrograms of adrenaline and tell me when it is ready"</strong> is an instruction, and it closes the loop.' },
+      { letter: '2', title: 'ISBAR handover and escalation', hint: 'Structure carries urgency', color: '#3AABCC',
+        bullets: ['<strong>I</strong>dentify — you, the child, where you are calling from', '<strong>S</strong>ituation — what is happening now, in one sentence', '<strong>B</strong>ackground — the relevant history only, not the whole admission', '<strong>A</strong>ssessment — your interpretation, including scores and trends', '<strong>R</strong>ecommendation — what you want, and by when. State it explicitly.'],
+        compare: { cols: [
+          { label: 'Weak escalation', color: '#D4327A', bg: '#FAE6EF', body: '"The child in bed 4<br>doesn\'t look right,<br>can you come sometime?"<br><em>No data, no ask, no time</em>' },
+          { label: 'Strong escalation', color: '#1B9E7E', bg: '#E9F6F2', body: '"PEWS 2 → 6 in an hour,<br>RR 62, CRT 4 sec,<br>I need you at the bedside<br>within 5 minutes."' }
+        ] } },
+      { letter: '3', title: 'Speaking up and graded assertiveness', hint: 'When you believe something is wrong', color: '#D4882A',
+        bullets: ['<strong>Probe:</strong> "I\'m not sure the dose is right — can we check the weight together?"', '<strong>Alert:</strong> "I\'m concerned this dose is ten times higher than the guideline."', '<strong>Challenge:</strong> "I need you to stop and recheck this with me before we give it."', '<strong>Emergency:</strong> "Stop. I am not giving this drug." Then escalate above.', 'Anyone, at any grade, can stop the line — and must be supported for doing so'],
+        callout: 'Escalate up the hierarchy without asking permission when a child is at risk. <strong>Being wrong about a concern costs a conversation.</strong> Being silent about a real one costs far more.' },
+      { letter: '4', title: 'Ethics, family and end-of-life care', hint: 'The hardest part of the work', color: '#9B6BB5',
+        bullets: ['Family-centred care: parents are partners in care, present and informed, not visitors', 'Breaking bad news: quiet space, senior clinician, nurse present, no interruptions, silence allowed', 'Withdrawal of life-sustaining treatment: comfort, dignity, privacy, family choice, cultural and religious needs', 'Symptom control, mouth care, positioning, presence — meticulous care does not stop', 'Organ donation, consent and documentation handled per local law and with specialist support'],
+        callout: 'Bereavement care includes the paperwork, the belongings, the memory-making and the follow-up call. <strong>How a family is treated in those hours is remembered for the rest of their lives.</strong>' },
+      { letter: '5', title: 'Looking after yourself and the team', hint: 'Sustainability is a safety issue', color: '#3AABCC',
+        bullets: ['Moral distress: knowing the right action and being unable to take it. Name it — it is not weakness.', 'Hot debrief immediately after a critical event; structured debrief within 24–48 hours', 'Recognise burnout: exhaustion, depersonalisation, reduced sense of accomplishment', 'Peer support, supervision, and formal help are professional tools, not a last resort', 'Second victim: the staff involved in a serious incident need active support, not investigation alone'],
+        callout: 'A depleted nurse is a patient safety risk. <strong>Rest, breaks, debriefs and support are clinical interventions</strong> — the unit\'s error rate depends on them as much as on any protocol.' }
+    ],
+    panel: {
+      label: 'The debrief — three questions, ten minutes',
+      intro: 'A hot debrief needs no facilitator training and no meeting room. It needs someone to ask three questions before the team disperses.',
+      cards: [
+        { label: 'What went well?', color: '#1B9E7E', body: 'Name it specifically<br>Reinforce the behaviour<br>Everyone contributes<br>Start here, always' },
+        { label: 'What was difficult?', color: '#D4882A', body: 'Systems and process<br>not individuals<br>No blame, no defence<br>Write it down' },
+        { label: 'What will change?', color: '#D4327A', body: 'One or two actions<br>Named owner<br>A date<br>Fed back to the team' }
+      ],
+      scale: [
+        { label: 'Hot debrief', bg: '#EBF8F4', fg: '#1B9E7E', body: 'Immediately after. Ten minutes, at the bedside.' },
+        { label: 'Cold debrief', bg: '#FBF1E4', fg: '#D4882A', body: 'Within 24–48 hrs. Structured, facilitated.' },
+        { label: 'Individual support', bg: '#FAE6EF', fg: '#D4327A', body: 'Offered actively, not only on request.' },
+        { label: 'Close the loop', bg: '#2C1654', fg: '#C4A8D8', body: 'Report back what changed. Otherwise it stops.' }
+      ],
+      foot: '<strong style="color:#1A1030">A debrief that produces no change is a conversation.</strong> One or two named actions with an owner and a date is what converts a difficult shift into a safer unit.'
+    },
+    caseStudy: {
+      quote: '"You are the bedside nurse. A prescription reads adrenaline 1 mg/kg for a 6-kg infant in septic shock — ten times the standard dose. The consultant is busy at another bedside and has already said, sharply, that the chart is correct."',
+      cards: [
+        { label: 'Probe', color: '#1B9E7E', body: '<strong>"Can we check the</strong><br><strong>weight and units</strong><br><strong>together?"</strong><br>Curious, not accusing' },
+        { label: 'Alert &amp; challenge', color: '#D4882A', body: '<strong>"I\'m concerned this is</strong><br><strong>10× the guideline dose."</strong><br>"I need you to stop and<br>recheck this with me."' },
+        { label: 'Emergency', color: '#D4327A', body: '<strong>"Stop. I am not</strong><br><strong>giving this drug."</strong><br>Escalate above<br>Document contemporaneously' }
+      ],
+      analysis: 'Graded assertiveness gives you a script when the hierarchy is against you. You do not need to be certain to stop the line — you only need to be concerned. Escalate above without asking permission, document what you said and when, and expect the unit to support you for it.'
+    },
+    grid: {
+      label: 'ISBAR escalation template',
+      intro: 'Write the numbers down before you pick up the phone. Structure is what carries urgency across a hierarchy.',
+      items: [
+        { key: 'I — Identify', color: '#1B9E7E', body: 'Your name, role, ward, and the child\'s name and bed' },
+        { key: 'S — Situation', color: '#3AABCC', body: 'One sentence: what is wrong right now' },
+        { key: 'B — Background', color: '#D4882A', body: 'Relevant history only — diagnosis, day, key events' },
+        { key: 'A — Assessment', color: '#D4327A', body: 'Observations, PEWS trend, your interpretation' },
+        { key: 'R — Recommendation', color: '#9B6BB5', body: 'What you want, and by when — say it explicitly' },
+        { key: 'Read back', color: '#2189A8', body: 'Confirm the plan and the timeframe before ending the call' }
+      ],
+      foot: '<strong style="color:#1A1030">Always state a timeframe.</strong> "Please come and see her" is a request; "I need you at the bedside within five minutes" is an escalation with an answer you can act on.'
+    },
+    objectives: [
+      'Apply crisis resource management principles during a clinical emergency',
+      'Use closed-loop communication with named individuals and read-back',
+      'Escalate concern using ISBAR with an explicit recommendation and timeframe',
+      'Use graded assertiveness to challenge an unsafe decision at any grade',
+      'Support family-centred care, including presence during resuscitation',
+      'Contribute to end-of-life and bereavement care with dignity and cultural sensitivity',
+      'Run a hot debrief using three questions and produce named actions',
+      'Recognise moral distress and burnout in yourself and colleagues, and seek support'
+    ],
+    videoTopics: ['1. CRM', '2. ISBAR', '3. Speaking up', '4. End of life', '5. Live Case'],
+    quiz: [
+      { answer: 1, text: 'Closed-loop communication during a crisis means:',
+        options: ['Only the team leader speaks', 'The instruction is given to a named person who reads it back and confirms completion', 'Instructions are written before being given', 'Communication is restricted to the nurse in charge'],
+        why: 'The receiver is named, repeats the instruction back and reports completion, so the leader knows it was heard and done.' },
+      { answer: 2, text: 'Which is the strongest escalation to a busy senior?',
+        options: ['"The child in bed 4 doesn\'t look right."', '"Could you come and see bed 4 when you get a chance?"', '"PEWS has risen from 2 to 6 in an hour, RR 62, CRT 4 seconds — I need you at the bedside within 5 minutes."', '"I\'m a bit worried about bed 4 but it can probably wait."'],
+        why: 'A strong escalation states objective data, your assessment, an explicit request and a timeframe.' },
+      { answer: 0, text: 'You believe a prescribed dose is ten times too high and the prescriber has dismissed your concern. Applying graded assertiveness, you should:',
+        options: ['State clearly that you are not giving the drug and escalate above', 'Give the dose since the prescriber is more senior', 'Give half the dose as a compromise', 'Document your concern and give it as prescribed'],
+        why: 'At the emergency stage of graded assertiveness you stop the line and escalate above. Anyone, at any grade, can stop an unsafe action.' },
+      { answer: 3, text: 'What makes a hot debrief effective?',
+        options: ['It is led by an external facilitator', 'It focuses on identifying who made the error', 'It is held several weeks later with written submissions', 'It happens immediately, is blame-free, and produces one or two named actions with a date'],
+        why: 'A hot debrief is immediate, short, blame-free and action-producing. Without named actions and feedback, debriefing stops happening.' }
+    ]
+  }
+];
+
+</script>
 <script>
 (function(){
   var PILLAR_PHOTOS = {
@@ -223,7 +2040,7 @@
     var color = PCCN_PILLARS[m.pillar].color;
     var a = document.createElement('a');
     a.className = 'mod-card';
-    a.href = 'PCCN_Module.html?m=' + m.n;
+    a.href = ({1:'PCCN_Module01_Initial_Assessment.html',2:'PCCN_Module02_Respiratory_Support.html',3:'PCCN_Module03_Shock_Hemodynamics.html',4:'PCCN_Module04_Arrhythmias_BLS_PALS.html'})[m.n] || ('PCCN_Module.html?m=' + m.n);
     a.style.borderTopColor = color;
     a.innerHTML = '<div class="mlabel" style="color:'+color+';">Module '+String(m.n).padStart(2,'0')+'</div><div class="mtitle">'+m.short+'</div>';
     teaserGrid.appendChild(a);
@@ -231,5 +2048,10 @@
 })();
 </script>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="pccn-firebase-config.js"></script>
+<script src="pccn-auth.js"></script>
 </body>
 </html>

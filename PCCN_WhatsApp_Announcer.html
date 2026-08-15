@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp Announcer — PCCN (Committee tool)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2C0E4F;--soft:#6B5D82;--muted:#8A7796;--pink:#D6246E;--border:#EEE4EC;}
+body{margin:0;background:#FBF8FA;font-family:'Poppins',sans-serif;color:var(--ink);}
+a{color:#B01A59;} a:hover{color:var(--pink);}
+.wrap{max-width:1060px;margin:0 auto;padding:36px 20px 80px;}
+h1{font-family:'Fraunces',serif;font-weight:600;font-size:1.7rem;margin:16px 0 6px;}
+.sub{color:var(--soft);margin:0 0 30px;max-width:620px;font-size:.92rem;}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:start;}
+@media (max-width:760px){.grid{grid-template-columns:1fr;}}
+label{display:flex;flex-direction:column;gap:6px;font-size:.8rem;font-weight:600;color:var(--soft);margin-bottom:14px;}
+input{padding:13px 14px;border:1px solid var(--border);border-radius:10px;font-size:16px;font-family:'Poppins',sans-serif;color:var(--ink);background:#fff;}
+input:focus{outline:2px solid var(--pink);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.copybtn{width:100%;padding:16px 24px;border:none;border-radius:12px;background:var(--pink);color:#fff;font-family:'Poppins',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;min-height:48px;}
+.copybtn:active{background:#B01A59;}
+.wabtn{display:block;text-align:center;margin-top:10px;padding:15px 24px;border-radius:12px;background:#25D366;color:#fff;font-weight:700;font-size:.95rem;text-decoration:none;min-height:18px;}
+.phone{background:#e5ddd5;border-radius:20px;padding:22px 18px;box-shadow:0 12px 34px rgba(31,9,56,.12);}
+.phone .plabel{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;text-align:center;}
+.bubble{background:#fff;border-radius:4px 14px 14px 14px;padding:14px 16px;font-size:.86rem;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;color:#111;box-shadow:0 1px 1px rgba(0,0,0,.08);}
+.brand{display:flex;align-items:center;gap:12px;}
+.bmark{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#3E1266,#6B1C72);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:18px;}
+.bword b{font-family:'Fraunces',serif;font-weight:700;font-size:19px;color:var(--pink);display:block;line-height:1.05;}
+.bword span{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><div class="bmark">P</div><div class="bword"><b>PCCN</b><span>Committee tool</span></div></div>
+  <h1>WhatsApp webinar announcer</h1>
+  <p class="sub">Fill in the session details → Copy (or send straight to WhatsApp). The *bold* marks render as real bold inside WhatsApp. Bookmark this page — it works on any phone.</p>
+  <div class="grid">
+    <div>
+      <label>Session title<input id="fTitle" value="Introduction & Course Overview"></label>
+      <label>Module / session tag<input id="fTag" value="Launch Session · Live on Zoom"></label>
+      <div class="row2">
+        <label>Date<input id="fDate" value="Friday, 15 August 2026"></label>
+        <label>Time (IST)<input id="fTime" value="7:30 PM"></label>
+      </div>
+      <label>Speaker(s)<input id="fSpeaker" value="PCCN Faculty"></label>
+      <label>Zoom registration link<input id="fLink" value="https://us06web.zoom.us/meeting/register/fcJY2n0gSFaxxiZTd9sf9Q"></label>
+      <button type="button" class="copybtn" id="copyBtn">Copy message</button>
+      <a href="#" class="wabtn" id="waBtn">Open in WhatsApp →</a>
+    </div>
+    <div class="phone">
+      <div class="plabel">WhatsApp preview</div>
+      <div class="bubble" id="preview"></div>
+    </div>
+  </div>
+</div>
+<script>
+function val(id){ return document.getElementById(id).value.trim(); }
+function buildMsg(){
+  return ['\ud83d\udc9c\ud83e\ude7a *PCCN \u00b7 Pediatric Critical Care Nursing* \ud83e\ude7a\ud83d\udc9c','_IAP Intensive Care Chapter \u00b7 Certificate Course_','','\ud83d\udd34 *LIVE ZOOM SESSION* \ud83d\udd34','\ud83d\udcda ' + val('fTag'),'','\u2728 *' + val('fTitle') + '* \u2728','\ud83c\udf99\ufe0f Speaker: ' + val('fSpeaker'),'','\ud83d\udcc5 ' + val('fDate'),'\u23f0 ' + val('fTime') + ' IST','','\ud83d\udc49 *Register in advance (required):*','\ud83d\udd17 ' + val('fLink'),'','\ud83d\udce9 After registering you will receive a confirmation email with your personal joining link.','','\u2705 Attendance counts toward *Step 2* of your certification pathway (70% required).','','\ud83c\udf10 www.piccindia.com \u00b7 \u2709\ufe0f stepin.iapicc@gmail.com'].join('\n');
+}
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+function render(){
+  var m = esc(buildMsg());
+  m = m.replace(/\*([^*\n]+)\*/g, '<strong>$1</strong>').replace(/_([^_\n]+)_/g, '<em style="color:#555;">$1</em>');
+  document.getElementById('preview').innerHTML = m;
+  document.getElementById('waBtn').href = 'https://wa.me/?text=' + encodeURIComponent(buildMsg());
+}
+document.querySelectorAll('input').forEach(function(i){ i.addEventListener('input', render); });
+document.getElementById('copyBtn').addEventListener('click', function(){
+  var b = this;
+  navigator.clipboard.writeText(buildMsg()).then(function(){
+    b.textContent = '\u2713 Copied — paste into WhatsApp';
+    setTimeout(function(){ b.textContent = 'Copy message'; }, 2500);
+  });
+});
+render();
+</script>
+</body>
+</html>

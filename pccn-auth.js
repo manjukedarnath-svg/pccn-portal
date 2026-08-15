@@ -1,34 +1,17 @@
-// PCCN Certificate Course — shared authentication helper.
-// Include this AFTER the Firebase compat SDK scripts and pccn-firebase-config.js:
-//
-//   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-//   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-//   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-//   <script src="pccn-firebase-config.js"></script>
-//   <script src="pccn-auth.js"></script>
-//
-// Every page that includes this script automatically gets its
-// #navAuthArea updated to reflect whether someone is signed in.
-
 (function(){
   if (!window.firebase || !window.PCCN_FIREBASE_CONFIG) {
     console.warn('PCCN_AUTH: Firebase SDK or config not loaded — auth disabled on this page.');
     return;
   }
-
   if (!firebase.apps || !firebase.apps.length) {
     firebase.initializeApp(window.PCCN_FIREBASE_CONFIG);
   }
-
   var auth = firebase.auth();
   var db = (firebase.firestore ? firebase.firestore() : null);
-
   var listeners = [];
-  var resolvedUser; // undefined = not yet resolved, null = signed out, object = signed in
+  var resolvedUser;
   var hasResolvedOnce = false;
   var pendingRequireLogin = false;
-
-  function nn(n){ return String(n).padStart(2, '0'); }
 
   function renderNav(user){
     var area = document.getElementById('navAuthArea');
@@ -60,17 +43,8 @@
   });
 
   window.PCCN_AUTH = {
-    // Fire cb(user) every time auth state changes (including the first resolution).
-    // user is null when signed out.
-    onChange: function(cb){
-      listeners.push(cb);
-      if (hasResolvedOnce) cb(resolvedUser);
-    },
-    // Returns the current user, or undefined if auth state hasn't resolved yet.
+    onChange: function(cb){ listeners.push(cb); if (hasResolvedOnce) cb(resolvedUser); },
     currentUser: function(){ return resolvedUser; },
-    // Redirects to the Login page (preserving the current page as ?next=) if
-    // nobody is signed in once auth state resolves. Safe to call immediately
-    // on page load — it waits for the first resolution before deciding.
     requireLogin: function(){
       if (hasResolvedOnce) {
         if (!resolvedUser) {
@@ -82,9 +56,7 @@
       }
     },
     logout: function(){
-      auth.signOut().then(function(){
-        window.location.href = 'PCCN_Landing_Page.html';
-      });
+      auth.signOut().then(function(){ window.location.href = 'PCCN_Landing_Page.html'; });
     },
     db: function(){ return db; },
     auth: function(){ return auth; }

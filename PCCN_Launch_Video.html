@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCCN Launch Film — Pediatric Critical Care Nursing</title>
+<style>
+body{margin:0;background:#14042a;font-family:'Poppins',-apple-system,sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+a{color:#F0D9A8;} a:hover{color:#fff;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;font-size:13px;}
+.topbar a{text-decoration:none;font-weight:600;}
+#root{flex:1;display:flex;align-items:center;justify-content:center;padding:0 8px 16px;}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
+<script>window.OM_SCENES = '[{"name":"Opening","dur":5,"desc":"PCCN mark and full course name settle in"},{"name":"Mission","dur":7,"desc":"The 3am nurse quote and who built the course"},{"name":"Pillars","dur":10,"desc":"The four pillars of practice slide up"},{"name":"Modules","dur":11,"desc":"All twelve module chips populate the grid"},{"name":"Inside","dur":11,"desc":"Inside one module: lectures, webinar, simulation, quiz"},{"name":"Sessions","dur":9,"desc":"Two live refresher sessions before the workshop"},{"name":"Pathway","dur":9,"desc":"Four steps to certification connect"},{"name":"Fees","dur":7,"desc":"Fees, register-by date and the Google Form"},{"name":"Close","dur":7,"desc":"Partner logos, URL and launch date"}]';</script>
+<script>window.OM_PLAYBACK = '{"mode":"times","count":1}';</script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+<div class="topbar"><a href="PCCN_Landing_Page.html">← Back to PCCN portal</a><span style="color:rgba(255,255,255,.4);">PCCN launch film · 1:16</span></div>
+<div id="root"></div>
+<script type="text/plain" id="appSrc">
+const { CompositionStage, useComposition, Shot, Captions, Easing, animate, clamp } = window;
+
+const PLUM = '#1F0938', PINK = '#D6246E', GOLD = '#F0D9A8', CREAM = '#FBF8FA';
+const PILLARS = [
+  { n: '1', name: 'Assessment & Acute Stabilisation', c: '#1B9E7E' },
+  { n: '2', name: 'Organ Support & Monitoring', c: '#D4327A' },
+  { n: '3', name: 'Quality, Safety & Systems', c: '#D4882A' },
+  { n: '4', name: 'The Child & The Family', c: '#3AABCC' },
+];
+const MODULES = ['Initial Assessment','Respiratory Support','Shock & Hemodynamics','Arrhythmias, BLS & PALS','Ventilation Basics','Sepsis & Infection Control','Neuro & Trauma','Fluids & Electrolytes','Medication Safety','Nutrition & Comfort','Post-op Cardiac Care','Family-Centred Care'];
+
+const MOTION = {
+  enter: (T, at, dur = 0.7, dist = 42) => ({
+    opacity: animate({ from: 0, to: 1, start: at, end: at + dur, ease: Easing.easeOutCubic })(T),
+    transform: 'translateY(' + animate({ from: dist, to: 0, start: at, end: at + dur, ease: Easing.easeOutCubic })(T) + 'px)',
+  }),
+  pop: (T, at, dur = 0.55) => ({
+    opacity: animate({ from: 0, to: 1, start: at, end: at + dur * 0.6 })(T),
+    transform: 'scale(' + animate({ from: 0.55, to: 1, start: at, end: at + dur, ease: Easing.easeOutBack })(T) + ')',
+  }),
+  draw: (T, at, dur = 0.9) => animate({ from: 0, to: 1, start: at, end: at + dur, ease: Easing.easeInOutCubic })(T),
+};
+
+const S = {
+  slide: { position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 140px', boxSizing: 'border-box' },
+  eyebrow: { fontSize: 26, letterSpacing: '.28em', textTransform: 'uppercase', color: GOLD, fontWeight: 600 },
+  h: { fontFamily: "'Fraunces',serif", fontWeight: 600, color: '#fff', lineHeight: 1.1 },
+};
+
+function Piece() {
+  const { T, CUES, authoredTotal } = useComposition();
+  const fadeOut = (endCue, lead = 0.6) => animate({ from: 1, to: 0, start: endCue - lead, end: endCue, ease: Easing.easeInQuad })(T);
+  const bgGlow = animate({ from: 15, to: 85, start: 0, end: authoredTotal, ease: Easing.linear })(T);
+  return (
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', fontFamily: "'Poppins',sans-serif", background: `radial-gradient(1400px 800px at ${bgGlow}% 10%, rgba(214,36,110,.30), transparent 60%), linear-gradient(135deg,#1F0938 0%,#2C0E4F 45%,#3E1266 78%,#6B1C72 100%)` }}>
+      <div style={{ position: 'absolute', width: 1500, height: 1500, borderRadius: '50%', right: -560, top: -700, border: '2px solid rgba(240,217,168,.18)', boxShadow: '0 0 0 120px rgba(240,217,168,.04), 0 0 0 122px rgba(240,217,168,.11)', transform: `rotate(${T * 2}deg)` }} />
+
+      {/* persistent brand chip after Opening */}
+      <div style={{ position: 'absolute', top: 44, left: 56, display: 'flex', alignItems: 'center', gap: 14, opacity: animate({ from: 0, to: 1, start: CUES.Mission - 0.5, end: CUES.Mission + 0.4 })(T) }}>
+        <div style={{ width: 52, height: 52, borderRadius: 13, background: 'linear-gradient(135deg,#3E1266,#6B1C72)', border: '1px solid rgba(255,255,255,.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 24, color: '#fff' }}>P</div>
+        <div style={{ textAlign: 'left' }}><div style={{ fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 26, color: '#F272AC' }}>PCCN</div><div style={{ fontSize: 11, letterSpacing: '.22em', textTransform: 'uppercase', color: 'rgba(255,255,255,.55)' }}>Certificate Course</div></div>
+      </div>
+
+      {/* ============ OPENING ============ */}
+      <Shot from={0} to={CUES.Mission}>
+        <div style={{ ...S.slide, opacity: fadeOut(CUES.Mission) }}>
+          <div style={{ width: 130, height: 130, borderRadius: 32, background: 'linear-gradient(135deg,#3E1266,#6B1C72)', border: '2px solid rgba(255,255,255,.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 64, color: '#fff', ...MOTION.pop(T, 0.3) }}>P</div>
+          <div style={{ ...S.h, fontSize: 110, marginTop: 40, ...MOTION.enter(T, 0.9) }}>PCCN</div>
+          <div style={{ fontSize: 40, color: '#F272AC', fontFamily: "'Fraunces',serif", marginTop: 12, ...MOTION.enter(T, 1.5) }}>Pediatric Critical Care Nursing</div>
+          <div style={{ ...S.eyebrow, marginTop: 34, ...MOTION.enter(T, 2.2) }}>IAP Intensive Care Chapter · Certificate Course</div>
+        </div>
+      </Shot>
+
+      {/* ============ MISSION ============ */}
+      <Shot from={CUES.Mission} to={CUES.Pillars}>
+        <div style={{ ...S.slide, opacity: fadeOut(CUES.Pillars) }}>
+          <div style={{ fontFamily: "'Fraunces',serif", fontStyle: 'italic', fontSize: 54, lineHeight: 1.35, color: '#fff', maxWidth: 1350, ...MOTION.enter(T, CUES.Mission + 0.3) }}>
+            &ldquo;Every child who deteriorates at 3am depends on the nurse at the bedside — <span style={{ color: '#F272AC' }}>she is the variable that changes the outcome.</span>&rdquo;
+          </div>
+          <div style={{ fontSize: 28, color: 'rgba(255,255,255,.65)', marginTop: 48, ...MOTION.enter(T, CUES.Mission + 2.2) }}>Built by PICU faculty, for the nurse in the 3am crisis.</div>
+        </div>
+      </Shot>
+
+      {/* ============ PILLARS ============ */}
+      <Shot from={CUES.Pillars} to={CUES.Modules}>
+        <div style={{ ...S.slide, opacity: fadeOut(CUES.Modules) }}>
+          <div style={{ ...S.eyebrow, ...MOTION.enter(T, CUES.Pillars + 0.2) }}>The framework</div>
+          <div style={{ ...S.h, fontSize: 76, margin: '18px 0 64px', ...MOTION.enter(T, CUES.Pillars + 0.5) }}>Four pillars of practice</div>
+          <div style={{ display: 'flex', gap: 26 }}>
+            {PILLARS.map((p, i) => (
+              <div key={p.n} style={{ width: 320, background: 'rgba(255,255,255,.96)', borderRadius: 22, padding: '38px 30px', textAlign: 'left', ...MOTION.enter(T, CUES.Pillars + 1.2 + i * 0.5, 0.8, 70) }}>
+                <div style={{ width: 52, height: 52, borderRadius: 13, background: p.c, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 24, marginBottom: 20 }}>{p.n}</div>
+                <div style={{ fontFamily: "'Fraunces',serif", fontWeight: 600, fontSize: 27, lineHeight: 1.25, color: '#2C0E4F' }}>{p.name}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Shot>
+
+      {/* ============ MODULES ============ */}
+      <Shot from={CUES.Modules} to={CUES.Inside}>
+        <div style={{ ...S.slide, opacity: fadeOut(CUES.Inside) }}>
+          <div style={{ ...S.eyebrow, ...MOTION.enter(T, CUES.Modules + 0.2) }}>The curriculum</div>
+          <div style={{ ...S.h, fontSize: 76, margin: '18px 0 56px', ...MOTION.enter(T, CUES.Modules + 0.5) }}>Twelve modules, one path</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 18, width: 1440 }}>
+            {MODULES.map((m, i) => (
+              <div key={m} style={{ background: 'rgba(255,255,255,.94)', borderRadius: 14, borderTop: '4px solid ' + PILLARS[Math.floor(i / 3)].c, padding: '20px 22px', textAlign: 'left', ...MOTION.enter(T, CUES.Modules + 1.1 + i * 0.28, 0.6, 50) }}>
+                <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: '.12em', color: PILLARS[Math.floor(i / 3)].c }}>MODULE {String(i + 1).padStart(2, '0')}</div>
+                <div style={{ fontFamily: "'Fraunces',serif", fontWeight: 600, fontSize: 21, color: '#2C0E4F', marginTop: 5 }}>{m}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Shot>
+
+      {/* ============ INSIDE A MODULE ============ */}
+      <Shot from={CUES.Inside} to={CUES.Sessions}>
+        <InsideModule T={T} at={CUES.Inside} out={fadeOut(CUES.Sessions)} />
+      </Shot>
+
+      {/* ============ SESSIONS ============ */}
+      <Shot from={CUES.Sessions} to={CUES.Pathway}>
+        <div style={{ ...S.slide, opacity: fadeOut(CUES.Pathway) }}>
+          <div style={{ ...S.eyebrow, ...MOTION.enter(T, CUES.Sessions + 0.2) }}>Live online sessions</div>
+          <div style={{ ...S.h, fontSize: 68, margin: '18px 0 60px', maxWidth: 1300, ...MOTION.enter(T, CUES.Sessions + 0.5) }}>2 live refresher sessions prior to the hands-on workshop</div>
+          <div style={{ display: 'flex', gap: 30 }}>
+            {[['SESSION 1', '3 hours', 'Assessment · Triage · Fluids · High-quality CPR'], ['SESSION 2', '4 hours', 'Arrhythmias · Ventilation · Medication safety · Kahoot test']].map((s, i) => (
+              <div key={s[0]} style={{ width: 560, background: 'rgba(255,255,255,.96)', borderRadius: 22, padding: '40px 44px', textAlign: 'left', ...MOTION.enter(T, CUES.Sessions + 1.2 + i * 0.7, 0.8, 70) }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                  <span style={{ fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 34, color: '#2C0E4F' }}>{s[0]}</span>
+                  <span style={{ fontSize: 22, fontWeight: 700, color: PINK }}>{s[1]}</span>
+                </div>
+                <div style={{ fontSize: 23, color: '#6B5D82', marginTop: 16, lineHeight: 1.5 }}>{s[2]}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Shot>
+
+      {/* ============ PATHWAY ============ */}
+      <Shot from={CUES.Pathway} to={CUES.Fees}>
+        <Pathway T={T} at={CUES.Pathway} out={fadeOut(CUES.Fees)} />
+      </Shot>
+
+      {/* ============ FEES ============ */}
+      <Shot from={CUES.Fees} to={CUES.Close}>
+        <div style={{ ...S.slide, opacity: fadeOut(CUES.Close) }}>
+          <div style={{ ...S.eyebrow, ...MOTION.enter(T, CUES.Fees + 0.2) }}>Enrolment</div>
+          <div style={{ ...S.h, fontSize: 74, margin: '18px 0 56px', ...MOTION.enter(T, CUES.Fees + 0.4) }}>Enroll by 15 September 2026</div>
+          <div style={{ display: 'flex', gap: 30, alignItems: 'stretch' }}>
+            <div style={{ background: 'rgba(255,255,255,.96)', borderRadius: 22, padding: '38px 60px', ...MOTION.pop(T, CUES.Fees + 1.1) }}>
+              <div style={{ fontSize: 18, fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase', color: '#8A7796' }}>IDPCCN Fellows</div>
+              <div style={{ fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 72, color: '#2C0E4F' }}>₹1,000</div>
+            </div>
+            <div style={{ background: 'rgba(255,255,255,.96)', borderRadius: 22, padding: '38px 60px', ...MOTION.pop(T, CUES.Fees + 1.5) }}>
+              <div style={{ fontSize: 18, fontWeight: 700, letterSpacing: '.14em', textTransform: 'uppercase', color: '#8A7796' }}>All other nurses</div>
+              <div style={{ fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 72, color: PINK }}>₹1,500</div>
+            </div>
+          </div>
+          <div style={{ fontSize: 26, color: 'rgba(255,255,255,.7)', marginTop: 48, ...MOTION.enter(T, CUES.Fees + 2.4) }}>Digital manual · lifetime lecture access · ready reckoner · 8 hrs CNE credit</div>
+        </div>
+      </Shot>
+
+      {/* ============ CLOSE ============ */}
+      <Shot from={CUES.Close} to={authoredTotal + 1}>
+        <div style={S.slide}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 34, background: 'rgba(255,255,255,.97)', borderRadius: 22, padding: '26px 44px', ...MOTION.enter(T, CUES.Close + 0.3) }}>
+            <img src="assets/logos/iap.png" alt="IAP" style={{ height: 88 }} />
+            <img src="assets/logos/iap-icc.png" alt="IAP ICC" style={{ height: 76 }} />
+            <img src="assets/logos/stepin.png" alt="STEP IN" style={{ height: 94 }} />
+            <img src="assets/logos/pccncc.png" alt="PCCNCC" style={{ height: 94 }} />
+          </div>
+          <div style={{ ...S.h, fontSize: 84, marginTop: 56, ...MOTION.enter(T, CUES.Close + 1.1) }}>Launching 15 August 2026 · 7 PM</div>
+          <div style={{ fontSize: 34, color: GOLD, fontWeight: 600, marginTop: 30, ...MOTION.pop(T, CUES.Close + 2.0) }}>manjukedarnath-svg.github.io/pccn-portal</div>
+          <div style={{ fontSize: 24, color: 'rgba(255,255,255,.6)', marginTop: 18, ...MOTION.enter(T, CUES.Close + 2.6) }}>www.piccindia.com · stepin.iapicc@gmail.com</div>
+        </div>
+      </Shot>
+
+      <Captions items={[
+        { at: 0.8, text: 'A certificate course for the pediatric critical care nurse' },
+        { at: CUES.Mission + 0.5, text: 'Why this course exists' },
+        { at: CUES.Pillars + 0.6, text: 'Every module maps to one of four pillars' },
+        { at: CUES.Modules + 0.6, text: 'Webinars, lectures, simulations and assessed quizzes' },
+        { at: CUES.Inside + 0.6, text: 'Each module is a complete learning loop' },
+        { at: CUES.Sessions + 0.6, text: '7 hours of live teaching, ending in a Kahoot assessment' },
+        { at: CUES.Pathway + 0.6, text: 'Certification is earned, step by step' },
+        { at: CUES.Fees + 0.6, text: 'Enroll through the Google Form on the portal' },
+        { at: CUES.Close + 0.8, text: 'PCCN — The definitive course' },
+      ]} />
+    </div>
+  );
+}
+
+function InsideModule({ T, at, out }) {
+  const rows = [['0', 'Pre-test — know your baseline'], ['1-5', 'Recorded lectures, at your pace'], ['L', 'Live webinar with PICU faculty'], ['S', 'Virtual simulation drill'], ['Q', 'Graded module quiz']];
+  const prog = MOTION.draw(T, at + 4.6, 3.2);
+  return (
+    <div style={{ ...S.slide, opacity: out }}>
+      <div style={{ ...S.eyebrow, ...MOTION.enter(T, at + 0.2) }}>Inside every module</div>
+      <div style={{ ...S.h, fontSize: 72, margin: '18px 0 52px', ...MOTION.enter(T, at + 0.5) }}>A complete learning loop</div>
+      <div style={{ width: 1000, background: 'rgba(255,255,255,.97)', borderRadius: 24, padding: '38px 48px', textAlign: 'left', ...MOTION.enter(T, at + 1.0, 0.8, 60) }}>
+        {rows.map((r, i) => (
+          <div key={r[0]} style={{ display: 'flex', alignItems: 'center', gap: 22, padding: '15px 0', borderBottom: i < rows.length - 1 ? '1px solid #F3EAF1' : 'none', opacity: animate({ from: 0, to: 1, start: at + 1.5 + i * 0.55, end: at + 2.0 + i * 0.55 })(T) }}>
+            <div style={{ width: 44, height: 44, borderRadius: 11, background: i === 4 ? PINK : '#3E1266', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 19, flexShrink: 0 }}>{r[0]}</div>
+            <div style={{ fontSize: 26, fontWeight: 500, color: '#2C0E4F' }}>{r[1]}</div>
+            <div style={{ marginLeft: 'auto', fontSize: 26, color: '#1B9E7E', fontWeight: 700, opacity: animate({ from: 0, to: 1, start: at + 2.0 + i * 0.55, end: at + 2.3 + i * 0.55 })(T) }}>✓</div>
+          </div>
+        ))}
+        <div style={{ marginTop: 26 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 17, fontWeight: 700, color: '#8A7796', marginBottom: 8 }}><span>MODULE PROGRESS</span><span>{Math.round(prog * 100)}%</span></div>
+          <div style={{ height: 12, borderRadius: 6, background: '#F3EAF1', overflow: 'hidden' }}><div style={{ height: '100%', width: prog * 100 + '%', borderRadius: 6, background: 'linear-gradient(90deg,#D6246E,#E39A1F)' }} /></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Pathway({ T, at, out }) {
+  const steps = [['1', 'Pre-test > 50%', '#1B9E7E'], ['2', '70% attendance', '#3AABCC'], ['3', 'Hands-on workshop', '#D4882A'], ['4', 'Final exam > 50%', '#D6246E']];
+  const line = MOTION.draw(T, at + 1.0, 2.6);
+  return (
+    <div style={{ ...S.slide, opacity: out }}>
+      <div style={{ ...S.eyebrow, ...MOTION.enter(T, at + 0.2) }}>Assessed pathway</div>
+      <div style={{ ...S.h, fontSize: 76, margin: '18px 0 90px', ...MOTION.enter(T, at + 0.5) }}>Four steps to certification</div>
+      <div style={{ position: 'relative', display: 'flex', gap: 90 }}>
+        <div style={{ position: 'absolute', top: 44, left: 60, height: 4, background: 'rgba(255,255,255,.35)', width: `calc(${line * 100}% - ${line * 120}px)`, borderRadius: 2 }} />
+        {steps.map((s, i) => (
+          <div key={s[0]} style={{ width: 250, position: 'relative', ...MOTION.pop(T, at + 1.0 + i * 0.65) }}>
+            <div style={{ width: 88, height: 88, borderRadius: '50%', background: s[2], color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 38, margin: '0 auto 24px', border: '4px solid rgba(255,255,255,.85)' }}>{s[0]}</div>
+            <div style={{ fontSize: 27, fontWeight: 600, color: '#fff' }}>{s[1]}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ fontSize: 26, color: GOLD, marginTop: 80, fontWeight: 600, ...MOTION.enter(T, at + 4.2) }}>PCCN Certificate · counts toward the IDPCCN Fellowship</div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <CompositionStage width={1920} height={1080} bg="#14042a" scenes={window.OM_SCENES} playback={window.OM_PLAYBACK}>
+    <Piece />
+  </CompositionStage>
+);
+</script>
+<script>
+(function(){
+  function compile(src){ return Babel.transform(src, { presets: [["react", { runtime: "classic" }]] }).code; }
+  fetch('animations-v3.jsx').then(function(r){ return r.text(); }).then(function(engine){
+    (0, eval)(compile(engine));
+    (0, eval)(compile(document.getElementById('appSrc').textContent));
+  }).catch(function(e){ console.error('Launch film failed to load:', e); });
+})();
+</script>
+</body>
+</html>

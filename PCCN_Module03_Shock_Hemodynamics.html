@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCCN · Module 03 — Shock &amp; Hemodynamics</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap');
+  :root{
+    --purple-900:#1F0938;
+    --purple-800:#2C0E4F;
+    --purple-700:#402a63;
+    --magenta:#D6246E;
+    --magenta-soft:#f4d3e0;
+    --teal:#12967f;
+    --teal-soft:#EBF8F4;
+    --orange:#e79a1a;
+    --orange-soft:#fbe8c8;
+    --blue:#3AABCC;
+    --blue-soft:#dbe9f8;
+    --cream:#fdf8f5;
+    --card:#ffffff;
+    --ink:#2a2233;
+    --ink-soft:#645d70;
+    --line:#e9e2ea;
+    --good:#1c8a5c;
+    --bad:#c62d3e;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:"Segoe UI",Helvetica,Arial,sans-serif;background:var(--cream);color:var(--ink);line-height:1.5;}
+  a{color:inherit;}
+  .wrap{max-width:940px;margin:0 auto;padding:0 20px;}
+
+  #progress-bar{position:sticky;top:0;z-index:50;background:var(--purple-900);color:#fff;padding:10px 0;box-shadow:0 2px 10px rgba(0,0,0,.15);}
+  #progress-bar .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .prog-title{font-size:12.5px;letter-spacing:.4px;text-transform:uppercase;color:#d9c9e6;white-space:nowrap;}
+  .prog-track{flex:1;min-width:120px;height:7px;background:rgba(255,255,255,.18);border-radius:6px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--magenta),var(--orange));transition:width .3s ease;}
+  .prog-pct{font-size:12.5px;font-weight:600;white-space:nowrap;}
+  #section-nav{display:flex;gap:4px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:thin;}
+  #section-nav a{flex:0 0 auto;font-size:12px;font-weight:600;padding:6px 11px;border-radius:20px;background:rgba(255,255,255,.08);color:#e7dcee;text-decoration:none;white-space:nowrap;border:1px solid rgba(255,255,255,.12);}
+  #section-nav a.active{background:#fff;color:var(--purple-900);}
+
+  header.hero{background:linear-gradient(120deg,var(--purple-900) 0%, var(--purple-800) 55%, var(--magenta) 130%);color:#fff;padding:40px 0 34px;}
+  .eyebrow{font-size:12.5px;letter-spacing:2px;text-transform:uppercase;color:#f0c3d6;font-weight:700;}
+  .pillar-tag{display:inline-block;margin-top:10px;background:var(--teal);color:#fff;font-size:12px;font-weight:700;padding:4px 11px;border-radius:20px;letter-spacing:.3px;}
+  h1.title{font-size:clamp(28px,4.5vw,40px);margin:14px 0 6px;font-weight:800;}
+  .subtitle{color:#e7dcee;font-size:16px;max-width:640px;}
+  .hero-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;}
+  .hero-badge{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:9px 14px;font-size:13px;min-width:110px;}
+  .hero-badge b{display:block;font-size:18px;color:#fff;}
+  .objectives{margin-top:24px;background:rgba(255,255,255,.07);border-left:4px solid var(--orange);border-radius:8px;padding:14px 18px;font-size:14px;}
+  .objectives b{color:#ffd98f;}
+
+  main{padding:36px 0 20px;}
+  section.mod-section{margin-bottom:50px;scroll-margin-top:110px;}
+  .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:4px;flex-wrap:wrap;}
+  .sec-num{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:var(--orange);color:#fff;font-weight:900;font-size:20px;flex:none;}
+  h2.sec-title{font-size:26px;margin:0;font-weight:900;color:var(--purple-900);letter-spacing:.2px;}
+  .sec-underline{height:5px;width:70px;background:var(--orange);border-radius:4px;margin:6px 0 14px 56px;}
+  .sec-sub{color:var(--ink-soft);font-size:13.5px;margin:0 0 16px 56px;font-style:italic;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;}
+  .card h3{margin:0 0 8px;font-size:16px;color:var(--purple-900);}
+  .card h4{margin:12px 0 6px;font-size:13.5px;color:var(--purple-700);text-transform:uppercase;letter-spacing:.3px;}
+  .card p, .card li{font-size:14px;color:var(--ink);}
+  .card ul{margin:6px 0;padding-left:18px;}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  @media (max-width:720px){.grid2,.grid3,.grid4{grid-template-columns:1fr;}}
+
+  .tag{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.2px;}
+  .tag.teal{background:var(--teal-soft);color:var(--teal);}
+  .tag.magenta{background:var(--magenta-soft);color:var(--magenta);}
+  .tag.orange{background:var(--orange-soft);color:#8a5c05;}
+  .tag.blue{background:var(--blue-soft);color:var(--blue);}
+
+  .punch{font-size:clamp(24px,5vw,40px);font-weight:900;color:var(--orange);line-height:1.05;margin:8px 0 16px;text-align:center;}
+  .punch span{color:var(--purple-900);}
+
+  .diagram-box{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:14px;}
+  .diagram-box svg{max-width:100%;height:auto;display:block;margin:0 auto;}
+  .diagram-cap{font-size:12.5px;color:var(--ink-soft);margin-top:6px;text-align:center;}
+
+  .chip-grid{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;}
+  .chip{font-size:13px;font-weight:600;padding:7px 12px;border-radius:10px;display:inline-flex;align-items:center;gap:6px;}
+  .chip .mark{font-weight:900;font-size:14px;}
+  .chip.c-teal{background:var(--teal-soft);color:var(--teal);}
+  .chip.c-magenta{background:var(--magenta-soft);color:var(--magenta);}
+  .chip.c-orange{background:var(--orange-soft);color:#8a5c05;}
+  .chip.c-blue{background:var(--blue-soft);color:var(--blue);}
+  .chip.c-bad{background:#fbe3e6;color:var(--bad);}
+  .chip.c-good{background:#e2f5ea;color:var(--good);}
+
+  .video-slot{display:flex;align-items:center;gap:14px;background:var(--purple-900);color:#fff;border-radius:var(--radius);padding:16px 20px;margin-bottom:16px;}
+  .play-btn{flex:none;width:46px;height:46px;border-radius:50%;background:var(--magenta);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;}
+  .video-meta b{display:block;font-size:15px;}
+  .video-meta span{font-size:12.5px;color:#d9c9e6;}
+
+  table.ref-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;}
+  table.ref-table th{text-align:left;background:var(--purple-900);color:#fff;padding:8px 10px;font-size:11.5px;text-transform:uppercase;letter-spacing:.3px;}
+  table.ref-table td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  table.ref-table tr:nth-child(even) td{background:#faf6f8;}
+
+  .callout{border-left:4px solid var(--teal);background:var(--teal-soft);border-radius:8px;padding:11px 15px;font-size:13.5px;margin:12px 0;}
+  .callout.warn{border-color:var(--magenta);background:var(--magenta-soft);}
+  .callout.info{border-color:var(--blue);background:var(--blue-soft);}
+
+  .case-card{border:1.5px dashed var(--orange);background:var(--orange-soft);border-radius:var(--radius);padding:16px 18px;margin:14px 0;}
+  .case-card h3{color:#8a5c05;}
+
+  .arrow-chain{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;margin:14px 0;}
+  .arrow-chain .stage{padding:10px 16px;border-radius:10px;font-weight:800;font-size:12.5px;color:#fff;text-align:center;min-width:110px;}
+  .arrow-chain .arrow{font-size:20px;color:var(--ink-soft);font-weight:900;}
+  .arrow-chain.tight .stage{font-size:11.5px;padding:9px 10px;min-width:120px;}
+
+  .seg-bar{display:flex;border-radius:12px;overflow:hidden;margin:10px 0;}
+  .seg-bar .seg{flex:1;padding:12px 8px;text-align:center;color:#fff;font-size:12px;font-weight:700;}
+  .seg-bar .seg small{display:block;font-weight:500;font-size:10.5px;margin-top:3px;opacity:.9;}
+
+  /* ladder (reused for dehydration severity / device escalation) */
+  .ladder{display:flex;flex-direction:column;gap:10px;margin:10px 0;}
+  .ladder-row{display:flex;align-items:center;gap:10px;}
+  .ladder-label{flex:0 0 150px;font-size:12.5px;font-weight:700;text-align:right;color:var(--purple-900);}
+  .ladder-track{flex:1;background:#f1ebf3;border-radius:8px;height:32px;position:relative;overflow:hidden;}
+  .ladder-fill{height:100%;border-radius:8px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:#fff;font-size:11px;font-weight:800;}
+  .ladder-flow{flex:0 0 150px;font-size:11px;color:var(--ink-soft);}
+
+  /* prep-style grid, reused for 4 D's / vasoactive classes */
+  .prep-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0;}
+  @media (max-width:720px){.prep-grid{grid-template-columns:repeat(2,1fr);}}
+  .prep-item{background:var(--purple-900);color:#fff;border-radius:10px;padding:10px 10px;text-align:center;}
+  .prep-item b{display:block;font-size:12.5px;color:#ffd98f;margin-bottom:3px;}
+  .prep-item span{font-size:10.5px;color:#e7dcee;}
+
+  .mini-check{background:#f6f2f8;border:1px dashed #c9b9d4;border-radius:10px;padding:14px 16px;margin-top:10px;}
+  .mini-check .q{font-weight:700;font-size:14px;margin-bottom:8px;}
+  .opt-row{display:block;font-size:13.5px;padding:6px 8px;border-radius:8px;cursor:pointer;margin-bottom:4px;border:1px solid transparent;}
+  .opt-row:hover{background:#efe4f2;}
+  .opt-row input{margin-right:8px;}
+  .fb{display:none;margin-top:8px;font-size:13.5px;font-weight:600;padding:8px 10px;border-radius:8px;}
+  .fb.correct{display:block;background:#e2f5ea;color:var(--good);}
+  .fb.wrong{display:block;background:#fbe3e6;color:var(--bad);}
+
+  .quiz-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin-bottom:14px;}
+  .quiz-q{margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--line);}
+  .quiz-q:last-of-type{border-bottom:none;}
+  .quiz-q .qtext{font-weight:700;font-size:14.5px;margin-bottom:10px;}
+  .quiz-q .opt-row{border:1px solid var(--line);}
+  .quiz-q .opt-row.correct-ans{background:#e2f5ea;border-color:var(--good);}
+  .quiz-q .opt-row.wrong-ans{background:#fbe3e6;border-color:var(--bad);}
+
+  .btn{display:inline-block;background:var(--magenta);color:#fff;border:none;padding:11px 22px;border-radius:30px;font-size:14.5px;font-weight:700;cursor:pointer;}
+  .btn.secondary{background:transparent;color:var(--purple-900);border:1.5px solid var(--purple-900);}
+
+  .result-banner{display:none;border-radius:var(--radius);padding:20px 22px;margin-top:14px;font-size:15px;}
+  .result-banner.pass{display:block;background:#e2f5ea;border:1.5px solid var(--good);}
+  .result-banner.fail{display:block;background:#fbe3e6;border:1.5px solid var(--bad);}
+  .result-banner b{font-size:20px;display:block;margin-bottom:4px;}
+
+  .path{display:flex;gap:10px;flex-wrap:wrap;}
+  .step{flex:1;min-width:150px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+  .step.active{border-color:var(--magenta);box-shadow:0 0 0 3px var(--magenta-soft);}
+  .step .snum{font-size:11px;font-weight:800;color:var(--magenta);letter-spacing:.5px;}
+  .step .stext{font-size:13.5px;font-weight:700;margin-top:4px;}
+  .step .sdetail{font-size:12px;color:var(--ink-soft);margin-top:3px;}
+
+  footer{background:var(--purple-900);color:#e7dcee;padding:30px 0 40px;margin-top:40px;font-size:13px;}
+  footer .wrap{display:flex;flex-direction:column;gap:6px;}
+  footer b{color:#fff;}
+  footer .fac{margin-top:10px;color:#c8b9d3;font-size:12.5px;}
+
+  .print-btn{float:right;}
+  @media print{#progress-bar,.video-slot,.mini-check,.quiz-card,header.hero .hero-badges,#section-nav{display:none !important;}}
+
+  .course-info-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:#F6F0F7;border-radius:12px;padding:18px 26px;margin:0 0 0;}
+  .ci-item{padding:0 22px;border-left:1px solid #E3D5E8;}
+  .ci-item:first-child{padding-left:0;border-left:none;}
+  .ci-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#9B7FA8;margin-bottom:6px;}
+  .ci-value{font-size:17px;font-weight:800;color:var(--purple-900);}
+  .ci-value.accent{color:var(--magenta);}
+  .ci-sub{font-size:12px;color:var(--ink-soft);margin-top:3px;}
+  @media (max-width:720px){.course-info-bar{grid-template-columns:repeat(2,1fr);gap:16px 0;}.ci-item{border-left:none;padding:0;}}
+
+  /* overview mode */
+  .mod-section{display:none;}
+  .mod-section.open{display:block;}
+  #section-nav{display:none !important;}
+  #modTOC{max-width:900px;margin:26px auto 40px;padding:0 20px;}
+  #modTOC .toc-head{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#8A7796;margin-bottom:14px;}
+  .toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media (max-width:640px){.toc-grid{grid-template-columns:1fr;}}
+  .toc-btn{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #EEE4EC;border-radius:14px;padding:16px 18px;cursor:pointer;text-align:left;font-family:var(--sans);font-size:15px;font-weight:600;color:#2C0E4F;min-height:44px;transition:box-shadow .15s,transform .15s;width:100%;}
+  .toc-btn:hover{box-shadow:0 10px 24px rgba(44,14,79,.12);transform:translateY(-1px);}
+  .toc-btn .tnum{width:38px;height:38px;border-radius:10px;background:#3E1266;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0;}
+  .toc-btn.tq .tnum{background:#D6246E;}
+  #backOverview{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:60;display:none;background:#1F0938;color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:13px 26px;font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.35);min-height:44px;}
+
+header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,102,.82)),url('assets/dt-triage.png') center 30%/cover no-repeat !important;}
+</style>
+</head>
+<body>
+<div style="background:#1F0938;font-family:'Poppins',-apple-system,sans-serif;font-size:12px;padding:8px 20px;display:flex;gap:18px;align-items:center;"><a href="PCCN_Landing_Page.html" style="color:#F0D9A8;text-decoration:none;font-weight:600;">← PCCN Portal</a><a href="PCCN_Course_Hub.html" style="color:rgba(255,255,255,.85);text-decoration:none;">All modules</a><a href="PCCN_My_Courses.html" style="color:rgba(255,255,255,.85);text-decoration:none;">My progress</a></div>
+
+<div id="progress-bar">
+  <div class="wrap">
+    <span class="prog-title">Module 03 progress</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <span class="prog-pct" id="progPct">0%</span>
+  </div>
+  <div class="wrap">
+    <nav id="section-nav">
+      <a href="#objectives">Objectives</a>
+      <a href="#pretest">Pre-Test</a>
+      <a href="#s1">Dehydration</a>
+      <a href="#s2">Types of Shock</a>
+      <a href="#s3">Fluid Resuscitation</a>
+      <a href="#s4">NIBP &amp; Lines</a>
+      <a href="#s5">Difficult Airway</a>
+      <a href="#webinar">Live Webinar</a>
+      <a href="#sim">Simulation</a>
+      <a href="#reckoner">Ready Reckoner</a>
+      <a href="#quiz">Module Quiz</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">PCCN · IAP Intensive Care Chapter</span>
+    <span class="pillar-tag">Pillar 1 — Assessment &amp; Acute Stabilisation</span>
+    <h1 class="title">Module 03 — Shock &amp; Hemodynamics</h1>
+    <p class="subtitle">Classify shock, size up dehydration, and start fluid/vasoactive therapy safely.</p>
+    <div class="hero-badges">
+      <div class="hero-badge"><b>5</b>recorded lectures</div>
+      <div class="hero-badge"><b>2</b>live webinars</div>
+      <div class="hero-badge"><b>1</b>virtual simulation</div>
+      <div class="hero-badge"><b>~100m</b>self-study time</div>
+    </div>
+    <div class="objectives" id="objectives">
+      <b>By the end of this module:</b> grade dehydration and calculate the deficit → name the type and severity of shock → choose the right fluid, at the right speed, and know when to stop → pick the right NIBP cuff and read an arterial line → spot a physiologically difficult airway and resuscitate before you intubate.
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- PRE-TEST -->
+  <section class="mod-section" id="pretest">
+    <div class="sec-head"><span class="sec-num">0</span><h2 class="sec-title">Pre-Test</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">5 quick questions, ungraded — just a baseline.</p>
+    <div class="card" id="pretestCard"></div>
+    <button class="btn secondary" id="pretestSubmit">Check my answers</button>
+    <div class="result-banner" id="pretestResult"></div>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section class="mod-section" id="s1">
+    <div class="sec-head"><span class="sec-num">1</span><h2 class="sec-title">Clinical Features of Dehydration</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Lecture: "Clinical features of dehydration"</p>
+
+    <div class="video-slot">
+      <div class="play-btn">▶</div>
+      <div class="video-meta"><b>Watch: Clinical Features of Dehydration</b><span>~10 min · lifetime access</span></div>
+    </div>
+
+    <div class="diagram-box">
+      <div class="ladder">
+        <div class="ladder-row"><span class="ladder-label">No dehydration</span><div class="ladder-track"><div class="ladder-fill" style="width:30%;background:#12967f;">&lt;5%</div></div><span class="ladder-flow">Alert, drinks normally</span></div>
+        <div class="ladder-row"><span class="ladder-label">Some dehydration</span><div class="ladder-track"><div class="ladder-fill" style="width:65%;background:#e79a1a;">5–10%</div></div><span class="ladder-flow">Restless, thirsty, sunken eyes</span></div>
+        <div class="ladder-row"><span class="ladder-label">Severe dehydration</span><div class="ladder-track"><div class="ladder-fill" style="width:100%;background:#D6246E;">&gt;10%</div></div><span class="ladder-flow">Lethargic/unconscious, drinks poorly</span></div>
+      </div>
+      <div class="diagram-cap">Body-weight fluid deficit — the % drives everything that follows.</div>
+    </div>
+
+    <div class="grid3">
+      <div class="card"><h4>Skin pinch</h4><div class="chip-grid"><span class="chip c-teal">Goes back fast</span><span class="chip c-orange">Goes back slowly</span><span class="chip c-bad">Very slow (≥2s)</span></div></div>
+      <div class="card"><h4>Eyes / tears</h4><div class="chip-grid"><span class="chip c-teal">Normal, tears present</span><span class="chip c-orange">Sunken, few tears</span><span class="chip c-bad">Very sunken, no tears</span></div></div>
+      <div class="card"><h4>Mouth / thirst</h4><div class="chip-grid"><span class="chip c-teal">Moist, drinks normally</span><span class="chip c-orange">Dry, eager to drink</span><span class="chip c-bad">Very dry, unable to drink</span></div></div>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <h4>Deficit calculation</h4>
+      <p style="font-size:15px;font-weight:700;color:var(--purple-900);">Fluid deficit (mL) = % dehydration × weight (kg) × 10</p>
+      <div class="callout">Example: 10 kg child, 5% dehydrated → 5 × 10 × 10 = <b>500 mL deficit</b>, replaced alongside maintenance (Section 3).</div>
+    </div>
+
+    <div class="mini-check" data-qid="c1" data-correct="2">
+      <div class="q">Quick check — A child is lethargic, has very sunken eyes, no tears, and drinks poorly. This is:</div>
+      <label class="opt-row"><input type="radio" name="c1" value="0">No dehydration (&lt;5%)</label>
+      <label class="opt-row"><input type="radio" name="c1" value="1">Some dehydration (5–10%)</label>
+      <label class="opt-row"><input type="radio" name="c1" value="2">Severe dehydration (&gt;10%)</label>
+      <div class="fb correct">Correct — lethargy, very sunken eyes, no tears and poor drinking = severe (&gt;10%) dehydration.</div>
+      <div class="fb wrong">Not quite — these are severe (&gt;10%) dehydration signs.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="mod-section" id="s2">
+    <div class="sec-head"><span class="sec-num">2</span><h2 class="sec-title">Types of Shock</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Lecture: "Types of shock — type and severity"</p>
+
+    <div class="video-slot">
+      <div class="play-btn">▶</div>
+      <div class="video-meta"><b>Watch: Types of Shock — Type and Severity</b><span>~12 min · lifetime access</span></div>
+    </div>
+
+    <div class="grid4">
+      <div class="card"><h4>Hypovolemic</h4><p style="font-size:12.5px;">Low volume — fluid/blood loss</p></div>
+      <div class="card"><h4>Cardiogenic</h4><p style="font-size:12.5px;">Poor cardiac function</p></div>
+      <div class="card"><h4>Distributive</h4><p style="font-size:12.5px;">Vasodilation — septic, anaphylactic</p></div>
+      <div class="card"><h4>Obstructive</h4><p style="font-size:12.5px;">Tamponade, tension pneumothorax</p></div>
+    </div>
+
+    <p class="punch" style="font-size:clamp(20px,4vw,30px);">COMPENSATED <span>→</span> HYPOTENSIVE <span>→</span> ARREST</p>
+    <div class="arrow-chain">
+      <div class="stage" style="background:var(--teal);">Compensated<br>normal BP, poor perfusion</div>
+      <span class="arrow">→</span>
+      <div class="stage" style="background:var(--orange);">Hypotensive<br>BP falling, decompensating</div>
+      <span class="arrow">→</span>
+      <div class="stage" style="background:var(--bad);">Cardiac arrest</div>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <h4>Minimum systolic BP</h4>
+      <div class="chip-grid" style="justify-content:center;">
+        <span class="chip c-teal">Neonate/&lt;3mo: 60</span>
+        <span class="chip c-teal">Infant &lt;1yr: 70</span>
+        <span class="chip c-teal">1–10yr: 70 + 2×age</span>
+        <span class="chip c-teal">&gt;10yr: 90</span>
+      </div>
+      <p>Any drop &gt;10 mmHg from baseline is significant — don't wait for a number below threshold.</p>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>⚡ Anaphylaxis (distributive)</h4>
+        <div class="chip-grid"><span class="chip c-bad">IM adrenaline first — always</span><span class="chip c-bad">Repeat q5–15min</span><span class="chip c-bad">Early intubation if airway oedema</span></div>
+      </div>
+      <div class="card">
+        <h4>🫁 Tension pneumothorax (obstructive)</h4>
+        <div class="chip-grid"><span class="chip c-bad">Needle thoracocentesis</span><span class="chip c-bad">2nd ICS, midclavicular line</span><span class="chip c-bad">Convert to chest tube ASAP</span></div>
+      </div>
+    </div>
+
+    <div class="mini-check" data-qid="c2" data-correct="0">
+      <div class="q">Quick check — A child has a normal blood pressure but cold peripheries, weak pulses and CRT of 4 seconds. This is:</div>
+      <label class="opt-row"><input type="radio" name="c2" value="0">Compensated shock</label>
+      <label class="opt-row"><input type="radio" name="c2" value="1">Hypotensive shock</label>
+      <label class="opt-row"><input type="radio" name="c2" value="2">No shock — BP is normal</label>
+      <div class="fb correct">Correct — normal BP with poor perfusion is the hallmark of compensated shock.</div>
+      <div class="fb wrong">Not quite — normal BP + poor perfusion = compensated shock, not "no shock."</div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="mod-section" id="s3">
+    <div class="sec-head"><span class="sec-num">3</span><h2 class="sec-title">Fluid Resuscitation</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Lecture: "Fluid resuscitation"</p>
+
+    <div class="video-slot">
+      <div class="play-btn">▶</div>
+      <div class="video-meta"><b>Watch: Fluid Resuscitation</b><span>~14 min · lifetime access</span></div>
+    </div>
+
+    <p class="punch">FLUID IS A <span>DRUG</span> — KNOW THE DOSE</p>
+
+    <div class="card">
+      <h3>The 4 D's</h3>
+      <div class="prep-grid">
+        <div class="prep-item"><b>Drug</b><span>Fluid IS the drug</span></div>
+        <div class="prep-item"><b>Dose</b><span>mL/kg, matched to need</span></div>
+        <div class="prep-item"><b>Duration</b><span>How fast, how long</span></div>
+        <div class="prep-item"><b>De-escalation</b><span>Stop when endpoints met</span></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>Crystalloids</h4>
+        <div class="chip-grid">
+          <span class="chip c-teal">Isotonic (NS/RL) — resuscitation</span>
+          <span class="chip c-blue">Hypotonic (0.45NS/D5W) — maintenance</span>
+          <span class="chip c-magenta">Hypertonic (3% saline) — raised ICP</span>
+        </div>
+      </div>
+      <div class="card">
+        <h4>Colloids</h4>
+        <div class="chip-grid"><span class="chip c-orange">Albumin, blood products</span></div>
+        <p>Used in dengue shock &amp; septic shock — large molecules pull fluid back into the vessels.</p>
+      </div>
+    </div>
+
+    <div class="arrow-chain tight">
+      <div class="stage" style="background:var(--bad);">Resuscitation — FAST (push-pull, minutes)</div>
+      <span class="arrow">→</span>
+      <div class="stage" style="background:var(--orange);">Replacement — SLOW (hours)</div>
+      <span class="arrow">→</span>
+      <div class="stage" style="background:var(--teal);">Maintenance — SLOWER (restricted 50–70%)</div>
+    </div>
+
+    <div class="callout warn">Sick children over-secrete ADH → water retention &amp; hyponatraemia. Restrict maintenance fluid to <b>50–70%</b> of calculated need until enteral feeds are established.</div>
+
+    <div class="card">
+      <h3>ROSE — the phases of fluid therapy</h3>
+      <div class="chip-grid">
+        <span class="chip c-bad"><b>R</b>escue — minutes, positive balance OK</span>
+        <span class="chip c-orange"><b>O</b>ptimization — hours, avoid overload</span>
+        <span class="chip c-teal"><b>S</b>tabilization — days, zero/neutral balance</span>
+        <span class="chip c-good"><b>E</b>vacuation — days, negative balance, de-escalate</span>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>Watch for fluid overload</h4>
+        <div class="chip-grid"><span class="chip c-bad">Worsening distress</span><span class="chip c-bad">Falling SpO₂</span><span class="chip c-bad">Basal crepitations</span><span class="chip c-bad">Enlarged liver</span></div>
+      </div>
+      <div class="card">
+        <h4>Monitor these endpoints</h4>
+        <div class="chip-grid"><span class="chip c-teal">Skin turgor</span><span class="chip c-teal">CRT</span><span class="chip c-teal">Urine output</span><span class="chip c-teal">Weight trend</span><span class="chip c-teal">Mental status</span><span class="chip c-teal">Lactate</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <h4>Fluid overload %</h4>
+      <p style="font-size:14.5px;font-weight:700;color:var(--purple-900);">(Total intake − Total output) ÷ Baseline weight × 100</p>
+      <div class="callout warn">&gt;10% is concerning — reassess and consider de-escalation/diuretics.</div>
+    </div>
+
+    <div class="chip-grid" style="justify-content:center;">
+      <span class="chip c-good">Isotonic unless prescribed otherwise</span>
+      <span class="chip c-good">Crystalloids before colloids</span>
+      <span class="chip c-good">Monitor after every bolus</span>
+      <span class="chip c-good">Start de-escalation once endpoints met</span>
+      <span class="chip c-good">Early enteral feeds</span>
+    </div>
+
+    <div class="mini-check" data-qid="c3" data-correct="1">
+      <div class="q">Quick check — Maintenance fluid in a sick child should typically be restricted to:</div>
+      <label class="opt-row"><input type="radio" name="c3" value="0">100–120% of calculated maintenance</label>
+      <label class="opt-row"><input type="radio" name="c3" value="1">50–70% of calculated maintenance</label>
+      <label class="opt-row"><input type="radio" name="c3" value="2">There's no need to restrict, more is safer</label>
+      <div class="fb correct">Correct — 50–70%, due to the risk of ADH-driven water retention.</div>
+      <div class="fb wrong">Not quite — restrict to 50–70% until enteral feeds are established.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section class="mod-section" id="s4">
+    <div class="sec-head"><span class="sec-num">4</span><h2 class="sec-title">NIBP &amp; Invasive Lines</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Lecture: "NIBP — how to choose"</p>
+
+    <div class="video-slot">
+      <div class="play-btn">▶</div>
+      <div class="video-meta"><b>Watch: NIBP — How to Choose</b><span>~8 min · lifetime access</span></div>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <h4>Cuff sizing</h4>
+      <p style="font-size:15px;font-weight:700;color:var(--purple-900);">Bladder width ≈ 40% of arm circumference · length covers 80–100%</p>
+      <p>Measured midway between olecranon and acromion. Wrong size = wrong number — too small reads falsely high, too large reads falsely low.</p>
+    </div>
+
+    <div class="card">
+      <h3>When NIBP isn't enough — the arterial line</h3>
+      <div class="chip-grid">
+        <span class="chip c-teal">Continuous BP + easy sampling</span>
+        <span class="chip c-teal">Sites: radial, femoral, dorsalis pedis</span>
+        <span class="chip c-teal">Sterile technique ± ultrasound guidance</span>
+        <span class="chip c-teal">Zero at the phlebostatic axis</span>
+        <span class="chip c-teal">Square-wave test checks damping</span>
+        <span class="chip c-teal">Flush regularly to prevent clotting</span>
+      </div>
+      <div class="callout">Needing &gt;1 vasoactive drug is the trigger to insert an arterial line for continuous, accurate pressure monitoring — don't wait for things to get worse.</div>
+
+      <h4>Indications</h4>
+      <div class="chip-grid">
+        <span class="chip c-good">Continuous beat-to-beat BP monitoring</span>
+        <span class="chip c-good">Frequent ABG / blood sampling</span>
+        <span class="chip c-good">Vasoactive infusion titration</span>
+        <span class="chip c-good">Hemodynamic instability / anticipated shifts</span>
+      </div>
+      <h4>Contraindications (relative)</h4>
+      <div class="chip-grid">
+        <span class="chip c-orange">Inadequate collateral flow (failed Allen's test — radial site)</span>
+        <span class="chip c-orange">Local infection or thrombosis at the site</span>
+        <span class="chip c-orange">Severe coagulopathy</span>
+      </div>
+      <h4>Complications</h4>
+      <div class="chip-grid">
+        <span class="chip c-bad">Thrombosis</span>
+        <span class="chip c-bad">Distal ischemia</span>
+        <span class="chip c-bad">Infection</span>
+        <span class="chip c-bad">Hemorrhage / hematoma</span>
+        <span class="chip c-bad">Nerve injury</span>
+        <span class="chip c-bad">Pseudoaneurysm</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--ink-soft);">Source: OPENPediatrics "Arterial Line Placement" course — indications, contraindications, equipment, technique, sites, procedure, monitoring &amp; documentation.</p>
+    </div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg">
+        <line x1="20" y1="170" x2="440" y2="170" stroke="#c9b9d4" stroke-width="1.5"/>
+        <path d="M20,150 C40,150 45,40 65,35 C80,32 90,90 105,110 C112,118 118,100 128,102 C145,105 155,150 175,150
+                 C195,150 200,40 220,35 C235,32 245,90 260,110 C267,118 273,100 283,102 C300,105 310,150 330,150
+                 C350,150 355,40 375,35 C390,32 400,90 415,110 C420,116 424,108 430,110"
+              fill="none" stroke="#D6246E" stroke-width="3"/>
+        <circle cx="65" cy="35" r="4" fill="#1F0938"/>
+        <text x="55" y="24" font-size="11" fill="#1F0938" font-weight="700">Systolic peak</text>
+        <circle cx="105" cy="110" r="4" fill="#e79a1a"/>
+        <text x="88" y="130" font-size="11" fill="#8a5c05" font-weight="700">Dicrotic notch</text>
+        <text x="150" y="185" font-size="11" fill="#645d70">Diastolic runoff →</text>
+        <text x="25" y="145" font-size="10.5" fill="#645d70">Anacrotic limb (upstroke)</text>
+      </svg>
+      <div class="diagram-cap">One arterial pressure cycle — rapid systolic upstroke, systolic peak, dicrotic notch (aortic valve closure), then diastolic runoff.</div>
+    </div>
+
+    <div class="card">
+      <h3>Reading the arterial waveform</h3>
+      <div class="chip-grid">
+        <span class="chip c-teal">Steep upstroke rate ≈ contractility (dP/dt)</span>
+        <span class="chip c-teal">Dicrotic notch = aortic valve closure</span>
+        <span class="chip c-teal">Diastolic runoff = coronary perfusion window</span>
+        <span class="chip c-blue">Peripheral (radial) traces show a taller peak &amp; later notch than central (aortic) ones — normal "pulse amplification," not hypertension</span>
+      </div>
+      <h4>Invasive vs non-invasive BP monitoring</h4>
+      <table class="ref-table">
+        <tr><th>Invasive (arterial line)</th><th>Non-invasive (NIBP cuff)</th></tr>
+        <tr><td>Continuous, beat-to-beat</td><td>Intermittent, snapshot readings</td></tr>
+        <tr><td>Direct pressure measurement</td><td>Oscillometric — estimates BP from cuff pressure oscillations, not direct flow</td></tr>
+        <tr><td>Reliable in shock / low-flow states</td><td>Proprietary algorithms vary by brand — readings differ device to device</td></tr>
+        <tr><td>Enables frequent blood sampling</td><td>Unreliable with low stroke volume, arrhythmia, or patient movement</td></tr>
+      </table>
+      <div class="callout warn">Never mix cuffs and tubing between different NIBP device brands — each is calibrated as a matched set, and swapping parts invalidates the reading.</div>
+      <p style="font-size:12.5px;color:var(--ink-soft);">Source: OPENPediatrics "Interpreting Arterial Pressure Waveforms" course — arterial system, dicrotic notch, invasive vs non-invasive monitoring.</p>
+    </div>
+
+    <div class="mini-check" data-qid="c4b" data-correct="1">
+      <div class="q">Quick check — On an arterial waveform, the dicrotic notch corresponds to:</div>
+      <label class="opt-row"><input type="radio" name="c4b" value="0">Mitral valve opening</label>
+      <label class="opt-row"><input type="radio" name="c4b" value="1">Aortic valve closure</label>
+      <label class="opt-row"><input type="radio" name="c4b" value="2">Peak ventricular contraction</label>
+      <div class="fb correct">Correct — the dicrotic notch marks aortic valve closure, at the start of diastolic runoff.</div>
+      <div class="fb wrong">Not quite — the dicrotic notch is caused by aortic valve closure.</div>
+    </div>
+
+    <div class="card">
+      <h3>Vasoactive drug classes</h3>
+      <div class="prep-grid">
+        <div class="prep-item"><b>Inotropes</b><span>↑ contractility — Adrenaline</span></div>
+        <div class="prep-item"><b>Vasopressors</b><span>↑ BP via constriction — Noradrenaline, Vasopressin</span></div>
+        <div class="prep-item"><b>Inodilators</b><span>↑ contractility + vasodilate — Dobutamine, Milrinone</span></div>
+        <div class="prep-item"><b>Route</b><span>Peripheral to start, central for prolonged use</span></div>
+      </div>
+      <div class="callout warn">Adrenaline is the only vasoactive drug that can be given as a bolus — in arrest. All others: accurate infusion via pump, never bolused.</div>
+    </div>
+
+    <div class="mini-check" data-qid="c4" data-correct="0">
+      <div class="q">Quick check — What's the correct NIBP cuff bladder width, relative to arm circumference?</div>
+      <label class="opt-row"><input type="radio" name="c4" value="0">~40%</label>
+      <label class="opt-row"><input type="radio" name="c4" value="1">~10%</label>
+      <label class="opt-row"><input type="radio" name="c4" value="2">~75%</label>
+      <div class="fb correct">Correct — about 40% width, 80–100% length coverage.</div>
+      <div class="fb wrong">Not quite — bladder width should be about 40% of arm circumference.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section class="mod-section" id="s5">
+    <div class="sec-head"><span class="sec-num">5</span><h2 class="sec-title">The Physiologically Difficult Airway</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Lecture: "Physiologically difficult airway &amp; peri-intubation resuscitation"</p>
+
+    <div class="video-slot">
+      <div class="play-btn">▶</div>
+      <div class="video-meta"><b>Watch: The Physiologically Difficult Airway</b><span>~15 min · lifetime access</span></div>
+    </div>
+
+    <p class="punch">RESUSCITATE <span>BEFORE</span> YOU INTUBATE</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>Why children desaturate faster</h4>
+        <div class="chip-grid">
+          <span class="chip c-teal">Low FRC</span>
+          <span class="chip c-teal">High O₂ consumption</span>
+          <span class="chip c-teal">Larger dead space</span>
+          <span class="chip c-teal">Compliant chest wall, early muscle fatigue</span>
+          <span class="chip c-teal">Can't breath-hold like an adult</span>
+        </div>
+      </div>
+      <div class="card">
+        <h4>Circulatory differences</h4>
+        <div class="chip-grid">
+          <span class="chip c-blue">High vagal tone → early bradycardia</span>
+          <span class="chip c-blue">Low systemic vascular resistance</span>
+          <span class="chip c-blue">Low total circulating volume</span>
+          <span class="chip c-blue">Rapid drug metabolism — quicker onset, shorter duration</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Spot the physiologically difficult airway</h3>
+      <p style="font-size:12.5px;color:var(--ink-soft);">Any of these before intubation raises the risk of peri-intubation collapse:</p>
+      <div class="chip-grid">
+        <span class="chip c-bad">High ICP</span>
+        <span class="chip c-bad">RV dysfunction / failure</span>
+        <span class="chip c-bad">Severe bronchospasm</span>
+        <span class="chip c-bad">Severe pulmonary hypertension</span>
+        <span class="chip c-bad">Post-ROSC</span>
+        <span class="chip c-bad">Upper GI / airway bleed</span>
+        <span class="chip c-bad">Acidosis</span>
+        <span class="chip c-bad">Very low saturation</span>
+        <span class="chip c-bad">Hypotension</span>
+      </div>
+      <div class="callout warn">~25% of children who are hemodynamically stable before intubation develop <b>post-intubation hypotension (PIH)</b> after RSI. Predict it before it happens — the Shock Index (HR ÷ SBP) is a quick bedside predictor.</div>
+    </div>
+
+    <div class="diagram-box">
+      <div class="prep-grid">
+        <div class="prep-item"><b>Pressure</b><span>Access, fluids, vasoactives — early</span></div>
+        <div class="prep-item"><b>Pre-oxygenation</b><span>SpO₂ &gt;93%, PEEP, apneic O₂</span></div>
+        <div class="prep-item"><b>pH</b><span>Don't drop CO₂ fast, treat cause</span></div>
+        <div class="prep-item"><b>Pump</b><span>Bedside echo — contractility &amp; preload</span></div>
+      </div>
+      <div class="diagram-cap">The 4 P's of Peri-Intubation Resuscitation — work through all four before you push drugs.</div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>Pressure — Resuscitation</h4>
+        <div class="chip-grid"><span class="chip c-teal">Access</span><span class="chip c-teal">Fluids</span><span class="chip c-teal">Vasoactive agents early</span></div>
+        <p style="font-size:13px;font-weight:700;color:var(--purple-900);">MAP for age: 5th centile = 40 + 1.5×age(yrs) · 50th centile = 55 + 1.5×age(yrs)</p>
+      </div>
+      <div class="card">
+        <h4>Pre-oxygenation — Optimization</h4>
+        <div class="chip-grid"><span class="chip c-teal">SpO₂ target &gt;93%</span><span class="chip c-teal">Correct position + good BMV technique</span><span class="chip c-teal">PEEP recruits alveoli</span><span class="chip c-teal">Apneic oxygenation — Rule of 15</span></div>
+        <p>If BMV pre-oxygenation fails, bridge through an LMA/supraglottic device before intubating — the Rapid Sequence Airway "middle path."</p>
+      </div>
+      <div class="card">
+        <h4>pH — Resuscitation</h4>
+        <div class="chip-grid"><span class="chip c-teal">Preserve spontaneous breathing where possible</span><span class="chip c-teal">Treat underlying cause — bicarb is controversial</span><span class="chip c-teal">Fluid resuscitation</span><span class="chip c-teal">Match minute ventilation — don't drop CO₂ fast</span></div>
+      </div>
+      <div class="card">
+        <h4>Pump — rapid bedside assessment</h4>
+        <div class="chip-grid"><span class="chip c-teal">4-chamber/parasternal long axis — contractility</span><span class="chip c-teal">IVC collapsibility — preload</span><span class="chip c-teal">Optional: VExUS, TAPSE</span></div>
+        <p>Work out whether the child is preload-dependent or afterload-dependent before choosing your drugs.</p>
+      </div>
+    </div>
+
+    <div class="callout info">Drug of choice for the physiologically difficult airway: <b>Ketamine + Rocuronium.</b> If the child is too agitated to tolerate pre-oxygenation, consider <b>Delayed Sequence Intubation</b> instead of forcing RSI.</div>
+
+    <div class="case-card">
+      <h3>Case in practice — TBI with a Cushing reflex</h3>
+      <p>6-month-old with TBI, initially stable, becomes unresponsive and stops protecting the airway; vitals now show a Cushing reflex.</p>
+      <div class="chip-grid">
+        <span class="chip c-bad">CPP = MAP − ICP</span>
+        <span class="chip c-bad">Laryngeal stimulation → BP spike → ↑ICP → worse CPP</span>
+        <span class="chip c-good">Premedicate: Ketamine+Propofol / Fentanyl+Propofol / Thiopentone</span>
+        <span class="chip c-good">Then Rocuronium + Lignocaine to blunt reflexes</span>
+        <span class="chip c-good">Back-up: head-elevated intubation position</span>
+      </div>
+    </div>
+
+    <div class="chip-grid" style="justify-content:center;">
+      <span class="chip c-good">Use CRASH/HOP killers to spot it early</span>
+      <span class="chip c-good">Resuscitate before you intubate</span>
+      <span class="chip c-good">Call for help early — not a weakness</span>
+      <span class="chip c-good">Aggressively pre-oxygenate</span>
+      <span class="chip c-good">Start pressor/inotrope via peripheral line early</span>
+      <span class="chip c-good">Most experienced intubator first, max 2 attempts</span>
+      <span class="chip c-good">Use a checklist and standard algorithms</span>
+    </div>
+
+    <div class="mini-check" data-qid="c5" data-correct="0">
+      <div class="q">Quick check — Besides Pressure, Pre-oxygenation and pH, the 4th "P" of peri-intubation resuscitation is:</div>
+      <label class="opt-row"><input type="radio" name="c5" value="0">Pump</label>
+      <label class="opt-row"><input type="radio" name="c5" value="1">Position</label>
+      <label class="opt-row"><input type="radio" name="c5" value="2">Plan</label>
+      <div class="fb correct">Correct — Pressure, Pre-oxygenation, pH and Pump: a rapid bedside look at cardiac function before you push drugs.</div>
+      <div class="fb wrong">Not quite — the 4th P is Pump: a quick bedside echo look at contractility and preload.</div>
+    </div>
+  </section>
+
+  <!-- LIVE WEBINAR -->
+  <section class="mod-section" id="webinar">
+    <div class="sec-head"><span class="sec-num">L</span><h2 class="sec-title">Live Webinars</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Sepsis bundle + calculation workshop · Step 2 attendance</p>
+
+    <div class="card">
+      <h3>The Septic Child: Recognition to Stabilisation</h3>
+      <p style="font-size:12.5px;color:var(--ink-soft);">1-hour sepsis bundle walkthrough</p>
+      <div class="chip-grid">
+        <span class="chip c-bad">Think sepsis: infection + temp ≥38°C/&lt;36°C</span>
+        <span class="chip c-bad">Rising O₂ need, altered mental state</span>
+        <span class="chip c-bad">Prolonged CRT, mottled/ashen skin</span>
+      </div>
+      <h4>Within the first hour</h4>
+      <div class="chip-grid">
+        <span class="chip c-teal">Cultures before antibiotics</span>
+        <span class="chip c-teal">Broad-spectrum antibiotic (e.g. Ceftriaxone 100mg/kg)</span>
+        <span class="chip c-teal">Fluid bolus — push-pull within 5 min if hypotensive</span>
+        <span class="chip c-teal">Vasoactive if fluid-refractory</span>
+        <span class="chip c-teal">Consider stress-dose hydrocortisone (1–2mg/kg) if at risk</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Fluid Resuscitation: Deficit, Maintenance, Replacement</h3>
+      <p style="font-size:12.5px;color:var(--ink-soft);">Calculation workshop</p>
+      <div class="callout">Maintenance (4-2-1 rule): 4 mL/kg/hr for the first 10 kg + 2 mL/kg/hr for the next 10 kg + 1 mL/kg/hr per kg after.</div>
+      <div class="callout">Worked example — 20 kg child: (4×10) + (2×10) = <b>60 mL/hr</b> full maintenance → restricted to 50–70% while sick = <b>30–42 mL/hr</b>.</div>
+      <div class="callout info">Peripheral vasoactive drip without a pump — Adrenaline/Noradrenaline 0.15 mg/kg in 250 mL saline, run at 10 mL/hr ≈ 0.1 mcg/kg/min (for a child &gt;15 kg).</div>
+    </div>
+  </section>
+
+  <!-- SIMULATION -->
+  <section class="mod-section" id="sim">
+    <div class="sec-head"><span class="sec-num">S</span><h2 class="sec-title">The Septic Child</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Virtual simulation · after you finish the lectures above</p>
+    <div class="card">
+      <span class="tag orange">Scenario</span>
+      <h3>6-year-old — fever, hypotension, delayed CRT</h3>
+      <p>Run PAT → ABCDE → classify the shock → fluid bolus → reassess → escalate to vasoactive support if fluid-refractory. Faculty debrief follows.</p>
+    </div>
+  </section>
+
+  <!-- READY RECKONER -->
+  <section class="mod-section" id="reckoner">
+    <div class="sec-head"><span class="sec-num">R</span><h2 class="sec-title">Ready Reckoner</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Printable quick-reference</p>
+    <div class="card">
+      <button class="btn secondary print-btn" onclick="window.print()">Print</button>
+      <div class="chip-grid">
+        <span class="chip c-teal">Dehydration: &lt;5% none · 5–10% some · &gt;10% severe</span>
+        <span class="chip c-magenta">Deficit (mL) = %dehydration × wt(kg) × 10</span>
+        <span class="chip c-orange">Shock: Hypovolemic · Cardiogenic · Distributive · Obstructive</span>
+        <span class="chip c-bad">Min SBP: &lt;3mo 60 · &lt;1yr 70 · 1–10yr 70+2×age · &gt;10yr 90</span>
+        <span class="chip c-blue">Bolus: 10–20 mL/kg isotonic, push-pull if hypotensive (5 min) / free-flow (15 min) if compensated</span>
+        <span class="chip c-teal">Maintenance restricted to 50–70% in sick children</span>
+        <span class="chip c-good">Cuff: width ≈40%, length 80–100% of arm circumference</span>
+        <span class="chip c-good">Fluid overload % = (intake−output)/baseline wt × 100; &gt;10% = concern</span>
+        <span class="chip c-magenta">4 P's peri-intubation: Pressure · Pre-oxygenation · pH · Pump</span>
+        <span class="chip c-magenta">MAP for age: 5th %ile = 40+1.5×age · 50th %ile = 55+1.5×age</span>
+        <span class="chip c-magenta">Airway drug of choice: Ketamine + Rocuronium</span>
+        <span class="chip c-blue">Dicrotic notch = aortic valve closure</span>
+        <span class="chip c-blue">NIBP is oscillometric &amp; brand-specific — don't swap cuffs/tubing between devices</span>
+      </div>
+      <h4 style="margin-top:14px;">Vital signs by age (approx.)</h4>
+      <table class="ref-table">
+        <tr><th>Age</th><th>HR (/min)</th><th>RR (/min)</th></tr>
+        <tr><td>1–12 months</td><td>100–160</td><td>35–40</td></tr>
+        <tr><td>13 months–3 yrs</td><td>70–110</td><td>25–30</td></tr>
+        <tr><td>4–6 yrs</td><td>70–110</td><td>21–25</td></tr>
+        <tr><td>7–12 yrs</td><td>70–110</td><td>19–21</td></tr>
+        <tr><td>13–19 yrs</td><td>55–90</td><td>16–18</td></tr>
+      </table>
+      <h4 style="margin-top:14px;">PEWS escalation (National PEWS framework)</h4>
+      <div class="seg-bar">
+        <div class="seg" style="background:#4a9e4f;">LOW<small>1–4</small></div>
+        <div class="seg" style="background:#e7ab1a;">MEDIUM<small>5–8</small></div>
+        <div class="seg" style="background:#e2733d;">HIGH<small>9–12</small></div>
+        <div class="seg" style="background:#c62d3e;">EMERGENCY<small>≥13</small></div>
+      </div>
+      <p style="font-size:12.5px;">Low → inform nurse-in-charge. Medium → medical review within 30 min. High → immediate review within 15 min, continuous monitoring. Emergency → immediate, call for help, continuous monitoring.</p>
+    </div>
+  </section>
+
+  <!-- CERTIFICATION PATHWAY -->
+  <section class="mod-section" id="pathway">
+    <div class="sec-head"><span class="sec-num">✓</span><h2 class="sec-title">Certification Pathway</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">This module quiz is Step 1 of 4</p>
+    <div class="path">
+      <div class="step active"><div class="snum">STEP 1</div><div class="stext">Pre-Test &amp; Module Quiz</div><div class="sdetail">&gt;50% — you are here</div></div>
+      <div class="step"><div class="snum">STEP 2</div><div class="stext">Study + webinars</div><div class="sdetail">70% attendance</div></div>
+      <div class="step"><div class="snum">STEP 3</div><div class="stext">Hands-on workshop</div><div class="sdetail">Prerequisites met</div></div>
+      <div class="step"><div class="snum">STEP 4</div><div class="stext">Final exam — MCQ/OSCE</div><div class="sdetail">&gt;50% overall</div></div>
+    </div>
+  </section>
+
+  <!-- MODULE QUIZ -->
+  <section class="mod-section" id="quiz">
+    <div class="sec-head"><span class="sec-num">Q</span><h2 class="sec-title">Module Quiz</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub" id="quizSub">12 graded questions · &gt;50% to pass Step 1</p>
+    <div class="quiz-card" id="quizCard"></div>
+    <button class="btn" id="quizSubmit">Submit Quiz</button>
+    <button class="btn secondary" id="quizRetake" style="display:none;">Retake Quiz</button>
+    <div class="result-banner" id="quizResult"></div>
+  </section>
+
+</main>
+
+<div class="wrap" style="margin-top:34px;">
+  <div class="course-info-bar">
+    <div class="ci-item">
+      <div class="ci-label">Course Starts</div>
+      <div class="ci-value">15 August 2026</div>
+    </div>
+    <div class="ci-item">
+      <div class="ci-label">Register By</div>
+      <div class="ci-value accent">15 September 2026</div>
+    </div>
+    <div class="ci-item">
+      <div class="ci-label">Format</div>
+      <div class="ci-value">8&ndash;12 weeks</div>
+      <div class="ci-sub">Hybrid &middot; webinars, videos, simulation</div>
+    </div>
+    <div class="ci-item">
+      <div class="ci-label">Hands-on</div>
+      <div class="ci-value">TBD &ndash; Zone wise</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div><b>PCCN — Pediatric Critical Care Nursing Certificate Course</b> · IAP Intensive Care Chapter</div>
+    <div>www.piccindia.com · stepin.iapicc@gmail.com · 9986634300 / 9008566112</div>
+    <div class="fac">Advisor: Dr Jesal Sheth · Convenors: Dr Manju Kedarnath, Dr Swathi Rao · Co-Convenors: Dr Muthaiah Periyakaruppan, Ms Neetu Taneja · Coordinators: Dr Mandar Jamdar, Dr Veena Raghunathan</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var STORAGE_KEY = "pccn_mod03_progress";
+
+  var pretest = [
+    {q:"A child's skin pinch returns very slowly (≥2 sec), eyes are very sunken, and there are no tears. This suggests:",
+     opts:["No dehydration","Some dehydration","Severe dehydration","Normal hydration with anxiety"], a:2},
+    {q:"Which type of shock is caused by widespread vasodilation, as in sepsis or anaphylaxis?",
+     opts:["Hypovolemic","Cardiogenic","Distributive","Obstructive"], a:2},
+    {q:"The first-line fluid for shock resuscitation is generally:",
+     opts:["5% Dextrose in water","An isotonic crystalloid (e.g. Normal Saline)","3% hypertonic saline","Albumin"], a:1},
+    {q:"Compensated shock is best described as:",
+     opts:["Low blood pressure with poor perfusion","Normal blood pressure with signs of poor perfusion","Normal blood pressure and normal perfusion","Cardiac arrest"], a:1},
+    {q:"An appropriately sized paediatric BP cuff should have a bladder width of approximately:",
+     opts:["10% of arm circumference","25% of arm circumference","40% of arm circumference","75% of arm circumference"], a:2}
+  ];
+
+  var quiz = [
+    {q:"Using the standard formula, the fluid deficit (in mL) for a dehydrated child is calculated as:",
+     opts:["% dehydration × weight (kg) × 5","% dehydration × weight (kg) × 10","weight (kg) × 100","% dehydration ÷ weight (kg)"], a:1},
+    {q:"A lethargic child with very sunken eyes, no tears, and who drinks poorly is best classified as:",
+     opts:["No dehydration (<5%)","Some dehydration (5-10%)","Severe dehydration (>10%)","Overhydrated"], a:2},
+    {q:"Distributive shock (e.g. septic or anaphylactic shock) is primarily caused by:",
+     opts:["Loss of circulating volume","Poor cardiac pump function","Widespread vasodilation","Physical obstruction to blood flow"], a:2},
+    {q:"For a 6-year-old child, using the rule of thumb for children 1-10 years, the minimum acceptable systolic BP is approximately:",
+     opts:["70 mmHg flat, regardless of age","70 + 2×age (years)","90 + 2×age (years)","60 mmHg flat"], a:1},
+    {q:"The recommended first-line fluid bolus for a child in shock is:",
+     opts:["5% Dextrose","An isotonic, non-dextrose crystalloid (NS/RL/Plasmalyte)","0.45% Normal Saline","3% hypertonic saline"], a:1},
+    {q:"In septic shock with hypotension, the fluid bolus should be given using the push-pull technique within approximately:",
+     opts:["30 seconds","5 minutes","30 minutes","2 hours"], a:1},
+    {q:"Maintenance fluids in a sick child should typically be restricted to what percentage of the calculated requirement, until enteral feeds are established?",
+     opts:["100-120%","80-90%","50-70%","10-20%"], a:2},
+    {q:"An appropriately sized paediatric NIBP cuff should have a bladder width of approximately:",
+     opts:["10%","25%","40%","75%"], a:2},
+    {q:"IM Adrenaline is the first-line drug of choice for:",
+     opts:["Compensated hypovolemic shock","Anaphylaxis","Simple dehydration","Fever management"], a:1},
+    {q:"The emergency treatment for a tension pneumothorax (obstructive shock) is:",
+     opts:["IV fluid bolus only","Needle thoracocentesis in the 2nd intercostal space, midclavicular line","Broad-spectrum antibiotics","Prone positioning"], a:1},
+    {q:"Which class of vasoactive drug primarily works by increasing heart contractility?",
+     opts:["Vasopressor","Inotrope","Antipyretic","Diuretic"], a:1},
+    {q:"According to the ROSE framework, which phase focuses on a neutral or zero fluid balance while supporting organ function?",
+     opts:["Rescue","Optimization","Stabilization","Evacuation"], a:2},
+    {q:"Which of these is NOT one of the 4 P's of peri-intubation resuscitation?",
+     opts:["Pressure","Pre-oxygenation","Pulse","pH"], a:2},
+    {q:"The preferred induction/paralytic combination for a physiologically difficult paediatric airway is:",
+     opts:["Propofol + Succinylcholine","Ketamine + Rocuronium","Etomidate + Vecuronium","Midazolam alone"], a:1},
+    {q:"On an arterial pressure waveform, the dicrotic notch represents:",
+     opts:["Mitral valve opening","Aortic valve closure","Peak left ventricular contraction","Onset of systolic upstroke"], a:1},
+    {q:"Non-invasive (oscillometric) blood pressure cuffs estimate BP by:",
+     opts:["Directly measuring intra-arterial pressure","Detecting small pressure oscillations in the cuff, using a brand-specific algorithm","Measuring blood flow with Doppler","Calculating from heart rate alone"], a:1}
+  ];
+
+  function buildOptions(container, name, opts){
+    opts.forEach(function(opt,i){
+      var label = document.createElement("label");
+      label.className = "opt-row";
+      label.innerHTML = '<input type="radio" name="'+name+'" value="'+i+'"> '+opt;
+      container.appendChild(label);
+    });
+  }
+
+  var pretestCard = document.getElementById("pretestCard");
+  pretest.forEach(function(item,idx){
+    var qDiv = document.createElement("div");
+    qDiv.className = "quiz-q";
+    var qt = document.createElement("div");
+    qt.className = "qtext";
+    qt.textContent = (idx+1)+". "+item.q;
+    qDiv.appendChild(qt);
+    buildOptions(qDiv, "pt"+idx, item.opts);
+    pretestCard.appendChild(qDiv);
+  });
+
+  document.getElementById("pretestSubmit").addEventListener("click", function(){
+    var score = 0;
+    pretest.forEach(function(item,idx){
+      var sel = document.querySelector('input[name="pt'+idx+'"]:checked');
+      if(sel && parseInt(sel.value,10) === item.a) score++;
+    });
+    var banner = document.getElementById("pretestResult");
+    banner.className = "result-banner pass";
+    banner.innerHTML = "<b>Baseline: "+score+" / "+pretest.length+"</b>No pass/fail here — just noting where to focus as you go through the lecture sections below.";
+  });
+
+  var quizCard = document.getElementById("quizCard");
+  document.getElementById("quizSub").textContent = quiz.length+" graded questions · score >50% to pass this module's Step 1 requirement";
+  quiz.forEach(function(item,idx){
+    var qDiv = document.createElement("div");
+    qDiv.className = "quiz-q";
+    qDiv.id = "qz"+idx;
+    var qt = document.createElement("div");
+    qt.className = "qtext";
+    qt.textContent = (idx+1)+". "+item.q;
+    qDiv.appendChild(qt);
+    buildOptions(qDiv, "qz"+idx, item.opts);
+    quizCard.appendChild(qDiv);
+  });
+
+  function gradeQuiz(){
+    var score = 0;
+    quiz.forEach(function(item, idx){
+      var opts = document.querySelectorAll('#qz'+idx+' .opt-row');
+      var sel = document.querySelector('input[name="qz'+idx+'"]:checked');
+      var selVal = sel ? parseInt(sel.value,10) : -1;
+      if(selVal === item.a) score++;
+      opts.forEach(function(row, i){
+        row.classList.remove("correct-ans","wrong-ans");
+        if(i === item.a) row.classList.add("correct-ans");
+        else if(i === selVal) row.classList.add("wrong-ans");
+      });
+    });
+    return score;
+  }
+
+  document.getElementById("quizSubmit").addEventListener("click", function(){
+    var score = gradeQuiz();
+    var pct = Math.round((score/quiz.length)*100);
+    var pass = score > quiz.length/2;
+    var banner = document.getElementById("quizResult");
+    banner.className = "result-banner " + (pass ? "pass" : "fail");
+    banner.innerHTML = "<b>"+score+" / "+quiz.length+" ("+pct+"%) — "+(pass ? "PASS" : "Not yet — try again")+"</b>" +
+      (pass ? "Module Quiz requirement for Step 1 met (&gt;50%). Correct/incorrect answers are marked above."
+             : "You need &gt;50% to clear Step 1 for this module. Review the highlighted answers above, then retake.");
+    this.style.display = "none";
+    document.getElementById("quizRetake").style.display = "inline-block";
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({score:score, total:quiz.length, pass:pass, date:new Date().toISOString()}));
+    }catch(e){}
+    banner.scrollIntoView({behavior:"smooth", block:"nearest"});
+  });
+
+  document.getElementById("quizRetake").addEventListener("click", function(){
+    document.querySelectorAll('#quizCard input[type=radio]').forEach(function(r){ r.checked = false; });
+    document.querySelectorAll('#quizCard .opt-row').forEach(function(row){ row.classList.remove("correct-ans","wrong-ans"); });
+    document.getElementById("quizResult").className = "result-banner";
+    document.getElementById("quizResult").innerHTML = "";
+    document.getElementById("quizSubmit").style.display = "inline-block";
+    this.style.display = "none";
+    document.getElementById("s1").scrollIntoView({behavior:"smooth"});
+  });
+
+  try{
+    var prior = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+    if(prior){
+      var banner = document.getElementById("quizResult");
+      banner.className = "result-banner " + (prior.pass ? "pass" : "fail");
+      banner.innerHTML = "<b>Last attempt: "+prior.score+" / "+prior.total+" — "+(prior.pass ? "PASS" : "Not yet")+"</b>Saved "+new Date(prior.date).toLocaleString()+". Submit again any time to retake.";
+    }
+  }catch(e){}
+
+  document.querySelectorAll(".mini-check").forEach(function(box){
+    var name = box.getAttribute("data-qid");
+    box.querySelectorAll('input[name="'+name+'"]').forEach(function(input){
+      input.addEventListener("change", function(){
+        var correctFb = box.querySelector(".fb.correct");
+        var wrongFb = box.querySelector(".fb.wrong");
+        var correctIndex = box.getAttribute("data-correct");
+        if(correctIndex === null){ return; }
+        if(input.value === correctIndex){
+          correctFb.style.display = "block";
+          wrongFb.style.display = "none";
+        } else {
+          wrongFb.style.display = "block";
+          correctFb.style.display = "none";
+        }
+      });
+    });
+  });
+
+  var sections = ["objectives","pretest","s1","s2","s3","s4","s5","webinar","sim","reckoner","quiz"];
+  var navLinks = document.querySelectorAll("#section-nav a");
+  var fill = document.getElementById("progFill");
+  var pct = document.getElementById("progPct");
+
+  function onScroll(){
+    var scrollTop = window.scrollY || document.documentElement.scrollTop;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var ratio = docHeight > 0 ? Math.min(1, scrollTop/docHeight) : 0;
+    fill.style.width = (ratio*100).toFixed(0)+"%";
+    pct.textContent = (ratio*100).toFixed(0)+"%";
+
+    var current = sections[0];
+    sections.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el){
+        var rect = el.getBoundingClientRect();
+        if(rect.top < 140) current = id;
+      }
+    });
+    navLinks.forEach(function(a){
+      a.classList.toggle("active", a.getAttribute("href") === "#"+current);
+    });
+  }
+  document.addEventListener("scroll", onScroll);
+  onScroll();
+})();
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="pccn-firebase-config.js"></script>
+<script src="pccn-auth.js"></script>
+<script>
+(function(){
+  var secs = [].slice.call(document.querySelectorAll('.mod-section'));
+  if (!secs.length) return;
+  var modKey = (location.pathname.match(/Module(\d+)/) || [0,'00'])[1];
+  modKey = 'mod' + modKey;
+  var storeKey = 'pccn_' + modKey + '_steps';
+  // sequence: intro (if any) first, then pretest, then the rest in DOM order
+  var intro = secs.find(function(s){ return s.id === 'intro'; });
+  var seq = secs.filter(function(s){ return s.id !== 'intro'; });
+  var done = [];
+  try { done = JSON.parse(localStorage.getItem(storeKey) || '[]'); } catch(e) {}
+  function isDone(id){ return done.indexOf(id) !== -1; }
+  function unlocked(i){ return i === 0 || isDone(seq[i-1].id); }
+  function saveLocal(){ try { localStorage.setItem(storeKey, JSON.stringify(done)); } catch(e) {} }
+  function syncRemote(){
+    if (!window.PCCN_AUTH) return;
+    var u = PCCN_AUTH.currentUser(); var db = PCCN_AUTH.db();
+    if (!u || !db) return;
+    var quiz = null, resp = null;
+    try { quiz = JSON.parse(localStorage.getItem('pccn_' + modKey + '_progress_v3') || 'null'); } catch(e) {}
+    try { resp = JSON.parse(localStorage.getItem('pccn_' + modKey + '_responses') || 'null'); } catch(e) {}
+    var payload = {}; payload[modKey] = { steps: done, updatedAt: new Date().toISOString() };
+    if (quiz) payload[modKey].quiz = quiz;
+    if (resp) payload[modKey].responses = resp;
+    db.collection('users').doc(u.uid).set({ progress: payload }, { merge: true }).catch(function(){});
+  }
+  // pull remote progress once signed in (account beats device)
+  if (window.PCCN_AUTH) PCCN_AUTH.onChange(function(u){
+    var db = PCCN_AUTH.db();
+    if (!u || !db) return;
+    db.collection('users').doc(u.uid).get().then(function(d){
+      var v = d.data(); var rem = v && v.progress && v.progress[modKey];
+      if (rem && rem.steps) {
+        rem.steps.forEach(function(id){ if (done.indexOf(id) === -1) done.push(id); });
+        saveLocal(); renderTOC();
+      }
+    }).catch(function(){});
+  });
+  // mirror quiz submits (existing pages write pccn_modXX_progress_v3) to account + mark quiz step done
+  var origSet = localStorage.setItem.bind(localStorage);
+  localStorage.setItem = function(k, v){
+    origSet(k, v);
+    if (k === 'pccn_' + modKey + '_progress_v3') {
+      try { var q = JSON.parse(v); if (q && q.pass && done.indexOf('quiz') === -1) { done.push('quiz'); saveLocal(); renderTOC(); } } catch(e) {}
+      syncRemote();
+    }
+  };
+  var main = secs[0].parentNode;
+  var toc = document.createElement('section');
+  toc.id = 'modTOC';
+  main.insertBefore(toc, secs[0]);
+  var back = document.createElement('button');
+  back.id = 'backOverview'; back.type = 'button'; back.textContent = '\u2190 Module overview';
+  document.body.appendChild(back);
+  function renderTOC(){
+    var html = '<div class="toc-head">Module contents — steps unlock in order</div><div class="toc-grid">';
+    seq.forEach(function(sec, i){
+      var tit = sec.querySelector('.sec-title'); if (!tit) return;
+      var num = sec.querySelector('.sec-num');
+      var n = num ? num.textContent.trim() : String(i);
+      var open = unlocked(i);
+      var q = (sec.id === 'quiz' || sec.id === 'pretest') ? ' tq' : '';
+      var state = isDone(sec.id) ? '<span style="margin-left:auto;color:#1B9E7E;font-weight:800;">\u2713</span>' : (open ? '' : '<span style="margin-left:auto;font-size:12px;color:#8A7796;font-weight:600;">Locked</span>');
+      html += '<button type="button" class="toc-btn' + q + '" data-target="' + sec.id + '"' + (open ? '' : ' disabled style="opacity:.45;cursor:not-allowed;"') + '><span class="tnum">' + n + '</span><span>' + tit.textContent + '</span>' + state + '</button>';
+    });
+    html += '</div>';
+    var pdf = 'assets/pdf/PCCN_' + ('Module' + modKey.replace('mod','')) + '_Study_Material.pdf';
+    if (isDone('pretest')) {
+      html += '<a href="' + pdf + '" download style="display:flex;align-items:center;gap:14px;margin-top:14px;background:#FBF1E4;border:1px solid #E8D9B8;border-radius:14px;padding:16px 18px;text-decoration:none;color:#8A5410;font-weight:700;font-size:15px;min-height:44px;"><span style="width:38px;height:38px;border-radius:10px;background:#D4882A;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">PDF</span><span>Download the printable study material for this module</span><span style="margin-left:auto;">\u2193</span></a>';
+    } else {
+      html += '<div style="display:flex;align-items:center;gap:14px;margin-top:14px;background:#fff;border:1px dashed #D8C2E0;border-radius:14px;padding:16px 18px;color:#8A7796;font-weight:600;font-size:14px;opacity:.8;"><span style="width:38px;height:38px;border-radius:10px;background:#EEE4EC;color:#8A7796;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">PDF</span><span>Printable study material — unlocks after you complete the Pre-Test</span></div>';
+    }
+    toc.innerHTML = html;
+  }
+  renderTOC();
+  // completion buttons at the end of every section (quiz auto-completes on pass too)
+  seq.forEach(function(sec, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'toc-btn';
+    b.style.cssText = 'margin:26px auto 6px;max-width:420px;justify-content:center;background:#1F0938;color:#fff;font-weight:700;';
+    b.innerHTML = '<span>' + (sec.id === 'quiz' ? 'Finish module' : 'Mark step complete \u2192') + '</span>';
+    b.addEventListener('click', function(){
+      if (done.indexOf(sec.id) === -1) { done.push(sec.id); saveLocal(); syncRemote(); }
+      renderTOC(); overview();
+    });
+    sec.appendChild(b);
+  });
+  function overview(){
+    secs.forEach(function(s){ s.classList.remove('open'); });
+    toc.style.display = 'block'; back.style.display = 'none';
+    window.scrollTo(0, 0);
+  }
+  toc.addEventListener('click', function(e){
+    var btn = e.target.closest('.toc-btn'); if (!btn || btn.disabled) return;
+    var sec = document.getElementById(btn.getAttribute('data-target')); if (!sec) return;
+    secs.forEach(function(s){ s.classList.remove('open'); });
+    sec.classList.add('open');
+    toc.style.display = 'none'; back.style.display = 'block';
+    var y = sec.getBoundingClientRect().top + window.pageYOffset - 70;
+    window.scrollTo(0, y > 0 ? y : 0);
+  });
+  var respKey = 'pccn_' + modKey + '_responses';
+  document.addEventListener('change', function(e){
+    var t = e.target;
+    if (!t || t.type !== 'radio') return;
+    var wrap = t.closest('.quiz-q, .mini-check');
+    if (!wrap) return;
+    var qEl = wrap.querySelector('.qtext, .q');
+    var lbl = t.closest('label');
+    if (!qEl || !lbl) return;
+    var store = {};
+    try { store = JSON.parse(localStorage.getItem(respKey) || '{}'); } catch(err) {}
+    var sec = t.closest('.mod-section');
+    store[qEl.textContent.trim().slice(0, 160)] = { a: lbl.textContent.trim(), sec: sec ? sec.id : '', at: new Date().toISOString() };
+    try { origSet(respKey, JSON.stringify(store)); } catch(err) {}
+    syncRemote();
+  });
+  back.addEventListener('click', overview);
+  if (intro && /[?&]open=intro/.test(location.search)) {
+    secs.forEach(function(s){ s.classList.remove('open'); });
+    intro.classList.add('open');
+    toc.style.display = 'none'; back.style.display = 'block';
+    back.textContent = '\u2190 Back to curriculum';
+    back.onclick = function(){ location.href = 'PCCN_Course_Hub.html'; };
+    var h1 = document.querySelector('h1.title'); if (h1) h1.textContent = 'Introduction & Course Overview';
+    var sub = document.querySelector('.subtitle'); if (sub) sub.textContent = 'What you will learn, how you will be assessed, and how the portal works.';
+    var pt = document.querySelector('.pillar-tag'); if (pt) pt.style.display = 'none';
+    var hb = document.querySelector('.hero-badges'); if (hb) hb.style.display = 'none';
+    var ob = document.querySelector('.objectives'); if (ob) ob.style.display = 'none';
+    var pb = document.getElementById('progress-bar'); if (pb) pb.style.display = 'none';
+    document.title = 'Introduction & Course Overview — PCCN';
+    window.scrollTo(0, 0);
+  }
+})();
+</script>
+</body>
+</html>

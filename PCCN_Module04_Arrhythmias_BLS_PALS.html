@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PCCN · Module 02 — Respiratory Support</title>
+<title>PCCN · Module 04 — Arrhythmias, BLS &amp; Resuscitation</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap');
   :root{
@@ -116,13 +116,24 @@
   .arrow-chain .stage{padding:10px 14px;border-radius:10px;font-weight:800;font-size:12.5px;color:#fff;text-align:center;min-width:100px;}
   .arrow-chain .arrow{font-size:20px;color:var(--ink-soft);font-weight:900;}
 
-  /* oxygen ladder — horizontal bar chart */
+  /* branching decision split — two outcome columns under one question */
+  .decision-q{background:var(--purple-900);color:#fff;text-align:center;font-weight:800;padding:12px 18px;border-radius:30px;margin:14px auto 4px;max-width:90%;font-size:14.5px;}
+  .decision-down{text-align:center;font-size:18px;color:var(--purple-900);margin:2px 0;}
+  .decision-split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:10px;}
+  @media (max-width:720px){.decision-split{grid-template-columns:1fr;}}
+  .decision-branch{border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);}
+  .decision-branch-label{color:#fff;font-weight:900;text-align:center;padding:10px;font-size:13.5px;letter-spacing:.3px;text-transform:uppercase;}
+  .decision-branch-body{background:#fff;padding:14px 16px;}
+  .decision-step{font-size:13px;padding:7px 0;border-bottom:1px dashed var(--line);}
+  .decision-step:last-child{border-bottom:none;}
+
+  /* oxygen-ladder-style horizontal bars, reused for CPR ratio comparison */
   .ladder{display:flex;flex-direction:column;gap:10px;margin:10px 0;}
   .ladder-row{display:flex;align-items:center;gap:10px;}
   .ladder-label{flex:0 0 150px;font-size:12.5px;font-weight:700;text-align:right;color:var(--purple-900);}
   .ladder-track{flex:1;background:#f1ebf3;border-radius:8px;height:30px;position:relative;overflow:hidden;}
   .ladder-fill{height:100%;border-radius:8px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;color:#fff;font-size:11.5px;font-weight:800;}
-  .ladder-flow{flex:0 0 110px;font-size:11.5px;color:var(--ink-soft);}
+  .ladder-flow{flex:0 0 130px;font-size:11.5px;color:var(--ink-soft);}
 
   .mini-check{background:#f6f2f8;border:1px dashed #c9b9d4;border-radius:10px;padding:14px 16px;margin-top:10px;}
   .mini-check .q{font-weight:700;font-size:14px;margin-bottom:8px;}
@@ -187,7 +198,7 @@
   .toc-btn.tq .tnum{background:#D6246E;}
   #backOverview{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:60;display:none;background:#1F0938;color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:13px 26px;font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.35);min-height:44px;}
 
-header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,102,.82)),url('assets/dt-infusion-real.png') center 30%/cover no-repeat !important;}
+header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,102,.82)),url('assets/dt-sim-wide.png') center 30%/cover no-repeat !important;}
 </style>
 </head>
 <body>
@@ -195,7 +206,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
 
 <div id="progress-bar">
   <div class="wrap">
-    <span class="prog-title">Module 02 progress</span>
+    <span class="prog-title">Module 04 progress</span>
     <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
     <span class="prog-pct" id="progPct">0%</span>
   </div>
@@ -203,11 +214,11 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <nav id="section-nav">
       <a href="#objectives">Objectives</a>
       <a href="#pretest">Pre-Test</a>
-      <a href="#s1">Distress vs Failure</a>
-      <a href="#s2">O2 Devices</a>
-      <a href="#s3">Bag-Mask</a>
-      <a href="#s4">HFNC</a>
-      <a href="#s5">Nebulisation</a>
+      <a href="#s1">Arrest Rhythms</a>
+      <a href="#s2">Rhythm ID</a>
+      <a href="#s3">Drugs</a>
+      <a href="#s4">BLS/CPR</a>
+      <a href="#s5">Post-Op Arrhythmias</a>
       <a href="#webinar">Live Webinar</a>
       <a href="#sim">Simulation</a>
       <a href="#reckoner">Ready Reckoner</a>
@@ -220,8 +231,8 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
   <div class="wrap">
     <span class="eyebrow">PCCN · IAP Intensive Care Chapter</span>
     <span class="pillar-tag">Pillar 1 — Assessment &amp; Acute Stabilisation</span>
-    <h1 class="title">Module 02 — Respiratory Support</h1>
-    <p class="subtitle">Tell distress from failure. Pick the right device. Support the airway.</p>
+    <h1 class="title">Module 04 — Arrhythmias, BLS &amp; Resuscitation (PALS)</h1>
+    <p class="subtitle">No pulse, seconds count: read the rhythm, shock or don't, compress well, and know your post-cardiac-surgery red flags.</p>
     <div class="hero-badges">
       <div class="hero-badge"><b>5</b>recorded lectures</div>
       <div class="hero-badge"><b>1</b>live webinar</div>
@@ -229,7 +240,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
       <div class="hero-badge"><b>~90m</b>self-study time</div>
     </div>
     <div class="objectives" id="objectives">
-      <b>By the end of this module:</b> spot distress before failure → pick the right O₂ device → bag-mask safely → run HFNC (and know when it's failing) → nebulise properly.
+      <b>By the end of this module:</b> sort shockable from non-shockable arrest rhythms and treat accordingly → recognise SVT/VT by rate and QRS width → draw up emergency drugs at correct doses → deliver high-quality CPR and run a defibrillator → spot JET and complete heart block after cardiac surgery.
     </div>
   </div>
 </header>
@@ -248,309 +259,254 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
 
   <!-- SECTION 1 -->
   <section class="mod-section" id="s1">
-    <div class="sec-head"><span class="sec-num">1</span><h2 class="sec-title">Distress vs Failure</h2></div>
+    <div class="sec-head"><span class="sec-num">1</span><h2 class="sec-title">Arrest Rhythms — Shockable or Not?</h2></div>
     <div class="sec-underline"></div>
-    <p class="sec-sub">Lecture: "Respiratory Distress vs Failure"</p>
+    <p class="sec-sub">Lecture: "Reading the Arrest Rhythm"</p>
 
     <div class="video-slot">
       <div class="play-btn">▶</div>
-      <div class="video-meta"><b>Watch: Respiratory Distress vs Failure</b><span>~10 min · lifetime access</span></div>
+      <div class="video-meta"><b>Watch: Reading the Arrest Rhythm</b><span>~11 min · lifetime access</span></div>
     </div>
 
-    <p class="punch">CATCH IT IN <span>DISTRESS</span> — NOT FAILURE</p>
+    <p class="punch">NO PULSE? THE MONITOR TELLS YOU <span>SHOCK OR DON'T</span></p>
 
-    <div class="arrow-chain">
-      <div class="stage" style="background:var(--teal);">DISTRESS<br>still compensating</div>
-      <span class="arrow">→</span>
-      <div class="stage" style="background:var(--orange);">IMPENDING FAILURE<br>losing the fight</div>
-      <span class="arrow">→</span>
-      <div class="stage" style="background:var(--bad);">ARREST</div>
-    </div>
-
-    <div class="grid2">
-      <div class="card">
-        <h3>Distress looks like</h3>
-        <div class="chip-grid">
-          <span class="chip c-teal">Airway maintained</span>
-          <span class="chip c-teal">Effort visible</span>
-          <span class="chip c-teal">Stridor / wheeze</span>
-          <span class="chip c-teal">Tachycardic</span>
-          <span class="chip c-teal">Pale, perfused</span>
-          <span class="chip c-teal">Irritable / agitated</span>
+    <div class="decision-q">No pulse found — check the rhythm on the monitor</div>
+    <div class="decision-down">↓</div>
+    <div class="decision-split">
+      <div class="decision-branch">
+        <div class="decision-branch-label" style="background:var(--bad);">Shockable — VT / VF</div>
+        <div class="decision-branch-body">
+          <div class="decision-step">⚡ Defibrillate immediately</div>
+          <div class="decision-step">CPR 2 min, resume</div>
+          <div class="decision-step">Epinephrine q3–5min</div>
+          <div class="decision-step">Amiodarone if refractory</div>
         </div>
       </div>
-      <div class="card">
-        <h3>Failure looks like</h3>
-        <div class="chip-grid">
-          <span class="chip c-bad">Sounds fading to silent</span>
-          <span class="chip c-bad">Bradypnoea → apnoea</span>
-          <span class="chip c-bad">Minimal chest rise</span>
-          <span class="chip c-bad">HR falling</span>
-          <span class="chip c-bad">Cyanosis</span>
-          <span class="chip c-bad">Lethargic → unresponsive</span>
+      <div class="decision-branch">
+        <div class="decision-branch-label" style="background:var(--blue);">Not Shockable — Asystole / PEA</div>
+        <div class="decision-branch-body">
+          <div class="decision-step">🚫 Do NOT shock</div>
+          <div class="decision-step">CPR 2 min, resume</div>
+          <div class="decision-step">Epinephrine q3–5min</div>
+          <div class="decision-step">Search &amp; treat the cause</div>
         </div>
       </div>
     </div>
+    <div class="callout warn">Call for help / activate Code Blue and start CPR the moment pulse is confirmed absent — don't wait for the rhythm diagnosis to begin compressions.</div>
 
-    <div class="grid4">
-      <div class="card"><h4>Upper airway</h4><p style="font-size:12.5px;">Croup, FB, epiglottitis</p><span class="chip c-magenta">Stridor</span></div>
-      <div class="card"><h4>Lower airway</h4><p style="font-size:12.5px;">Asthma, bronchiolitis</p><span class="chip c-orange">Wheeze</span></div>
-      <div class="card"><h4>Lung tissue</h4><p style="font-size:12.5px;">Pneumonia, ARDS</p><span class="chip c-blue">Crackles, grunt</span></div>
-      <div class="card"><h4>Control of breathing</h4><p style="font-size:12.5px;">CNS, TBI, sedation</p><span class="chip c-teal">Irregular pattern</span></div>
+    <div class="card">
+      <h4>Nursing actions during any arrhythmia</h4>
+      <div class="chip-grid">
+        <span class="chip c-teal">1. Assess ABCs</span>
+        <span class="chip c-teal">2. Artefact or true rhythm?</span>
+        <span class="chip c-teal">3. Call for help / Code Blue</span>
+        <span class="chip c-magenta">4. Start CPR if no pulse</span>
+        <span class="chip c-magenta">5. Prepare defib/cardioversion</span>
+        <span class="chip c-magenta">6. Drugs per PALS</span>
+      </div>
     </div>
-    <div class="callout">Mnemonic: <b>Inspiratory stridor → upper</b>. <b>Expiratory wheeze → lower</b>.</div>
 
-    <div class="mini-check" data-qid="c1" data-correct="1">
-      <div class="q">Quick check — Wheeze, decreased air movement, no stridor. Which category?</div>
-      <label class="opt-row"><input type="radio" name="c1" value="0">Upper airway obstruction</label>
-      <label class="opt-row"><input type="radio" name="c1" value="1">Lower airway obstruction</label>
-      <label class="opt-row"><input type="radio" name="c1" value="2">Lung tissue disease</label>
-      <label class="opt-row"><input type="radio" name="c1" value="3">Disordered control of breathing</label>
-      <div class="fb correct">Correct — wheeze, no stridor, reduced entry = lower airway.</div>
-      <div class="fb wrong">Not quite — wheeze + no stridor = lower airway obstruction.</div>
+    <div class="mini-check" data-qid="c1" data-correct="0">
+      <div class="q">Quick check — Pulseless VT is found on the monitor. What's the immediate next step?</div>
+      <label class="opt-row"><input type="radio" name="c1" value="0">Defibrillate immediately</label>
+      <label class="opt-row"><input type="radio" name="c1" value="1">Give atropine and reassess</label>
+      <label class="opt-row"><input type="radio" name="c1" value="2">Wait for a 12-lead ECG to confirm</label>
+      <div class="fb correct">Correct — pulseless VT is shockable. Defibrillate now, don't wait.</div>
+      <div class="fb wrong">Not quite — pulseless VT is shockable and needs immediate defibrillation.</div>
     </div>
   </section>
 
   <!-- SECTION 2 -->
   <section class="mod-section" id="s2">
-    <div class="sec-head"><span class="sec-num">2</span><h2 class="sec-title">Oxygen Delivery Systems</h2></div>
+    <div class="sec-head"><span class="sec-num">2</span><h2 class="sec-title">Rhythm Recognition</h2></div>
     <div class="sec-underline"></div>
-    <p class="sec-sub">Lecture: "Oxygen Delivery Systems"</p>
+    <p class="sec-sub">Lecture: "Narrow vs Wide, Fast vs Slow"</p>
 
     <div class="video-slot">
       <div class="play-btn">▶</div>
-      <div class="video-meta"><b>Watch: Oxygen Delivery Systems</b><span>~12 min · lifetime access</span></div>
+      <div class="video-meta"><b>Watch: Narrow vs Wide, Fast vs Slow</b><span>~13 min · lifetime access</span></div>
     </div>
 
-    <div class="callout"><b>AIM</b>: Assess need → Identify device capability → Match technology to need.</div>
-
-    <div class="diagram-box">
-      <div class="ladder">
-        <div class="ladder-row"><span class="ladder-label">Blow-by O₂</span><div class="ladder-track"><div class="ladder-fill" style="width:30%;background:#8fb93e;">25–35%</div></div><span class="ladder-flow">variable flow</span></div>
-        <div class="ladder-row"><span class="ladder-label">Low-flow nasal cannula</span><div class="ladder-track"><div class="ladder-fill" style="width:40%;background:#12967f;">25–40%</div></div><span class="ladder-flow">≤2 L/min</span></div>
-        <div class="ladder-row"><span class="ladder-label">Simple face mask</span><div class="ladder-track"><div class="ladder-fill" style="width:60%;background:#3AABCC;">40–60%</div></div><span class="ladder-flow">≥4 L/min</span></div>
-        <div class="ladder-row"><span class="ladder-label">Partial rebreather</span><div class="ladder-track"><div class="ladder-fill" style="width:80%;background:#e79a1a;">60–80%</div></div><span class="ladder-flow">~10–15 L/min</span></div>
-        <div class="ladder-row"><span class="ladder-label">Non-rebreathing mask</span><div class="ladder-track"><div class="ladder-fill" style="width:100%;background:#D6246E;">90–100%</div></div><span class="ladder-flow">10–15 L/min</span></div>
-      </div>
-      <div class="diagram-cap">The oxygen ladder — climb it as the child gets sicker.</div>
+    <div class="card">
+      <table class="ref-table">
+        <tr><th>Rhythm</th><th>QRS</th><th>Regular?</th><th>Pulse?</th><th>Initial Rx</th></tr>
+        <tr><td>Sinus tachycardia</td><td>Narrow</td><td>Yes</td><td>Yes</td><td>Treat the cause</td></tr>
+        <tr><td>SVT</td><td>Narrow</td><td>Yes</td><td>Yes</td><td>Vagal → adenosine → cardioversion</td></tr>
+        <tr><td>VT (with pulse)</td><td>Wide</td><td>Yes</td><td>Yes</td><td>Amiodarone / sync cardioversion</td></tr>
+        <tr><td>VT/VF (no pulse)</td><td>Wide</td><td>No</td><td>No</td><td>CPR + defib + epi</td></tr>
+        <tr><td>Bradycardia</td><td>Narrow</td><td>Regular</td><td>Y/N</td><td>Atropine ± CPR</td></tr>
+      </table>
     </div>
 
-    <div class="callout warn"><b>SpO₂ &lt;88%, or &lt;94% with distress → NRM 10–15 L/min now.</b> Titrate to 95–98% (not 100%). Shock → NRM to 100%.</div>
+    <div class="callout">Bedside checklist for any new rhythm: <b>1)</b> Sinus? Every QRS after a normal P. <b>2)</b> Rate, QRS width, PR, regularity. <b>3)</b> Pulses/SpO₂/hemodynamics first, whatever the rhythm. <b>4)</b> Correct acidosis, sugar, temp, electrolytes (Ca/K/Mg). <b>5)</b> Know your drugs. <b>6)</b> Defibrillator ready.</div>
 
-    <div class="mini-check" data-qid="c2" data-correct="2">
-      <div class="q">Quick check — Minimum flow for a simple face mask to avoid CO₂ rebreathing?</div>
-      <label class="opt-row"><input type="radio" name="c2" value="0">1 L/min</label>
-      <label class="opt-row"><input type="radio" name="c2" value="1">2 L/min</label>
-      <label class="opt-row"><input type="radio" name="c2" value="2">4 L/min</label>
-      <label class="opt-row"><input type="radio" name="c2" value="3">10 L/min</label>
-      <div class="fb correct">Correct — 4 L/min minimum.</div>
-      <div class="fb wrong">Not quite — it's 4 L/min minimum.</div>
+    <div class="mini-check" data-qid="c2" data-correct="1">
+      <div class="q">Quick check — Narrow-complex, regular, fast rhythm with a pulse, in a distressed infant. Most likely?</div>
+      <label class="opt-row"><input type="radio" name="c2" value="0">Ventricular fibrillation</label>
+      <label class="opt-row"><input type="radio" name="c2" value="1">SVT</label>
+      <label class="opt-row"><input type="radio" name="c2" value="2">Complete heart block</label>
+      <div class="fb correct">Correct — narrow, regular, fast, with a pulse = SVT until proven otherwise.</div>
+      <div class="fb wrong">Not quite — narrow + regular + fast + pulse present points to SVT.</div>
     </div>
   </section>
 
   <!-- SECTION 3 -->
   <section class="mod-section" id="s3">
-    <div class="sec-head"><span class="sec-num">3</span><h2 class="sec-title">Bag-Mask Ventilation</h2></div>
+    <div class="sec-head"><span class="sec-num">3</span><h2 class="sec-title">Emergency Drugs</h2></div>
     <div class="sec-underline"></div>
-    <p class="sec-sub">Lecture: "Bag Mask Ventilation"</p>
+    <p class="sec-sub">Lecture: "Drawing Up Under Pressure"</p>
 
     <div class="video-slot">
       <div class="play-btn">▶</div>
-      <div class="video-meta"><b>Watch: Bag Mask Ventilation</b><span>~14 min · lifetime access</span></div>
-    </div>
-
-    <p class="punch" style="font-size:clamp(20px,4vw,30px);">THE SKILL IS THE <span>SEAL</span></p>
-
-    <div class="grid2">
-      <div class="card">
-        <h3>🟢 Self-inflating bag</h3>
-        <div class="chip-grid"><span class="chip c-good">First choice</span><span class="chip c-bad">Not if breathing spontaneously</span></div>
-      </div>
-      <div class="card">
-        <h3>🔵 Flow-inflating bag</h3>
-        <div class="chip-grid"><span class="chip c-blue">More training needed</span><span class="chip c-blue">Manages flow + seal + volume together</span></div>
-      </div>
+      <div class="video-meta"><b>Watch: Drawing Up Under Pressure</b><span>~9 min · lifetime access</span></div>
     </div>
 
     <div class="card">
-      <div class="chip-grid">
-        <span class="chip c-teal">Infant/small child bag: 450 mL min</span>
-        <span class="chip c-teal">Older child bag: up to 1000 mL</span>
-        <span class="chip c-orange">2-person technique if seal is hard</span>
-      </div>
-      <div class="callout warn">Under-ventilation → respiratory acidosis. Volume over speed.</div>
-      <div class="callout">Pre-oxygenate (HFNC/BVM/Bain) to SpO₂ &gt;93% for ≥3 min before escalating.</div>
+      <table class="ref-table">
+        <tr><th>Drug</th><th>Indication</th><th>Dose</th></tr>
+        <tr><td>Epinephrine</td><td>Arrest</td><td>0.01 mg/kg IV/IO q3–5min (1:10,000)</td></tr>
+        <tr><td>Adenosine</td><td>SVT</td><td>0.1 → 0.2 → 0.3 mg/kg rapid push (max 6/12 mg) + saline flush</td></tr>
+        <tr><td>Amiodarone</td><td>VT, VF</td><td>5 mg/kg IV over 20–60 min</td></tr>
+        <tr><td>Atropine</td><td>Bradycardia</td><td>0.02 mg/kg (min 0.1 mg) IV/IO</td></tr>
+      </table>
     </div>
+    <div class="callout warn"><b>Drawing up Adrenaline 1:10,000:</b> supplied 1 mg/mL (1:1000). Dilute 1 mL drug + 9 mL NS → 1 mL = 0.1 mg. Dose 0.01 mg/kg IV/IO = 0.1 mL/kg of the diluted solution.</div>
 
-    <div class="mini-check" data-qid="c3" data-correct="1">
-      <div class="q">Quick check — Which bag-mask should NOT be used on a spontaneously breathing child?</div>
-      <label class="opt-row"><input type="radio" name="c3" value="0">Flow-inflating bag</label>
-      <label class="opt-row"><input type="radio" name="c3" value="1">Self-inflating bag</label>
-      <label class="opt-row"><input type="radio" name="c3" value="2">Both are safe</label>
-      <div class="fb correct">Correct — self-inflating is first choice for resuscitation, but not for a spontaneously breathing child.</div>
-      <div class="fb wrong">Not quite — it's the self-inflating bag to avoid.</div>
+    <div class="mini-check" data-qid="c3" data-correct="2">
+      <div class="q">Quick check — Correct epinephrine dose for cardiac arrest?</div>
+      <label class="opt-row"><input type="radio" name="c3" value="0">0.1 mg/kg IV/IO</label>
+      <label class="opt-row"><input type="radio" name="c3" value="1">1 mg/kg IV/IO</label>
+      <label class="opt-row"><input type="radio" name="c3" value="2">0.01 mg/kg IV/IO (1:10,000), q3–5min</label>
+      <div class="fb correct">Correct — 0.01 mg/kg of the 1:10,000 dilution, repeated every 3–5 minutes.</div>
+      <div class="fb wrong">Not quite — it's 0.01 mg/kg of the 1:10,000 dilution.</div>
     </div>
   </section>
 
   <!-- SECTION 4 -->
   <section class="mod-section" id="s4">
-    <div class="sec-head"><span class="sec-num">4</span><h2 class="sec-title">High-Flow Nasal Cannula</h2></div>
+    <div class="sec-head"><span class="sec-num">4</span><h2 class="sec-title">Basic Life Support</h2></div>
     <div class="sec-underline"></div>
-    <p class="sec-sub">Lecture: "HFNC"</p>
+    <p class="sec-sub">Lecture: "Compressions That Count"</p>
 
     <div class="video-slot">
       <div class="play-btn">▶</div>
-      <div class="video-meta"><b>Watch: HFNC</b><span>~14 min · lifetime access</span></div>
+      <div class="video-meta"><b>Watch: Compressions That Count</b><span>~12 min · lifetime access</span></div>
     </div>
 
-    <p class="punch">HFNC BUYS TIME — IT'S <span>NOT</span> A CURE</p>
-
-    <div class="grid2">
-      <div class="card">
-        <h3>✅ Use it for</h3>
-        <div class="chip-grid">
-          <span class="chip c-good">SpO₂ &lt;90%</span>
-          <span class="chip c-good">Mod–severe WOB</span>
-          <span class="chip c-good">CCF / fluid overload</span>
-          <span class="chip c-good">Post-op (T&amp;A)</span>
-          <span class="chip c-good">Chronic lung disease</span>
-          <span class="chip c-good">Weaning from CPAP</span>
-        </div>
-      </div>
-      <div class="card">
-        <h3>🚫 Don't use it for</h3>
-        <div class="chip-grid">
-          <span class="chip c-bad">Craniofacial anomaly</span>
-          <span class="chip c-bad">Recent nasal/facial surgery</span>
-          <span class="chip c-bad">Air leak syndrome</span>
-          <span class="chip c-bad">Life-threatening hypoxia</span>
-          <span class="chip c-bad">Haemodynamic instability</span>
-          <span class="chip c-bad">GCS &lt;8</span>
-        </div>
-      </div>
+    <p class="punch" style="font-size:clamp(20px,4vw,30px);">SPAAM — <span>PUSH HARD, PUSH FAST</span></p>
+    <div class="chip-grid">
+      <span class="chip c-magenta"><span class="mark">S</span>tart within 10 sec</span>
+      <span class="chip c-magenta"><span class="mark">P</span>ush 100–120/min</span>
+      <span class="chip c-magenta"><span class="mark">A</span>void hyperventilation</span>
+      <span class="chip c-magenta"><span class="mark">A</span>llow full chest recoil</span>
+      <span class="chip c-magenta"><span class="mark">M</span>inimise interruptions &lt;10s</span>
     </div>
-
-    <div class="card" style="text-align:center;">
-      <h4>Flow formula</h4>
-      <p style="font-size:15px;font-weight:700;color:var(--purple-900);">1–2 L/kg/min (first 12 kg) + 0.5–1 L/kg/min (each kg after)</p>
-      <div class="callout">20 kg example: 24 + 4 = <b>28 L/min</b> (up to 32). Target SpO₂ 94–99%. Never occlude nares &gt;50–60%.</div>
-    </div>
-
-    <div class="grid2">
-      <div class="card"><h4>Watch continuously</h4><div class="chip-grid"><span class="chip c-teal">Consciousness</span><span class="chip c-teal">RR / WOB</span><span class="chip c-teal">HR / perfusion</span><span class="chip c-teal">SpO₂</span></div></div>
-      <div class="card"><h4>Check intermittently</h4><div class="chip-grid"><span class="chip c-orange">Nares/cheeks skin</span><span class="chip c-orange">Abdominal distension</span><span class="chip c-orange">Fluid balance</span></div></div>
-    </div>
-    <div class="callout warn">HFNC is an <b>aerosol-generating procedure</b> — PPE on, humidifier cleaned between patients.</div>
 
     <div class="card">
-      <h4>Is it working? (2 hr check)</h4>
-      <div class="chip-grid"><span class="chip c-good">HR ↓20%</span><span class="chip c-good">RR ↓20%</span><span class="chip c-good">Distress improving</span><span class="chip c-good">FiO₂ ≤40%</span></div>
-      <p style="margin-top:6px;">Wean FiO₂ first (to 92–97%) then flow, or flow first — then step down to room air/LFNC.</p>
+      <table class="ref-table">
+        <tr><th></th><th>Child — single rescuer</th><th>Infant — single rescuer</th></tr>
+        <tr><td>Check</td><td>Carotid pulse, scan chest 5–10s</td><td>Brachial pulse + resp, ≤10s</td></tr>
+        <tr><td>Technique</td><td>1 hand, lower sternum</td><td>2-finger, lower sternum</td></tr>
+        <tr><td>Ratio (trained)</td><td>15:2 ×5 cycles</td><td>15:2 ×10 cycles</td></tr>
+        <tr><td>Ratio (lay)</td><td>30:2 ×5 cycles</td><td>30:2 ×5 cycles</td></tr>
+        <tr><td>Depth</td><td>≈2 in</td><td>1.5 in / ⅓ AP</td></tr>
+      </table>
+      <p style="font-size:12.5px;color:var(--ink-soft);margin-top:8px;"><b>Multi-rescuer:</b> R1 compresses, R2 airway + BVM breaths, R3 runs the AED — switch roles whenever the AED analyses. Infants: two-thumb encircling technique.</p>
     </div>
 
-    <div class="callout warn"><b>Failing:</b> FiO₂ &gt;80% to hold saturation, WOB not improving, worsening acidosis → escalate now, don't wait.</div>
+    <div class="arrow-chain">
+      <div class="stage" style="background:var(--teal);">Recognise &amp; Activate</div><span class="arrow">→</span>
+      <div class="stage" style="background:var(--blue);">High-Quality CPR</div><span class="arrow">→</span>
+      <div class="stage" style="background:var(--orange);">Defibrillate<br>3–5 min → 49–75%</div><span class="arrow">→</span>
+      <div class="stage" style="background:var(--magenta);">Advanced Life Support</div><span class="arrow">→</span>
+      <div class="stage" style="background:#8fb93e;">Recovery</div>
+    </div>
 
-    <div class="case-card">
-      <span class="tag orange">Case in practice</span>
-      <h3>Reactive airway disease, worsening despite oxygen</h3>
-      <div class="arrow-chain">
-        <div class="stage" style="background:var(--teal);">Cannula 2L</div><span class="arrow">→</span>
-        <div class="stage" style="background:var(--blue);">NRM 10L</div><span class="arrow">→</span>
-        <div class="stage" style="background:var(--orange);">HFNC</div><span class="arrow">→</span>
-        <div class="stage" style="background:var(--bad);">Failing → NIV/intubate</div>
-      </div>
-      <p>Each device buys time, not a cure — escalate on trend, not on one number.</p>
+    <div class="card">
+      <h4>Crash cart &amp; code preparedness</h4>
+      <p>Cart at the foot of the bed; one nurse manages it (drugs, flushes, syringes); document everything. Per-shift check: drawers sealed, drug expiry current, defib/BVM/O₂ functional. After a code: restock immediately, log use.</p>
     </div>
 
     <div class="mini-check" data-qid="c4" data-correct="1">
-      <div class="q">Quick check — Child on HFNC, good SpO₂, now drowsy with minimal chest rise. Do what?</div>
-      <label class="opt-row"><input type="radio" name="c4" value="0">Reassure, recheck in an hour</label>
-      <label class="opt-row"><input type="radio" name="c4" value="1">Escalate immediately</label>
-      <label class="opt-row"><input type="radio" name="c4" value="2">Turn the flow down</label>
-      <div class="fb correct">Correct — drowsiness + poor chest rise precede the SpO₂ drop. Escalate now.</div>
-      <div class="fb wrong">Not quite — don't wait for SpO₂ to fall.</div>
+      <div class="q">Quick check — Compression rate target for high-quality CPR?</div>
+      <label class="opt-row"><input type="radio" name="c4" value="0">60–80/min</label>
+      <label class="opt-row"><input type="radio" name="c4" value="1">100–120/min</label>
+      <label class="opt-row"><input type="radio" name="c4" value="2">140–160/min</label>
+      <div class="fb correct">Correct — 100–120/min, with full chest recoil between compressions.</div>
+      <div class="fb wrong">Not quite — the target is 100–120/min.</div>
     </div>
   </section>
 
   <!-- SECTION 5 -->
   <section class="mod-section" id="s5">
-    <div class="sec-head"><span class="sec-num">5</span><h2 class="sec-title">Art of Nebulisation</h2></div>
+    <div class="sec-head"><span class="sec-num">5</span><h2 class="sec-title">Post-Cardiac-Surgery Arrhythmias</h2></div>
     <div class="sec-underline"></div>
-    <p class="sec-sub">Lecture: "Art of Nebulisation"</p>
+    <p class="sec-sub">Lecture: "The First 72 Hours After Repair"</p>
 
     <div class="video-slot">
       <div class="play-btn">▶</div>
-      <div class="video-meta"><b>Watch: Art of Nebulisation</b><span>~10 min · lifetime access</span></div>
+      <div class="video-meta"><b>Watch: The First 72 Hours After Repair</b><span>~10 min · lifetime access</span></div>
     </div>
 
-    <div class="chip-grid">
-      <span class="chip c-teal">O₂-driven, 6–8 L/min</span>
-      <span class="chip c-teal">Recheck SpO₂/RR/sensorium often</span>
-      <span class="chip c-orange">On HFNC: Aerogen in-line, or T-piece</span>
+    <div class="grid2">
+      <div class="card">
+        <h3>Junctional Ectopic Tachycardia (JET)</h3>
+        <div class="chip-grid">
+          <span class="chip c-bad">Narrow-complex, AV dissociation</span>
+          <span class="chip c-bad">First 24–72 hr post-repair</span>
+          <span class="chip c-bad">Poorly tolerated</span>
+        </div>
+        <p style="margin-top:8px;">Cool the patient, optimise sedation/analgesia, involve cardiology/intensivist early — avoid agents that increase automaticity.</p>
+      </div>
+      <div class="card">
+        <h3>Complete Heart Block</h3>
+        <div class="chip-grid">
+          <span class="chip c-orange">Near the conduction system</span>
+          <span class="chip c-orange">e.g. after VSD closure</span>
+        </div>
+        <p style="margin-top:8px;">Keep temporary pacing wires and a pacing plan readily available.</p>
+      </div>
     </div>
 
-    <div class="card">
-      <table class="ref-table">
-        <tr><th>Medication</th><th>Dose</th></tr>
-        <tr><td>Salbutamol MDI</td><td>4–8 puffs q20min ×3, then hourly PRN</td></tr>
-        <tr><td>Salbutamol neb</td><td>0.15 mg/kg (2.5–5 mg) q20min ×3 → double q30min → 0.5 mg/kg/hr continuous</td></tr>
-        <tr><td>Prednisolone</td><td>2 mg/kg then 1 mg/kg OD</td></tr>
-        <tr><td>Dexamethasone</td><td>0.3–0.6 mg/kg (max 12–16 mg/day)</td></tr>
-        <tr><td>Methylprednisolone</td><td>1–2 mg/kg/day IV</td></tr>
-        <tr><td>Magnesium sulfate</td><td>50–100 mg/kg over 0.5–1 hr</td></tr>
-      </table>
-    </div>
+    <div class="callout">New post-op tachyarrhythmia: check narrow vs wide QRS → temp/pulse/BP/glucose/electrolytes → 12-lead ECG + repeat echo → inform cardiologist → prep rate/rhythm-control drugs with the defibrillator ready.</div>
 
-    <div class="mini-check" data-qid="c5" data-correct="1">
-      <div class="q">Quick check — O₂ flow rate to drive the nebuliser for acute wheeze?</div>
-      <label class="opt-row"><input type="radio" name="c5" value="0">1–2 L/min</label>
-      <label class="opt-row"><input type="radio" name="c5" value="1">6–8 L/min</label>
-      <label class="opt-row"><input type="radio" name="c5" value="2">15–20 L/min</label>
-      <div class="fb correct">Correct — 6–8 L/min.</div>
-      <div class="fb wrong">Not quite — target is 6–8 L/min.</div>
+    <div class="mini-check" data-qid="c5" data-correct="0">
+      <div class="q">Quick check — A narrow-complex tachycardia with AV dissociation appears 36 hours after VSD repair. Most likely?</div>
+      <label class="opt-row"><input type="radio" name="c5" value="0">Junctional Ectopic Tachycardia (JET)</label>
+      <label class="opt-row"><input type="radio" name="c5" value="1">Sinus tachycardia</label>
+      <label class="opt-row"><input type="radio" name="c5" value="2">Ventricular fibrillation</label>
+      <div class="fb correct">Correct — JET is the classic early post-repair rhythm with AV dissociation.</div>
+      <div class="fb wrong">Not quite — this pattern in the first 24–72 hr post-repair is JET.</div>
     </div>
   </section>
 
-  <!-- LIVE WEBINAR PREVIEW -->
+  <!-- LIVE WEBINAR -->
   <section class="mod-section" id="webinar">
-    <div class="sec-head"><span class="sec-num">L</span><h2 class="sec-title">Live Webinar</h2></div>
+    <div class="sec-head"><span class="sec-num">L</span><h2 class="sec-title">Live Webinar — Mega-Code Debrief</h2></div>
     <div class="sec-underline"></div>
-    <p class="sec-sub">Stridor/wheeze care, and NIV &amp; tracheostomy · Step 2 attendance</p>
-
+    <p class="sec-sub">Team roles, closed-loop communication, and defibrillator operation under time pressure · Step 2 attendance</p>
     <div class="card">
-      <h3>Care of a Child with Stridor / Wheeze</h3>
-      <p>Live differentiation of upper vs lower airway disease at the bedside — escalation triggers, when to call for help.</p>
-    </div>
-
-    <div class="card">
-      <h3>Care on NIV and the Tracheostomised Child</h3>
-      <div class="chip-grid">
-        <span class="chip c-teal">↓acidosis/hypercarbia</span>
-        <span class="chip c-teal">↑FRC → reverses hypoxia</span>
-        <span class="chip c-teal">↓work of breathing</span>
-      </div>
-      <h4>Why NIV fails</h4>
-      <div class="chip-grid">
-        <span class="chip c-bad">Mask discomfort (#1 cause)</span>
-        <span class="chip c-bad">Oxygenation not improving</span>
-        <span class="chip c-bad">ARF progressing</span>
-        <span class="chip c-bad">Anxiety/agitation</span>
-        <span class="chip c-bad">Haemodynamic instability</span>
-      </div>
-      <div class="callout">Sedation to help tolerance: dexmedetomidine 0.3–1 mcg/kg/hr, own line, never bolused.</div>
-      <p style="font-size:12.5px;color:var(--ink-soft);">Tracheostomy stoma care, humidification, emergency tube change and suctioning — taught hands-on live.</p>
+      <h3>Running a code as a team</h3>
+      <p>Named team leader, closed-loop communication, clear role assignment (compressor, airway, drugs/cart, defibrillator), and switching compressors every 2 minutes to avoid fatigue-related quality drop.</p>
     </div>
   </section>
 
-  <!-- SIMULATION PREVIEW -->
+  <!-- SIMULATION -->
   <section class="mod-section" id="sim">
-    <div class="sec-head"><span class="sec-num">S</span><h2 class="sec-title">Escalation Drill</h2></div>
+    <div class="sec-head"><span class="sec-num">S</span><h2 class="sec-title">Virtual Simulation — Mega-Code</h2></div>
     <div class="sec-underline"></div>
-    <p class="sec-sub">Virtual simulation · after you finish the lectures above</p>
-    <div class="card">
-      <span class="tag orange">Scenario</span>
-      <h3>3-year-old, worsening bronchiolitis</h3>
-      <p>Apply this module live: distress → failure, right device, escalate to HFNC/BMV, ISBAR handover. Faculty debrief follows.</p>
+    <p class="sec-sub">Runs after you finish the lectures above</p>
+    <div class="grid2">
+      <div class="card">
+        <span class="tag orange">Scenario</span>
+        <h3>6-year-old, sudden collapse, pulseless VT on the monitor</h3>
+        <p>Call it, shock it, dose it — run the full shockable-rhythm algorithm against the clock.</p>
+      </div>
+      <div class="card">
+        <span class="tag orange">Scenario</span>
+        <h3>Post-op cardiac child, new narrow tachycardia at 48 hours</h3>
+        <p>Decide JET vs sinus tachycardia vs SVT and choose the right first move.</p>
+      </div>
     </div>
   </section>
 
@@ -562,10 +518,11 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <div class="card">
       <button class="btn secondary print-btn" onclick="window.print()">Print</button>
       <div class="chip-grid">
-        <span class="chip c-teal">Blow-by 25–35% · LFNC 25–40%/≤2L · Mask 40–60%/≥4L · Partial 60–80%/~12L · NRM 90–100%/10–15L</span>
-        <span class="chip c-magenta">SpO₂&lt;88 or &lt;94+distress → NRM now</span>
-        <span class="chip c-orange">HFNC: 2L/kg (first 12kg) + 0.5–1L/kg after → SpO₂ 94–99%</span>
-        <span class="chip c-blue">Nebulise wheeze: O₂ 6–8L/min</span>
+        <span class="chip c-bad">VT/VF → shock now, CPR, epi q3–5min, amiodarone</span>
+        <span class="chip c-blue">Asystole/PEA → no shock, CPR, epi q3–5min, treat cause</span>
+        <span class="chip c-teal">CPR 100–120/min, ≈2in depth, full recoil</span>
+        <span class="chip c-orange">Epi 0.01 mg/kg (1:10,000) · Adenosine 0.1→0.2→0.3 mg/kg · Amiodarone 5 mg/kg · Atropine 0.02 mg/kg</span>
+        <span class="chip c-magenta">JET: narrow + AV dissociation, first 24–72 hr post-op</span>
       </div>
     </div>
   </section>
@@ -628,49 +585,46 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
 
 <script>
 (function(){
-  var STORAGE_KEY = "pccn_mod02_progress";
+  var STORAGE_KEY = "pccn_mod04_progress";
 
   var pretest = [
-    {q:"A sick infant is tachypnoeic with nasal flaring but is still alert and the airway is maintainable. This is best described as:",
-     opts:["Respiratory failure","Respiratory distress","Respiratory arrest","Normal breathing"], a:1},
-    {q:"Stridor is most typical of which problem?",
-     opts:["Lower airway obstruction","Lung tissue disease","Upper airway obstruction","Disordered control of breathing"], a:2},
-    {q:"Which device is a HIGH-flow oxygen device?",
-     opts:["Simple face mask","Low-flow nasal cannula","Non-rebreathing mask with reservoir","Blow-by O2"], a:2},
-    {q:"A self-inflating bag-mask should NOT be used when the child is:",
-     opts:["In cardiac arrest","Breathing spontaneously","Being pre-oxygenated for intubation","Apnoeic"], a:1},
-    {q:"For acute wheeze, nebulisation should ideally be driven by:",
-     opts:["Room air compressor","O2 at 6–8 L/min","O2 at 1 L/min","Piped medical air only"], a:1}
+    {q:"A child has no pulse. The monitor shows pulseless VT. Is this shockable?",
+     opts:["Yes","No"], a:0},
+    {q:"Asystole and PEA are treated with:",
+     opts:["Immediate defibrillation","CPR + epinephrine, no shock","Adenosine","Cardioversion"], a:1},
+    {q:"Target compression rate for CPR:",
+     opts:["60–80/min","100–120/min","140–160/min"], a:1},
+    {q:"Correct epinephrine dose for arrest:",
+     opts:["0.01 mg/kg (1:10,000)","1 mg/kg","0.1 mg/kg (1:1000)"], a:0},
+    {q:"JET most commonly appears:",
+     opts:["Immediately in the OR","First 24–72 hours after cardiac surgery","Weeks after discharge","Only in adults"], a:1}
   ];
 
   var quiz = [
-    {q:"Which of the following is a LOW-flow oxygen device?",
-     opts:["Non-rebreathing mask","Simple face mask","HFNC circuit","Bag-valve-mask"], a:1},
-    {q:"What is the minimum flow rate for a simple face mask to prevent CO2 rebreathing?",
-     opts:["1 L/min","2 L/min","4 L/min","10 L/min"], a:2},
-    {q:"A non-rebreathing mask with reservoir, run at 10–15 L/min, delivers approximately:",
-     opts:["25–40% FiO2","40–60% FiO2","90–100% FiO2","60–70% FiO2"], a:2},
-    {q:"Low-flow nasal cannula flow rate should not exceed:",
-     opts:["1 L/min","2 L/min","4 L/min","6 L/min"], a:1},
-    {q:"Which statement about the self-inflating bag-mask is correct?",
-     opts:["It is the first choice for resuscitation but should not be used on a spontaneously breathing child",
-           "It should always be used on spontaneously breathing children",
-           "It requires more training than a flow-inflating bag",
-           "It cannot be used in infants"], a:0},
-    {q:"The minimum bag-mask volume recommended for infants and small children is:",
-     opts:["150 mL","250 mL","450 mL","1000 mL"], a:2},
-    {q:"Which of these is a sign of IMPENDING respiratory failure rather than simple distress?",
-     opts:["Tachypnoea with nasal flaring","Audible wheeze","Heart rate trending from tachycardia toward relative bradycardia","Mild irritability"], a:2},
-    {q:"Wheeze with decreased air movement and no stridor is most typical of:",
-     opts:["Upper airway obstruction","Lower airway obstruction","Lung tissue disease","Disordered control of breathing"], a:1},
-    {q:"For acute wheeze, the recommended O2-driven nebuliser flow rate is:",
-     opts:["1–2 L/min","6–8 L/min","15–20 L/min","No O2 needed, use air"], a:1},
-    {q:"A child on HFNC develops drowsiness and minimal chest rise, but SpO2 is still acceptable. The correct action is to:",
-     opts:["Wait and recheck SpO2 in an hour","Turn down the flow rate","Escalate care immediately","Switch to blow-by oxygen"], a:2},
-    {q:"Which of these is an appropriate INDICATION for HFNC?",
-     opts:["Recent nasal-maxillofacial surgery","Moderate-to-severe work of breathing with hypoxaemia","GCS <8","Known air leak syndrome"], a:1},
-    {q:"For a 20 kg child, using 2 L/kg/min for the first 12 kg and 0.5 L/kg/min for each kg thereafter, the calculated HFNC starting flow rate is closest to:",
-     opts:["20 L/min","24 L/min","28 L/min","40 L/min"], a:2}
+    {q:"Which rhythms are shockable?",
+     opts:["Asystole and PEA","VF and pulseless VT","Sinus bradycardia","Complete heart block"], a:1},
+    {q:"A narrow-complex, regular, fast rhythm with a pulse in a distressed infant is most likely:",
+     opts:["SVT","VF","Asystole","PEA"], a:0},
+    {q:"Correct adenosine first dose for SVT:",
+     opts:["0.01 mg/kg","0.1 mg/kg rapid push (max 6 mg)","1 mg/kg slow push","5 mg/kg over 20 min"], a:1},
+    {q:"Amiodarone dose for VT/VF is:",
+     opts:["0.02 mg/kg IV/IO","5 mg/kg IV over 20–60 min","1 mg/kg rapid push","50 mg/kg over 1 hr"], a:1},
+    {q:"Atropine dose for symptomatic bradycardia:",
+     opts:["0.02 mg/kg (min 0.1 mg) IV/IO","0.5 mg/kg IV","5 mg/kg IV","1 mg fixed dose regardless of weight"], a:0},
+    {q:"For a single rescuer performing CPR on a child, the compression:ventilation ratio (trained rescuer) is:",
+     opts:["30:2","15:2","5:1","3:1"], a:1},
+    {q:"Compression depth target for a child is approximately:",
+     opts:["0.5 inch","1 inch","2 inches","4 inches"], a:2},
+    {q:"During multi-rescuer CPR, roles should switch:",
+     opts:["Every 10 minutes","Whenever the AED analyses the rhythm","Only when a rescuer is exhausted","Never — one compressor throughout"], a:1},
+    {q:"Junctional Ectopic Tachycardia (JET) is characterised by:",
+     opts:["Wide QRS with a pulse only in adults","Narrow-complex tachycardia with AV dissociation, first 24–72 hr post-repair","A shockable rhythm requiring immediate defibrillation","Bradycardia responsive to atropine"], a:1},
+    {q:"Complete heart block after cardiac surgery is most associated with surgery near:",
+     opts:["The pulmonary valve only","The conduction system, e.g. VSD closure","The skin incision site","The chest tube insertion site"], a:1},
+    {q:"During a code, who should manage the crash cart?",
+     opts:["No one — anyone can grab what's needed","One designated nurse, retrieving drugs and documenting","The most junior staff member only","The patient's family"], a:1},
+    {q:"When drawing up adrenaline for arrest dosing, 1 mL of drug (1 mg/mL, 1:1000) is diluted with:",
+     opts:["1 mL NS to make 1:2000","9 mL NS to make 1:10,000 (0.1 mg/mL)","No dilution needed","99 mL NS to make 1:100,000"], a:1}
   ];
 
   function buildOptions(container, name, opts){

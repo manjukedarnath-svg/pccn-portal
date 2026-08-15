@@ -5,29 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PCCN · Module 01 — Initial Assessment</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap');
   :root{
-    --ink:#1c1030;
-    --ink-soft:#6a6078;
-    --paper:#fbf7f3;
+    --ink:#2C0E4F;
+    --ink-soft:#6B5D82;
+    --paper:#FBF8FA;
     --card:#ffffff;
-    --line:#e8e1e6;
-    --purple-900:#241638;
-    --purple-800:#33204f;
-    --purple-700:#43296b;
-    --rose:#c31558;
-    --rose-soft:#f5d6e2;
-    --teal:#0e8f76;
-    --teal-soft:#d9f0ea;
-    --amber:#db8a1f;
-    --amber-soft:#faead0;
-    --sky:#2f6fb5;
-    --sky-soft:#dce9f8;
-    --good:#177a56;
-    --bad:#c1293b;
-    --bad-soft:#fbe1e4;
+    --line:#EEE4EC;
+    --purple-900:#1F0938;
+    --purple-800:#2C0E4F;
+    --purple-700:#3E1266;
+    --rose:#D6246E;
+    --rose-soft:#FBEAF2;
+    --teal:#1B9E7E;
+    --teal-soft:#EBF8F4;
+    --amber:#D4882A;
+    --amber-soft:#FBF1E4;
+    --sky:#3AABCC;
+    --sky-soft:#E2F2F8;
+    --good:#1B9E7E;
+    --bad:#D4327A;
+    --bad-soft:#FBEAF2;
     --radius:16px;
-    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
-    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --serif:'Fraunces',Georgia,"Iowan Old Style",serif;
+    --sans:'Poppins',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
   }
   *{box-sizing:border-box;}
@@ -209,47 +210,25 @@
   .ci-value.accent{color:var(--rose);}
   .ci-sub{font-size:11.5px;color:var(--ink-soft);margin-top:2px;}
 
-  /* ---------- site top bar (added for site-wide nav consistency; namespaced to avoid clashing with the styles above) ---------- */
-  .topbar{background:#1c1030;border-bottom:1px solid rgba(255,255,255,.08);}
-  .topbar-inner{max-width:1180px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:22px;}
-  .topbar-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;}
-  .topbar-mark{width:30px;height:30px;border-radius:8px;background:#c31558;color:#fff;font-family:Georgia,serif;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex:none;}
-  .topbar-word b{display:block;font-family:Georgia,serif;font-size:15px;font-weight:700;line-height:1.1;color:#fff;}
-  .topbar-word small{display:block;font-size:9.5px;letter-spacing:.04em;color:#c9b9d4;text-transform:uppercase;}
-  .topbar-links{display:flex;gap:18px;flex:1;flex-wrap:wrap;}
-  .topbar-links a{color:#e7dcee;text-decoration:none;font-size:13.5px;font-weight:600;}
-  .topbar-links a.tb-active,.topbar-links a:hover{color:#fff;}
-  .topbar-actions{display:flex;gap:10px;align-items:center;flex:none;}
-  .tb-outline{color:#fff;border:1.5px solid rgba(255,255,255,.35);border-radius:30px;padding:7px 16px;font-size:13px;font-weight:700;text-decoration:none;}
-  .tb-fill{background:#c31558;color:#fff;border-radius:30px;padding:7px 16px;font-size:13px;font-weight:700;text-decoration:none;}
-  .back-link{display:inline-block;color:#e7dcee;font-size:12.5px;font-weight:600;text-decoration:none;margin-bottom:10px;opacity:.85;}
-  .back-link:hover{opacity:1;}
-  .next-mod-row{display:flex;justify-content:flex-end;margin:-8px 0 30px;}
-  .next-mod-row a{display:inline-block;background:var(--purple-900);color:#fff;text-decoration:none;border-radius:12px;padding:12px 18px;font-size:13.5px;font-weight:700;}
-  .next-mod-row a span{display:block;font-family:var(--mono);font-size:10px;color:#c9b9d4;font-weight:600;margin-bottom:2px;}
-  @media (max-width:720px){.topbar-inner{flex-wrap:wrap;} .topbar-links{order:3;width:100%;gap:14px;}}
+  /* overview mode */
+  .mod-section{display:none;}
+  .mod-section.open{display:block;}
+  #section-nav{display:none !important;}
+  #modTOC{max-width:900px;margin:26px auto 40px;padding:0 20px;}
+  #modTOC .toc-head{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#8A7796;margin-bottom:14px;}
+  .toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media (max-width:640px){.toc-grid{grid-template-columns:1fr;}}
+  .toc-btn{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #EEE4EC;border-radius:14px;padding:16px 18px;cursor:pointer;text-align:left;font-family:var(--sans);font-size:15px;font-weight:600;color:#2C0E4F;min-height:44px;transition:box-shadow .15s,transform .15s;width:100%;}
+  .toc-btn:hover{box-shadow:0 10px 24px rgba(44,14,79,.12);transform:translateY(-1px);}
+  .toc-btn .tnum{width:38px;height:38px;border-radius:10px;background:#3E1266;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0;}
+  .toc-btn.tq .tnum{background:#D6246E;}
+  #backOverview{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:60;display:none;background:#1F0938;color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:13px 26px;font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.35);min-height:44px;}
+
+header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,102,.82)),url('assets/dt-assess-real.png') center 30%/cover no-repeat !important;}
 </style>
 </head>
 <body>
-
-<div class="topbar">
-  <div class="topbar-inner">
-    <a href="PCCN_Landing_Page.html" class="topbar-brand">
-      <span class="topbar-mark">P</span>
-      <span class="topbar-word"><b>PCCN</b><small>The definitive course</small></span>
-    </a>
-    <nav class="topbar-links">
-      <a href="PCCN_Landing_Page.html">Home</a>
-      <a href="PCCN_Course_Hub.html" class="tb-active">Curriculum</a>
-      <a href="PCCN_Online_Sessions.html">Online Sessions</a>
-      <a href="PCCN_Faculty.html">Faculty</a>
-    </nav>
-    <div class="topbar-actions">
-      <a href="PCCN_Login.html" class="tb-outline">Log In</a>
-      <a href="PCCN_Register.html" class="tb-fill">Register</a>
-    </div>
-  </div>
-</div>
+<div style="background:#1F0938;font-family:'Poppins',-apple-system,sans-serif;font-size:12px;padding:8px 20px;display:flex;gap:18px;align-items:center;"><a href="PCCN_Landing_Page.html" style="color:#F0D9A8;text-decoration:none;font-weight:600;">← PCCN Portal</a><a href="PCCN_Course_Hub.html" style="color:rgba(255,255,255,.85);text-decoration:none;">All modules</a><a href="PCCN_My_Courses.html" style="color:rgba(255,255,255,.85);text-decoration:none;">My progress</a></div>
 
 <div id="progress-bar">
   <div class="wrap row1">
@@ -275,7 +254,6 @@
 
 <header class="hero">
   <div class="wrap" style="position:relative;z-index:1;">
-    <a href="PCCN_Course_Hub.html" class="back-link">&larr; All modules</a><br>
     <span class="eyebrow">PCCN · IAP Intensive Care Chapter</span><span class="pillar-tag">Pillar 1 — Assessment &amp; Acute Stabilisation</span>
     <h1 class="title">Module 01 — Initial Assessment</h1>
     <p class="subtitle">The first five minutes: PAT → ABCDE → Secondary Survey → Early Escalation.</p>
@@ -465,24 +443,24 @@
 
     <div class="diagram-box">
       <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="240,50 80,320 400,320" fill="#f5d6e2" stroke="#c31558" stroke-width="3" opacity="0.4"/>
-        <line x1="240" y1="50" x2="80" y2="320" stroke="#c31558" stroke-width="3"/>
-        <line x1="240" y1="50" x2="400" y2="320" stroke="#c31558" stroke-width="3"/>
-        <line x1="80" y1="320" x2="400" y2="320" stroke="#c31558" stroke-width="3"/>
-        <text x="240" y="205" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#c31558" font-weight="700">PAT</text>
+        <polygon points="240,50 80,320 400,320" fill="#FBEAF2" stroke="#D6246E" stroke-width="3" opacity="0.4"/>
+        <line x1="240" y1="50" x2="80" y2="320" stroke="#D6246E" stroke-width="3"/>
+        <line x1="240" y1="50" x2="400" y2="320" stroke="#D6246E" stroke-width="3"/>
+        <line x1="80" y1="320" x2="400" y2="320" stroke="#D6246E" stroke-width="3"/>
+        <text x="240" y="205" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#D6246E" font-weight="700">PAT</text>
         <text x="240" y="224" text-anchor="middle" font-size="10.5" fill="#645d70">30–60 sec · no touch</text>
 
-        <circle cx="240" cy="50" r="32" fill="#0e8f76"/>
+        <circle cx="240" cy="50" r="32" fill="#1B9E7E"/>
         <text x="240" y="56" text-anchor="middle" font-size="10.5" fill="#fff" font-weight="700">LOOK</text>
-        <text x="240" y="25" text-anchor="middle" font-size="13.5" fill="#0e8f76" font-weight="700">APPEARANCE</text>
+        <text x="240" y="25" text-anchor="middle" font-size="13.5" fill="#1B9E7E" font-weight="700">APPEARANCE</text>
 
-        <circle cx="80" cy="320" r="32" fill="#db8a1f"/>
+        <circle cx="80" cy="320" r="32" fill="#D4882A"/>
         <text x="80" y="326" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">WOB</text>
         <text x="80" y="360" text-anchor="middle" font-size="13" fill="#8a5c05" font-weight="700">BREATHING</text>
 
-        <circle cx="400" cy="320" r="32" fill="#2f6fb5"/>
+        <circle cx="400" cy="320" r="32" fill="#3AABCC"/>
         <text x="400" y="326" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">SKIN</text>
-        <text x="400" y="360" text-anchor="middle" font-size="13.5" fill="#2f6fb5" font-weight="700">COLOUR</text>
+        <text x="400" y="360" text-anchor="middle" font-size="13.5" fill="#3AABCC" font-weight="700">COLOUR</text>
       </svg>
       <div class="diagram-cap">Pediatric Assessment Triangle — one corner off means the child is sick, now.</div>
     </div>
@@ -512,10 +490,10 @@
         <line x1="240" y1="70" x2="365" y2="70" stroke="#645d70" stroke-width="2" marker-end="url(#arrM1)"/>
         <line x1="390" y1="70" x2="515" y2="70" stroke="#645d70" stroke-width="2" marker-end="url(#arrM1)"/>
         <line x1="540" y1="70" x2="665" y2="70" stroke="#645d70" stroke-width="2" marker-end="url(#arrM1)"/>
-        <g><circle cx="60" cy="70" r="38" fill="#0e8f76"/><text x="60" y="78" text-anchor="middle" font-size="26" fill="#fff" font-weight="700">A</text><text x="60" y="130" text-anchor="middle" font-size="12.5" fill="#0e8f76" font-weight="700">Airway</text></g>
-        <g><circle cx="277" cy="70" r="38" fill="#db8a1f"/><text x="277" y="78" text-anchor="middle" font-size="26" fill="#fff" font-weight="700">B</text><text x="277" y="130" text-anchor="middle" font-size="12.5" fill="#8a5c05" font-weight="700">Breathing</text></g>
-        <g><circle cx="452" cy="70" r="38" fill="#c31558"/><text x="452" y="78" text-anchor="middle" font-size="26" fill="#fff" font-weight="700">C</text><text x="452" y="130" text-anchor="middle" font-size="12.5" fill="#c31558" font-weight="700">Circulation</text></g>
-        <g><circle cx="602" cy="70" r="38" fill="#2f6fb5"/><text x="602" y="78" text-anchor="middle" font-size="26" fill="#fff" font-weight="700">D</text><text x="602" y="130" text-anchor="middle" font-size="12.5" fill="#2f6fb5" font-weight="700">Disability</text></g>
+        <g><circle cx="60" cy="70" r="38" fill="#1B9E7E"/><text x="60" y="78" text-anchor="middle" font-size="26" fill="#fff" font-weight="700">A</text><text x="60" y="130" text-anchor="middle" font-size="12.5" fill="#1B9E7E" font-weight="700">Airway</text></g>
+        <g><circle cx="277" cy="70" r="38" fill="#D4882A"/><text x="277" y="78" text-anchor="middle" font-size="26" fill="#fff" font-weight="700">B</text><text x="277" y="130" text-anchor="middle" font-size="12.5" fill="#8a5c05" font-weight="700">Breathing</text></g>
+        <g><circle cx="452" cy="70" r="38" fill="#D6246E"/><text x="452" y="78" text-anchor="middle" font-size="26" fill="#fff" font-weight="700">C</text><text x="452" y="130" text-anchor="middle" font-size="12.5" fill="#D6246E" font-weight="700">Circulation</text></g>
+        <g><circle cx="602" cy="70" r="38" fill="#3AABCC"/><text x="602" y="78" text-anchor="middle" font-size="26" fill="#fff" font-weight="700">D</text><text x="602" y="130" text-anchor="middle" font-size="12.5" fill="#3AABCC" font-weight="700">Disability</text></g>
         <g><circle cx="702" cy="70" r="38" fill="#645d70"/><text x="702" y="78" text-anchor="middle" font-size="26" fill="#fff" font-weight="700">E</text><text x="702" y="130" text-anchor="middle" font-size="12.5" fill="#645d70" font-weight="700">Exposure</text></g>
       </svg>
       <div class="diagram-cap">Primary assessment — hands-on, in order, every time.</div>
@@ -539,11 +517,11 @@
     <div class="card">
       <h3>Triage — sort the sick from the crowd</h3>
       <div class="seg-bar">
-        <div class="seg" style="background:#c1293b;">L1<small>Resuscitation</small></div>
+        <div class="seg" style="background:#D4327A;">L1<small>Resuscitation</small></div>
         <div class="seg" style="background:#e2733d;">L2<small>Emergent</small></div>
         <div class="seg" style="background:#db9a1f;">L3<small>Urgent</small></div>
         <div class="seg" style="background:#8fb93e;">L4<small>Less urgent</small></div>
-        <div class="seg" style="background:#0e8f76;">L5<small>Non-urgent</small></div>
+        <div class="seg" style="background:#1B9E7E;">L5<small>Non-urgent</small></div>
       </div>
       <div class="chip-grid">
         <span class="chip c-bad">L1: arrest, hypotensive shock</span>
@@ -585,12 +563,12 @@
         <line x1="200" y1="200" x2="288.2" y2="321.4" stroke="#e9e2ea" stroke-width="1.5"/>
         <line x1="200" y1="200" x2="111.8" y2="321.4" stroke="#e9e2ea" stroke-width="1.5"/>
         <line x1="200" y1="200" x2="57.3" y2="153.6" stroke="#e9e2ea" stroke-width="1.5"/>
-        <circle cx="200" cy="200" r="46" fill="#241638"/>
+        <circle cx="200" cy="200" r="46" fill="#1F0938"/>
         <text x="200" y="206" text-anchor="middle" font-family="Georgia,serif" font-size="16" fill="#fff" font-weight="700">DIRECT</text>
-        <circle cx="200" cy="50" r="32" fill="#0e8f76"/><text x="200" y="55" text-anchor="middle" font-size="10.5" fill="#fff" font-weight="700">Detection</text>
-        <circle cx="342.7" cy="153.6" r="32" fill="#db8a1f"/><text x="342.7" y="150" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">Interven-</text><text x="342.7" y="161" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">tion</text>
-        <circle cx="288.2" cy="321.4" r="32" fill="#2f6fb5"/><text x="288.2" y="318" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">Reassess-</text><text x="288.2" y="329" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">ment</text>
-        <circle cx="111.8" cy="321.4" r="34" fill="#c31558"/><text x="111.8" y="318" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="700">Effective</text><text x="111.8" y="329" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="700">Comm.</text>
+        <circle cx="200" cy="50" r="32" fill="#1B9E7E"/><text x="200" y="55" text-anchor="middle" font-size="10.5" fill="#fff" font-weight="700">Detection</text>
+        <circle cx="342.7" cy="153.6" r="32" fill="#D4882A"/><text x="342.7" y="150" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">Interven-</text><text x="342.7" y="161" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">tion</text>
+        <circle cx="288.2" cy="321.4" r="32" fill="#3AABCC"/><text x="288.2" y="318" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">Reassess-</text><text x="288.2" y="329" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">ment</text>
+        <circle cx="111.8" cy="321.4" r="34" fill="#D6246E"/><text x="111.8" y="318" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="700">Effective</text><text x="111.8" y="329" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="700">Comm.</text>
         <circle cx="57.3" cy="153.6" r="32" fill="#645d70"/><text x="57.3" y="158" text-anchor="middle" font-size="10.5" fill="#fff" font-weight="700">Transport</text>
       </svg>
       <div class="diagram-cap">A cycle, not a checklist — keeps running from first contact to safe transfer.</div>
@@ -631,10 +609,10 @@
 
     <div class="diagram-box">
       <div class="cart">
-        <div class="drawer"><span class="dnum" style="background:#0e8f76;">1</span><div class="dcontent"><b>Airway</b><span>OPA/NPA, laryngoscope, ETTs, BVM, suction</span></div><span class="handle"></span></div>
-        <div class="drawer"><span class="dnum" style="background:#db8a1f;">2</span><div class="dcontent"><b>Breathing</b><span>Masks, prongs, nebuliser, O₂ cylinder</span></div><span class="handle"></span></div>
-        <div class="drawer"><span class="dnum" style="background:#c31558;">3</span><div class="dcontent"><b>Circulation/Access</b><span>IV cannulas, fluids, IO kit</span></div><span class="handle"></span></div>
-        <div class="drawer"><span class="dnum" style="background:#2f6fb5;">4</span><div class="dcontent"><b>Drugs</b><span>Adrenaline, atropine, amiodarone, dextrose…</span></div><span class="handle"></span></div>
+        <div class="drawer"><span class="dnum" style="background:#1B9E7E;">1</span><div class="dcontent"><b>Airway</b><span>OPA/NPA, laryngoscope, ETTs, BVM, suction</span></div><span class="handle"></span></div>
+        <div class="drawer"><span class="dnum" style="background:#D4882A;">2</span><div class="dcontent"><b>Breathing</b><span>Masks, prongs, nebuliser, O₂ cylinder</span></div><span class="handle"></span></div>
+        <div class="drawer"><span class="dnum" style="background:#D6246E;">3</span><div class="dcontent"><b>Circulation/Access</b><span>IV cannulas, fluids, IO kit</span></div><span class="handle"></span></div>
+        <div class="drawer"><span class="dnum" style="background:#3AABCC;">4</span><div class="dcontent"><b>Drugs</b><span>Adrenaline, atropine, amiodarone, dextrose…</span></div><span class="handle"></span></div>
         <div class="drawer"><span class="dnum" style="background:#645d70;">5</span><div class="dcontent"><b>Defib/ECG</b><span>Pads, leads, defibrillator on top</span></div><span class="handle"></span></div>
         <div class="drawer"><span class="dnum" style="background:#8a5c05;">6</span><div class="dcontent"><b>Miscellaneous</b><span>Gloves, dressings, forms, labels</span></div><span class="handle"></span></div>
       </div>
@@ -677,7 +655,7 @@
       <h3>When it's bigger than one child — disaster triage</h3>
       <p>Mass-casualty and pandemic surge triage flips the goal: from saving <i>this</i> child to saving the <i>most</i> children with the resources on hand. START/JumpSTART sorts by colour, in seconds, no equipment:</p>
       <div class="seg-bar">
-        <div class="seg" style="background:#c1293b;">RED<small>Immediate</small></div>
+        <div class="seg" style="background:#D4327A;">RED<small>Immediate</small></div>
         <div class="seg" style="background:#db9a1f;">YELLOW<small>Delayed</small></div>
         <div class="seg" style="background:#4a9e4f;">GREEN<small>Minor</small></div>
         <div class="seg" style="background:#2b2b2b;">BLACK<small>Expectant</small></div>
@@ -771,9 +749,7 @@
     </div>
   </section>
 
-  <div class="next-mod-row"><a href="PCCN_Module.html?m=2"><span>NEXT &rarr;</span>02 — Respiratory Support</a></div>
-
-  <div class="divider"><svg viewBox="0 0 240 20"><polyline points="0,10 90,10 100,10 106,2 112,18 118,10 124,10 240,10" fill="none" stroke="#c31558" stroke-width="1.5"/></svg></div>
+  <div class="divider"><svg viewBox="0 0 240 20"><polyline points="0,10 90,10 100,10 106,2 112,18 118,10 124,10 240,10" fill="none" stroke="#D6246E" stroke-width="1.5"/></svg></div>
 
   <!-- MODULE QUIZ -->
   <section class="mod-section" id="quiz">
@@ -818,7 +794,7 @@
 
 <script>
 (function(){
-  var STORAGE_KEY = "pccn_mod01_progress_v3";
+  var STORAGE_KEY = "pccn_mod01_progress_v2";
 
   var pretest = [
     {q:"The Pediatric Assessment Triangle has three corners: Appearance, Work of Breathing, and:",
@@ -1034,5 +1010,147 @@
 })();
 </script>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="pccn-firebase-config.js"></script>
+<script src="pccn-auth.js"></script>
+<script>
+(function(){
+  var secs = [].slice.call(document.querySelectorAll('.mod-section'));
+  if (!secs.length) return;
+  var modKey = (location.pathname.match(/Module(\d+)/) || [0,'00'])[1];
+  modKey = 'mod' + modKey;
+  var storeKey = 'pccn_' + modKey + '_steps';
+  // sequence: intro (if any) first, then pretest, then the rest in DOM order
+  var intro = secs.find(function(s){ return s.id === 'intro'; });
+  var seq = secs.filter(function(s){ return s.id !== 'intro'; });
+  var done = [];
+  try { done = JSON.parse(localStorage.getItem(storeKey) || '[]'); } catch(e) {}
+  function isDone(id){ return done.indexOf(id) !== -1; }
+  function unlocked(i){ return i === 0 || isDone(seq[i-1].id); }
+  function saveLocal(){ try { localStorage.setItem(storeKey, JSON.stringify(done)); } catch(e) {} }
+  function syncRemote(){
+    if (!window.PCCN_AUTH) return;
+    var u = PCCN_AUTH.currentUser(); var db = PCCN_AUTH.db();
+    if (!u || !db) return;
+    var quiz = null, resp = null;
+    try { quiz = JSON.parse(localStorage.getItem('pccn_' + modKey + '_progress_v3') || 'null'); } catch(e) {}
+    try { resp = JSON.parse(localStorage.getItem('pccn_' + modKey + '_responses') || 'null'); } catch(e) {}
+    var payload = {}; payload[modKey] = { steps: done, updatedAt: new Date().toISOString() };
+    if (quiz) payload[modKey].quiz = quiz;
+    if (resp) payload[modKey].responses = resp;
+    db.collection('users').doc(u.uid).set({ progress: payload }, { merge: true }).catch(function(){});
+  }
+  // pull remote progress once signed in (account beats device)
+  if (window.PCCN_AUTH) PCCN_AUTH.onChange(function(u){
+    var db = PCCN_AUTH.db();
+    if (!u || !db) return;
+    db.collection('users').doc(u.uid).get().then(function(d){
+      var v = d.data(); var rem = v && v.progress && v.progress[modKey];
+      if (rem && rem.steps) {
+        rem.steps.forEach(function(id){ if (done.indexOf(id) === -1) done.push(id); });
+        saveLocal(); renderTOC();
+      }
+    }).catch(function(){});
+  });
+  // mirror quiz submits (existing pages write pccn_modXX_progress_v3) to account + mark quiz step done
+  var origSet = localStorage.setItem.bind(localStorage);
+  localStorage.setItem = function(k, v){
+    origSet(k, v);
+    if (k === 'pccn_' + modKey + '_progress_v3') {
+      try { var q = JSON.parse(v); if (q && q.pass && done.indexOf('quiz') === -1) { done.push('quiz'); saveLocal(); renderTOC(); } } catch(e) {}
+      syncRemote();
+    }
+  };
+  var main = secs[0].parentNode;
+  var toc = document.createElement('section');
+  toc.id = 'modTOC';
+  main.insertBefore(toc, secs[0]);
+  var back = document.createElement('button');
+  back.id = 'backOverview'; back.type = 'button'; back.textContent = '\u2190 Module overview';
+  document.body.appendChild(back);
+  function renderTOC(){
+    var html = '<div class="toc-head">Module contents — steps unlock in order</div><div class="toc-grid">';
+    seq.forEach(function(sec, i){
+      var tit = sec.querySelector('.sec-title'); if (!tit) return;
+      var num = sec.querySelector('.sec-num');
+      var n = num ? num.textContent.trim() : String(i);
+      var open = unlocked(i);
+      var q = (sec.id === 'quiz' || sec.id === 'pretest') ? ' tq' : '';
+      var state = isDone(sec.id) ? '<span style="margin-left:auto;color:#1B9E7E;font-weight:800;">\u2713</span>' : (open ? '' : '<span style="margin-left:auto;font-size:12px;color:#8A7796;font-weight:600;">Locked</span>');
+      html += '<button type="button" class="toc-btn' + q + '" data-target="' + sec.id + '"' + (open ? '' : ' disabled style="opacity:.45;cursor:not-allowed;"') + '><span class="tnum">' + n + '</span><span>' + tit.textContent + '</span>' + state + '</button>';
+    });
+    html += '</div>';
+    var pdf = 'assets/pdf/PCCN_' + ('Module' + modKey.replace('mod','')) + '_Study_Material.pdf';
+    if (isDone('pretest')) {
+      html += '<a href="' + pdf + '" download style="display:flex;align-items:center;gap:14px;margin-top:14px;background:#FBF1E4;border:1px solid #E8D9B8;border-radius:14px;padding:16px 18px;text-decoration:none;color:#8A5410;font-weight:700;font-size:15px;min-height:44px;"><span style="width:38px;height:38px;border-radius:10px;background:#D4882A;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">PDF</span><span>Download the printable study material for this module</span><span style="margin-left:auto;">\u2193</span></a>';
+    } else {
+      html += '<div style="display:flex;align-items:center;gap:14px;margin-top:14px;background:#fff;border:1px dashed #D8C2E0;border-radius:14px;padding:16px 18px;color:#8A7796;font-weight:600;font-size:14px;opacity:.8;"><span style="width:38px;height:38px;border-radius:10px;background:#EEE4EC;color:#8A7796;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">PDF</span><span>Printable study material — unlocks after you complete the Pre-Test</span></div>';
+    }
+    toc.innerHTML = html;
+  }
+  renderTOC();
+  // completion buttons at the end of every section (quiz auto-completes on pass too)
+  seq.forEach(function(sec, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'toc-btn';
+    b.style.cssText = 'margin:26px auto 6px;max-width:420px;justify-content:center;background:#1F0938;color:#fff;font-weight:700;';
+    b.innerHTML = '<span>' + (sec.id === 'quiz' ? 'Finish module' : 'Mark step complete \u2192') + '</span>';
+    b.addEventListener('click', function(){
+      if (done.indexOf(sec.id) === -1) { done.push(sec.id); saveLocal(); syncRemote(); }
+      renderTOC(); overview();
+    });
+    sec.appendChild(b);
+  });
+  function overview(){
+    secs.forEach(function(s){ s.classList.remove('open'); });
+    toc.style.display = 'block'; back.style.display = 'none';
+    window.scrollTo(0, 0);
+  }
+  toc.addEventListener('click', function(e){
+    var btn = e.target.closest('.toc-btn'); if (!btn || btn.disabled) return;
+    var sec = document.getElementById(btn.getAttribute('data-target')); if (!sec) return;
+    secs.forEach(function(s){ s.classList.remove('open'); });
+    sec.classList.add('open');
+    toc.style.display = 'none'; back.style.display = 'block';
+    var y = sec.getBoundingClientRect().top + window.pageYOffset - 70;
+    window.scrollTo(0, y > 0 ? y : 0);
+  });
+  var respKey = 'pccn_' + modKey + '_responses';
+  document.addEventListener('change', function(e){
+    var t = e.target;
+    if (!t || t.type !== 'radio') return;
+    var wrap = t.closest('.quiz-q, .mini-check');
+    if (!wrap) return;
+    var qEl = wrap.querySelector('.qtext, .q');
+    var lbl = t.closest('label');
+    if (!qEl || !lbl) return;
+    var store = {};
+    try { store = JSON.parse(localStorage.getItem(respKey) || '{}'); } catch(err) {}
+    var sec = t.closest('.mod-section');
+    store[qEl.textContent.trim().slice(0, 160)] = { a: lbl.textContent.trim(), sec: sec ? sec.id : '', at: new Date().toISOString() };
+    try { origSet(respKey, JSON.stringify(store)); } catch(err) {}
+    syncRemote();
+  });
+  back.addEventListener('click', overview);
+  if (intro && /[?&]open=intro/.test(location.search)) {
+    secs.forEach(function(s){ s.classList.remove('open'); });
+    intro.classList.add('open');
+    toc.style.display = 'none'; back.style.display = 'block';
+    back.textContent = '\u2190 Back to curriculum';
+    back.onclick = function(){ location.href = 'PCCN_Course_Hub.html'; };
+    var h1 = document.querySelector('h1.title'); if (h1) h1.textContent = 'Introduction & Course Overview';
+    var sub = document.querySelector('.subtitle'); if (sub) sub.textContent = 'What you will learn, how you will be assessed, and how the portal works.';
+    var pt = document.querySelector('.pillar-tag'); if (pt) pt.style.display = 'none';
+    var hb = document.querySelector('.hero-badges'); if (hb) hb.style.display = 'none';
+    var ob = document.querySelector('.objectives'); if (ob) ob.style.display = 'none';
+    var pb = document.getElementById('progress-bar'); if (pb) pb.style.display = 'none';
+    document.title = 'Introduction & Course Overview — PCCN';
+    window.scrollTo(0, 0);
+  }
+})();
+</script>
 </body>
 </html>

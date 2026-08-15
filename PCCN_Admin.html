@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Create Account — PCCN Certificate Course</title>
+<title>Admin — PCCN Certificate Course</title>
 <style>
 /* ==========================================================================
    PCCN Portal — shared design system
@@ -464,8 +464,6 @@ main{flex:1;}
 .pccn-footer-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .pccn-footer a{color:rgba(255,255,255,.7);}
 
-
-.login-wrap{background:radial-gradient(1100px 600px at 82% 12%,rgba(214,36,110,.32),transparent 60%),linear-gradient(135deg,rgba(31,9,56,.9) 0%,rgba(44,14,79,.88) 45%,rgba(62,18,102,.86) 75%,rgba(107,28,114,.9) 100%),url('assets/dt-night.png') center/cover no-repeat !important;}
 </style>
 </head>
 <body>
@@ -488,25 +486,26 @@ main{flex:1;}
   </div>
 </nav>
 
-<main class="login-wrap">
-  <div class="login-card">
-    <div class="login-head">
-      <div class="pccn-brand-mark" style="margin:0 auto 14px;width:40px;height:40px;font-size:1.1rem;">P</div>
-      <h2>Create your account</h2>
-      <p>Track your PCCN progress across every device</p>
+<main style="max-width:1120px;margin:0 auto;padding:52px 28px 100px;">
+  <div style="font-size:.78rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);margin-bottom:10px;">Board · Admin</div>
+  <h1 style="font-family:var(--serif);font-size:2.1rem;color:var(--ink);margin:0 0 6px;">Registrations dashboard</h1>
+  <p style="color:var(--ink-soft);margin:0 0 20px;">Every account, score and recorded answer — live from Firebase. Tap a row to see a candidate's answers.</p>
+  <button type="button" id="dlDoc" style="margin:0 0 24px;padding:13px 24px;border:none;border-radius:10px;background:var(--pink,#D6246E);color:#fff;font-family:var(--sans);font-weight:700;font-size:.9rem;cursor:pointer;">Download response sheet (.doc)</button>
+  <div id="adminGate" style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:34px;color:var(--ink-soft);">Checking access&hellip;</div>
+  <div id="adminBody" style="display:none;">
+    <div style="display:flex;gap:18px;flex-wrap:wrap;margin-bottom:26px;">
+      <div style="flex:1;min-width:180px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px 26px;"><div style="font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px;">Total accounts</div><div id="statTotal" style="font-family:var(--serif);font-size:2.2rem;font-weight:700;color:var(--ink);">–</div></div>
+      <div style="flex:1;min-width:180px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px 26px;"><div style="font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px;">Last 7 days</div><div id="stat7d" style="font-family:var(--serif);font-size:2.2rem;font-weight:700;color:var(--good);">–</div></div>
+      <div style="flex:1;min-width:180px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px 26px;"><div style="font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px;">Newest signup</div><div id="statLatest" style="font-size:.95rem;font-weight:600;color:var(--ink);padding-top:10px;">–</div></div>
     </div>
-    <form id="loginForm">
-      <input type="text" id="regName" class="login-field" placeholder="Full name" required>
-      <input type="email" id="regEmail" class="login-field" placeholder="Email" required>
-      <input type="password" id="regPass" class="login-field" placeholder="Password (min 6 characters)" required>
-      <input type="password" id="regPass2" class="login-field" placeholder="Confirm password" style="margin-bottom:6px;" required>
-      <div id="authErr" style="color:var(--bad,#D4327A);font-size:.82rem;font-weight:600;min-height:1.1em;margin-top:4px;"></div>
-      <button type="submit" class="btn btn-pink btn-block" style="margin-top:6px;">Create Account</button>
-    </form>
-    <div style="font-size:.78rem;color:var(--ink-muted);text-align:center;margin-top:14px;line-height:1.6;"><strong style="color:var(--pink);">Enroll through the <a href="https://forms.gle/gBBTLdxTkjCAv7MSA" target="_blank" rel="noopener" style="color:var(--pink);">Google Form</a></strong> — course fee &amp; payment happen there.<br><span style="display:inline-block;margin-top:8px;background:#FBF1E4;color:#8A5410;font-weight:700;border-radius:999px;padding:5px 14px;">⏳ Last 2 seats left in Batch 1</span></div>
-    <div class="login-foot">Already have an account? <a href="PCCN_Login.html" style="color:var(--pink);font-weight:700;">Log in</a></div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+      <table style="width:100%;border-collapse:collapse;font-size:.9rem;">
+        <thead><tr style="background:var(--cream);text-align:left;"><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">#</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Name</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Email</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Module progress &amp; scores</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Joined</th></tr></thead>
+        <tbody id="usersRows"></tbody>
+      </table>
+    </div>
+    <div style="font-size:.78rem;color:var(--ink-muted);margin-top:14px;">Tap any row for the full answer sheet. Scores &amp; answers sync when candidates are logged in; work done while signed out uploads on their next login.</div>
   </div>
-  <div class="backdrop-tagline"><span class="pd" style="background:#1B9E7E;"></span><span class="pd" style="background:#D4327A;"></span><span class="pd" style="background:#D4882A;"></span><span class="pd" style="background:#3AABCC;"></span><span>Pediatric Critical Care Nursing · IAP Intensive Care Chapter</span></div>
 </main>
 
 <footer class="pccn-footer">
@@ -524,32 +523,91 @@ main{flex:1;}
 <script src="pccn-firebase-config.js"></script>
 <script src="pccn-auth.js"></script>
 <script>
-function pccnAuthMsg(err){var m={'auth/invalid-credential':'Wrong email or password.','auth/wrong-password':'Wrong email or password.','auth/user-not-found':'No account with that email.','auth/invalid-email':'Enter a valid email address.','auth/email-already-in-use':'An account already exists with that email — log in instead.','auth/weak-password':'Password must be at least 6 characters.','auth/too-many-requests':'Too many attempts — try again in a few minutes.','auth/unauthorized-domain':'This domain is not authorized for sign-in.','auth/network-request-failed':'Network error — check your connection.'};return m[err.code]||('Something went wrong ('+(err.code||err.message)+').');}
-var params = new URLSearchParams(window.location.search);
-var nextPage = params.get('next') || 'PCCN_My_Courses.html';
-var registering = false;
 if (window.PCCN_AUTH) {
-  PCCN_AUTH.onChange(function(u){ if (u && !registering) window.location.href = nextPage; });
-  document.getElementById('loginForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    var errEl = document.getElementById('authErr'); errEl.textContent = '';
-    var name = document.getElementById('regName').value.trim();
-    var email = document.getElementById('regEmail').value.trim();
-    var pass = document.getElementById('regPass').value;
-    if (!name) { errEl.textContent = 'Enter your full name.'; return; }
-    if (pass !== document.getElementById('regPass2').value) { errEl.textContent = 'Passwords do not match.'; return; }
-    registering = true;
-    PCCN_AUTH.auth().createUserWithEmailAndPassword(email, pass)
-      .then(function(cred){
-        return cred.user.updateProfile({ displayName: name })
-          .then(function(){
-            var db = PCCN_AUTH.db();
-            return db ? db.collection('users').doc(cred.user.uid).set({ name: name, email: email, createdAt: firebase.firestore.FieldValue.serverTimestamp() }) : null;
-          })
-          .then(function(){ return cred.user.reload(); });
-      })
-      .then(function(){ window.location.href = nextPage; })
-      .catch(function(err){ registering = false; errEl.textContent = pccnAuthMsg(err); });
+  PCCN_AUTH.requireLogin();
+  PCCN_AUTH.onChange(function(u){
+    if (!u) return;
+    var gate = document.getElementById('adminGate');
+    var db = PCCN_AUTH.db();
+    if (!db) { gate.textContent = 'Firestore unavailable.'; return; }
+    db.collection('admins').doc(u.uid).get().then(function(doc){
+      if (!doc.exists) {
+        gate.innerHTML = '<strong style="color:var(--ink);">This view is restricted to the PCCN board.</strong><br><br>You are signed in as <strong>' + (u.email||'') + '</strong>.<br>To grant this account admin access, add a document with this ID to the <code>admins</code> collection in Firestore:<br><br><code style="background:var(--cream);padding:6px 10px;border-radius:8px;display:inline-block;">' + u.uid + '</code>';
+        return null;
+      }
+      return db.collection('users').orderBy('createdAt','desc').get().then(function(snap){
+        gate.style.display = 'none';
+        document.getElementById('adminBody').style.display = 'block';
+        var rows = document.getElementById('usersRows');
+        var USERS = [];
+        snap.forEach(function(d){ USERS.push(d.data()); });
+        var now = Date.now(), week = 0, html = '';
+        function progSummary(v){
+          if (!v.progress) return '<span style="color:var(--ink-muted);">—</span>';
+          return Object.keys(v.progress).sort().map(function(mk){
+            var p = v.progress[mk];
+            var q = p.quiz ? (p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' \u2713' : ' \u2717')) : (p.steps ? p.steps.length + ' steps' : '');
+            return '<span style="display:inline-block;background:var(--cream);border-radius:8px;padding:3px 9px;margin:2px 4px 2px 0;font-size:.78rem;font-weight:700;color:var(--plum-600,#4A1A73);">' + mk.toUpperCase() + ' ' + q + '</span>';
+          }).join('');
+        }
+        USERS.forEach(function(v, idx){
+          var i = idx + 1;
+          var ts = v.createdAt && v.createdAt.toDate ? v.createdAt.toDate() : null;
+          if (ts && (now - ts.getTime()) < 7*86400000) week++;
+          if (i === 1) document.getElementById('statLatest').textContent = v.name || v.email || '—';
+          html += '<tr data-row="' + idx + '" style="border-top:1px solid var(--hairline);cursor:pointer;"><td style="padding:13px 22px;color:var(--ink-muted);">' + i + '</td><td style="padding:13px 22px;font-weight:600;color:var(--ink);">' + (v.name||'—') + '</td><td style="padding:13px 22px;color:var(--ink-body);">' + (v.email||'—') + '</td><td style="padding:13px 22px;">' + progSummary(v) + '</td><td style="padding:13px 22px;color:var(--ink-soft);white-space:nowrap;">' + (ts ? ts.toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : '—') + '</td></tr>';
+          var det = '';
+          if (v.progress) Object.keys(v.progress).sort().forEach(function(mk){
+            var p = v.progress[mk];
+            det += '<div style="margin-bottom:14px;"><strong>' + mk.toUpperCase() + '</strong>';
+            if (p.quiz) det += ' — quiz ' + p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' (pass)' : ' (fail)');
+            if (p.steps) det += ' · steps: ' + p.steps.join(', ');
+            if (p.responses) {
+              det += '<table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:.8rem;">';
+              Object.keys(p.responses).forEach(function(q){
+                det += '<tr><td style="padding:5px 10px;border:1px solid var(--hairline);width:55%;">' + q + '</td><td style="padding:5px 10px;border:1px solid var(--hairline);">' + p.responses[q].a + '</td></tr>';
+              });
+              det += '</table>';
+            }
+            det += '</div>';
+          });
+          html += '<tr data-det="' + idx + '" style="display:none;background:var(--cream);"><td colspan="5" style="padding:16px 26px;font-size:.85rem;color:var(--ink-body);">' + (det || 'No module activity yet.') + '</td></tr>';
+        });
+        rows.innerHTML = html || '<tr><td colspan="5" style="padding:22px;color:var(--ink-muted);">No registrations yet.</td></tr>';
+        document.getElementById('statTotal').textContent = USERS.length;
+        document.getElementById('stat7d').textContent = week;
+        rows.addEventListener('click', function(e){
+          var tr = e.target.closest('tr[data-row]'); if (!tr) return;
+          var det = rows.querySelector('tr[data-det="' + tr.getAttribute('data-row') + '"]');
+          if (det) det.style.display = det.style.display === 'none' ? 'table-row' : 'none';
+        });
+        document.getElementById('dlDoc').onclick = function(){
+          var doc = '<html><head><meta charset="utf-8"><title>PCCN Response Sheet</title></head><body style="font-family:Georgia,serif;">';
+          doc += '<h1>PCCN — Quiz &amp; Pre-Test Response Sheet</h1><p>Generated ' + new Date().toLocaleString('en-IN') + ' · ' + USERS.length + ' candidates</p>';
+          USERS.forEach(function(v){
+            doc += '<h2 style="border-bottom:2px solid #4A1A73;padding-bottom:4px;">' + (v.name||'—') + ' &lt;' + (v.email||'') + '&gt;</h2>';
+            if (!v.progress) { doc += '<p><em>No module activity.</em></p>'; return; }
+            Object.keys(v.progress).sort().forEach(function(mk){
+              var p = v.progress[mk];
+              doc += '<h3>' + mk.toUpperCase() + (p.quiz ? ' — Quiz score: ' + p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' (PASS)' : ' (FAIL)') : '') + '</h3>';
+              if (p.responses) {
+                doc += '<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;width:100%;font-size:13px;"><tr style="background:#F6F0F5;"><th align="left">Question</th><th align="left">Answer given</th></tr>';
+                Object.keys(p.responses).forEach(function(q){ doc += '<tr><td>' + q + '</td><td>' + p.responses[q].a + '</td></tr>'; });
+                doc += '</table>';
+              } else { doc += '<p><em>No recorded answers.</em></p>'; }
+            });
+          });
+          doc += '</body></html>';
+          var blob = new Blob(['\ufeff' + doc], { type: 'application/msword' });
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'PCCN_Response_Sheet.doc';
+          a.click();
+        };
+      });
+    }).catch(function(err){
+      gate.innerHTML = 'Could not check access: <code>' + (err.code||err.message) + '</code><br><br>Most likely the Firestore security rules have not been published yet — see the setup steps shared in chat.';
+    });
   });
 }
 </script>
