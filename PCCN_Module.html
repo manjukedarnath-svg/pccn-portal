@@ -163,6 +163,7 @@
   }
 
   var modN = parseInt(qs('m'), 10) || 1;
+  if (modN === 1) { window.location.replace('PCCN_Module01_Initial_Assessment.html'); return; }
   var mod = PCCN_MODULES.find(function(x){ return x.n === modN; }) || PCCN_MODULES[0];
   modN = mod.n;
   var P = PCCN_PILLARS[mod.pillar];

@@ -2,11 +2,1037 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url=PCCN_Module.html?m=1">
-<title>Redirecting…</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCCN · Module 01 — Initial Assessment</title>
+<style>
+  :root{
+    --ink:#1c1030;
+    --ink-soft:#6a6078;
+    --paper:#fbf7f3;
+    --card:#ffffff;
+    --line:#e8e1e6;
+    --purple-900:#241638;
+    --purple-800:#33204f;
+    --purple-700:#43296b;
+    --rose:#c31558;
+    --rose-soft:#f5d6e2;
+    --teal:#0e8f76;
+    --teal-soft:#d9f0ea;
+    --amber:#db8a1f;
+    --amber-soft:#faead0;
+    --sky:#2f6fb5;
+    --sky-soft:#dce9f8;
+    --good:#177a56;
+    --bad:#c1293b;
+    --bad-soft:#fbe1e4;
+    --radius:16px;
+    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  body{margin:0;font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px;}
+  :focus-visible{outline:3px solid var(--sky);outline-offset:2px;border-radius:4px;}
+
+  /* ---------- progress + nav ---------- */
+  #progress-bar{position:sticky;top:0;z-index:50;background:var(--purple-900);color:#fff;box-shadow:0 2px 14px rgba(0,0,0,.18);}
+  #progress-bar .row1{display:flex;align-items:center;gap:14px;padding:9px 0 6px;}
+  .prog-title{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#c9b9d4;white-space:nowrap;}
+  .prog-track{flex:1;min-width:100px;height:6px;background:rgba(255,255,255,.16);border-radius:6px;overflow:hidden;}
+  .prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--rose),var(--amber));transition:width .3s ease;}
+  .prog-pct{font-family:var(--mono);font-size:11.5px;font-weight:600;white-space:nowrap;}
+  #section-nav{display:flex;gap:4px;overflow-x:auto;padding:0 0 9px;scrollbar-width:thin;}
+  #section-nav a{flex:0 0 auto;font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px;background:rgba(255,255,255,.07);color:#e7dcee;text-decoration:none;white-space:nowrap;border:1px solid rgba(255,255,255,.12);}
+  #section-nav a.active{background:#fff;color:var(--purple-900);border-color:#fff;}
+
+  /* ---------- hero ---------- */
+  header.hero{position:relative;background:linear-gradient(125deg,var(--purple-900) 0%,var(--purple-800) 55%,var(--rose) 145%);color:#fff;padding:44px 0 30px;overflow:hidden;}
+  .pulse-trace{position:absolute;left:0;right:0;bottom:0;height:64px;opacity:.16;pointer-events:none;}
+  .pulse-trace path{fill:none;stroke:#fff;stroke-width:2;stroke-dasharray:900;stroke-dashoffset:900;animation:draw 2.4s ease-out forwards;}
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#e6b9cd;}
+  .pillar-tag{display:inline-block;margin-left:10px;background:var(--teal);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.02em;vertical-align:1px;}
+  h1.title{font-family:var(--serif);font-size:clamp(30px,4.6vw,44px);margin:16px 0 8px;font-weight:700;letter-spacing:-.01em;}
+  .subtitle{color:#e7dcee;font-size:16px;max-width:600px;}
+  .hero-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;}
+  .hero-badge{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:9px 14px;font-size:12.5px;min-width:104px;}
+  .hero-badge b{display:block;font-family:var(--mono);font-size:18px;color:#fff;}
+  .objectives{margin-top:22px;background:rgba(255,255,255,.07);border-left:3px solid var(--amber);border-radius:8px;padding:14px 18px;font-size:14px;}
+  .objectives b{color:#ffd98f;}
+
+  /* ---------- layout ---------- */
+  main{padding:38px 0 20px;}
+  section.mod-section{margin-bottom:52px;scroll-margin-top:112px;}
+  .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:2px;}
+  .sec-num{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:var(--amber);color:#fff;font-family:var(--mono);font-weight:700;font-size:16px;flex:none;}
+  h2.sec-title{font-family:var(--serif);font-size:25px;margin:0;font-weight:700;color:var(--purple-900);}
+  .sec-underline{height:3px;width:44px;background:var(--amber);border-radius:4px;margin:8px 0 14px 50px;}
+  .sec-sub{color:var(--ink-soft);font-size:13.5px;margin:0 0 16px 50px;font-style:italic;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:14px;}
+  .card h3{margin:0 0 8px;font-family:var(--serif);font-size:17px;color:var(--purple-900);}
+  .card h4{margin:12px 0 6px;font-family:var(--mono);font-size:11.5px;color:var(--purple-700);text-transform:uppercase;letter-spacing:.06em;}
+  .card p,.card li{font-size:14px;color:var(--ink);}
+  .card ul{margin:6px 0;padding-left:18px;}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  @media (max-width:720px){.grid2,.grid3{grid-template-columns:1fr;}}
+
+  .tag{font-family:var(--mono);font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:.03em;}
+  .tag.teal{background:var(--teal-soft);color:var(--teal);}
+  .tag.rose{background:var(--rose-soft);color:var(--rose);}
+  .tag.amber{background:var(--amber-soft);color:#8a5c05;}
+  .tag.sky{background:var(--sky-soft);color:var(--sky);}
+
+  .punch{font-family:var(--serif);font-size:clamp(24px,4.6vw,38px);font-weight:700;color:var(--amber);line-height:1.1;margin:10px 0 16px;text-align:center;font-style:italic;}
+  .punch span{color:var(--purple-900);}
+
+  .diagram-box{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px 18px 16px;margin-bottom:14px;text-align:center;}
+  .diagram-box svg{max-width:100%;height:auto;}
+  .diagram-cap{font-size:12.5px;color:var(--ink-soft);margin-top:8px;}
+
+  .chip-grid{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;}
+  .chip{font-size:12.5px;font-weight:600;padding:6px 11px;border-radius:9px;display:inline-flex;align-items:center;gap:6px;}
+  .chip.c-teal{background:var(--teal-soft);color:var(--teal);}
+  .chip.c-rose{background:var(--rose-soft);color:var(--rose);}
+  .chip.c-amber{background:var(--amber-soft);color:#8a5c05;}
+  .chip.c-sky{background:var(--sky-soft);color:var(--sky);}
+  .chip.c-bad{background:var(--bad-soft);color:var(--bad);}
+  .chip.c-good{background:#e2f5ea;color:var(--good);}
+
+  .video-slot{display:flex;align-items:center;gap:14px;background:var(--purple-900);color:#fff;border-radius:var(--radius);padding:15px 18px;margin-bottom:16px;}
+  .play-btn{flex:none;width:42px;height:42px;border-radius:50%;background:var(--rose);display:flex;align-items:center;justify-content:center;font-size:14px;}
+  .video-meta b{display:block;font-size:14.5px;}
+  .video-meta span{font-family:var(--mono);font-size:11.5px;color:#d9c9e6;}
+
+  table.ref-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;}
+  table.ref-table th{text-align:left;background:var(--purple-900);color:#fff;padding:8px 10px;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;}
+  table.ref-table td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  table.ref-table tr:nth-child(even) td{background:#faf6f8;}
+
+  .callout{border-left:3px solid var(--teal);background:var(--teal-soft);border-radius:8px;padding:11px 15px;font-size:13.5px;margin:12px 0;}
+  .callout.warn{border-color:var(--rose);background:var(--rose-soft);}
+  .callout.info{border-color:var(--sky);background:var(--sky-soft);}
+
+  .case-card{border:1.5px dashed var(--amber);background:var(--amber-soft);border-radius:var(--radius);padding:16px 18px;margin:14px 0;}
+  .case-card h3{color:#8a5c05;}
+
+  .arrow-chain{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;margin:14px 0;}
+  .arrow-chain .stage{padding:10px 15px;border-radius:10px;font-weight:700;font-size:12.5px;color:#fff;text-align:center;min-width:108px;}
+  .arrow-chain .arrow{font-size:20px;color:var(--ink-soft);font-weight:700;}
+  .arrow-chain.tight .stage{font-size:11px;padding:9px 10px;min-width:118px;}
+
+  .seg-bar{display:flex;border-radius:12px;overflow:hidden;margin:10px 0;}
+  .seg-bar .seg{flex:1;padding:11px 8px;text-align:center;color:#fff;font-size:11.5px;font-weight:700;}
+  .seg-bar .seg small{display:block;font-weight:500;font-size:10px;margin-top:3px;opacity:.9;}
+
+  .cart{max-width:460px;margin:10px auto;border:3px solid var(--purple-900);border-radius:10px;overflow:hidden;background:#fff;}
+  .drawer{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:2px solid var(--paper);font-size:12.5px;}
+  .drawer:last-child{border-bottom:none;}
+  .drawer .dnum{flex:none;width:24px;height:24px;border-radius:6px;color:#fff;font-family:var(--mono);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;}
+  .drawer .dcontent b{display:block;font-size:12.5px;}
+  .drawer .dcontent span{font-size:11.5px;color:var(--ink-soft);}
+  .drawer .handle{margin-left:auto;width:32px;height:5px;background:#d8d0dd;border-radius:4px;flex:none;}
+
+  .prep-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0;}
+  @media (max-width:720px){.prep-grid{grid-template-columns:repeat(2,1fr);}}
+  .prep-item{background:var(--purple-900);color:#fff;border-radius:10px;padding:10px;text-align:center;}
+  .prep-item b{display:block;font-size:12.5px;color:#ffd98f;margin-bottom:3px;}
+  .prep-item span{font-size:10.5px;color:#e7dcee;}
+
+  /* ---------- mini-checks (fixed reveal logic) ---------- */
+  .mini-check{background:#f6f2f8;border:1px dashed #c9b9d4;border-radius:10px;padding:14px 16px;margin-top:10px;}
+  .mini-check .q{font-weight:700;font-size:14px;margin-bottom:8px;}
+  .opt-row{display:block;font-size:13.5px;padding:7px 9px;border-radius:8px;cursor:pointer;margin-bottom:4px;border:1px solid transparent;}
+  .opt-row:hover{background:#efe4f2;}
+  .opt-row input{margin-right:8px;}
+  .fb{display:none;margin-top:8px;font-size:13.5px;font-weight:600;padding:8px 10px;border-radius:8px;}
+  .fb.show.correct{display:block;background:#e2f5ea;color:var(--good);}
+  .fb.show.wrong{display:block;background:var(--bad-soft);color:var(--bad);}
+
+  .quiz-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin-bottom:14px;}
+  .quiz-q{margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--line);}
+  .quiz-q:last-of-type{border-bottom:none;margin-bottom:4px;}
+  .quiz-q .qtext{font-weight:700;font-size:14.5px;margin-bottom:10px;}
+  .quiz-q .opt-row{border:1px solid var(--line);}
+  .quiz-q .opt-row.correct-ans{background:#e2f5ea;border-color:var(--good);}
+  .quiz-q .opt-row.wrong-ans{background:var(--bad-soft);border-color:var(--bad);}
+
+  .btn{display:inline-block;background:var(--rose);color:#fff;border:none;padding:11px 22px;border-radius:30px;font-size:14.5px;font-weight:700;cursor:pointer;font-family:var(--sans);}
+  .btn:hover{background:#a91049;}
+  .btn.secondary{background:transparent;color:var(--purple-900);border:1.5px solid var(--purple-900);}
+  .btn.secondary:hover{background:var(--purple-900);color:#fff;}
+
+  .result-banner{display:none;border-radius:var(--radius);padding:20px 22px;margin-top:14px;font-size:15px;}
+  .result-banner.pass{display:block;background:#e2f5ea;border:1.5px solid var(--good);}
+  .result-banner.fail{display:block;background:var(--bad-soft);border:1.5px solid var(--bad);}
+  .result-banner b{font-family:var(--serif);font-size:21px;display:block;margin-bottom:4px;}
+
+  .path{display:flex;gap:10px;flex-wrap:wrap;}
+  .step{flex:1;min-width:150px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+  .step.active{border-color:var(--rose);box-shadow:0 0 0 3px var(--rose-soft);}
+  .step .snum{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--rose);letter-spacing:.04em;}
+  .step .stext{font-size:13.5px;font-weight:700;margin-top:4px;}
+  .step .sdetail{font-size:12px;color:var(--ink-soft);margin-top:3px;}
+
+  .divider{display:flex;align-items:center;justify-content:center;margin:40px 0;opacity:.5;}
+  .divider svg{width:120px;height:20px;}
+
+  footer{background:var(--purple-900);color:#e7dcee;padding:30px 0 40px;margin-top:20px;font-size:13px;}
+  footer .wrap{display:flex;flex-direction:column;gap:6px;}
+  footer b{color:#fff;}
+  footer .fac{margin-top:10px;color:#c8b9d3;font-size:12.5px;}
+
+  .print-btn{float:right;}
+  @media print{#progress-bar,.video-slot,.mini-check,.quiz-card,header.hero .hero-badges,#section-nav{display:none !important;}}
+
+  /* --- reserve gauges (from Section-1 content-restoration prototype) --- */
+  .gauge-row{display:flex;flex-direction:column;gap:14px;}
+  .gauge{display:flex;align-items:center;gap:12px;}
+  .gauge .glabel{width:150px;flex:none;font-size:13px;font-weight:700;color:var(--purple-900);}
+  .gauge .gtrack{flex:1;height:16px;background:#efe9f2;border-radius:8px;overflow:hidden;position:relative;}
+  .gauge .gfill{height:100%;border-radius:8px;}
+  .gauge .gnote{width:150px;flex:none;font-size:11.5px;color:var(--ink-soft);}
+
+  /* --- course info bar (footer stat card) --- */
+  .course-info-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:#F6F0F7;border-radius:12px;overflow:hidden;margin:0 0 22px;}
+  @media (max-width:720px){.course-info-bar{grid-template-columns:repeat(2,1fr);}}
+  .ci-item{padding:16px 18px;border-right:1px solid #e6d9ea;}
+  .ci-item:last-child{border-right:none;}
+  .ci-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#9B7FA8;margin-bottom:5px;}
+  .ci-value{font-size:15px;font-weight:700;color:var(--purple-900);}
+  .ci-value.accent{color:var(--rose);}
+  .ci-sub{font-size:11.5px;color:var(--ink-soft);margin-top:2px;}
+
+  /* ---------- site top bar (added for site-wide nav consistency; namespaced to avoid clashing with the styles above) ---------- */
+  .topbar{background:#1c1030;border-bottom:1px solid rgba(255,255,255,.08);}
+  .topbar-inner{max-width:1180px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:22px;}
+  .topbar-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;}
+  .topbar-mark{width:30px;height:30px;border-radius:8px;background:#c31558;color:#fff;font-family:Georgia,serif;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex:none;}
+  .topbar-word b{display:block;font-family:Georgia,serif;font-size:15px;font-weight:700;line-height:1.1;color:#fff;}
+  .topbar-word small{display:block;font-size:9.5px;letter-spacing:.04em;color:#c9b9d4;text-transform:uppercase;}
+  .topbar-links{display:flex;gap:18px;flex:1;flex-wrap:wrap;}
+  .topbar-links a{color:#e7dcee;text-decoration:none;font-size:13.5px;font-weight:600;}
+  .topbar-links a.tb-active,.topbar-links a:hover{color:#fff;}
+  .topbar-actions{display:flex;gap:10px;align-items:center;flex:none;}
+  .tb-outline{color:#fff;border:1.5px solid rgba(255,255,255,.35);border-radius:30px;padding:7px 16px;font-size:13px;font-weight:700;text-decoration:none;}
+  .tb-fill{background:#c31558;color:#fff;border-radius:30px;padding:7px 16px;font-size:13px;font-weight:700;text-decoration:none;}
+  .back-link{display:inline-block;color:#e7dcee;font-size:12.5px;font-weight:600;text-decoration:none;margin-bottom:10px;opacity:.85;}
+  .back-link:hover{opacity:1;}
+  .next-mod-row{display:flex;justify-content:flex-end;margin:-8px 0 30px;}
+  .next-mod-row a{display:inline-block;background:var(--purple-900);color:#fff;text-decoration:none;border-radius:12px;padding:12px 18px;font-size:13.5px;font-weight:700;}
+  .next-mod-row a span{display:block;font-family:var(--mono);font-size:10px;color:#c9b9d4;font-weight:600;margin-bottom:2px;}
+  @media (max-width:720px){.topbar-inner{flex-wrap:wrap;} .topbar-links{order:3;width:100%;gap:14px;}}
+</style>
 </head>
 <body>
-<p>This module has moved. <a href="PCCN_Module.html?m=1">Continue to Module 01 — Initial Assessment</a>.</p>
-<script>window.location.replace('PCCN_Module.html?m=1');</script>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="PCCN_Landing_Page.html" class="topbar-brand">
+      <span class="topbar-mark">P</span>
+      <span class="topbar-word"><b>PCCN</b><small>The definitive course</small></span>
+    </a>
+    <nav class="topbar-links">
+      <a href="PCCN_Landing_Page.html">Home</a>
+      <a href="PCCN_Course_Hub.html" class="tb-active">Curriculum</a>
+      <a href="PCCN_Online_Sessions.html">Online Sessions</a>
+      <a href="PCCN_Faculty.html">Faculty</a>
+    </nav>
+    <div class="topbar-actions">
+      <a href="PCCN_Login.html" class="tb-outline">Log In</a>
+      <a href="PCCN_Register.html" class="tb-fill">Register</a>
+    </div>
+  </div>
+</div>
+
+<div id="progress-bar">
+  <div class="wrap row1">
+    <span class="prog-title">Module 01 progress</span>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    <span class="prog-pct" id="progPct">0%</span>
+  </div>
+  <div class="wrap">
+    <nav id="section-nav">
+      <a href="#objectives">Objectives</a>
+      <a href="#pretest">Pre-Test</a>
+      <a href="#intro">Intro</a>
+      <a href="#s1">Why Different</a>
+      <a href="#s2">PAT &amp; Primary</a>
+      <a href="#s3">DIRECT</a>
+      <a href="#webinar">Live Webinar</a>
+      <a href="#sim">Simulation</a>
+      <a href="#reckoner">Ready Reckoner</a>
+      <a href="#quiz">Module Quiz</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap" style="position:relative;z-index:1;">
+    <a href="PCCN_Course_Hub.html" class="back-link">&larr; All modules</a><br>
+    <span class="eyebrow">PCCN · IAP Intensive Care Chapter</span><span class="pillar-tag">Pillar 1 — Assessment &amp; Acute Stabilisation</span>
+    <h1 class="title">Module 01 — Initial Assessment</h1>
+    <p class="subtitle">The first five minutes: PAT → ABCDE → Secondary Survey → Early Escalation.</p>
+    <div class="hero-badges">
+      <div class="hero-badge"><b>4</b>recorded lectures</div>
+      <div class="hero-badge"><b>1</b>live webinar</div>
+      <div class="hero-badge"><b>1</b>virtual simulation</div>
+      <div class="hero-badge"><b>~85m</b>self-study time</div>
+    </div>
+    <div class="objectives" id="objectives">
+      <b>By the end of this module:</b> spot why children crash differently → run a PAT + ABCDE assessment fast → apply DIRECT to keep a deteriorating child safe → set up a crash cart and think like a prepared unit, not a lucky one.
+    </div>
+  </div>
+  <svg class="pulse-trace" viewBox="0 0 1200 64" preserveAspectRatio="none">
+    <path d="M0,42 L160,42 L182,42 L196,10 L212,58 L228,42 L400,42 L422,42 L436,10 L452,58 L468,42 L640,42 L662,42 L676,10 L692,58 L708,42 L880,42 L902,42 L916,10 L932,58 L948,42 L1120,42 L1142,42 L1156,10 L1172,58 L1188,42 L1200,42"/>
+  </svg>
+</header>
+
+<main class="wrap">
+
+  <!-- PRE-TEST -->
+  <section class="mod-section" id="pretest">
+    <div class="sec-head"><span class="sec-num">00</span><h2 class="sec-title">Pre-Test</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">10-item diagnostic MCQ, ungraded — establishes your baseline and unlocks the section.</p>
+    <div class="card" id="pretestCard"></div>
+    <button class="btn secondary" id="pretestSubmit">Check my answers</button>
+    <div class="result-banner" id="pretestResult"></div>
+  </section>
+
+  <!-- SECTION 0: INTRODUCTION -->
+  <section class="mod-section" id="intro">
+    <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">Introduction &amp; Course Overview</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Lecture: &ldquo;Introduction &amp; Course Overview&rdquo;</p>
+
+    <div class="video-slot">
+      <div class="play-btn">▶</div>
+      <div class="video-meta"><b>Watch: Introduction &amp; Course Overview</b><span>~8 MIN · LIFETIME ACCESS</span></div>
+    </div>
+
+    <p class="punch">One course, <span>twelve</span> sections, one standard of care</p>
+
+    <div class="card">
+      <h3>How this course is built</h3>
+      <p>Every one of the 12 sections follows the same rhythm — the loop repeats through to Section 12:</p>
+      <div class="arrow-chain tight">
+        <div class="stage" style="background:var(--purple-900);">Pre-Test</div>
+        <span class="arrow">→</span>
+        <div class="stage" style="background:var(--teal);">Online lectures</div>
+        <span class="arrow">→</span>
+        <div class="stage" style="background:var(--amber);">Live webinar</div>
+        <span class="arrow">→</span>
+        <div class="stage" style="background:var(--sky);">Virtual simulation</div>
+        <span class="arrow">→</span>
+        <div class="stage" style="background:var(--rose);">Module quiz — 80%</div>
+        <span class="arrow">→</span>
+        <div class="stage" style="background:var(--purple-900);">Hands-on workshop</div>
+      </div>
+      <div class="callout">Passing the module quiz at 80% unlocks the next section. One retake is permitted after reviewing the highlighted answers; a second miss triggers 1:1 preceptor review — the same rule applies in every section of this course.</div>
+    </div>
+
+    <div class="grid3">
+      <div class="card"><h4>Certification</h4><p>Course-end Final Exam: Online MCQ ≥80%, plus an OSCE where every station must be passed.</p></div>
+      <div class="card"><h4>Attendance</h4><p>Live webinars are Step 2 of each module's pathway — a recorded makeup is allowed if you miss the live session.</p></div>
+      <div class="card"><h4>Hands-on</h4><p>Workshops run zone-wise; most sections are 1-day, Sections 6 and 12 run as 2-day skills labs.</p></div>
+    </div>
+
+    <div class="callout warn"><b>Before you start:</b> this module opens with a diagnostic Pre-Test below (ungraded) — its only job is to show you where to focus as you work through the lectures that follow.</div>
+  </section>
+
+  <!-- SECTION 1 -->
+  <section class="mod-section" id="s1">
+    <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Why Children Are Different</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Lecture: &ldquo;Why Children Are Different&rdquo;</p>
+
+    <div class="video-slot">
+      <div class="play-btn">▶</div>
+      <div class="video-meta"><b>Watch: Why Children Are Different</b><span>~10 MIN · LIFETIME ACCESS</span></div>
+    </div>
+
+    <p class="punch">Children are <span>not</span> small adults</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Respiratory</h3>
+        <div class="chip-grid">
+          <span class="chip c-teal">↓ Narrow airway</span>
+          <span class="chip c-teal">↓ Low reserve</span>
+          <span class="chip c-teal">↓ Low FRC</span>
+          <span class="chip c-teal">↑ High VO₂</span>
+          <span class="chip c-teal">↑ Big dead space</span>
+        </div>
+        <p style="margin-top:8px;">→ early hypoxia, fast.</p>
+      </div>
+      <div class="card">
+        <h3>Circulatory</h3>
+        <div class="chip-grid">
+          <span class="chip c-rose">CO = rate-dependent</span>
+          <span class="chip c-rose">Low SVR</span>
+          <span class="chip c-rose">Low blood volume</span>
+          <span class="chip c-rose">Cools down fast</span>
+          <span class="chip c-rose">Low glycogen</span>
+        </div>
+        <p style="margin-top:8px;">→ hidden shock, underestimated losses.</p>
+      </div>
+    </div>
+
+    <div class="card" style="border:1.5px dashed var(--teal);">
+      <h3>Thermoregulation &amp; metabolic reserve <span class="tag teal" style="margin-left:6px;">restored</span></h3>
+      <div class="chip-grid">
+        <span class="chip c-amber">↑ Fast heat loss — high surface area : body weight</span>
+        <span class="chip c-amber">↓ Low glycogen stores — faster hypoglycaemia in illness</span>
+      </div>
+    </div>
+
+    <div class="diagram-box">
+      <h4 style="margin:0 0 12px;color:var(--purple-900);font-size:14px;">Reserve at a glance — why the margin is thinner in children</h4>
+      <div class="gauge-row">
+        <div class="gauge">
+          <span class="glabel">Respiratory reserve</span>
+          <div class="gtrack"><div class="gfill" style="width:28%;background:var(--teal);"></div></div>
+          <span class="gnote">Thin — tips into hypoxia fast</span>
+        </div>
+        <div class="gauge">
+          <span class="glabel">Circulatory reserve</span>
+          <div class="gtrack"><div class="gfill" style="width:32%;background:var(--rose);"></div></div>
+          <span class="gnote">Thin — shock hides, then decompensates fast</span>
+        </div>
+        <div class="gauge">
+          <span class="glabel">Metabolic reserve</span>
+          <div class="gtrack"><div class="gfill" style="width:24%;background:var(--amber);"></div></div>
+          <span class="gnote">Thin — heat and glucose drop quickly</span>
+        </div>
+      </div>
+      <div class="diagram-cap">Illustrative, not to clinical scale — the point is: children start with less margin across every system.</div>
+    </div>
+
+    <div class="callout warn"><b>Vitals are the tip of the iceberg</b> — compensation hides deterioration until it's almost too late. HR, BP, SpO₂, GCS can all look fine right up to collapse. Early read beats a late number.</div>
+
+    <div class="card">
+      <h3>Spot the pattern — 3 kids, same day</h3>
+      <div class="grid3">
+        <div><span class="tag teal">3 months</span><p>Fever, fast breathing, chest indrawing, poor feed, drowsy</p></div>
+        <div><span class="tag rose">5 years</span><p>Vomiting, pain abdomen, dehydrated, drowsy</p></div>
+        <div><span class="tag amber">1 year</span><p>Fever, cough, poor feed, unresponsive</p></div>
+      </div>
+      <div class="callout warn">Same &ldquo;viral illness&rdquo; story on the surface — each hides a red flag a rushed look would miss.</div>
+    </div>
+
+    <div class="card" style="border:1.5px dashed var(--teal);">
+      <h3>Minimum acceptable blood pressure, by age <span class="tag teal" style="margin-left:6px;">expanded</span></h3>
+      <p style="font-size:13px;color:var(--ink-soft);margin-top:-4px;">The quick formula in the next section (&ldquo;70 + 2×age&rdquo;) only covers ages 1–10. Here is the full age band.</p>
+      <table class="ref-table">
+        <tr><th>Age</th><th>Minimum acceptable systolic BP</th></tr>
+        <tr><td>Term neonate (0–28 days)</td><td>&lt; 60 mmHg</td></tr>
+        <tr><td>Infant (1–12 months)</td><td>&lt; 70 mmHg</td></tr>
+        <tr><td>Children 1–10 years</td><td>&lt; 70 + (age × 2) mmHg</td></tr>
+        <tr><td>Children &gt; 10 years</td><td>&lt; 90 mmHg</td></tr>
+      </table>
+      <div class="callout info">Easy mnemonic: <b>60 – 70 – 80 – 90</b> is the rough minimum systolic BP walking up through neonate → infant → toddler → older child.
+        <div style="margin-top:6px;font-size:11.5px;color:var(--ink-soft);font-style:italic;">Source: PALS 2021 Provider Handbook (Karl Disque), as cited in the PEERS Nurse Manual.</div>
+      </div>
+    </div>
+
+    <div class="mini-check" data-qid="c1" data-correct="1">
+      <div class="q">Quick check — Why do children deteriorate faster than adults in respiratory illness?</div>
+      <label class="opt-row"><input type="radio" name="c1" value="0">Their airways are proportionally wider than adults'</label>
+      <label class="opt-row"><input type="radio" name="c1" value="1">Low FRC, high oxygen consumption and a narrow airway leave little reserve</label>
+      <label class="opt-row"><input type="radio" name="c1" value="2">They have higher glycogen stores, delaying deterioration</label>
+      <div class="fb correct">Correct — low FRC + high VO₂ + narrow airway = fast tip into hypoxia.</div>
+      <div class="fb wrong">Not quite — look at the Respiratory chips above.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section class="mod-section" id="s2">
+    <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">PAT &amp; Primary Assessment</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Lecture: &ldquo;PAT &amp; Primary Assessment&rdquo;</p>
+
+    <div class="video-slot">
+      <div class="play-btn">▶</div>
+      <div class="video-meta"><b>Watch: PAT &amp; Primary Assessment</b><span>~16 MIN · LIFETIME ACCESS</span></div>
+    </div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="240,50 80,320 400,320" fill="#f5d6e2" stroke="#c31558" stroke-width="3" opacity="0.4"/>
+        <line x1="240" y1="50" x2="80" y2="320" stroke="#c31558" stroke-width="3"/>
+        <line x1="240" y1="50" x2="400" y2="320" stroke="#c31558" stroke-width="3"/>
+        <line x1="80" y1="320" x2="400" y2="320" stroke="#c31558" stroke-width="3"/>
+        <text x="240" y="205" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#c31558" font-weight="700">PAT</text>
+        <text x="240" y="224" text-anchor="middle" font-size="10.5" fill="#645d70">30–60 sec · no touch</text>
+
+        <circle cx="240" cy="50" r="32" fill="#0e8f76"/>
+        <text x="240" y="56" text-anchor="middle" font-size="10.5" fill="#fff" font-weight="700">LOOK</text>
+        <text x="240" y="25" text-anchor="middle" font-size="13.5" fill="#0e8f76" font-weight="700">APPEARANCE</text>
+
+        <circle cx="80" cy="320" r="32" fill="#db8a1f"/>
+        <text x="80" y="326" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">WOB</text>
+        <text x="80" y="360" text-anchor="middle" font-size="13" fill="#8a5c05" font-weight="700">BREATHING</text>
+
+        <circle cx="400" cy="320" r="32" fill="#2f6fb5"/>
+        <text x="400" y="326" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">SKIN</text>
+        <text x="400" y="360" text-anchor="middle" font-size="13.5" fill="#2f6fb5" font-weight="700">COLOUR</text>
+      </svg>
+      <div class="diagram-cap">Pediatric Assessment Triangle — one corner off means the child is sick, now.</div>
+    </div>
+
+    <div class="grid3">
+      <div class="card"><h4>Appearance = TICLS</h4><div class="chip-grid"><span class="chip c-teal">Tone</span><span class="chip c-teal">Interactivity</span><span class="chip c-teal">Consolability</span><span class="chip c-teal">Look</span><span class="chip c-teal">Speech/cry</span></div></div>
+      <div class="card"><h4>Work of breathing</h4><div class="chip-grid"><span class="chip c-amber">Sounds</span><span class="chip c-amber">Position</span><span class="chip c-amber">Effort</span></div></div>
+      <div class="card"><h4>Colour</h4><div class="chip-grid"><span class="chip c-sky">Pallor</span><span class="chip c-sky">Mottling</span><span class="chip c-sky">Cyanosis</span><span class="chip c-sky">Petechiae</span></div></div>
+    </div>
+
+    <div class="card">
+      <h3>Doorway life-threatening check</h3>
+      <div class="arrow-chain">
+        <div class="stage" style="background:var(--purple-900);">Unresponsive / not breathing / gasping</div>
+        <span class="arrow">→</span>
+        <div class="stage" style="background:var(--sky);">Check pulse</div>
+        <span class="arrow">→</span>
+        <div class="stage" style="background:var(--bad);">&lt;60/min → START CPR</div>
+      </div>
+      <p style="text-align:center;">≥60/min but breathing inadequate → bag-mask, reassess. No auscultating — don't waste time.</p>
+    </div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 760 190" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="arrM1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#645d70"/></marker></defs>
+        <line x1="90" y1="70" x2="215" y2="70" stroke="#645d70" stroke-width="2" marker-end="url(#arrM1)"/>
+        <line x1="240" y1="70" x2="365" y2="70" stroke="#645d70" stroke-width="2" marker-end="url(#arrM1)"/>
+        <line x1="390" y1="70" x2="515" y2="70" stroke="#645d70" stroke-width="2" marker-end="url(#arrM1)"/>
+        <line x1="540" y1="70" x2="665" y2="70" stroke="#645d70" stroke-width="2" marker-end="url(#arrM1)"/>
+        <g><circle cx="60" cy="70" r="38" fill="#0e8f76"/><text x="60" y="78" text-anchor="middle" font-size="26" fill="#fff" font-weight="700">A</text><text x="60" y="130" text-anchor="middle" font-size="12.5" fill="#0e8f76" font-weight="700">Airway</text></g>
+        <g><circle cx="277" cy="70" r="38" fill="#db8a1f"/><text x="277" y="78" text-anchor="middle" font-size="26" fill="#fff" font-weight="700">B</text><text x="277" y="130" text-anchor="middle" font-size="12.5" fill="#8a5c05" font-weight="700">Breathing</text></g>
+        <g><circle cx="452" cy="70" r="38" fill="#c31558"/><text x="452" y="78" text-anchor="middle" font-size="26" fill="#fff" font-weight="700">C</text><text x="452" y="130" text-anchor="middle" font-size="12.5" fill="#c31558" font-weight="700">Circulation</text></g>
+        <g><circle cx="602" cy="70" r="38" fill="#2f6fb5"/><text x="602" y="78" text-anchor="middle" font-size="26" fill="#fff" font-weight="700">D</text><text x="602" y="130" text-anchor="middle" font-size="12.5" fill="#2f6fb5" font-weight="700">Disability</text></g>
+        <g><circle cx="702" cy="70" r="38" fill="#645d70"/><text x="702" y="78" text-anchor="middle" font-size="26" fill="#fff" font-weight="700">E</text><text x="702" y="130" text-anchor="middle" font-size="12.5" fill="#645d70" font-weight="700">Exposure</text></g>
+      </svg>
+      <div class="diagram-cap">Primary assessment — hands-on, in order, every time.</div>
+    </div>
+
+    <div class="grid3">
+      <div class="card"><h4>A red flags</h4><div class="chip-grid"><span class="chip c-bad">Stridor</span><span class="chip c-bad">Drooling</span><span class="chip c-bad">Gurgling</span></div></div>
+      <div class="card"><h4>B red flags</h4><div class="chip-grid"><span class="chip c-bad">RR &gt;60/&lt;10</span><span class="chip c-bad">SpO₂ &lt;94%</span><span class="chip c-bad">Grunting</span><span class="chip c-bad">See-saw</span></div></div>
+      <div class="card"><h4>C red flags</h4><div class="chip-grid"><span class="chip c-bad">Pulse &lt;60</span><span class="chip c-bad">CRT &gt;2s</span><span class="chip c-bad">Cool/mottled</span></div></div>
+      <div class="card"><h4>D red flags</h4><div class="chip-grid"><span class="chip c-bad">AVPU = P/U</span><span class="chip c-bad">Unequal pupils</span><span class="chip c-bad">Glucose &lt;60</span></div></div>
+      <div class="card"><h4>E red flags</h4><div class="chip-grid"><span class="chip c-bad">Petechiae</span><span class="chip c-bad">Purpura</span><span class="chip c-bad">Bruising</span></div></div>
+      <div class="card"><h4>AVPU ≈ GCS</h4><div class="chip-grid"><span class="chip c-teal">A=15</span><span class="chip c-teal">V=13</span><span class="chip c-bad">P=8</span><span class="chip c-bad">U=6</span></div></div>
+    </div>
+
+    <div class="card" style="text-align:center;">
+      <h4>BP quick formulas</h4>
+      <p style="font-family:var(--mono);font-size:15px;font-weight:700;color:var(--purple-900);">Min SBP = 70 + 2×age &nbsp;|&nbsp; Median SBP = 90 + 2×age</p>
+      <p>Cuff: width ≈40% · length 80–100% of arm circumference</p>
+    </div>
+
+    <div class="card">
+      <h3>Triage — sort the sick from the crowd</h3>
+      <div class="seg-bar">
+        <div class="seg" style="background:#c1293b;">L1<small>Resuscitation</small></div>
+        <div class="seg" style="background:#e2733d;">L2<small>Emergent</small></div>
+        <div class="seg" style="background:#db9a1f;">L3<small>Urgent</small></div>
+        <div class="seg" style="background:#8fb93e;">L4<small>Less urgent</small></div>
+        <div class="seg" style="background:#0e8f76;">L5<small>Non-urgent</small></div>
+      </div>
+      <div class="chip-grid">
+        <span class="chip c-bad">L1: arrest, hypotensive shock</span>
+        <span class="chip c-amber">L2: compensated shock, distress</span>
+        <span class="chip c-amber">L3: dehydration, post-ictal</span>
+        <span class="chip c-teal">L4: fever, no distress</span>
+        <span class="chip c-teal">L5: minor injury</span>
+      </div>
+      <div class="callout">This is <b>in-hospital</b> triage — one sick child among many. Mass-casualty/disaster triage uses a different system (see Emergency Preparedness in the Live Webinar below).</div>
+    </div>
+
+    <div class="mini-check" data-qid="c2" data-correct="2">
+      <div class="q">Quick check — TICLS (Tone, Interactivity, Consolability, Look, Speech/cry) belongs to which PAT corner?</div>
+      <label class="opt-row"><input type="radio" name="c2" value="0">Work of breathing</label>
+      <label class="opt-row"><input type="radio" name="c2" value="1">Colour / circulation</label>
+      <label class="opt-row"><input type="radio" name="c2" value="2">Appearance</label>
+      <div class="fb correct">Correct — TICLS is Appearance.</div>
+      <div class="fb wrong">Not quite — TICLS belongs to Appearance.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="mod-section" id="s3">
+    <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">The DIRECT Approach</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Lecture: &ldquo;The DIRECT Approach&rdquo;</p>
+
+    <div class="video-slot">
+      <div class="play-btn">▶</div>
+      <div class="video-meta"><b>Watch: The DIRECT Approach</b><span>~14 MIN · LIFETIME ACCESS</span></div>
+    </div>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <defs><marker id="arrM2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#c9b9d4"/></marker></defs>
+        <polygon points="200,50 342.7,153.6 288.2,321.4 111.8,321.4 57.3,153.6" fill="none" stroke="#c9b9d4" stroke-width="2" marker-end="url(#arrM2)"/>
+        <line x1="200" y1="200" x2="200" y2="50" stroke="#e9e2ea" stroke-width="1.5"/>
+        <line x1="200" y1="200" x2="342.7" y2="153.6" stroke="#e9e2ea" stroke-width="1.5"/>
+        <line x1="200" y1="200" x2="288.2" y2="321.4" stroke="#e9e2ea" stroke-width="1.5"/>
+        <line x1="200" y1="200" x2="111.8" y2="321.4" stroke="#e9e2ea" stroke-width="1.5"/>
+        <line x1="200" y1="200" x2="57.3" y2="153.6" stroke="#e9e2ea" stroke-width="1.5"/>
+        <circle cx="200" cy="200" r="46" fill="#241638"/>
+        <text x="200" y="206" text-anchor="middle" font-family="Georgia,serif" font-size="16" fill="#fff" font-weight="700">DIRECT</text>
+        <circle cx="200" cy="50" r="32" fill="#0e8f76"/><text x="200" y="55" text-anchor="middle" font-size="10.5" fill="#fff" font-weight="700">Detection</text>
+        <circle cx="342.7" cy="153.6" r="32" fill="#db8a1f"/><text x="342.7" y="150" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">Interven-</text><text x="342.7" y="161" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">tion</text>
+        <circle cx="288.2" cy="321.4" r="32" fill="#2f6fb5"/><text x="288.2" y="318" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">Reassess-</text><text x="288.2" y="329" text-anchor="middle" font-size="9.5" fill="#fff" font-weight="700">ment</text>
+        <circle cx="111.8" cy="321.4" r="34" fill="#c31558"/><text x="111.8" y="318" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="700">Effective</text><text x="111.8" y="329" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="700">Comm.</text>
+        <circle cx="57.3" cy="153.6" r="32" fill="#645d70"/><text x="57.3" y="158" text-anchor="middle" font-size="10.5" fill="#fff" font-weight="700">Transport</text>
+      </svg>
+      <div class="diagram-cap">A cycle, not a checklist — keeps running from first contact to safe transfer.</div>
+    </div>
+
+    <div class="callout warn"><b>70% of serious errors</b> trace back to broken communication, not missing knowledge — that's why Effective Communication is its own pillar.</div>
+
+    <div class="grid2">
+      <div class="card"><h4>Reassessment = EII cycle</h4><p>Evaluate → Identify → Intervene, on repeat. Document every <b>5 min</b> if unstable, <b>15 min</b> if stable.</p></div>
+      <div class="card">
+        <h4>PEWS — catch the ward slide</h4>
+        <div class="chip-grid"><span class="chip c-teal">Behaviour</span><span class="chip c-rose">Cardiovascular</span><span class="chip c-sky">Respiratory</span></div>
+        <p style="margin-top:8px;">Score 0–3 each. Rising score (2→5) → senior review, rapid response, consider PICU — before collapse.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h4>Secondary — SAMPLE</h4>
+      <div class="chip-grid"><span class="chip c-teal">Signs/symptoms</span><span class="chip c-teal">Allergies</span><span class="chip c-teal">Medications</span><span class="chip c-teal">Past history</span><span class="chip c-teal">Last meal</span><span class="chip c-teal">Events</span></div>
+      <div class="callout" style="margin-top:10px;">Unexplained deterioration? Run the reversible causes — <b>H's</b>: hypovolaemia, hypoxia, H⁺/acidosis, hypo/hyperkalaemia, hypoglycaemia, hypothermia. <b>T's</b>: tension pneumothorax, tamponade, toxins, thrombosis.</div>
+    </div>
+
+    <div class="mini-check" data-qid="c3" data-correct="2">
+      <div class="q">Quick check — A ward nurse notices a child's PEWS has risen from 2 to 5. What should happen?</div>
+      <label class="opt-row"><input type="radio" name="c3" value="0">Recheck vitals at the next scheduled round</label>
+      <label class="opt-row"><input type="radio" name="c3" value="1">Document it and continue routine care</label>
+      <label class="opt-row"><input type="radio" name="c3" value="2">Escalate now — senior review / rapid response, consider PICU</label>
+      <div class="fb correct">Correct — a PEWS jump like this needs immediate escalation.</div>
+      <div class="fb wrong">Not quite — a rising PEWS should trigger immediate escalation.</div>
+    </div>
+  </section>
+
+  <!-- LIVE WEBINAR -->
+  <section class="mod-section" id="webinar">
+    <div class="sec-head"><span class="sec-num">L</span><h2 class="sec-title">PICU Layout &amp; Emergency Preparedness</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Live webinar · crash cart, readiness, recognition — put together · Step 2 attendance</p>
+
+    <div class="diagram-box">
+      <div class="cart">
+        <div class="drawer"><span class="dnum" style="background:#0e8f76;">1</span><div class="dcontent"><b>Airway</b><span>OPA/NPA, laryngoscope, ETTs, BVM, suction</span></div><span class="handle"></span></div>
+        <div class="drawer"><span class="dnum" style="background:#db8a1f;">2</span><div class="dcontent"><b>Breathing</b><span>Masks, prongs, nebuliser, O₂ cylinder</span></div><span class="handle"></span></div>
+        <div class="drawer"><span class="dnum" style="background:#c31558;">3</span><div class="dcontent"><b>Circulation/Access</b><span>IV cannulas, fluids, IO kit</span></div><span class="handle"></span></div>
+        <div class="drawer"><span class="dnum" style="background:#2f6fb5;">4</span><div class="dcontent"><b>Drugs</b><span>Adrenaline, atropine, amiodarone, dextrose…</span></div><span class="handle"></span></div>
+        <div class="drawer"><span class="dnum" style="background:#645d70;">5</span><div class="dcontent"><b>Defib/ECG</b><span>Pads, leads, defibrillator on top</span></div><span class="handle"></span></div>
+        <div class="drawer"><span class="dnum" style="background:#8a5c05;">6</span><div class="dcontent"><b>Miscellaneous</b><span>Gloves, dressings, forms, labels</span></div><span class="handle"></span></div>
+      </div>
+      <div class="diagram-cap">Airway/circulation tools on top — fastest need, fastest reach.</div>
+    </div>
+
+    <div class="chip-grid" style="justify-content:center;">
+      <span class="chip c-teal">Daily: seals + expiry checked</span>
+      <span class="chip c-rose">During code: 1 nurse runs the cart</span>
+      <span class="chip c-amber">Post-code: restock immediately</span>
+    </div>
+
+    <div class="callout info"><b>36% fewer complications, 47% fewer deaths</b> — that's what a simple checklist did in the WHO's 8-hospital trial. Same logic for a PICU: a checked cart + standard handover is what lets a team perform under pressure. (Case in point: all 155 aboard the Hudson River ditching survived — preparation, not luck.)</div>
+
+    <p class="punch" style="font-size:clamp(19px,3.6vw,27px);">Prepared units don't <span>get lucky</span> — they get ready</p>
+
+    <div class="card">
+      <h3>The 7 P's of Emergency Preparedness</h3>
+      <div class="prep-grid">
+        <div class="prep-item"><b>Staff</b><span>PALS/ETAT/CRM trained, 24/7</span></div>
+        <div class="prep-item"><b>System</b><span>Protocols, triage area, checklists</span></div>
+        <div class="prep-item"><b>Supplies</b><span>Broselow cart, weight-based drugs</span></div>
+        <div class="prep-item"><b>Space</b><span>Resuscitation bay, safe layout</span></div>
+        <div class="prep-item"><b>Speak Up</b><span>Closed-loop comms, ISBAR, code calls</span></div>
+        <div class="prep-item"><b>Subject</b><span>Know the patient, anticipate needs</span></div>
+        <div class="prep-item"><b>Self</b><span>Know your limits — it's not about you</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>SOAP ME — ready before you need it</h3>
+      <div class="chip-grid">
+        <span class="chip c-teal">Suction</span><span class="chip c-teal">Oxygen</span><span class="chip c-teal">Airway adjuncts</span>
+        <span class="chip c-teal">Protocols/Pharmacy</span><span class="chip c-teal">Monitors</span><span class="chip c-teal">Equipment</span>
+      </div>
+      <p>Run this check at the start of every shift, before every procedure.</p>
+    </div>
+
+    <div class="card">
+      <h3>When it's bigger than one child — disaster triage</h3>
+      <p>Mass-casualty and pandemic surge triage flips the goal: from saving <i>this</i> child to saving the <i>most</i> children with the resources on hand. START/JumpSTART sorts by colour, in seconds, no equipment:</p>
+      <div class="seg-bar">
+        <div class="seg" style="background:#c1293b;">RED<small>Immediate</small></div>
+        <div class="seg" style="background:#db9a1f;">YELLOW<small>Delayed</small></div>
+        <div class="seg" style="background:#4a9e4f;">GREEN<small>Minor</small></div>
+        <div class="seg" style="background:#2b2b2b;">BLACK<small>Expectant</small></div>
+      </div>
+      <div class="chip-grid">
+        <span class="chip c-bad">Red: life-threatening, treat now</span>
+        <span class="chip c-amber">Yellow: serious but stable</span>
+        <span class="chip c-good">Green: walking wounded</span>
+        <span class="chip c-sky">Black: non-survivable given resources</span>
+      </div>
+      <div class="callout">Same ethics every time: <b>Justice</b> (fair allocation), <b>Beneficence</b> (maximise survival), <b>Non-maleficence</b> (avoid harm), <b>Transparency</b> (open decisions).</div>
+    </div>
+
+    <div class="card">
+      <h3>Hospital preparedness checklist</h3>
+      <div class="chip-grid">
+        <span class="chip c-good">✓ Dedicated triage area</span>
+        <span class="chip c-good">✓ PEWS charting</span>
+        <span class="chip c-good">✓ Mock drills (quarterly)</span>
+        <span class="chip c-good">✓ Communication lines</span>
+        <span class="chip c-good">✓ Equipment maintenance</span>
+        <span class="chip c-good">✓ Disaster plan integration</span>
+      </div>
+    </div>
+
+    <div class="case-card">
+      <h3>Without it, this happens</h3>
+      <p>Bronchiolitis, admitted 5pm, looking well.</p>
+      <div class="arrow-chain tight">
+        <div class="stage" style="background:var(--teal);">9pm: &ldquo;not looking well&rdquo; — reassured, suctioned</div>
+        <span class="arrow">→</span>
+        <div class="stage" style="background:var(--amber);">9:30pm: HR 220 — doctor &ldquo;busy&rdquo;</div>
+        <span class="arrow">→</span>
+        <div class="stage" style="background:var(--bad);">10:05pm: SpO₂ 88% — CODE BLUE — arrest</div>
+      </div>
+      <p style="margin-top:8px;">The nurse checked on this child <b>four times</b>. Every visit was a chance to escalate with a structured score, not a gut feeling. None did — because there was no system making escalation the easy, obvious choice. That's what preparedness fixes.</p>
+    </div>
+
+    <div class="mini-check" data-qid="c4" data-correct="3">
+      <div class="q">Quick check — In START/JumpSTART disaster triage, which colour tag means &ldquo;non-survivable given available resources&rdquo;?</div>
+      <label class="opt-row"><input type="radio" name="c4" value="0">Red</label>
+      <label class="opt-row"><input type="radio" name="c4" value="1">Yellow</label>
+      <label class="opt-row"><input type="radio" name="c4" value="2">Green</label>
+      <label class="opt-row"><input type="radio" name="c4" value="3">Black</label>
+      <div class="fb correct">Correct — Black = Expectant.</div>
+      <div class="fb wrong">Not quite — that's Black (Expectant).</div>
+    </div>
+  </section>
+
+  <!-- SIMULATION -->
+  <section class="mod-section" id="sim">
+    <div class="sec-head"><span class="sec-num">S</span><h2 class="sec-title">The Virtual Triage</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Breakout scenarios · after you finish the lectures above</p>
+    <div class="grid2">
+      <div class="card"><span class="tag amber">Scenario A</span><h3>8-month-old, respiratory distress</h3><p>Run PAT → ABCDE → triage in real time.</p></div>
+      <div class="card"><span class="tag amber">Scenario B</span><h3>4-year-old, minor injury</h3><p>Practise triaging <i>down</i> just as confidently.</p></div>
+    </div>
+  </section>
+
+  <!-- READY RECKONER -->
+  <section class="mod-section" id="reckoner">
+    <div class="sec-head"><span class="sec-num">R</span><h2 class="sec-title">Ready Reckoner</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">Printable quick-reference</p>
+    <div class="card">
+      <button class="btn secondary print-btn" onclick="window.print()">Print</button>
+      <div class="chip-grid">
+        <span class="chip c-teal">PAT: Appearance · WOB · Colour</span>
+        <span class="chip c-rose">A not maintainable · RR&gt;60/&lt;10 · SpO₂&lt;94 · Pulse&lt;60 · CRT&gt;2s · AVPU=P/U · Gluc&lt;60</span>
+        <span class="chip c-amber">Min SBP = 70+2×age</span>
+        <span class="chip c-sky">DIRECT: Detect→Intervene→Reassess→Communicate→Transport</span>
+        <span class="chip c-teal">Cart: 1 Airway·2 Breathing·3 Circ·4 Drugs·5 Defib·6 Misc</span>
+        <span class="chip c-good">7 P's: Staff·System·Supplies·Space·Speak Up·Subject·Self</span>
+        <span class="chip c-good">SOAP ME: Suction·O2·Airway·Protocols·Monitors·Equipment</span>
+        <span class="chip c-bad">Disaster triage: Red-Immediate·Yellow-Delayed·Green-Minor·Black-Expectant</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATION PATHWAY -->
+  <section class="mod-section" id="pathway">
+    <div class="sec-head"><span class="sec-num">✓</span><h2 class="sec-title">Certification Pathway</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub">This Module Quiz is Step 1 of 4</p>
+    <div class="path">
+      <div class="step active"><div class="snum">STEP 1</div><div class="stext">Module Quiz</div><div class="sdetail">20 items · 80% pass — you are here</div></div>
+      <div class="step"><div class="snum">STEP 2</div><div class="stext">Study + webinar</div><div class="sdetail">Attendance required (recorded makeup allowed)</div></div>
+      <div class="step"><div class="snum">STEP 3</div><div class="stext">Hands-on workshop</div><div class="sdetail">1-day PICU/ED skills lab, in person</div></div>
+      <div class="step"><div class="snum">STEP 4</div><div class="stext">Unlocks Section 2</div><div class="sdetail">Respiratory Care</div></div>
+    </div>
+  </section>
+
+  <div class="next-mod-row"><a href="PCCN_Module.html?m=2"><span>NEXT &rarr;</span>02 — Respiratory Support</a></div>
+
+  <div class="divider"><svg viewBox="0 0 240 20"><polyline points="0,10 90,10 100,10 106,2 112,18 118,10 124,10 240,10" fill="none" stroke="#c31558" stroke-width="1.5"/></svg></div>
+
+  <!-- MODULE QUIZ -->
+  <section class="mod-section" id="quiz">
+    <div class="sec-head"><span class="sec-num">Q</span><h2 class="sec-title">Module Quiz</h2></div>
+    <div class="sec-underline"></div>
+    <p class="sec-sub" id="quizSub">20 graded questions · 80% pass mark — unlocks Section 2</p>
+    <div class="quiz-card" id="quizCard"></div>
+    <button class="btn" id="quizSubmit">Submit Quiz</button>
+    <button class="btn secondary" id="quizRetake" style="display:none;">Retake Quiz</button>
+    <div class="result-banner" id="quizResult"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="course-info-bar">
+      <div class="ci-item">
+        <div class="ci-label">Course Starts</div>
+        <div class="ci-value">15 August 2026</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-label">Register By</div>
+        <div class="ci-value accent">15 September 2026</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-label">Format</div>
+        <div class="ci-value">8–12 weeks</div>
+        <div class="ci-sub">Hybrid · webinars, videos, simulation</div>
+      </div>
+      <div class="ci-item">
+        <div class="ci-label">Hands-on</div>
+        <div class="ci-value">TBD</div>
+        <div class="ci-sub">Zone wise</div>
+      </div>
+    </div>
+    <div><b>PCCN — Pediatric Critical Care Nursing Certificate Course</b> · IAP Intensive Care Chapter</div>
+    <div>www.piccindia.com · stepin.iapicc@gmail.com · 9986634300 / 9008566112</div>
+    <div class="fac">Advisor: Dr Jesal Sheth · Convenors: Dr Manju Kedarnath, Dr Swathi Rao · Co-Convenors: Dr Muthaiah Periyakaruppan, Ms Neetu Taneja · Coordinators: Dr Mandar Jamdar, Dr Veena Raghunathan</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var STORAGE_KEY = "pccn_mod01_progress_v3";
+
+  var pretest = [
+    {q:"The Pediatric Assessment Triangle has three corners: Appearance, Work of Breathing, and:",
+     opts:["Blood pressure","Colour / circulation to skin","Temperature","Level of consciousness only"], a:1},
+    {q:"True or false: physiologically, children behave essentially like small adults.",
+     opts:["True","False"], a:1},
+    {q:"What does the \u201cD\u201d in the DIRECT approach stand for?",
+     opts:["Diagnosis","Detection","Discharge","Documentation"], a:1},
+    {q:"A safe SpO2 target in a sick child should generally be kept above:",
+     opts:["85%","90%","94%","100% at all times"], a:2},
+    {q:"In the five-level triage system taught in this module, Level 1 means:",
+     opts:["Non-urgent, routine OP care","Resuscitation — immediate life threat","Less urgent, can wait hours","Urgent, assessment within the hour"], a:1},
+    {q:"Which vital sign tends to compensate LAST in a deteriorating child, and can look normal right up to collapse?",
+     opts:["Heart rate","Respiratory rate","Blood pressure","Capillary refill"], a:2},
+    {q:"On the AVPU scale, \u201cV\u201d means the child:",
+     opts:["Is fully alert and Voluntary","Responds to Voice","Vomits on stimulation","Has Variable pupils"], a:1},
+    {q:"In the standard 6-drawer crash cart layout used in this course, emergency drugs live in:",
+     opts:["Drawer 1","Drawer 4","Drawer 5","Drawer 6"], a:1},
+    {q:"Capillary refill time is used to assess which part of the primary survey?",
+     opts:["Airway","Breathing","Circulation","Disability"], a:2},
+    {q:"Before touching a sick child, the very first step taught in this module is to:",
+     opts:["Attach a pulse oximeter","Take a full SAMPLE history","Perform the Pediatric Assessment Triangle from the doorway","Insert IV access"], a:2}
+  ];
+
+  var quiz = [
+    {q:"Which of these is NOT part of the TICLS assessment of Appearance?",
+     opts:["Tone","Consolability","Speech or cry","Blood pressure"], a:3},
+    {q:"Noting nasal flaring and intercostal retractions belongs to which PAT component?",
+     opts:["Appearance","Work of breathing","Colour/circulation","Disability"], a:1},
+    {q:"From the doorway, a child is unresponsive and not breathing normally. Your immediate next step is to:",
+     opts:["Auscultate the chest","Check for a pulse","Take a SAMPLE history","Attach a BP cuff"], a:1},
+    {q:"An unresponsive, apnoeic child has a pulse of 40/min with poor perfusion. The correct action is to:",
+     opts:["Give oxygen and reassess in 5 minutes","Start CPR","Wait for the doctor to arrive","Check blood glucose first"], a:1},
+    {q:"A normal capillary refill time should be:",
+     opts:["\u2264 2 seconds","4-5 seconds","Always exactly 3 seconds","Not clinically useful"], a:0},
+    {q:"Using the rule of thumb taught in this module, the minimum acceptable systolic BP is approximately:",
+     opts:["50 + age (years)","70 + 2\u00d7age (years)","100 - age (years)","120 mmHg regardless of age"], a:1},
+    {q:"For an appropriately sized paediatric BP cuff, the bladder width should cover about what percentage of the arm circumference?",
+     opts:["10%","25%","40%","75%"], a:2},
+    {q:"Under the five-level triage system, a child with compensated shock or respiratory distress is triaged as:",
+     opts:["Level 1 - Resuscitation","Level 2 - Emergent","Level 4 - Less urgent","Level 5 - Non-urgent"], a:1},
+    {q:"Which DIRECT pillar specifically asks \u201cis the treatment given effective? Is there any new issue?\u201d",
+     opts:["Detection","Transport","Reassessment","Effective Communication"], a:2},
+    {q:"Per the teaching in this module, what proportion of serious healthcare errors are attributed to faulty communication and disorganised teamwork?",
+     opts:["10%","30%","50%","70%"], a:3},
+    {q:"A child's PEWS rises from 2 to 5 between ward rounds. This should prompt:",
+     opts:["No action until the next scheduled round","Immediate senior review / rapid response activation","A note in the chart only","Discharge planning"], a:1},
+    {q:"In the standard 6-drawer crash cart layout, emergency drugs such as adrenaline, atropine and amiodarone are kept in:",
+     opts:["Drawer 1 (Airway)","Drawer 2 (Breathing)","Drawer 4 (Drugs)","Drawer 6 (Miscellaneous)"], a:2},
+    {q:"In the 7 P's of emergency preparedness, \u201cPrepared Self\u201d mainly means:",
+     opts:["Being the most senior person in the room","Knowing your own limits and what you don't know","Preparing only the equipment, not the team","Ignoring your own stress so you can work faster"], a:1},
+    {q:"In START/JumpSTART disaster triage, the colour BLACK signifies:",
+     opts:["Immediate, life-threatening","Delayed but stable","Walking wounded, minor injuries","Expectant \u2014 non-survivable given available resources"], a:3},
+    {q:"Which of the following is one of the reversible \u201cH's\u201d to consider in unexplained deterioration?",
+     opts:["Hypertension","Hyperthermia","Hypoglycaemia","Hyperventilation"], a:2},
+    {q:"In SAMPLE history taking, the \u201cM\u201d stands for:",
+     opts:["Mechanism of injury","Medications","Medical team","Mobility status"], a:1},
+    {q:"If a child on the ward is documented as clinically UNSTABLE, reassessment and documentation should occur at least every:",
+     opts:["60 minutes","30 minutes","15 minutes","5 minutes"], a:3},
+    {q:"SOAP ME is best described as a check performed:",
+     opts:["Only once, at hospital orientation","At the start of every shift and before every procedure","Only after a code blue","By the pharmacy team alone"], a:1},
+    {q:"During a resuscitation, who should be operating the crash cart?",
+     opts:["Whoever is nearest","One designated nurse running the cart","The most junior staff member, for training","No one \u2014 it should be self-service"], a:1},
+    {q:"The primary ethical principle behind sorting patients into disaster-triage colours (rather than treating whoever arrived first) is:",
+     opts:["Autonomy \u2014 patient choice","Beneficence \u2014 maximising overall survival with limited resources","Confidentiality","Fidelity to the first patient seen"], a:1}
+  ];
+
+  function buildOptions(container, name, opts){
+    opts.forEach(function(opt,i){
+      var label = document.createElement("label");
+      label.className = "opt-row";
+      label.innerHTML = '<input type="radio" name="'+name+'" value="'+i+'"> '+opt;
+      container.appendChild(label);
+    });
+  }
+
+  var pretestCard = document.getElementById("pretestCard");
+  pretest.forEach(function(item,idx){
+    var qDiv = document.createElement("div");
+    qDiv.className = "quiz-q";
+    var qt = document.createElement("div");
+    qt.className = "qtext";
+    qt.textContent = (idx+1)+". "+item.q;
+    qDiv.appendChild(qt);
+    buildOptions(qDiv, "pt"+idx, item.opts);
+    pretestCard.appendChild(qDiv);
+  });
+
+  document.getElementById("pretestSubmit").addEventListener("click", function(){
+    var score = 0;
+    pretest.forEach(function(item,idx){
+      var sel = document.querySelector('input[name="pt'+idx+'"]:checked');
+      if(sel && parseInt(sel.value,10) === item.a) score++;
+    });
+    var banner = document.getElementById("pretestResult");
+    banner.className = "result-banner pass";
+    banner.innerHTML = "<b>Baseline: "+score+" / "+pretest.length+"</b>No pass/fail here \u2014 just noting where to focus as you go through the lecture sections below.";
+    banner.scrollIntoView({behavior:"smooth", block:"nearest"});
+  });
+
+  var quizCard = document.getElementById("quizCard");
+  var PASS_FRACTION = 0.8;
+  quiz.forEach(function(item,idx){
+    var qDiv = document.createElement("div");
+    qDiv.className = "quiz-q";
+    qDiv.id = "qz"+idx;
+    var qt = document.createElement("div");
+    qt.className = "qtext";
+    qt.textContent = (idx+1)+". "+item.q;
+    qDiv.appendChild(qt);
+    buildOptions(qDiv, "qz"+idx, item.opts);
+    quizCard.appendChild(qDiv);
+  });
+
+  function gradeQuiz(){
+    var score = 0;
+    quiz.forEach(function(item, idx){
+      var opts = document.querySelectorAll('#qz'+idx+' .opt-row');
+      var sel = document.querySelector('input[name="qz'+idx+'"]:checked');
+      var selVal = sel ? parseInt(sel.value,10) : -1;
+      if(selVal === item.a) score++;
+      opts.forEach(function(row, i){
+        row.classList.remove("correct-ans","wrong-ans");
+        if(i === item.a) row.classList.add("correct-ans");
+        else if(i === selVal) row.classList.add("wrong-ans");
+      });
+    });
+    return score;
+  }
+
+  document.getElementById("quizSubmit").addEventListener("click", function(){
+    var score = gradeQuiz();
+    var pct = Math.round((score/quiz.length)*100);
+    var pass = score >= Math.ceil(quiz.length*PASS_FRACTION);
+    var banner = document.getElementById("quizResult");
+    banner.className = "result-banner " + (pass ? "pass" : "fail");
+    banner.innerHTML = "<b>"+score+" / "+quiz.length+" ("+pct+"%) \u2014 "+(pass ? "PASS" : "Not yet")+"</b>" +
+      (pass ? "80% pass mark met \u2014 Section 2 is unlocked. Correct/incorrect answers are marked above."
+             : "You need 80% (16/20) to unlock Section 2. One retake is permitted after reviewing the highlighted answers above; a second miss triggers 1:1 preceptor review.");
+    this.style.display = "none";
+    document.getElementById("quizRetake").style.display = "inline-block";
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({score:score, total:quiz.length, pass:pass, date:new Date().toISOString()}));
+    }catch(e){}
+    banner.scrollIntoView({behavior:"smooth", block:"nearest"});
+  });
+
+  document.getElementById("quizRetake").addEventListener("click", function(){
+    document.querySelectorAll('#quizCard input[type=radio]').forEach(function(r){ r.checked = false; });
+    document.querySelectorAll('#quizCard .opt-row').forEach(function(row){ row.classList.remove("correct-ans","wrong-ans"); });
+    document.getElementById("quizResult").className = "result-banner";
+    document.getElementById("quizResult").innerHTML = "";
+    document.getElementById("quizSubmit").style.display = "inline-block";
+    this.style.display = "none";
+    document.getElementById("quiz").scrollIntoView({behavior:"smooth"});
+  });
+
+  try{
+    var prior = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+    if(prior){
+      var banner = document.getElementById("quizResult");
+      banner.className = "result-banner " + (prior.pass ? "pass" : "fail");
+      banner.innerHTML = "<b>Last attempt: "+prior.score+" / "+prior.total+" \u2014 "+(prior.pass ? "PASS" : "Not yet")+"</b>Saved "+new Date(prior.date).toLocaleString()+". Submit again any time to retake.";
+    }
+  }catch(e){}
+
+  // Mini-checks: reveal ONLY the relevant feedback, ONLY after a selection (fixes the always-visible CSS bug)
+  document.querySelectorAll(".mini-check").forEach(function(box){
+    var name = box.getAttribute("data-qid");
+    var correctFb = box.querySelector(".fb.correct");
+    var wrongFb = box.querySelector(".fb.wrong");
+    box.querySelectorAll('input[name="'+name+'"]').forEach(function(input){
+      input.addEventListener("change", function(){
+        var correctIndex = box.getAttribute("data-correct");
+        if(correctIndex === null){ return; }
+        if(input.value === correctIndex){
+          correctFb.classList.add("show");
+          wrongFb.classList.remove("show");
+        } else {
+          wrongFb.classList.add("show");
+          correctFb.classList.remove("show");
+        }
+      });
+    });
+  });
+
+  var sections = ["objectives","pretest","intro","s1","s2","s3","webinar","sim","reckoner","quiz"];
+  var navLinks = document.querySelectorAll("#section-nav a");
+  var fill = document.getElementById("progFill");
+  var pct = document.getElementById("progPct");
+
+  function onScroll(){
+    var scrollTop = window.scrollY || document.documentElement.scrollTop;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var ratio = docHeight > 0 ? Math.min(1, scrollTop/docHeight) : 0;
+    fill.style.width = (ratio*100).toFixed(0)+"%";
+    pct.textContent = (ratio*100).toFixed(0)+"%";
+
+    var current = sections[0];
+    sections.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el){
+        var rect = el.getBoundingClientRect();
+        if(rect.top < 140) current = id;
+      }
+    });
+    navLinks.forEach(function(a){
+      a.classList.toggle("active", a.getAttribute("href") === "#"+current);
+    });
+  }
+  document.addEventListener("scroll", onScroll);
+  onScroll();
+})();
+</script>
+
 </body>
 </html>
