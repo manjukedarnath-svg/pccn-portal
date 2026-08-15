@@ -39,6 +39,8 @@
 
   <div class="mod-body">
     <div>
+      <div id="overviewWrap"></div>
+
       <div class="mod-label">Sessions for this module</div>
       <div class="sessions3-grid" id="sessionsGrid"></div>
 
@@ -50,17 +52,27 @@
       <div class="mod-label" id="pretestLabel" style="display:none;"></div>
       <div class="quiz-card" id="pretestCard" style="display:none;"></div>
 
+      <div id="physioWrap"></div>
+
       <div class="mod-label" id="accordionLabel"></div>
       <div class="accordion" id="accordionWrap"></div>
 
+      <div id="accordionMiniCheckWrap"></div>
+
       <div id="panelWrap"></div>
+      <div id="panelMiniCheckWrap"></div>
 
       <div id="panel2Wrap"></div>
+      <div id="panel2MiniCheckWrap"></div>
+
+      <div id="simWrap"></div>
 
       <div class="mod-label pink">Case scenario</div>
       <div class="case-card" id="caseCard"></div>
 
       <div id="gridWrap"></div>
+
+      <div id="reckonerWrap"></div>
 
       <div class="mod-label" id="quizLabel"></div>
       <div class="quiz-card" id="quizCard"></div>
@@ -104,6 +116,44 @@
     return m ? decodeURIComponent(m[1]) : null;
   }
 
+  // Small inline "mini-check" — single question, instant feedback, no submit button, not graded.
+  function renderMiniCheck(container, mc){
+    if (!container || !mc) return;
+    var box = document.createElement('div');
+    box.className = 'mini-check-box';
+    var q = document.createElement('div');
+    q.className = 'mcq';
+    q.textContent = 'Quick check — ' + mc.question;
+    box.appendChild(q);
+    var name = 'mc_' + mc.qid;
+    mc.options.forEach(function(opt, oi){
+      var label = document.createElement('label');
+      label.className = 'mc-opt-row';
+      label.innerHTML = '<input type="radio" name="' + name + '" value="' + oi + '"> ' + opt;
+      box.appendChild(label);
+    });
+    var fbCorrect = document.createElement('div');
+    fbCorrect.className = 'mc-fb correct';
+    fbCorrect.textContent = mc.correctFb;
+    var fbWrong = document.createElement('div');
+    fbWrong.className = 'mc-fb wrong';
+    fbWrong.textContent = mc.wrongFb;
+    box.appendChild(fbCorrect);
+    box.appendChild(fbWrong);
+    box.querySelectorAll('input[type=radio]').forEach(function(input){
+      input.addEventListener('change', function(){
+        if (parseInt(input.value, 10) === mc.correct) {
+          fbCorrect.classList.add('show');
+          fbWrong.classList.remove('show');
+        } else {
+          fbWrong.classList.add('show');
+          fbCorrect.classList.remove('show');
+        }
+      });
+    });
+    container.appendChild(box);
+  }
+
   var modN = parseInt(qs('m'), 10) || 1;
   var mod = PCCN_MODULES.find(function(x){ return x.n === modN; }) || PCCN_MODULES[0];
   modN = mod.n;
@@ -117,6 +167,31 @@
   document.getElementById('modEyebrow').textContent = 'Module ' + nn(modN) + ' · Pillar ' + mod.pillar + ' — ' + P.name;
   document.getElementById('modTitle').textContent = mod.short;
   document.getElementById('modSubtitle').textContent = (mod.subtitle || '').replace(/<[^>]+>/g, '');
+
+  // ---- course overview (badges, pathway loop, cert/attendance/hands-on, note) ----
+  if (mod.courseOverview) {
+    var ov = mod.courseOverview;
+    var ovHtml = '';
+    if (ov.badges) {
+      ovHtml += '<div class="badge-row">' + ov.badges.map(function(b){
+        return '<div class="badge-pill"><b>' + b.n + '</b> ' + b.label + '</div>';
+      }).join('') + '</div>';
+    }
+    if (ov.summary) ovHtml += '<div class="overview-summary">' + ov.summary + '</div>';
+    if (ov.pathway) {
+      ovHtml += '<div class="pathway-loop">' + ov.pathway.map(function(stage, i){
+        return '<div class="pathway-stage">' + stage + '</div>' + (i < ov.pathway.length - 1 ? '<span class="pathway-arrow">→</span>' : '');
+      }).join('') + '</div>';
+    }
+    if (ov.pathwayNote) ovHtml += '<div class="note-callout">' + ov.pathwayNote + '</div>';
+    if (ov.cards) {
+      ovHtml += '<div class="overview-grid3">' + ov.cards.map(function(c){
+        return '<div class="overview-mini-card"><h4>' + c.title + '</h4><p>' + c.body + '</p></div>';
+      }).join('') + '</div>';
+    }
+    if (ov.note) ovHtml += '<div class="note-callout warn">' + ov.note + '</div>';
+    document.getElementById('overviewWrap').innerHTML = ovHtml;
+  }
 
   // ---- sessions ----
   var sessionsGrid = document.getElementById('sessionsGrid');
@@ -211,6 +286,47 @@
     renderPretest();
   }
 
+  // ---- physiology ("why children are different") ----
+  if (mod.physiology) {
+    var phy = mod.physiology;
+    var phyHtml = '<div class="mod-label">' + phy.label + '</div><div class="physio-card">';
+    phyHtml += '<div class="physio-intro">' + phy.intro + '</div>';
+    if (phy.compareCards) {
+      phyHtml += '<div class="physio-compare">' + phy.compareCards.map(function(c){
+        return '<div class="physio-compare-card" style="border-top-color:' + c.color + ';"><h4 style="color:' + c.color + ';">' + c.title + '</h4><div class="chip-grid">' +
+          c.chips.map(function(ch){ return '<span class="chip chip-teal" style="color:' + c.color + ';border-color:' + c.color + ';">' + ch + '</span>'; }).join('') +
+          '</div><div class="physio-note">' + c.note + '</div></div>';
+      }).join('') + '</div>';
+    }
+    if (phy.thermo) {
+      phyHtml += '<div class="physio-thermo"><h4>' + phy.thermo.title + '</h4><div class="chip-grid">' +
+        phy.thermo.chips.map(function(ch){ return '<span class="chip chip-amber">' + ch + '</span>'; }).join('') + '</div></div>';
+    }
+    if (phy.gauges) {
+      phyHtml += '<div class="gauge-row">' + phy.gauges.map(function(g){
+        return '<div class="gauge-item"><span class="glabel">' + g.label + '</span><div class="gauge-track"><div class="gauge-fill" style="width:' + g.pct + '%;background:' + g.color + ';"></div></div><span class="gnote">' + g.note + '</span></div>';
+      }).join('') + '</div>';
+      if (phy.gaugeNote) phyHtml += '<div class="gauge-foot">' + phy.gaugeNote + '</div>';
+    }
+    if (phy.warnNote) phyHtml += '<div class="note-callout warn">' + phy.warnNote + '</div>';
+    if (phy.pattern) {
+      phyHtml += '<div class="physio-pattern"><h4>' + phy.pattern.title + '</h4><div class="pattern-grid">' +
+        phy.pattern.cards.map(function(c){
+          return '<div class="pattern-card"><span class="ptag" style="background:' + c.color + ';">' + c.tag + '</span><p>' + c.body + '</p></div>';
+        }).join('') + '</div><div class="note-callout warn" style="margin-bottom:0;">' + phy.pattern.note + '</div></div>';
+    }
+    if (phy.bpTable) {
+      var bp = phy.bpTable;
+      phyHtml += '<div class="physio-bp"><h4>' + bp.title + '</h4><div class="bpsub">' + bp.sub + '</div>' +
+        '<table class="ref-table"><tr><th>Age</th><th>Minimum acceptable systolic BP</th></tr>' +
+        bp.rows.map(function(r){ return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') + '</table>' +
+        '<div class="note-callout info" style="margin-bottom:0;">' + bp.note + '<div style="margin-top:6px;font-size:.75rem;font-style:italic;opacity:.8;">' + bp.source + '</div></div></div>';
+    }
+    phyHtml += '</div>';
+    document.getElementById('physioWrap').innerHTML = phyHtml;
+    if (phy.miniCheck) renderMiniCheck(document.getElementById('physioWrap'), phy.miniCheck);
+  }
+
   // ---- accordion ----
   document.getElementById('accordionLabel').textContent = mod.accordionLabel || 'Core content';
   var accWrap = document.getElementById('accordionWrap');
@@ -251,6 +367,7 @@
     item.appendChild(panel);
     accWrap.appendChild(item);
   });
+  if (mod.accordionMiniCheck) renderMiniCheck(document.getElementById('accordionMiniCheckWrap'), mod.accordionMiniCheck);
 
   // ---- panel (reference card) ----
   if (mod.panel) {
@@ -266,6 +383,7 @@
       }).join('') + '</div>' +
       '<div class="panel-foot">' + pnl.foot + '</div></div>';
     document.getElementById('panelWrap').innerHTML = panelHtml2;
+    if (pnl.miniCheck) renderMiniCheck(document.getElementById('panelMiniCheckWrap'), pnl.miniCheck);
   }
 
   // ---- panel2 (secondary reference card, e.g. emergency preparedness) ----
@@ -282,6 +400,18 @@
       }).join('') + '</div>' : '') +
       '<div class="panel-foot">' + pnl2.foot + '</div></div>';
     document.getElementById('panel2Wrap').innerHTML = panel2Html;
+    if (pnl2.miniCheck) renderMiniCheck(document.getElementById('panel2MiniCheckWrap'), pnl2.miniCheck);
+  }
+
+  // ---- simulation (virtual triage scenarios) ----
+  if (mod.simulation) {
+    var sim = mod.simulation;
+    var simHtml = '<div class="mod-label">' + sim.label + '</div>';
+    if (sim.intro) simHtml += '<p style="font-size:.88rem;color:var(--ink-muted);margin:-4px 0 14px;">' + sim.intro + '</p>';
+    simHtml += '<div class="sim-card-grid">' + sim.cards.map(function(c){
+      return '<div class="sim-card"><span class="stag2">' + c.tag + '</span><h4>' + c.title + '</h4><p>' + c.body + '</p></div>';
+    }).join('') + '</div>';
+    document.getElementById('simWrap').innerHTML = simHtml;
   }
 
   // ---- case study ----
@@ -306,6 +436,15 @@
       }).join('') + '</div>' +
       '<div class="grid-ref-foot">' + g.foot + '</div></div>';
     document.getElementById('gridWrap').innerHTML = gridHtml;
+  }
+
+  // ---- ready reckoner (printable quick reference) ----
+  if (mod.reckoner) {
+    var rk = mod.reckoner;
+    var rkHtml = '<div class="mod-label">' + rk.label + '</div>' +
+      '<div class="reckoner-card"><button type="button" class="reckoner-print-btn" onclick="window.print()">Print</button>' +
+      '<div class="chip-grid">' + rk.chips.map(function(c){ return '<span class="chip chip-teal">' + c + '</span>'; }).join('') + '</div></div>';
+    document.getElementById('reckonerWrap').innerHTML = rkHtml;
   }
 
   // ---- quiz ----

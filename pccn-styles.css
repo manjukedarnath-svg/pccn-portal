@@ -452,3 +452,75 @@ main{flex:1;}
 .pccn-footer{margin-top:auto;background:var(--plum-900);padding:36px 28px;color:rgba(255,255,255,.5);font-size:.85rem;}
 .pccn-footer-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .pccn-footer a{color:rgba(255,255,255,.7);}
+
+/* ---------------- module: course overview / physiology / mini-checks / sim / reckoner ---------------- */
+.badge-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;}
+.badge-pill{background:#fff;border:1.5px solid var(--border);border-radius:999px;padding:8px 16px;font-size:.82rem;color:var(--ink-body);display:flex;align-items:center;gap:6px;}
+.badge-pill b{font-family:var(--serif);font-size:1rem;color:var(--pink);}
+.overview-summary{font-size:.95rem;line-height:1.6;color:var(--ink-body);background:var(--cream);border-radius:14px;padding:16px 20px;margin-bottom:22px;}
+.pathway-loop{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0;}
+.pathway-stage{background:var(--plum-800);color:#fff;font-size:.8rem;font-weight:700;padding:9px 14px;border-radius:8px;white-space:nowrap;}
+.pathway-arrow{color:var(--ink-muted);font-size:.9rem;}
+.note-callout{border-radius:10px;padding:14px 16px;font-size:.85rem;line-height:1.55;margin:14px 0;border:1.5px solid var(--border-hover);background:var(--cream);color:var(--ink-body);}
+.note-callout.warn{border-color:#E9C46A;background:#FCF3E2;color:#6B4E14;}
+.note-callout.info{border-color:#9AD4E8;background:#EAF7FB;color:#1D5670;}
+.overview-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0;}
+@media (max-width:720px){.overview-grid3{grid-template-columns:1fr;}}
+.overview-mini-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;}
+.overview-mini-card h4{font-family:var(--serif);font-size:.98rem;margin-bottom:6px;}
+.overview-mini-card p{font-size:.85rem;color:var(--ink-body);line-height:1.55;margin:0;}
+
+.physio-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:24px;}
+.physio-intro{font-size:.92rem;color:var(--ink-body);line-height:1.6;margin-bottom:18px;}
+.physio-compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
+@media (max-width:640px){.physio-compare{grid-template-columns:1fr;}}
+.physio-compare-card{border-radius:12px;padding:16px 18px;background:var(--cream);border-top:3px solid;}
+.physio-compare-card h4{font-family:var(--serif);font-size:.98rem;margin-bottom:10px;}
+.chip-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{display:inline-block;padding:6px 12px;border-radius:999px;font-size:.78rem;font-weight:600;border:1.5px solid;}
+.chip-teal{color:#0F7159;border-color:#1B9E7E;background:#EBF8F4;}
+.chip-pink{color:#A81F5B;border-color:#D4327A;background:#FBEAF2;}
+.chip-amber{color:#8A5410;border-color:#D4882A;background:#FBF1E4;}
+.chip-blue{color:#1D7E9B;border-color:#3AABCC;background:#E2F2F8;}
+.chip-bad{color:#A81F5B;border-color:#D4327A;background:#FBEAF2;}
+.physio-note{font-size:.85rem;color:var(--ink-body);margin-top:10px;font-style:italic;}
+.physio-thermo{border:1.5px dashed #1B9E7E;border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+.physio-thermo h4{font-family:var(--serif);font-size:.98rem;margin-bottom:10px;}
+.gauge-row{display:flex;flex-direction:column;gap:14px;margin:14px 0;}
+.gauge-item .glabel{font-size:.82rem;font-weight:700;color:var(--ink);margin-bottom:6px;display:block;}
+.gauge-track{height:10px;border-radius:999px;background:var(--hairline);overflow:hidden;}
+.gauge-fill{height:100%;border-radius:999px;}
+.gauge-item .gnote{font-size:.78rem;color:var(--ink-muted);margin-top:5px;display:block;}
+.gauge-foot{font-size:.8rem;color:var(--ink-muted);font-style:italic;margin-top:6px;}
+.physio-pattern{background:var(--cream);border-radius:12px;padding:16px 18px;margin-bottom:18px;}
+.physio-pattern h4{font-family:var(--serif);font-size:.98rem;margin-bottom:12px;}
+.pattern-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+@media (max-width:640px){.pattern-grid{grid-template-columns:1fr;}}
+.pattern-card .ptag{display:inline-block;padding:4px 10px;border-radius:999px;font-size:.72rem;font-weight:700;color:#fff;margin-bottom:8px;}
+.pattern-card p{font-size:.85rem;color:var(--ink-body);margin:0;line-height:1.5;}
+.physio-bp{border:1.5px dashed var(--border-hover);border-radius:12px;padding:16px 18px;}
+.physio-bp h4{font-family:var(--serif);font-size:.98rem;margin-bottom:4px;}
+.physio-bp .bpsub{font-size:.8rem;color:var(--ink-muted);margin-bottom:10px;}
+.ref-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-bottom:10px;}
+.ref-table th{text-align:left;padding:8px 10px;border-bottom:2px solid var(--border-hover);color:var(--ink-muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;}
+.ref-table td{padding:8px 10px;border-bottom:1px solid var(--hairline);}
+
+.mini-check-box{background:var(--cream);border-radius:12px;padding:16px 18px;margin:0 0 24px;border:1px solid var(--border);}
+.mini-check-box .mcq{font-family:var(--serif);font-weight:600;font-size:.92rem;margin-bottom:10px;color:var(--ink);}
+.mc-opt-row{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;font-size:.85rem;cursor:pointer;}
+.mc-opt-row:hover{background:rgba(214,36,110,.06);}
+.mc-fb{font-size:.82rem;line-height:1.5;padding:9px 12px;border-radius:8px;margin-top:8px;display:none;}
+.mc-fb.show{display:block;}
+.mc-fb.correct{background:var(--good-bg);color:var(--good-ink);}
+.mc-fb.wrong{background:var(--bad-bg);color:var(--bad-ink);}
+
+.sim-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media (max-width:640px){.sim-card-grid{grid-template-columns:1fr;}}
+.sim-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px 20px;}
+.sim-card .stag2{display:inline-block;padding:4px 10px;border-radius:999px;font-size:.7rem;font-weight:700;background:#FBF1E4;color:#8A5410;margin-bottom:10px;}
+.sim-card h4{font-family:var(--serif);font-size:1rem;margin-bottom:6px;}
+.sim-card p{font-size:.85rem;color:var(--ink-body);margin:0;}
+
+.reckoner-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:20px 22px;}
+.reckoner-print-btn{padding:8px 18px;border-radius:999px;border:1.5px solid var(--pink);color:var(--pink);background:#fff;font-weight:700;font-size:.82rem;cursor:pointer;font-family:var(--sans);margin-bottom:14px;}
+.reckoner-print-btn:hover{background:var(--pink);color:#fff;}

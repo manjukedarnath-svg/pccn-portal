@@ -1,3 +1,4 @@
+
 // PCCN Certificate Course — content for all 12 modules.
 // Pillars: 1 Assessment & Acute Stabilisation (teal) · 2 Life Support & Interventions (magenta)
 //          3 Specialised Systems (amber) · 4 Safety & Professionalism (blue)
@@ -19,6 +20,23 @@ var PCCN_MODULES = [
     tools: 'PEWS · SAMPLE · EII',
     duration: '1 hr live + 2–3 hrs self-study',
     pat: true,
+    courseOverview: {
+      badges: [
+        { n: '4', label: 'recorded lectures' },
+        { n: '1', label: 'live webinar' },
+        { n: '1', label: 'virtual simulation' },
+        { n: '~85m', label: 'self-study time' }
+      ],
+      summary: '<strong>By the end of this module:</strong> spot why children crash differently → run a PAT + ABCDE assessment fast → apply DIRECT to keep a deteriorating child safe → set up a crash cart and think like a prepared unit, not a lucky one.',
+      pathway: ['Pre-Test', 'Online lectures', 'Live webinar', 'Virtual simulation', 'Module quiz', 'Hands-on workshop'],
+      pathwayNote: 'Every section of this course follows the same rhythm — work through the sessions and content above, take the module quiz, then the hands-on workshop. You can retake the quiz any time to improve your score.',
+      cards: [
+        { title: 'Certification', body: 'Course-end Final Exam: online MCQ, plus an OSCE where every station must be passed.' },
+        { title: 'Attendance', body: 'Live webinars are Step 2 of this module\'s pathway — a recorded makeup is available if you miss the live session.' },
+        { title: 'Hands-on', body: 'Workshops run zone-wise; most sections are 1-day skills labs.' }
+      ],
+      note: 'This module opens with a diagnostic Pre-Test below (ungraded) — its only job is to show you where to focus as you work through the sessions and content that follow.'
+    },
     sessions: [
       { tag: 'Session A · Live', title: 'Live Webinar', body: 'Faculty-led case walkthroughs with a 3-month-old in respiratory distress, followed by panel discussion.', meta: '1 hr · Attendance mandatory' },
       { tag: 'Session B · Recorded', title: 'Recorded Lectures', body: 'Short focused videos — PAT, ABCDE walkthrough, PEWS scoring, SAMPLE history. Watch at your own pace.', meta: '2–3 hrs · Self-paced' },
@@ -35,6 +53,51 @@ var PCCN_MODULES = [
         { letter: 'T', name: 'Transport', detail: 'Weigh benefits vs risks<br>Identify right centre', color: '#9B6BB5' }
       ],
       footnote: 'At any point during Detection — if a life-threatening problem is found → <strong style="color:rgba(255,255,255,0.65)">immediate Intervention</strong> before completing the assessment. Reassessment is ongoing, not a single step.'
+    },
+    physiology: {
+      label: 'Step 1 · Why Children Are Different',
+      intro: 'Children are not small adults. Their reserve across every system starts thinner — which is why they can look fine right up until they suddenly don\'t.',
+      compareCards: [
+        { title: 'Respiratory', color: '#1B9E7E', chips: ['Narrow airway', 'Low reserve', 'Low FRC', 'High oxygen use', 'Big dead space'], note: '→ early hypoxia, fast.' },
+        { title: 'Circulatory', color: '#D4327A', chips: ['Rate-dependent output', 'Low vascular resistance', 'Low blood volume', 'Cools down fast', 'Low glycogen'], note: '→ hidden shock, underestimated losses.' }
+      ],
+      thermo: { title: 'Thermoregulation &amp; metabolic reserve', chips: ['Fast heat loss — high surface area for body weight', 'Low glycogen stores — faster hypoglycaemia in illness'] },
+      gauges: [
+        { label: 'Respiratory reserve', pct: 28, color: '#1B9E7E', note: 'Thin — tips into hypoxia fast' },
+        { label: 'Circulatory reserve', pct: 32, color: '#D4327A', note: 'Thin — shock hides, then decompensates fast' },
+        { label: 'Metabolic reserve', pct: 24, color: '#D4882A', note: 'Thin — heat and glucose drop quickly' }
+      ],
+      gaugeNote: 'Illustrative, not to clinical scale — the point is: children start with less margin across every system.',
+      warnNote: '<strong>Vitals are the tip of the iceberg</strong> — compensation hides deterioration until it\'s almost too late. HR, BP, SpO₂, GCS can all look fine right up to collapse. Early read beats a late number.',
+      pattern: {
+        title: 'Spot the pattern — 3 kids, same day',
+        cards: [
+          { tag: '3 months', color: '#1B9E7E', body: 'Fever, fast breathing, chest indrawing, poor feed, drowsy' },
+          { tag: '5 years', color: '#D4327A', body: 'Vomiting, pain abdomen, dehydrated, drowsy' },
+          { tag: '1 year', color: '#D4882A', body: 'Fever, cough, poor feed, unresponsive' }
+        ],
+        note: 'Same "viral illness" story on the surface — each hides a red flag a rushed look would miss.'
+      },
+      bpTable: {
+        title: 'Minimum acceptable blood pressure, by age',
+        sub: 'The quick formula used elsewhere in this module ("70 + 2×age") only covers ages 1–10 — here is the full age band.',
+        rows: [
+          ['Term neonate (0–28 days)', '&lt; 60 mmHg'],
+          ['Infant (1–12 months)', '&lt; 70 mmHg'],
+          ['Children 1–10 years', '&lt; 70 + (age × 2) mmHg'],
+          ['Children &gt; 10 years', '&lt; 90 mmHg']
+        ],
+        note: 'Easy mnemonic: <strong>60 – 70 – 80 – 90</strong> — the rough minimum systolic BP walking up through neonate → infant → toddler → older child.',
+        source: 'Source: PALS 2021 Provider Handbook (Karl Disque), as cited in the PEERS Nurse Manual.'
+      },
+      miniCheck: {
+        qid: 'mc1',
+        question: 'Why do children deteriorate faster than adults in respiratory illness?',
+        options: ['Their airways are proportionally wider than adults\'', 'Low FRC, high oxygen consumption and a narrow airway leave little reserve', 'They have higher glycogen stores, delaying deterioration'],
+        correct: 1,
+        correctFb: 'Correct — low FRC, high oxygen use and a narrow airway add up to a fast tip into hypoxia.',
+        wrongFb: 'Not quite — look at the Respiratory differences above.'
+      }
     },
     accordionLabel: 'Step 2 · Primary Assessment — ABCDE (hands-on, systematic)',
     accordion: [
@@ -61,6 +124,14 @@ var PCCN_MODULES = [
         bullets: ['Expose completely — remove all clothing and covers', '<strong>Trauma:</strong> bruising, bleeding, burns — document location and pattern', '<strong>Rashes:</strong> petechiae, purpura (HSP, ITP, meningococcaemia), urticaria (anaphylaxis)', '<strong>Temperature:</strong> prevent hypothermia — re-cover promptly after exposure', 'Note any non-accidental injury pattern — safeguarding awareness'],
         callout: 'Exposure is often rushed or skipped under time pressure — a missed petechial rash or abdominal compartment can change the diagnosis entirely.' }
     ],
+    accordionMiniCheck: {
+      qid: 'mc2',
+      question: 'TICLS (Tone, Interactivity, Consolability, Look, Speech/cry) belongs to which PAT corner?',
+      options: ['Work of breathing', 'Colour / circulation', 'Appearance'],
+      correct: 2,
+      correctFb: 'Correct — TICLS is Appearance.',
+      wrongFb: 'Not quite — TICLS belongs to Appearance.'
+    },
     panel: {
       label: 'PEWS · Paediatric Early Warning Score — ward-based deterioration detection',
       intro: 'PEWS is a simple bedside scoring system that gives nurses an <strong style="color:#1A1030">objective language</strong> to communicate concern to doctors — <em>"PEWS increased from 2 to 5"</em> carries far more weight than "the child doesn\'t look right." It captures subtle deterioration before obvious collapse.',
@@ -75,7 +146,15 @@ var PCCN_MODULES = [
         { label: 'Score 4–5', bg: '#FAE6EF', fg: '#D4327A', body: 'Urgent senior review. Rapid response activation.' },
         { label: 'Score ≥6', bg: '#2C1654', fg: '#C4A8D8', body: 'PICU transfer. Consider intubation. Call now.' }
       ],
-      foot: '<strong style="color:#1A1030">ISBAR escalation:</strong> "PEWS increased from 2 to 5" is far more powerful than "the child doesn\'t look right." Parental concern also counts — a mother saying <em>"something is wrong"</em> should trigger reassessment even with a low score.'
+      foot: '<strong style="color:#1A1030">ISBAR escalation:</strong> "PEWS increased from 2 to 5" is far more powerful than "the child doesn\'t look right." Parental concern also counts — a mother saying <em>"something is wrong"</em> should trigger reassessment even with a low score.',
+      miniCheck: {
+        qid: 'mc3',
+        question: 'A ward nurse notices a child\'s PEWS has risen from 2 to 5. What should happen?',
+        options: ['Recheck vitals at the next scheduled round', 'Document it and continue routine care', 'Escalate now — senior review / rapid response, consider PICU'],
+        correct: 2,
+        correctFb: 'Correct — a PEWS jump like this needs immediate escalation.',
+        wrongFb: 'Not quite — a rising PEWS should trigger immediate escalation.'
+      }
     },
     caseStudy: {
       quote: '"3-month-old infant — progressive abdominal distension ×20 days, cough ×1 week, intermittent fever ×1 week, irritable cry and decreased oral intake ×5 days. On arrival — irritable, febrile."',
@@ -97,7 +176,7 @@ var PCCN_MODULES = [
         { key: 'L — Last Meal', color: '#2189A8', body: 'Time and content — important for RSI' },
         { key: 'E — Events Leading To', color: '#8B7FA0', body: 'What happened just before presentation?' }
       ],
-      foot: '<strong style="color:#1A1030">Investigations:</strong> blood glucose, CBC, CRP, electrolytes, liver/kidney function, blood gas, lactate. Add CXR (respiratory), ECG/ECHO (cardiac), USG (UTI/abdomen) as indicated.'
+      foot: '<strong style="color:#1A1030">Investigations:</strong> blood glucose, CBC, CRP, electrolytes, liver/kidney function, blood gas, lactate. Add CXR (respiratory), ECG/ECHO (cardiac), USG (UTI/abdomen) as indicated.<br><br><strong style="color:#1A1030">Unexplained deterioration?</strong> Run the reversible causes — <strong>H\'s:</strong> hypovolaemia, hypoxia, H⁺/acidosis, hypo/hyperkalaemia, hypoglycaemia, hypothermia. <strong>T\'s:</strong> tension pneumothorax, tamponade, toxins, thrombosis.'
     },
     objectives: [
       'Apply the Paediatric Assessment Triangle within 30–60 seconds — no touch, no stethoscope',
@@ -125,7 +204,36 @@ var PCCN_MODULES = [
         { label: 'L4 — Less urgent', bg: '#EBF8F4', fg: '#157A62', body: 'Fever, no distress.' },
         { label: 'L5 — Non-urgent', bg: '#EBF8F4', fg: '#157A62', body: 'Minor injury.' }
       ],
-      foot: 'That 5-level scale is <strong style="color:#1A1030">in-hospital</strong> triage — one sick child among many. <strong style="color:#1A1030">Mass-casualty triage (START/JumpSTART)</strong> is a different, faster system for when the goal shifts from saving <em>this</em> child to saving the <em>most</em> children with the resources on hand — sorted by colour, in seconds, with no equipment: <strong style="color:#B01A59">Red = Immediate</strong> · <strong style="color:#A9700B">Yellow = Delayed</strong> · <strong style="color:#157A62">Green = Minor</strong> · <strong style="color:#4A4458">Black = Expectant (non-survivable given resources)</strong>. Same four ethics every time — Justice, Beneficence, Non-maleficence, Transparency.'
+      foot: 'That 5-level scale is <strong style="color:#1A1030">in-hospital</strong> triage — one sick child among many. <strong style="color:#1A1030">Mass-casualty triage (START/JumpSTART)</strong> is a different, faster system for when the goal shifts from saving <em>this</em> child to saving the <em>most</em> children with the resources on hand — sorted by colour, in seconds, with no equipment: <strong style="color:#B01A59">Red = Immediate</strong> · <strong style="color:#A9700B">Yellow = Delayed</strong> · <strong style="color:#157A62">Green = Minor</strong> · <strong style="color:#4A4458">Black = Expectant (non-survivable given resources)</strong>. Same four ethics every time — Justice, Beneficence, Non-maleficence, Transparency.',
+      miniCheck: {
+        qid: 'mc4',
+        question: 'In START/JumpSTART disaster triage, which colour tag means "non-survivable given available resources"?',
+        options: ['Red', 'Yellow', 'Green', 'Black'],
+        correct: 3,
+        correctFb: 'Correct — Black = Expectant.',
+        wrongFb: 'Not quite — that\'s Black (Expectant).'
+      }
+    },
+    simulation: {
+      label: 'The Virtual Triage — breakout scenarios',
+      intro: 'Run after you finish the lectures and content above.',
+      cards: [
+        { tag: 'Scenario A', title: '8-month-old, respiratory distress', body: 'Run PAT → ABCDE → triage in real time.' },
+        { tag: 'Scenario B', title: '4-year-old, minor injury', body: 'Practise triaging down just as confidently.' }
+      ]
+    },
+    reckoner: {
+      label: 'Ready Reckoner — printable quick reference',
+      chips: [
+        'PAT: Appearance · Work of breathing · Colour',
+        'Doorway red flags: not maintainable airway · RR&gt;60/&lt;10 · SpO₂&lt;94 · Pulse&lt;60 · CRT&gt;2s · AVPU=P/U · Glucose&lt;60',
+        'Min SBP = 70 + 2×age',
+        'DIRECT: Detect → Intervene → Reassess → Communicate → Transport',
+        'Crash cart: 1 Airway · 2 Breathing · 3 Circulation · 4 Drugs · 5 Defib · 6 Misc',
+        '7 P\'s: Staff · System · Supplies · Space · Speak Up · Subject · Self',
+        'SOAP ME: Suction · O₂ · Airway · Protocols · Monitors · Equipment',
+        'Disaster triage: Red-Immediate · Yellow-Delayed · Green-Minor · Black-Expectant'
+      ]
     },
     pretest: [
       { answer: 1, text: 'The Pediatric Assessment Triangle has three corners: Appearance, Work of Breathing, and:',
@@ -1434,3 +1542,4 @@ var PCCN_MODULES = [
     ]
   }
 ];
+
