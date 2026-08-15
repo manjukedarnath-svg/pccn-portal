@@ -155,6 +155,7 @@ main{flex:1;}
 .hero-grid{max-width:1180px;margin:0 auto;position:relative;z-index:1;display:grid;grid-template-columns:1.15fr 1fr;gap:52px;align-items:center;padding-bottom:64px;}
 @media (max-width:900px){.hero-grid{grid-template-columns:1fr;}}
 .hero h1{color:#fff;font-size:clamp(2.4rem,4.2vw,3.6rem);line-height:1.22;margin:0 0 18px;}
+.hero-tagline{font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.08rem;line-height:1.6;color:rgba(255,255,255,.8);max-width:520px;margin:0 0 20px;}
 .hero-sub{font-size:1.15rem;line-height:1.6;color:rgba(255,255,255,.68);max-width:520px;margin-bottom:30px;}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:36px;}
 .hero-stats{display:flex;flex-wrap:wrap;gap:28px;}
