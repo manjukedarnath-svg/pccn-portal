@@ -466,6 +466,14 @@ main{flex:1;}
 
 
 .login-wrap{background:radial-gradient(1100px 600px at 82% 12%,rgba(214,36,110,.32),transparent 60%),linear-gradient(135deg,rgba(31,9,56,.9) 0%,rgba(44,14,79,.88) 45%,rgba(62,18,102,.86) 75%,rgba(107,28,114,.9) 100%),url('assets/dt-night.png') center/cover no-repeat !important;}
+
+/* mobile nav: links get their own full-width row */
+@media (max-width:640px){
+  .pccn-nav-inner{flex-wrap:wrap;height:auto;padding:10px 14px 6px;row-gap:2px;}
+  .pccn-nav-links{order:3;flex-basis:100%;justify-content:space-between;gap:0;overflow-x:visible;border-top:1px solid rgba(128,100,150,.15);margin-top:6px;padding-top:2px;}
+  .pccn-nav-links a{padding:10px 8px;font-size:.84rem;}
+  .pccn-nav-actions{margin-left:auto;}
+}
 </style>
 </head>
 <body>

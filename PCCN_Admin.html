@@ -464,6 +464,14 @@ main{flex:1;}
 .pccn-footer-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .pccn-footer a{color:rgba(255,255,255,.7);}
 
+
+/* mobile nav: links get their own full-width row */
+@media (max-width:640px){
+  .pccn-nav-inner{flex-wrap:wrap;height:auto;padding:10px 14px 6px;row-gap:2px;}
+  .pccn-nav-links{order:3;flex-basis:100%;justify-content:space-between;gap:0;overflow-x:visible;border-top:1px solid rgba(128,100,150,.15);margin-top:6px;padding-top:2px;}
+  .pccn-nav-links a{padding:10px 8px;font-size:.84rem;}
+  .pccn-nav-actions{margin-left:auto;}
+}
 </style>
 </head>
 <body>

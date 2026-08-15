@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCCN Mobile Tour — Navigating the portal</title>
+<style>
+body{margin:0;background:#14042a;font-family:'Poppins',-apple-system,sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+a{color:#F0D9A8;} a:hover{color:#fff;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;font-size:13px;}
+.topbar a{text-decoration:none;font-weight:600;}
+#root{flex:1;display:flex;align-items:center;justify-content:center;padding:0 8px 16px;}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+<script>window.OM_SCENES = '[{"name":"Home","dur":5,"desc":"The portal home opens on a phone; finger taps Enroll Now"},{"name":"Enroll","dur":6,"desc":"The Google Form opens — pay and attach the screenshot"},{"name":"Register","dur":6,"desc":"Back on the portal, creating the account"},{"name":"Curriculum","dur":5,"desc":"Curriculum page with the Start here banner"},{"name":"Intro","dur":4,"desc":"The intro film plays in the embedded player"},{"name":"Module","dur":6,"desc":"Module 1 overview — steps locked in order"},{"name":"PreTest","dur":6,"desc":"Answering the Pre-Test"},{"name":"Unlock","dur":5,"desc":"Pre-Test done — PDF and Section 1 unlock"},{"name":"Close","dur":4,"desc":"URL and closing line"}]';</script>
+<script>window.OM_PLAYBACK = '{"mode":"times","count":1}';</script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+<script>if(/[?&]embed=1/.test(location.search))document.write('<style>.topbar{display:none!important}#root{padding:0}</style>');</script>
+<div class="topbar"><a href="PCCN_Landing_Page.html">← Back to PCCN portal</a><span style="color:rgba(255,255,255,.4);">PCCN mobile tour · 0:47</span></div>
+<div id="root"></div>
+<script type="text/plain" id="appSrc">
+const { CompositionStage, useComposition, Shot, Captions, Easing, animate, clamp } = window;
+const PINK = '#D6246E', PLUM = '#2C0E4F', CREAM = '#FBF8FA';
+const MOTION = {
+  enter: (T, at, dur = 0.6, dist = 30) => ({
+    opacity: animate({ from: 0, to: 1, start: at, end: at + dur, ease: Easing.easeOutCubic })(T),
+    transform: 'translateY(' + animate({ from: dist, to: 0, start: at, end: at + dur, ease: Easing.easeOutCubic })(T) + 'px)',
+  }),
+  slide: (T, at, dur = 0.55) => animate({ from: 0, to: 1, start: at, end: at + dur, ease: Easing.easeInOutCubic })(T),
+  pop: (T, at, dur = 0.45) => ({
+    opacity: animate({ from: 0, to: 1, start: at, end: at + dur * 0.6 })(T),
+    transform: 'scale(' + animate({ from: 0.6, to: 1, start: at, end: at + dur, ease: Easing.easeOutBack })(T) + ')',
+  }),
+};
+const btn = (bg, extra) => Object.assign({ display: 'block', textAlign: 'center', padding: '15px 0', borderRadius: 999, fontWeight: 700, fontSize: 17, background: bg, color: '#fff' }, extra);
+const row = (num, label, state, bg) => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#fff', border: '1px solid #EEE4EC', borderRadius: 14, padding: '13px 14px', opacity: state === 'locked' ? 0.45 : 1 }}>
+    <span style={{ width: 34, height: 34, borderRadius: 9, background: bg || '#3E1266', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 14, flexShrink: 0 }}>{num}</span>
+    <span style={{ fontSize: 15.5, fontWeight: 600, color: PLUM, flex: 1 }}>{label}</span>
+    {state === 'done' && <span style={{ color: '#1B9E7E', fontWeight: 800, fontSize: 17 }}>✓</span>}
+    {state === 'locked' && <span style={{ fontSize: 11, color: '#8A7796', fontWeight: 700 }}>Locked</span>}
+  </div>
+);
+function Nav() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '13px 16px', background: '#fff', borderBottom: '1px solid #EEE4EC' }}>
+      <div style={{ width: 30, height: 30, borderRadius: 8, background: 'linear-gradient(135deg,#3E1266,#6B1C72)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 14 }}>P</div>
+      <div><div style={{ fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 15, color: PINK, lineHeight: 1 }}>PCCN</div><div style={{ fontSize: 7, letterSpacing: '.16em', textTransform: 'uppercase', color: '#8A7796' }}>Certificate Course</div></div>
+      <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
+        <span style={{ fontSize: 11, fontWeight: 700, border: '1.5px solid #D8C2E0', borderRadius: 999, padding: '6px 11px', color: PLUM }}>Log In</span>
+        <span style={{ fontSize: 11, fontWeight: 700, background: PINK, borderRadius: 999, padding: '6px 11px', color: '#fff' }}>Register</span>
+      </div>
+    </div>
+  );
+}
+function Screen({ show, children, bg }) {
+  return <div style={{ position: 'absolute', inset: 0, background: bg || CREAM, opacity: show ? 1 : 0, transition: 'none', pointerEvents: 'none' }}>{children}</div>;
+}
+function Finger({ x, y, pulse }) {
+  return (
+    <div style={{ position: 'absolute', left: x - 22, top: y - 22, width: 44, height: 44, zIndex: 50 }}>
+      <div style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: 'rgba(214,36,110,.85)', border: '3px solid #fff', boxShadow: '0 4px 14px rgba(0,0,0,.4)', transform: 'scale(' + (1 + pulse * 0.5) + ')' }} />
+      <div style={{ position: 'absolute', inset: -14, borderRadius: '50%', border: '3px solid rgba(255,255,255,.9)', opacity: pulse > 0 ? 1 - pulse : 0, transform: 'scale(' + (0.6 + pulse * 1.2) + ')' }} />
+    </div>
+  );
+}
+function Piece() {
+  const { T, CUES, authoredTotal } = useComposition();
+  // finger path: [time, x, y] waypoints (phone-local coords, 390x780)
+  const WAY = [
+    [0.8, 320, 700], [2.2, 195, 372], [CUES.Enroll + 1.2, 195, 640], [CUES.Enroll + 4.5, 195, 640],
+    [CUES.Register + 1.0, 195, 505], [CUES.Register + 4.6, 195, 505],
+    [CUES.Curriculum + 1.0, 195, 258], [CUES.Curriculum + 4.2, 195, 258],
+    [CUES.Intro + 1.0, 195, 330], [CUES.Module + 1.0, 195, 218], [CUES.Module + 5.2, 195, 218],
+    [CUES.PreTest + 1.2, 195, 388], [CUES.PreTest + 3.4, 195, 615],
+    [CUES.Unlock + 2.6, 195, 345], [CUES.Unlock + 4.5, 195, 345],
+  ];
+  let fx = WAY[0][1], fy = WAY[0][2];
+  for (let i = 0; i < WAY.length - 1; i++) {
+    const [t0, x0, y0] = WAY[i], [t1, x1, y1] = WAY[i + 1];
+    if (T >= t0 && T <= t1) { const u = Easing.easeInOutCubic(clamp((T - t0) / (t1 - t0), 0, 1)); fx = x0 + (x1 - x0) * u; fy = y0 + (y1 - y0) * u; }
+    else if (T > t1) { fx = x1; fy = y1; }
+  }
+  const TAPS = [2.4, CUES.Enroll + 1.4, CUES.Register + 1.2, CUES.Curriculum + 1.2, CUES.Intro + 1.2, CUES.Module + 1.2, CUES.PreTest + 1.4, CUES.PreTest + 3.6, CUES.Unlock + 2.8];
+  let pulse = 0;
+  TAPS.forEach((t) => { if (T >= t && T <= t + 0.5) pulse = (T - t) / 0.5; });
+  const S = (name, next) => T >= CUES[name] && T < (next != null ? next : authoredTotal + 1);
+  const sel = animate({ from: 0, to: 1, start: CUES.PreTest + 1.4, end: CUES.PreTest + 1.7 })(T);
+  return (
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', fontFamily: "'Poppins',sans-serif", background: 'radial-gradient(1300px 750px at 85% 8%, rgba(214,36,110,.3), transparent 62%), linear-gradient(135deg,#1F0938 0%,#2C0E4F 45%,#3E1266 78%,#6B1C72 100%)' }}>
+      <div style={{ position: 'absolute', width: 1400, height: 1400, borderRadius: '50%', right: -560, top: -680, border: '2px solid rgba(240,217,168,.18)', boxShadow: '0 0 0 110px rgba(240,217,168,.04)' }} />
+      <div style={{ position: 'absolute', top: 52, left: 70, display: 'flex', alignItems: 'center', gap: 14, ...MOTION.enter(T, 0.2) }}>
+        <div style={{ width: 50, height: 50, borderRadius: 13, background: 'linear-gradient(135deg,#3E1266,#6B1C72)', border: '1px solid rgba(255,255,255,.25)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 23 }}>P</div>
+        <div style={{ color: '#fff' }}><div style={{ fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 25, color: '#F272AC' }}>PCCN</div><div style={{ fontSize: 11, letterSpacing: '.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,.55)' }}>On your phone</div></div>
+      </div>
+      <div style={{ position: 'absolute', left: 70, top: 300, width: 560, color: '#fff', ...MOTION.enter(T, 0.5) }}>
+        <div style={{ fontFamily: "'Fraunces',serif", fontWeight: 600, fontSize: 62, lineHeight: 1.12 }}>The whole course,<br />in your pocket.</div>
+        <div style={{ fontSize: 24, color: 'rgba(255,255,255,.7)', marginTop: 26, lineHeight: 1.55 }}>manjukedarnath-svg.github.io/pccn-portal<br /><span style={{ color: '#F0D9A8' }}>Enroll → Register → Learn → Get certified</span></div>
+      </div>
+      {/* phone */}
+      <div style={{ position: 'absolute', left: 1120, top: 92, width: 430, height: 900, borderRadius: 54, background: '#0d0620', border: '2px solid rgba(255,255,255,.25)', boxShadow: '0 40px 90px rgba(0,0,0,.55)', padding: 20, boxSizing: 'border-box', ...MOTION.enter(T, 0.3, 0.8, 60) }}>
+        <div style={{ position: 'absolute', top: 8, left: '50%', transform: 'translateX(-50%)', width: 120, height: 24, borderRadius: 12, background: '#0d0620', zIndex: 60 }} />
+        <div style={{ position: 'relative', width: 390, height: 780, margin: '30px auto 0', borderRadius: 34, overflow: 'hidden', background: CREAM }}>
+          {/* HOME */}
+          <Screen show={S('Home', CUES.Enroll)}>
+            <Nav />
+            <div style={{ background: 'linear-gradient(135deg,#1F0938,#3E1266 70%,#6B1C72)', padding: '34px 24px 40px', color: '#fff' }}>
+              <div style={{ fontSize: 10, letterSpacing: '.18em', textTransform: 'uppercase', color: '#F0D9A8', marginBottom: 14 }}>IAP Intensive Care Chapter · Certificate Course</div>
+              <div style={{ display: 'inline-block', background: 'rgba(255,255,255,.94)', color: '#B01A59', fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 30, lineHeight: 1.2, padding: '4px 12px', borderRadius: 10 }}>Pediatric Critical Care Nursing</div>
+              <div style={{ fontFamily: "'Fraunces',serif", fontSize: 18, marginTop: 14, color: 'rgba(255,255,255,.9)' }}>The definitive course for care of the critically ill child.</div>
+            </div>
+            <div style={{ padding: '22px 24px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={btn(PINK)}>Enroll Now →</div>
+              <div style={btn('#fff', { color: PLUM, border: '1.5px solid #D8C2E0' })}>Register · PCCN Portal</div>
+              <div style={{ fontSize: 12, color: '#8A7796', textAlign: 'center', lineHeight: 1.5 }}><strong style={{ color: '#8A5410' }}>Enroll</strong> pays your seat · <strong style={{ color: '#8A5410' }}>Register</strong> tracks progress</div>
+              <div style={{ display: 'inline-block', alignSelf: 'center', background: '#FBF1E4', color: '#8A5410', fontWeight: 700, fontSize: 12, borderRadius: 999, padding: '5px 14px' }}>⏳ Last 2 seats left in Batch 1</div>
+            </div>
+          </Screen>
+          {/* GOOGLE FORM */}
+          <Screen show={S('Enroll', CUES.Register)} bg="#F0EBF8">
+            <div style={{ background: '#673AB7', color: '#fff', padding: '26px 22px' }}>
+              <div style={{ fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 22 }}>PCCN Course Registration</div>
+              <div style={{ fontSize: 12.5, marginTop: 6, opacity: 0.85 }}>Google Forms · forms.gle/gBBTLdxTkjCAv7MSA</div>
+            </div>
+            <div style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {['Full name', 'Email', 'IDPCCN Fellow? (₹1,000 / ₹1,500)', 'Upload payment screenshot *'].map((f) => (
+                <div key={f} style={{ background: '#fff', borderRadius: 8, padding: '14px 14px', fontSize: 13.5, color: '#5f6368', border: '1px solid #dadce0' }}>{f}</div>
+              ))}
+              <div style={{ ...btn('#673AB7', { width: 110, padding: '11px 0', fontSize: 14, borderRadius: 6 }) }}>Submit</div>
+              <div style={{ fontSize: 11.5, color: '#8A5410', background: '#FBF1E4', borderRadius: 8, padding: '9px 12px', fontWeight: 600 }}>Payment screenshot is mandatory to confirm your seat</div>
+            </div>
+          </Screen>
+          {/* REGISTER */}
+          <Screen show={S('Register', CUES.Curriculum)} bg="#2C0E4F">
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,rgba(31,9,56,.95),rgba(107,28,114,.9))' }} />
+            <div style={{ position: 'relative', margin: '90px 26px 0', background: '#fff', borderRadius: 18, padding: '26px 22px', textAlign: 'center' }}>
+              <div style={{ width: 38, height: 38, borderRadius: 10, background: 'linear-gradient(135deg,#3E1266,#6B1C72)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 17, margin: '0 auto 10px' }}>P</div>
+              <div style={{ fontFamily: "'Fraunces',serif", fontWeight: 600, fontSize: 21, color: PLUM }}>Create your account</div>
+              <div style={{ fontSize: 12, color: '#8A7796', margin: '4px 0 16px' }}>Track your PCCN progress across every device</div>
+              {['Full name', 'Email — same as the Google Form', 'Password (min 6 characters)', 'Confirm password'].map((f) => (
+                <div key={f} style={{ border: '1px solid #EEE4EC', borderRadius: 10, padding: '12px 13px', fontSize: 13, color: '#8A7796', textAlign: 'left', marginBottom: 9 }}>{f}</div>
+              ))}
+              <div style={btn(PINK, { fontSize: 15, padding: '13px 0' })}>Create Account</div>
+            </div>
+          </Screen>
+          {/* CURRICULUM */}
+          <Screen show={S('Curriculum', CUES.Intro)}>
+            <Nav />
+            <div style={{ background: 'linear-gradient(115deg,#1F0938 40%,#3E1266)', color: '#fff', padding: '22px 22px' }}>
+              <div style={{ fontSize: 9, letterSpacing: '.18em', textTransform: 'uppercase', color: '#7FE3CE', marginBottom: 6 }}>Curriculum</div>
+              <div style={{ fontFamily: "'Fraunces',serif", fontWeight: 600, fontSize: 24 }}>Twelve modules, four pillars</div>
+            </div>
+            <div style={{ padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'linear-gradient(135deg,#1F0938,#3E1266)', borderRadius: 14, padding: '15px 15px', color: '#fff' }}>
+                <span style={{ width: 36, height: 36, borderRadius: '50%', background: PINK, border: '2px solid rgba(255,255,255,.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><span style={{ width: 0, height: 0, borderStyle: 'solid', borderWidth: '6px 0 6px 10px', borderColor: 'transparent transparent transparent #fff', marginLeft: 3 }} /></span>
+                <span><span style={{ display: 'block', fontSize: 8.5, letterSpacing: '.16em', textTransform: 'uppercase', color: '#F0D9A8' }}>Start here · Before Module 1</span><span style={{ fontFamily: "'Fraunces',serif", fontWeight: 600, fontSize: 16 }}>Introduction &amp; Course Overview</span></span>
+              </div>
+              {[['01', 'Initial Assessment', '#1B9E7E'], ['02', 'Respiratory Support', '#1B9E7E'], ['03', 'Shock & Hemodynamics', '#1B9E7E'], ['04', 'Arrhythmias, BLS & PALS', '#1B9E7E']].map((m) => (
+                <div key={m[0]} style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#fff', border: '1px solid #EEE4EC', borderTop: '3px solid ' + m[2], borderRadius: 12, padding: '13px 14px' }}>
+                  <span style={{ fontSize: 10, fontWeight: 800, color: m[2] }}>MODULE {m[0]}</span>
+                  <span style={{ fontFamily: "'Fraunces',serif", fontWeight: 600, fontSize: 15, color: PLUM }}>{m[1]}</span>
+                </div>
+              ))}
+            </div>
+          </Screen>
+          {/* INTRO PLAYER */}
+          <Screen show={S('Intro', CUES.Module)} bg="#14042a">
+            <Nav />
+            <div style={{ padding: '18px 18px' }}>
+              <div style={{ fontFamily: "'Fraunces',serif", fontWeight: 600, fontSize: 20, color: '#fff', marginBottom: 12 }}>Introduction &amp; Course Overview</div>
+              <div style={{ position: 'relative', borderRadius: 14, overflow: 'hidden', aspectRatio: '16/9', background: 'linear-gradient(135deg,#1F0938,#6B1C72)' }}>
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: 58, height: 58, borderRadius: '50%', background: PINK, border: '3px solid rgba(255,255,255,.9)', display: 'flex', alignItems: 'center', justifyContent: 'center', transform: 'scale(' + (1 + Math.sin(T * 4) * 0.05) + ')' }}>
+                    <div style={{ width: 0, height: 0, borderStyle: 'solid', borderWidth: '10px 0 10px 16px', borderColor: 'transparent transparent transparent #fff', marginLeft: 4 }} />
+                  </div>
+                </div>
+                <div style={{ position: 'absolute', left: 12, bottom: 10, color: '#fff', fontSize: 11, fontWeight: 600 }}>▶ Plays right here · 1:16</div>
+              </div>
+              <div style={{ fontSize: 13, color: 'rgba(255,255,255,.6)', marginTop: 14, lineHeight: 1.55 }}>What you will learn, how you will be assessed, and how the portal works.</div>
+            </div>
+          </Screen>
+          {/* MODULE OVERVIEW */}
+          <Screen show={S('Module', CUES.PreTest)}>
+            <div style={{ background: 'linear-gradient(115deg,#1F0938 40%,#3E1266)', color: '#fff', padding: '20px 20px' }}>
+              <div style={{ fontSize: 9, letterSpacing: '.16em', textTransform: 'uppercase', color: '#F0D9A8', marginBottom: 5 }}>Pillar 1 · Assessment</div>
+              <div style={{ fontFamily: "'Fraunces',serif", fontWeight: 600, fontSize: 21 }}>Module 01 — Initial Assessment</div>
+            </div>
+            <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 9 }}>
+              <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.14em', textTransform: 'uppercase', color: '#8A7796' }}>Steps unlock in order</div>
+              {row('0', 'Pre-Test — know your baseline', 'open', PINK)}
+              {row('PDF', 'Printable study material', 'locked', '#D4882A')}
+              {row('1', 'Why Children Are Different', 'locked')}
+              {row('2', 'PAT & Primary Assessment', 'locked')}
+              {row('3', 'The DIRECT Approach', 'locked')}
+              {row('Q', 'Module Quiz', 'locked', PINK)}
+            </div>
+          </Screen>
+          {/* PRETEST */}
+          <Screen show={S('PreTest', CUES.Unlock)}>
+            <div style={{ background: 'linear-gradient(115deg,#1F0938 40%,#3E1266)', color: '#fff', padding: '18px 20px' }}>
+              <div style={{ fontFamily: "'Fraunces',serif", fontWeight: 600, fontSize: 19 }}>Pre-Test · Question 1 of 10</div>
+            </div>
+            <div style={{ padding: '16px 18px' }}>
+              <div style={{ background: '#fff', border: '1px solid #EEE4EC', borderRadius: 14, padding: '16px 16px' }}>
+                <div style={{ fontSize: 15, fontWeight: 700, color: PLUM, lineHeight: 1.5, marginBottom: 12 }}>Why do children deteriorate faster than adults in respiratory illness?</div>
+                {['Airways are proportionally wider', 'Low FRC, high O₂ consumption, narrow airway', 'Higher glycogen stores'].map((o, i) => (
+                  <div key={o} style={{ border: '1.5px solid ' + (i === 1 && sel > 0.5 ? '#1B9E7E' : '#EEE4EC'), background: i === 1 && sel > 0.5 ? '#EBF8F4' : '#fff', borderRadius: 10, padding: '11px 12px', fontSize: 13.5, color: PLUM, marginBottom: 8, fontWeight: i === 1 && sel > 0.5 ? 700 : 500 }}>{o}</div>
+                ))}
+                <div style={btn(PINK, { fontSize: 14, padding: '12px 0', marginTop: 6 })}>Submit</div>
+              </div>
+            </div>
+          </Screen>
+          {/* UNLOCK */}
+          <Screen show={S('Unlock', CUES.Close)}>
+            <div style={{ background: 'linear-gradient(115deg,#1F0938 40%,#3E1266)', color: '#fff', padding: '20px 20px' }}>
+              <div style={{ fontFamily: "'Fraunces',serif", fontWeight: 600, fontSize: 21 }}>Module 01 — Initial Assessment</div>
+            </div>
+            <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 9 }}>
+              {row('0', 'Pre-Test — know your baseline', 'done', PINK)}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#FBF1E4', border: '1px solid #E8D9B8', borderRadius: 14, padding: '13px 14px', ...MOTION.pop(T, CUES.Unlock + 0.6) }}>
+                <span style={{ width: 34, height: 34, borderRadius: 9, background: '#D4882A', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 11, flexShrink: 0 }}>PDF</span>
+                <span style={{ fontSize: 14.5, fontWeight: 700, color: '#8A5410', flex: 1 }}>Study material unlocked — download</span>
+                <span style={{ color: '#8A5410', fontWeight: 800 }}>↓</span>
+              </div>
+              <div style={{ ...MOTION.pop(T, CUES.Unlock + 1.2) }}>{row('1', 'Why Children Are Different — unlocked!', 'open', '#1B9E7E')}</div>
+              {row('2', 'PAT & Primary Assessment', 'locked')}
+              {row('3', 'The DIRECT Approach', 'locked')}
+              {row('Q', 'Module Quiz', 'locked', PINK)}
+            </div>
+          </Screen>
+          {/* CLOSE */}
+          <Screen show={S('Close')} bg="#1F0938">
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '0 30px', color: '#fff', background: 'radial-gradient(400px 300px at 70% 15%, rgba(214,36,110,.35), transparent), linear-gradient(135deg,#1F0938,#6B1C72)' }}>
+              <div style={{ width: 62, height: 62, borderRadius: 16, background: 'linear-gradient(135deg,#3E1266,#6B1C72)', border: '2px solid rgba(255,255,255,.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Fraunces',serif", fontWeight: 700, fontSize: 28, ...MOTION.pop(T, CUES.Close + 0.3) }}>P</div>
+              <div style={{ fontFamily: "'Fraunces',serif", fontWeight: 600, fontSize: 30, marginTop: 20, lineHeight: 1.25, ...MOTION.enter(T, CUES.Close + 0.7) }}>Your course.<br />Your pocket.</div>
+              <div style={{ fontSize: 14, color: '#F0D9A8', fontWeight: 600, marginTop: 16, ...MOTION.enter(T, CUES.Close + 1.2) }}>manjukedarnath-svg.github.io/pccn-portal</div>
+            </div>
+          </Screen>
+          <Shot from={0} to={CUES.Close}><Finger x={fx} y={fy} pulse={pulse} /></Shot>
+        </div>
+      </div>
+      <Captions items={[
+        { at: 0.6, text: 'Open the portal on any phone — no app needed' },
+        { at: 2.6, text: 'Tap Enroll Now to pay & secure your seat' },
+        { at: CUES.Enroll + 0.8, text: 'The Google Form: details, fee, payment screenshot' },
+        { at: CUES.Register + 0.6, text: 'Then Register — your account tracks scores across devices' },
+        { at: CUES.Curriculum + 0.6, text: 'Curriculum → Start here: the course introduction' },
+        { at: CUES.Intro + 0.6, text: 'The intro film plays right on the page' },
+        { at: CUES.Module + 0.6, text: 'Inside Module 1 — steps unlock strictly in order' },
+        { at: CUES.PreTest + 0.6, text: 'Take the Pre-Test first' },
+        { at: CUES.Unlock + 0.6, text: 'Passed! The study PDF and Section 1 unlock' },
+        { at: CUES.Close + 0.6, text: 'PCCN — The definitive course' },
+      ]} />
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <CompositionStage width={1920} height={1080} bg="#14042a" scenes={window.OM_SCENES} playback={window.OM_PLAYBACK}>
+    <Piece />
+  </CompositionStage>
+);
+</script>
+<script>
+(function(){
+  function compile(src){ return Babel.transform(src, { presets: [["react", { runtime: "classic" }]] }).code; }
+  fetch('animations-v3.jsx').then(function(r){ return r.text(); }).then(function(engine){
+    (0, eval)(compile(engine));
+    (0, eval)(compile(document.getElementById('appSrc').textContent));
+  }).catch(function(e){ console.error('Mobile tour failed to load:', e); });
+})();
+</script>
+</body>
+</html>

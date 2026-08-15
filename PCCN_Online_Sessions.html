@@ -463,6 +463,14 @@ main{flex:1;}
 
 /* human touch — duotone photo behind the dark header */
 .page-header{background:linear-gradient(115deg,rgba(31,9,56,.93) 30%,rgba(62,18,102,.82)),url('assets/dt-cohort-wide.png') center 30%/cover no-repeat !important;}
+
+/* mobile nav: links get their own full-width row */
+@media (max-width:640px){
+  .pccn-nav-inner{flex-wrap:wrap;height:auto;padding:10px 14px 6px;row-gap:2px;}
+  .pccn-nav-links{order:3;flex-basis:100%;justify-content:space-between;gap:0;overflow-x:visible;border-top:1px solid rgba(128,100,150,.15);margin-top:6px;padding-top:2px;}
+  .pccn-nav-links a{padding:10px 8px;font-size:.84rem;}
+  .pccn-nav-actions{margin-left:auto;}
+}
 </style>
 </head>
 <body>
