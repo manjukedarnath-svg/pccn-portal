@@ -10,5 +10,18 @@ service cloud.firestore {
       allow read: if request.auth != null && request.auth.uid == uid;
       allow write: if false;
     }
+    // Competency self-assessment — OPEN to any nurse (anonymous auth), read/verify by admins only.
+    match /competency/{docId} {
+      allow create: if request.auth != null
+                    && request.resource.data.uid == request.auth.uid
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() > 1
+                    && request.resource.data.email is string
+                    && request.resource.data.declaredTotal is number
+                    && request.resource.data.declaredTotal >= 12
+                    && request.resource.data.declaredTotal <= 36;
+      allow read, update: if request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+      allow delete: if false;
+    }
   }
 }

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCCN — Competency Results (Unit Head)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#F4F0F8;font-family:Poppins,system-ui,sans-serif;color:#2C0E4F}
+  a{color:#D6246E;text-decoration:none}a:hover{color:#2C0E4F;text-decoration:underline}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 18px 60px}
+  .card{background:#fff;border:1px solid #E4D8EC;border-radius:14px;padding:16px 18px 18px;margin-top:14px}
+  .lbl{font-size:10px;letter-spacing:.16em;font-weight:700;color:#B07A9C;text-transform:uppercase}
+  input,select{font-family:inherit;font-size:14px;color:#2C0E4F;background:#FBF8FD;border:1px solid #DCCDE8;border-radius:9px;padding:9px 11px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{background:#2C0E4F;color:#fff;font-size:9.5px;letter-spacing:.1em;font-weight:700;padding:8px 6px;text-align:left;position:sticky;top:0}
+  td{border-top:1px solid #EFE6F4;padding:7px 6px;vertical-align:top}
+  td.s{text-align:center;font-weight:700;width:26px}
+  .btn{display:inline-flex;align-items:center;min-height:42px;padding:0 18px;border:0;border-radius:999px;background:#D6246E;color:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
+  .btn2{background:#fff;color:#4A1A73;border:1.5px solid #C9B4DC}
+  .hide{display:none!important}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:10.5px;font-weight:700}
+</style>
+</head>
+<body>
+
+<div style="background:linear-gradient(115deg,#2C0E4F 0%,#3E1266 42%,#6B1C72 78%,#A8265F 100%);color:#fff;padding:20px 0 24px">
+  <div class="wrap" style="padding-bottom:0;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap">
+    <div>
+      <div style="font-size:10px;letter-spacing:.22em;font-weight:700;color:#F374B0">PCCN · UNIT HEAD VIEW</div>
+      <h1 style="font-size:25px;font-weight:800;margin:7px 0 0">Competency self-declarations</h1>
+      <div style="font-size:12.5px;color:#CDB8DE;margin-top:6px">Open submissions from any nurse — filter to your hospital, verify at the bedside, then record the verified total.</div>
+    </div>
+    <div style="display:flex;gap:9px;flex-wrap:wrap">
+      <a class="btn btn2" href="PCCN_Competency_Form.html">Open the form</a>
+      <button class="btn" id="csv">Export CSV</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div id="gate" class="card">
+    <div class="lbl">Unit head / administrator sign-in</div>
+    <div id="gateMsg" style="font-size:12.5px;color:#6B5580;margin-top:8px">Checking your session…</div>
+    <div id="gateForm" class="hide" style="margin-top:10px;display:grid;gap:9px;max-width:340px">
+      <input id="em" type="email" placeholder="Email" autocomplete="email">
+      <input id="pw" type="password" placeholder="Password" autocomplete="current-password">
+      <button class="btn" id="signin" style="justify-self:start">Sign in</button>
+      <div id="err" style="font-size:12.5px;color:#D6246E;font-weight:600"></div>
+    </div>
+  </div>
+
+  <div id="app" class="hide">
+    <div class="card" style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap">
+      <label style="font-size:11px;font-weight:700;color:#B07A9C">FILTER BY HOSPITAL<br><input id="fu" placeholder="all hospitals" style="margin-top:5px"></label>
+      <label style="font-size:11px;font-weight:700;color:#B07A9C">SEARCH NAME<br><input id="fn" placeholder="any nurse" style="margin-top:5px"></label>
+      <label style="font-size:11px;font-weight:700;color:#B07A9C">SORT<br><select id="fs" style="margin-top:5px"><option value="date">Newest first</option><option value="low">Lowest total first</option><option value="high">Highest total first</option></select></label>
+      <div style="margin-left:auto;font-size:12.5px;font-weight:600;color:#6B5580" id="count"></div>
+    </div>
+
+    <div class="card" style="padding:0;overflow:auto;max-height:70vh">
+      <table>
+        <thead><tr>
+          <th>NURSE</th><th>HOSPITAL</th><th>ROLE</th>
+          <th style="text-align:center">01</th><th style="text-align:center">02</th><th style="text-align:center">03</th><th style="text-align:center">04</th><th style="text-align:center">05</th><th style="text-align:center">06</th><th style="text-align:center">07</th><th style="text-align:center">08</th><th style="text-align:center">09</th><th style="text-align:center">10</th><th style="text-align:center">11</th><th style="text-align:center">12</th>
+          <th style="text-align:center">DECL.</th><th style="text-align:center;background:#4A1A73">VERIFIED</th><th style="background:#4A1A73">BAND</th><th>SUBMITTED</th>
+        </tr></thead>
+        <tbody id="rows"><tr><td colspan="20" style="padding:20px;color:#8A7796">Loading…</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="card" style="background:#F6F1FA">
+      <div class="lbl" style="color:#4A1A73">Reading the table</div>
+      <div style="font-size:12.5px;line-height:1.6;color:#4A3560;margin-top:7px">
+        This form is open to any nurse, so filter by hospital first — the table holds submissions from outside your unit too. Cells shaded <span class="pill" style="background:#FAE6EF;color:#D6246E">pink</span> are Level 1 — the nurse says she needs hand-holding. Any Level 1 in <strong>04 CPR, 10 infection prevention or 11 medication safety</strong> blocks independent shift charge until verified and corrected.
+        <strong>DECL.</strong> is what the nurse claims (12–36). Enter the <strong>VERIFIED</strong> total after your bedside checks and pick the band — that is Stage III, and it is the number the roster uses.
+        Bands: 12–19 A novice · 20–26 B developing · 27–32 C competent · 33–36 D proficient.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="pccn-firebase-config.js"></script>
+<script>
+firebase.initializeApp(window.PCCN_FIREBASE_CONFIG);
+var db = firebase.firestore(), all = [], KEYS = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+var LCOL = {1:'#FAE6EF',2:'#FCF3E8',3:'#EAF7F3'}, LTXT = {1:'#D6246E',2:'#B0661A',3:'#157A62'};
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}); }
+function band(t){ if(!t) return ''; if(t<20) return 'A'; if(t<27) return 'B'; if(t<33) return 'C'; return 'D'; }
+
+document.getElementById('signin').addEventListener('click', function(){
+  document.getElementById('err').textContent='';
+  firebase.auth().signInWithEmailAndPassword(document.getElementById('em').value.trim(), document.getElementById('pw').value)
+    .catch(function(x){ document.getElementById('err').textContent = x.message||'Sign-in failed.'; });
+});
+
+firebase.auth().onAuthStateChanged(function(u){
+  if(!u){
+    document.getElementById('gateMsg').textContent='Sign in with the account listed as an administrator for your unit.';
+    document.getElementById('gateForm').classList.remove('hide');
+    document.getElementById('app').classList.add('hide');
+    return;
+  }
+  document.getElementById('gate').classList.add('hide');
+  document.getElementById('app').classList.remove('hide');
+  load();
+});
+
+function load(){
+  db.collection('competency').orderBy('submittedAt','desc').get().then(function(s){
+    all = s.docs.map(function(d){ var o = d.data(); o._id = d.id; return o; });
+    render();
+  }).catch(function(x){
+    document.getElementById('rows').innerHTML = '<tr><td colspan="20" style="padding:18px;color:#D6246E;font-weight:600">Could not read submissions: '+esc(x.message||x.code)+'<br><span style="font-weight:500;color:#6B5580">If this says permission denied, your account is not yet in the <strong>admins</strong> collection in Firebase — see the guide, step 2.</span></td></tr>';
+  });
+}
+
+function render(){
+  var fu = document.getElementById('fu').value.trim().toLowerCase(),
+      fn = document.getElementById('fn').value.trim().toLowerCase(),
+      fs = document.getElementById('fs').value;
+  var rows = all.filter(function(r){
+    return (!fu || String(r.unit||'').toLowerCase().indexOf(fu)>=0) && (!fn || String(r.name||'').toLowerCase().indexOf(fn)>=0);
+  });
+  if(fs==='low') rows.sort(function(a,b){return (a.declaredTotal||0)-(b.declaredTotal||0)});
+  if(fs==='high') rows.sort(function(a,b){return (b.declaredTotal||0)-(a.declaredTotal||0)});
+  document.getElementById('count').textContent = rows.length+' of '+all.length+' submissions';
+  if(!rows.length){ document.getElementById('rows').innerHTML='<tr><td colspan="20" style="padding:20px;color:#8A7796">No submissions yet.</td></tr>'; return; }
+  document.getElementById('rows').innerHTML = rows.map(function(r){
+    var cells = KEYS.map(function(k){
+      var v = (r.scores||{})[k];
+      return '<td class="s" style="background:'+(LCOL[v]||'#fff')+';color:'+(LTXT[v]||'#B0A0BE')+'">'+(v||'–')+'</td>';
+    }).join('');
+    var d = r.submittedAt && r.submittedAt.toDate ? r.submittedAt.toDate().toLocaleDateString() : '';
+    return '<tr>'
+      + '<td><strong>'+esc(r.name)+'</strong><div style="font-size:10.5px;color:#8A7796">'+esc(r.email)+(r.years?' · '+esc(r.years)+' yr':'')+(r.courseRegistrant?' · <span style="color:#16A085;font-weight:700">PCCN</span>':'')+'</div></td>'
+      + '<td>'+esc(r.unit)+'<div style="font-size:10.5px;color:#8A7796">'+esc(r.city)+'</div></td>'
+      + '<td style="font-size:11px">'+esc(r.role)+'<div style="font-size:10.5px;color:#8A7796">'+esc(r.ward)+'</div></td>' + cells
+      + '<td class="s" style="font-size:14px">'+(r.declaredTotal||'')+'</td>'
+      + '<td class="s"><input data-v="'+r._id+'" value="'+(r.verifiedTotal||'')+'" inputmode="numeric" style="width:46px;padding:5px;text-align:center;font-weight:700"></td>'
+      + '<td><select data-b="'+r._id+'" style="padding:5px"><option value="">—</option>'
+        + ['A','B','C','D'].map(function(b){return '<option value="'+b+'"'+((r.band||band(r.verifiedTotal))===b?' selected':'')+'>'+b+'</option>'}).join('')
+      + '</select></td>'
+      + '<td style="font-size:11px;color:#6B5580">'+d+'</td></tr>';
+  }).join('');
+}
+
+['fu','fn','fs'].forEach(function(id){ document.getElementById(id).addEventListener('input', render); document.getElementById(id).addEventListener('change', render); });
+
+document.getElementById('rows').addEventListener('change', function(e){
+  var id = e.target.dataset.v || e.target.dataset.b; if(!id) return;
+  var patch = {};
+  if(e.target.dataset.v){ patch.verifiedTotal = +e.target.value||null; patch.band = band(+e.target.value); }
+  else patch.band = e.target.value;
+  patch.status = 'verified'; patch.verifiedAt = firebase.firestore.FieldValue.serverTimestamp();
+  patch.verifiedBy = firebase.auth().currentUser ? (firebase.auth().currentUser.email||'') : '';
+  db.collection('competency').doc(id).update(patch).then(function(){
+    e.target.style.background = '#EAF7F3';
+    var rec = all.filter(function(r){return r._id===id})[0]; if(rec) Object.assign(rec, patch);
+  }).catch(function(x){ e.target.style.background='#FAE6EF'; alert('Could not save: '+(x.message||x.code)); });
+});
+
+document.getElementById('csv').addEventListener('click', function(){
+  var head = ['Name','Email','Hospital','City','Unit type','Designation','Years','PCCN registrant','Employee ID'].concat(KEYS.map(function(k){return 'Cat '+k})).concat(['Declared total','Verified total','Band','Submitted','Free text']);
+  var lines = [head.join(',')].concat(all.map(function(r){
+    var d = r.submittedAt && r.submittedAt.toDate ? r.submittedAt.toDate().toISOString().slice(0,10) : '';
+    var vals = [r.name,r.email,r.unit,r.city,r.ward,r.role,r.years,r.courseRegistrant?'yes':'no',r.empId].concat(KEYS.map(function(k){return (r.scores||{})[k]||''})).concat([r.declaredTotal||'',r.verifiedTotal||'',r.band||'',d,(r.freeText||'').replace(/\s+/g,' ')]);
+    return vals.map(function(v){ return '"'+String(v==null?'':v).replace(/"/g,'""')+'"' }).join(',');
+  }));
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([lines.join('\n')],{type:'text/csv'}));
+  a.download = 'PCCN_competency_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+});
+</script>
+</body>
+</html>

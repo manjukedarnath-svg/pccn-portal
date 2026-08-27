@@ -1,0 +1,39 @@
+PCCN COMPETENCY SELF-ASSESSMENT — WHAT TO UPLOAD
+================================================
+
+The QR code currently shows "404 File not found" because these files
+have not been uploaded to GitHub Pages yet. Nothing is broken.
+
+STEP 1 — UPLOAD (2 minutes)
+  Go to github.com -> your "pccn-portal" repository
+  Add file -> Upload files
+  Drag in these FOUR files (not this text file, not firestore.rules):
+
+      c.html
+      PCCN_Competency_Form.html
+      PCCN_Competency_Results.html
+      PCCN_Competency_QR.html
+
+  Keep "Commit directly to main" -> Commit changes.
+  Wait ~2 minutes, then open:
+
+      https://manjukedarnath-svg.github.io/pccn-portal/c.html
+
+  Hard-refresh (Ctrl/Cmd + Shift + R) if you still see the 404.
+
+STEP 2 — FIREBASE (one time, 3 minutes)
+  a) Authentication -> Sign-in method -> enable ANONYMOUS.
+     Without this the form cannot submit.
+  b) Firestore -> Rules -> paste the contents of firestore.rules
+     (in this folder) -> Publish.
+  c) Firestore -> Data -> collection "admins" -> add a document whose
+     ID is your own user UID (Authentication -> Users -> copy UID).
+     Without this the results page says "permission denied".
+
+THE TWO LINKS AFTERWARDS
+  Nurses fill:  .../pccn-portal/c.html          <- share this, it is on the QR
+  You read:     .../pccn-portal/PCCN_Competency_Results.html   <- do not share
+
+Test it yourself first: open the short link, submit a dummy entry,
+then check it appears on the results page. Delete nothing - the rules
+do not allow deletion, so use an obvious test name.

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCCN — PICU Nurse Competency Self-Assessment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#F4F0F8;font-family:Poppins,system-ui,sans-serif;color:#2C0E4F;-webkit-text-size-adjust:100%}
+  a{color:#D6246E;text-decoration:none}a:hover{color:#2C0E4F;text-decoration:underline}
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px 96px}
+  .card{background:#fff;border:1px solid #E4D8EC;border-radius:14px;padding:16px 16px 18px;margin-top:12px}
+  .lbl{font-size:10px;letter-spacing:.16em;font-weight:700;color:#B07A9C;text-transform:uppercase}
+  input,select,textarea{width:100%;font-family:inherit;font-size:15px;color:#2C0E4F;background:#FBF8FD;border:1px solid #DCCDE8;border-radius:9px;padding:11px 12px;margin-top:6px}
+  input:focus,select:focus,textarea:focus{outline:2px solid #C9B4DC;outline-offset:1px}
+  .lvls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+  .lv{border:1.5px solid #E4D8EC;border-radius:11px;background:#fff;padding:10px 10px 11px;text-align:left;cursor:pointer;font-family:inherit;min-height:44px;transition:.12s}
+  .lv b{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:#2C0E4F}
+  .lv i{display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-style:normal;font-size:11.5px;font-weight:800;color:#fff;flex:0 0 auto}
+  .lv span{display:block;font-size:11px;line-height:1.45;color:#6B5580;margin-top:6px}
+  .lv[aria-pressed="true"]{background:#FBF8FD;box-shadow:0 0 0 2px #4A1A73 inset}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border:0;border-radius:999px;background:#D6246E;color:#fff;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer}
+  .btn:disabled{background:#C9B4DC;cursor:not-allowed}
+  .btn2{background:#fff;color:#4A1A73;border:1.5px solid #C9B4DC}
+  .bar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);border-top:1px solid #E4D8EC;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:9}
+  .bar .n{font-size:12px;font-weight:600;color:#6B5580}
+  .bar .t{font-size:20px;font-weight:800}
+  .hide{display:none!important}
+  @media(max-width:560px){.lvls{grid-template-columns:1fr}.lv span{margin-top:4px}}
+</style>
+</head>
+<body>
+
+<div style="background:linear-gradient(115deg,#2C0E4F 0%,#3E1266 42%,#6B1C72 78%,#A8265F 100%);color:#fff;padding:22px 0 26px">
+  <div class="wrap" style="padding-bottom:0">
+    <div style="font-size:10px;letter-spacing:.22em;font-weight:700;color:#F374B0">IAP INTENSIVE CARE CHAPTER · PCCN</div>
+    <h1 style="font-size:26px;font-weight:800;line-height:1.15;margin:8px 0 0">PICU Nurse Competency<br>Self-Assessment</h1>
+    <div style="font-size:13px;color:#CDB8DE;margin-top:8px;max-width:52ch">Open to any PICU nurse — no course registration or login needed. Stage I of three: score yourself 1–3 in each of the 12 categories. Your unit head verifies these at Stage II before any competency is allocated.</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div id="gate" class="card hide"><div id="gateMsg"></div></div>
+
+  <div id="app">
+    <div class="card">
+      <div class="lbl">About you</div>
+      <div style="font-size:11.5px;color:#8A7796;margin-top:5px">Name, hospital and email are required so your unit head can find your declaration and arrange Stage II. Everything else is optional.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+        <label style="font-size:12px;font-weight:600;color:#6B5580">Full name *<input id="fName" autocomplete="name"></label>
+        <label style="font-size:12px;font-weight:600;color:#6B5580">Email *<input id="fEmail" type="email" autocomplete="email"></label>
+        <label style="font-size:12px;font-weight:600;color:#6B5580">Hospital / institution *<input id="fUnit" autocomplete="organization"></label>
+        <label style="font-size:12px;font-weight:600;color:#6B5580">City &amp; state<input id="fCity"></label>
+        <label style="font-size:12px;font-weight:600;color:#6B5580">Unit you work in<select id="fWard"><option value="">Select…</option><option>PICU</option><option>NICU</option><option>Paediatric HDU</option><option>Paediatric ward</option><option>Emergency / casualty</option><option>Transport / retrieval</option><option>Other</option></select></label>
+        <label style="font-size:12px;font-weight:600;color:#6B5580">Years in paediatric critical care<input id="fYrs" inputmode="decimal"></label>
+        <label style="font-size:12px;font-weight:600;color:#6B5580">Designation<select id="fRole"><option value="">Select…</option><option>Staff nurse</option><option>Senior staff nurse</option><option>Nurse-in-charge / shift in-charge</option><option>Nursing supervisor</option><option>PICU educator</option><option>Nursing student / intern</option><option>Other</option></select></label>
+        <label style="font-size:12px;font-weight:600;color:#6B5580">Employee ID (optional)<input id="fEmp"></label>
+      </div>
+      <label style="display:flex;gap:9px;align-items:center;margin-top:12px;font-size:12px;font-weight:600;color:#6B5580">
+        <input id="fReg" type="checkbox" style="width:18px;height:18px;flex:0 0 auto;margin:0">
+        I am registered on the PCCN certificate course
+      </label>
+    </div>
+
+    <div class="card" style="background:#F6F1FA">
+      <div class="lbl" style="color:#4A1A73">What the three levels mean</div>
+      <div style="display:grid;gap:8px;margin-top:9px;font-size:12px;line-height:1.5;color:#4A3560">
+        <div><strong style="color:#D6246E">Level 1 · Needs hand-holding</strong> — I know the theory but cannot act alone; a senior must be beside me directing each step.</div>
+        <div><strong style="color:#E39A1F">Level 2 · Needs supervision</strong> — I do the routine case correctly, but need a senior available and checking for decisions and deterioration.</div>
+        <div><strong style="color:#16A085">Level 3 · Independent</strong> — safe and consistent alone, including the deteriorating child, and I can teach a junior.</div>
+        <div style="color:#8A7796">Score your <strong>weakest</strong> skill in each category, and claim only what you have actually done at the bedside. This is not a test — an over-claim is corrected at Stage II and only delays you.</div>
+      </div>
+    </div>
+
+    <div id="cats"></div>
+
+    <div class="card">
+      <div class="lbl">Anything else your unit head should know</div>
+      <textarea id="fFree" rows="3" placeholder="Skills you want supervised practice on, recent gaps, courses done…"></textarea>
+      <label style="display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:12.5px;line-height:1.5;color:#4A3560">
+        <input id="fDecl" type="checkbox" style="width:20px;height:20px;margin:1px 0 0;flex:0 0 auto">
+        <span>The levels above are my own honest assessment of what I can do <strong>unsupervised at the bedside today</strong>. I understand each level will be verified at Stage II before any competency is allocated to me.</span>
+      </label>
+      <div id="serr" style="font-size:12.5px;color:#D6246E;font-weight:600;margin-top:10px"></div>
+    </div>
+  </div>
+
+  <div id="done" class="hide">
+    <div class="card" style="text-align:center;padding:30px 18px 34px">
+      <div style="font-size:34px;font-weight:800;color:#16A085">✓</div>
+      <div style="font-size:20px;font-weight:800;margin-top:6px">Self-declaration submitted</div>
+      <div id="doneTot" style="font-size:13px;color:#6B5580;margin-top:8px"></div>
+      <div style="font-size:12.5px;color:#8A7796;margin-top:14px;max-width:44ch;margin-left:auto;margin-right:auto">Your unit head or the PCCN team can now see it. Stage II verification happens at the bedside — bring nothing, they will observe and confirm each level.</div>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap">
+        <button class="btn btn2" onclick="window.print()">Print my copy</button>
+        <a class="btn" href="PCCN_Landing_Page.html">About the PCCN course</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="bar" class="bar hide">
+  <div><div class="n" id="barN">0 of 12 scored</div><div class="t" id="barT">— / 36</div></div>
+  <button class="btn" id="submit" disabled>Submit declaration</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="pccn-firebase-config.js"></script>
+<script>
+var CATS = [
+ {n:'01',name:'Systematic assessment & recognition',tag:'PAT · ABCDE · PEWS · SAMPLE',d:['I record vitals but cannot reliably interpret them or spot subtle distress.','I complete PAT and ABCDE on a stable child and score PEWS, but need confirmation on distress vs failure.','I assess any child at the doorstep, act on a rising PEWS unprompted and hand over a full SAMPLE history.']},
+ {n:'02',name:'Respiratory support & oxygen therapy',tag:'devices · FiO₂ · HFNC/NIV',d:['I can set up nasal prongs only; unsure of flows, humidification and which device gives what FiO₂.','I run prongs, mask and NRBM and assist with HFNC/NIV, titrating with a senior confirming each step.','I escalate the oxygen ladder independently, set up and troubleshoot HFNC/NIV and call failure early.']},
+ {n:'03',name:'Shock & haemodynamic support',tag:'boluses · inotropes · golden hour',d:['I do not reliably check CRT or pulse volume and cannot prepare a weight-based bolus alone.','I recognise cold shock, give weight-based boluses and run a prepared inotrope with supervision.','I recognise shock before BP falls, deliver the golden-hour bundle to time and titrate inotropes safely.']},
+ {n:'04',name:'Arrhythmias & paediatric CPR',tag:'BLS/PALS · defibrillation',d:['My compressions are shallow or slow and I cannot find equipment on the crash trolley.','I give correct-depth compressions and BVM ventilation, but need direction through the algorithm.','I start high-quality CPR unprompted, recognise shockable rhythms, defibrillate safely and record the arrest.']},
+ {n:'05',name:'Procedures & airway assistance',tag:'SOAPME · lines · drains',d:['I cannot assemble intubation equipment or pick tube and blade sizes; sterility often breaks.','I prepare a SOAPME trolley and position the child, assisting with a senior checking before start.','I run the checklist and time-out, anticipate the operator, speak up on desaturation and document after.']},
+ {n:'06',name:'Mechanical ventilation nursing',tag:'modes · alarms · weaning',d:['I silence alarms without knowing the cause and cannot state the mode or settings in use.','I document settings, do closed suction and oral care and answer common alarms with help.','I nurse a ventilated child alone, work through DOPE, protect the tube and prepare for extubation.']},
+ {n:'07',name:'Neurological emergencies',tag:'seizures · raised ICP · GCS',d:['My GCS and pupil checks are inconsistent and I do not check glucose in the drowsy child.','I protect the seizing child and give first-line anticonvulsant on order, prompted on escalation timing.','I run the timed status protocol, recognise raised ICP and apply neuroprotective care without delay.']},
+ {n:'08',name:'Renal, fluid & metabolic care',tag:'intake–output · AKI · DKA',d:['My fluid charts are incomplete and I cannot calculate maintenance fluids unaided.','I keep an accurate I–O chart, calculate maintenance and flag low output and abnormal electrolytes.','I manage fluid balance and daily weights alone, nurse DKA to protocol and support dialysis safely.']},
+ {n:'09',name:'Trauma & massive transfusion',tag:'primary survey · MBTP',d:['I am unfamiliar with the trauma trolley, log-roll and the checks required before blood is given.','I assist with the primary survey, hold spinal precautions and give checked blood under supervision.','I prepare the bay, work the primary survey with the team and run MBTP documentation safely.']},
+ {n:'10',name:'Infection prevention & bundle care',tag:'5 moments · bundles',d:['I miss hand-hygiene moments; PPE, waste segregation and bundle checklists are inconsistent.','My hand hygiene and PPE are reliable and I complete bundle checklists with the nurse-in-charge verifying.','I own bundle compliance for my bedspace, challenge breaches by anyone and manage isolation correctly.']},
+ {n:'11',name:'Medication safety',tag:'weight-based dosing · double-check',d:['I make dose calculation errors and am unsure how to dilute high-alert drugs.','I prepare routine drugs accurately but need a second nurse for high-alert infusions.','My weight-based dosing including emergency drugs is accurate; I do a genuine double-check and report near-misses.']},
+ {n:'12',name:'Communication, escalation & CRM',tag:'ISBAR · teamwork · family',d:['My handover is disorganised and I am reluctant to raise concern to doctors or seniors.','I give a structured ISBAR handover for a stable child and escalate when told to.','I escalate early with ISBAR, speak up under hierarchy, support families and debrief the team.']}
+];
+var LC = ['#D6246E','#E39A1F','#16A085'], LN = ['Needs hand-holding','Needs supervision','Independent'];
+var scores = {}, notes = {}, db = null, user = null;
+
+firebase.initializeApp(window.PCCN_FIREBASE_CONFIG);
+db = firebase.firestore();
+
+function esc(s){ return String(s||'').replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}); }
+
+function build(){
+  var h = '';
+  CATS.forEach(function(c,i){
+    h += '<div class="card" id="c'+i+'">'
+      + '<div style="display:flex;align-items:baseline;gap:9px"><span style="font-size:11px;font-weight:800;color:#B07A9C">'+c.n+'</span>'
+      + '<div><div style="font-size:15.5px;font-weight:700;line-height:1.25">'+esc(c.name)+'</div>'
+      + '<div style="font-size:11px;color:#8A7796;margin-top:2px">'+esc(c.tag)+'</div></div></div>'
+      + '<div class="lvls">';
+    for(var k=0;k<3;k++){
+      h += '<button type="button" class="lv" aria-pressed="false" data-c="'+i+'" data-l="'+(k+1)+'">'
+        + '<b><i style="background:'+LC[k]+'">'+(k+1)+'</i>'+LN[k]+'</b><span>'+esc(c.d[k])+'</span></button>';
+    }
+    h += '</div><input data-note="'+i+'" placeholder="What I base this on — when did I last do it, how often (optional)" style="font-size:13px"></div>';
+  });
+  document.getElementById('cats').innerHTML = h;
+  document.getElementById('cats').addEventListener('click', function(e){
+    var b = e.target.closest('.lv'); if(!b) return;
+    var ci = b.dataset.c;
+    document.querySelectorAll('.lv[data-c="'+ci+'"]').forEach(function(x){ x.setAttribute('aria-pressed','false'); });
+    b.setAttribute('aria-pressed','true');
+    scores[CATS[ci].n] = +b.dataset.l; tally();
+  });
+  document.getElementById('cats').addEventListener('input', function(e){
+    if(e.target.dataset.note!==undefined) notes[CATS[e.target.dataset.note].n] = e.target.value;
+  });
+}
+function tally(){
+  var ks = Object.keys(scores), t = ks.reduce(function(a,k){return a+scores[k]},0);
+  document.getElementById('barN').textContent = ks.length+' of 12 scored';
+  document.getElementById('barT').textContent = ks.length===12 ? t+' / 36' : '— / 36';
+  var em = document.getElementById('fEmail').value.trim();
+  var ok = ks.length===12 && document.getElementById('fDecl').checked
+    && document.getElementById('fName').value.trim() && document.getElementById('fUnit').value.trim()
+    && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em);
+  document.getElementById('submit').disabled = !ok;
+}
+document.addEventListener('input', function(e){ if(['fDecl','fName','fUnit','fEmail'].indexOf(e.target.id)>=0) tally(); });
+document.addEventListener('change', function(e){ if(e.target.id==='fDecl') tally(); });
+
+// Open form: no account needed. Sign in anonymously so Firestore can accept the write.
+build();
+document.getElementById('bar').classList.remove('hide');
+tally();
+
+firebase.auth().onAuthStateChanged(function(u){
+  user = u;
+  if(u && !u.isAnonymous){
+    if(u.email && !document.getElementById('fEmail').value) document.getElementById('fEmail').value = u.email;
+    if(u.displayName && !document.getElementById('fName').value) document.getElementById('fName').value = u.displayName;
+    tally();
+  }
+});
+firebase.auth().signInAnonymously().catch(function(x){
+  document.getElementById('serr').textContent = 'Anonymous access is not enabled on this project yet — see step 2 of the unit-head guide. ('+(x.code||x.message)+')';
+});
+
+document.getElementById('submit').addEventListener('click', function(){
+  var btn = this; btn.disabled = true; btn.textContent = 'Submitting…';
+  var t = Object.keys(scores).reduce(function(a,k){return a+scores[k]},0);
+  if(!user){ btn.disabled=false; btn.textContent='Submit declaration';
+    document.getElementById('serr').textContent='Still connecting — wait a moment and tap again.'; return; }
+  db.collection('competency').add({
+    uid:user.uid, anonymous:!!user.isAnonymous,
+    email:document.getElementById('fEmail').value.trim(),
+    name:document.getElementById('fName').value.trim(),
+    empId:document.getElementById('fEmp').value.trim(),
+    unit:document.getElementById('fUnit').value.trim(),
+    city:document.getElementById('fCity').value.trim(),
+    ward:document.getElementById('fWard').value,
+    role:document.getElementById('fRole').value,
+    courseRegistrant:document.getElementById('fReg').checked,
+    years:document.getElementById('fYrs').value.trim(),
+    scores:scores, notes:notes,
+    freeText:document.getElementById('fFree').value.trim(),
+    declaredTotal:t, stage:'I', status:'declared',
+    submittedAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function(){
+    document.getElementById('app').classList.add('hide');
+    document.getElementById('bar').classList.add('hide');
+    document.getElementById('done').classList.remove('hide');
+    document.getElementById('doneTot').textContent = 'Self-declared total '+t+' / 36 · submitted '+new Date().toLocaleDateString();
+    window.scrollTo(0,0);
+  }).catch(function(x){
+    btn.disabled = false; btn.textContent = 'Submit declaration';
+    document.getElementById('serr').textContent = 'Could not submit: '+(x.message||x.code)+' — check your connection and try again.';
+  });
+});
+</script>
+</body>
+</html>
