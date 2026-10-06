@@ -842,15 +842,27 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
   function syncRemote(){
     if (!window.PCCN_AUTH) return;
     var u = PCCN_AUTH.currentUser(); var db = PCCN_AUTH.db();
-    if (!u || !db) return;
+    if (!u || !db) { pccnSyncBadge('off'); return; }
     var quiz = null, resp = null;
     try { quiz = JSON.parse(localStorage.getItem('pccn_' + modKey + '_progress_v3') || 'null'); } catch(e) {}
     try { resp = JSON.parse(localStorage.getItem('pccn_' + modKey + '_responses') || 'null'); } catch(e) {}
     var payload = {}; payload[modKey] = { steps: done, updatedAt: new Date().toISOString() };
     if (quiz) payload[modKey].quiz = quiz;
     if (resp) payload[modKey].responses = resp;
-    db.collection('users').doc(u.uid).set({ progress: payload }, { merge: true }).catch(function(){});
+    db.collection('users').doc(u.uid).set({ progress: payload }, { merge: true })
+      .then(function(){ pccnSyncBadge('ok'); })
+      .catch(function(e){ console.error('PCCN sync failed', e); pccnSyncBadge('err', e && (e.code || e.message)); });
   }
+  function pccnSyncBadge(state, msg){
+    var b = document.getElementById('pccnSyncBadge');
+    if (!b) { b = document.createElement('div'); b.id = 'pccnSyncBadge';
+      b.style.cssText = 'position:fixed;right:16px;bottom:16px;z-index:9999;padding:10px 16px;border-radius:999px;font:600 13px Poppins,-apple-system,sans-serif;box-shadow:0 4px 16px rgba(31,9,56,.18);';
+      document.body.appendChild(b); }
+    if (state === 'ok') { b.style.background = '#E3F5EE'; b.style.color = '#0F6B52'; b.textContent = '\u2713 Progress saved to your account'; }
+    else if (state === 'off') { b.style.background = '#FFF3DD'; b.style.color = '#7A4A00'; b.innerHTML = 'Not signed in \u2014 progress saved on this device only. <a href="PCCN_Login.html?next=' + encodeURIComponent(location.pathname.split('/').pop()) + '" style="color:#4A1A73;">Log in</a>'; }
+    else { b.style.background = '#FDE7EF'; b.style.color = '#8A1240'; b.textContent = 'Progress not saved (' + (msg || 'error') + ')'; }
+  }
+  if (window.PCCN_AUTH) PCCN_AUTH.onChange(function(u){ if (!u) pccnSyncBadge('off'); });
   // pull remote progress once signed in (account beats device)
   if (window.PCCN_AUTH) PCCN_AUTH.onChange(function(u){
     var db = PCCN_AUTH.db();
@@ -861,6 +873,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
         rem.steps.forEach(function(id){ if (done.indexOf(id) === -1) done.push(id); });
         saveLocal(); renderTOC();
       }
+      syncRemote();
     }).catch(function(){});
   });
   // mirror quiz submits (existing pages write pccn_modXX_progress_v3) to account + mark quiz step done
