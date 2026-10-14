@@ -46,7 +46,13 @@
   '.psim-row h5{margin:0 0 8px;font-size:14px;}' +
   '.psim-row .pa{font-size:13.5px;color:#4A3B5C;margin:0 0 6px;padding-left:12px;border-left:3px solid #E2D6EA;}' +
   '.psim-row .tp{font-size:13.5px;background:#F4EEF7;border-radius:10px;padding:10px 12px;margin-top:8px;}' +
-  '.psim-refs{font-size:12.5px;color:#6A5A78;}';
+  '.psim-refs{font-size:12.5px;color:#6A5A78;}' +
+  '.psim-ov.vid .psim-mon,.psim-ov.vid .psim-feed{display:none;}' +
+  '.psim-vid{max-width:960px;margin:0 auto;background:#000;}' +
+  '.psim-vid video{display:block;width:100%;max-height:64vh;aspect-ratio:16/9;background:#000;margin:0 auto;}' +
+  '.psim-ctl{max-width:960px;margin:0 auto;display:flex;gap:8px;justify-content:flex-end;padding:8px 16px 0;}' +
+  '.psim-ctl button{background:none;border:1px solid #D8C2E0;border-radius:999px;padding:6px 14px;font:600 12.5px Poppins,sans-serif;color:#4A1A73;cursor:pointer;}' +
+  '.psim-wait{text-align:center;color:#6A5A78;font-size:14px;padding:18px;}';
 
   var LABELS = [['hr','HR'],['spo2','SpO₂'],['rr','RR'],['bp','BP'],['crt','CRT'],['temp','Temp'],['avpu','AVPU']];
   var modNo = (location.pathname.match(/Module(\d\d)/) || [0, '00'])[1];
@@ -72,10 +78,26 @@
     var ov = document.createElement('div'); ov.className = 'psim-ov'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-label', sim.title);
     ov.innerHTML = '<div class="psim-head"><div class="psim-top"><div><b>' + esc(sim.title) + '</b><br><span>' + esc(sim.patient.age + ' · ' + sim.patient.weight + ' · ' + sim.patient.sex) + '</span></div><button class="psim-x" type="button">Close</button></div>' +
       '<div class="psim-mon">' + LABELS.map(function(l){ return '<div class="psim-v ' + l[0] + '" data-k="' + l[0] + '"><small>' + l[1] + '</small><b></b></div>'; }).join('') + '</div></div>' +
+      (sim.video ? '<div class="psim-vid"><video playsinline controls preload="auto"></video></div><div class="psim-ctl"><button type="button" data-v="replay">\u21BA Replay</button><button type="button" data-v="skip">Skip to the choices \u2192</button></div>' : '') +
       '<div class="psim-body"><div class="psim-feed"></div><div class="psim-now"></div></div>';
+    if (sim.video) ov.classList.add('vid');
     document.body.appendChild(ov); var prevOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden';
     var feed = ov.querySelector('.psim-feed'), now = ov.querySelector('.psim-now');
-    function close(){ ov.remove(); document.body.style.overflow = prevOverflow; if (onClose) onClose(); }
+    var vid = ov.querySelector('video'), vNext = null;
+    function play(name, then){
+      if (!vid) { then(); return; }
+      vNext = then; now.innerHTML = '<div class="psim-wait">Watch the case unfold \u2014 your choices appear when the clip ends.</div>';
+      vid.src = sim.video + name + '.mp4'; var pr = vid.play(); if (pr && pr.catch) pr.catch(function(){});
+      ov.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function vDone(){ if (!vNext) return; var f = vNext; vNext = null; f(); setTimeout(function(){ var y = now.getBoundingClientRect().top + ov.scrollTop - 140; ov.scrollTo({ top: Math.max(0, y), behavior: 'smooth' }); }, 60); }
+    if (vid) {
+      vid.addEventListener('ended', vDone);
+      vid.addEventListener('error', vDone);
+      ov.querySelector('[data-v="replay"]').addEventListener('click', function(){ vid.currentTime = 0; vid.play(); });
+      ov.querySelector('[data-v="skip"]').addEventListener('click', function(){ vid.pause(); vDone(); });
+    }
+    function close(){ if (vid) { vid.pause(); vid.removeAttribute('src'); } ov.remove(); document.body.style.overflow = prevOverflow; if (onClose) onClose(); }
     ov.querySelector('.psim-x').addEventListener('click', close);
 
     function monitor(changed){
@@ -112,6 +134,7 @@
       apply(o.vitals);
       add('psim-then', esc(o.outcome || ''));
       if (o.best) { path.push(tried.slice()); tried = []; di++; }
+      if (vid) { play('d' + (sim.decisions.indexOf(d) + 1) + 'o' + i, function(){ if (di >= sim.decisions.length) finish(); else ask(); }); return; }
       if (di >= sim.decisions.length) return finish();
       ask();
       var y = now.getBoundingClientRect().top + ov.scrollTop - ov.querySelector('.psim-head').offsetHeight - 120; ov.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
@@ -122,6 +145,7 @@
       var detours = path.reduce(function(a, p){ return a + p.length - 1; }, 0);
       var smooth = detours <= 1;
       add('psim-end', '<b>What happened next</b><br>' + esc(smooth ? sim.ending.smooth : sim.ending.detour));
+      if (vid && !finish.played) { finish.played = true; play(smooth ? 'end_smooth' : 'end_detour', finish); return; }
       var rec = { completedAt: new Date().toISOString(), path: path, firstTime: firstTime, detours: detours, of: sim.decisions.length };
       persist(sim, rec);
       var rows = sim.decisions.map(function(d, k){
@@ -130,7 +154,7 @@
           path[k].map(function(i){ return '<p class="pa">' + esc(d.options[i].text) + '<br><i>→ ' + esc(d.options[i].outcome) + '</i></p>'; }).join('') +
           '<div class="tp"><b>Teaching point.</b> ' + esc(best.note) + '</div></div>';
       }).join('');
-      now.innerHTML = '<div class="psim-db"><h3>Your path through the case</h3>' + rows +
+      now.innerHTML = '<div class="psim-db">' + (vid ? '<div class="psim-end"><b>What happened next</b><br>' + esc(smooth ? sim.ending.smooth : sim.ending.detour) + '</div>' : '') + '<h3>Your path through the case</h3>' + rows +
         '<h3>Debrief</h3><ol>' + sim.debrief.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ol>' +
         '<h3>Take-home</h3><ul>' + sim.takeHome.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ul>' +
         '<h3>References</h3><ul class="psim-refs">' + sim.references.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ul>' +
@@ -138,7 +162,7 @@
       now.querySelector('[data-act="again"]').addEventListener('click', function(){ ov.remove(); document.body.style.overflow = prevOverflow; run(sim, onClose); });
       now.querySelector('[data-act="close"]').addEventListener('click', close);
     }
-    ask();
+    if (vid) play('intro', ask); else ask();
   }
 
   function launcher(el){
