@@ -528,8 +528,9 @@ main{flex:1;}
     <div class="dash-side">
       <div class="dslabel">Hands-on workshop</div>
       <div id="workshopCard" class="ws-card"><div class="ws-k">Required for certification</div><div class="ws-t">Checking your account…</div></div>
+      <div id="directorCard" class="ws-card done" style="display:none;margin-bottom:26px;"><div class="ws-k">Hospital course director</div><div class="ws-t" id="directorHosp"></div><div class="ws-s">Verify your nurses' competency self-assessments at the bedside and record Stage II.</div><a class="ws-btn" href="PCCN_Competency_Results.html">Verify competencies</a></div>
       <div class="dslabel" style="margin-top:26px;">Competency self-assessment</div>
-      <div id="compCard" class="ws-card"><div class="ws-k">Stage I · 5 minutes</div><div class="ws-t">Score yourself across 12 competencies</div><div class="ws-s">Your honest baseline, verified later at the bedside by your unit head.</div><a class="ws-btn" href="c.html">Take the self-assessment</a></div>
+      <div id="compCard" class="ws-card"><div class="ws-k">Stage I · 5 minutes</div><div class="ws-t">Score yourself across 12 competencies</div><div class="ws-s">Your honest baseline, verified later at the bedside by your hospital course director.</div><a class="ws-btn" href="c.html">Take the self-assessment</a></div>
       <div class="dslabel" style="margin-top:26px;">Certification pathway</div>
       <div id="trackerList"></div>
     </div>
@@ -1983,7 +1984,7 @@ var PCCN_MODULES = [
       var best = null; snap.forEach(function(d){ var x = d.data(); var t = x.submittedAt && x.submittedAt.toDate ? x.submittedAt.toDate().getTime() : 0; if (!best || t > best._t) { x._t = t; best = x; } });
       if (!best) return;
       if (best.status === 'verified') { c.className = 'ws-card done'; c.innerHTML = '<div class="ws-k">Stage II · verified</div><div class="ws-t">' + best.verifiedTotal + ' / 36' + (best.band ? ' · band ' + best.band : '') + '</div><div class="ws-s">Self-declared ' + best.declaredTotal + ' / 36. Verified at the bedside' + (best.verifiedBy ? ' by ' + best.verifiedBy.replace(/[<>&]/g, '') : '') + '.</div><a class="ws-btn" href="c.html">Re-assess</a>'; }
-      else { c.innerHTML = '<div class="ws-k">Stage I · submitted</div><div class="ws-t">Self-declared ' + best.declaredTotal + ' / 36</div><div class="ws-s">Awaiting bedside verification by your unit head (Stage II).</div><a class="ws-btn" href="c.html">Re-assess</a>'; }
+      else { c.innerHTML = '<div class="ws-k">Stage I · submitted</div><div class="ws-t">Self-declared ' + best.declaredTotal + ' / 36</div><div class="ws-s">Awaiting bedside verification by your hospital course director (Stage II).</div><a class="ws-btn" href="c.html">Re-assess</a>'; }
     }).catch(function(e){ console.warn('competency status unavailable', e && e.code); });
   }
   function wireWorkshop(){
@@ -1992,6 +1993,7 @@ var PCCN_MODULES = [
       var db = PCCN_AUTH.db(); if (!u || !db) return;
       db.collection('users').doc(u.uid).get().then(function(d){
         var v = d.exists ? d.data() : {}; WS = (v.progress && v.progress.workshop) || null;
+        if (v.roles && v.roles.director) { document.getElementById('directorHosp').textContent = v.roles.hospital || ''; document.getElementById('directorCard').style.display = 'block'; }
         renderWorkshopCard(); renderPathway();
       }).catch(function(e){ console.warn('workshop status unavailable', e && e.code); });
       renderComp(u);

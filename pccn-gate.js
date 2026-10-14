@@ -57,9 +57,14 @@
     }).catch(function(e){ console.warn('enrolment check failed', e && e.code); });
   }
 
-  /* "Admin" in the nav for admins only */
+  /* "Admin" in the nav for admins; "Verify competencies" for hospital course directors */
   function adminNav(user){
     if (!user || !db) return;
+    db.collection('users').doc(user.uid).get().then(function(d){
+      var r = (d.exists && d.data().roles) || {}; if (!r.director) return;
+      var links = document.querySelector('.pccn-nav-links'); if (!links || links.querySelector('a[href="PCCN_Competency_Results.html"]')) return;
+      var a = document.createElement('a'); a.href = 'PCCN_Competency_Results.html'; a.textContent = 'Verify competencies'; links.appendChild(a);
+    }).catch(function(){});
     db.collection('admins').doc(user.uid).get().then(function(d){
       if (!d.exists) return;
       var links = document.querySelector('.pccn-nav-links'); if (!links || links.querySelector('a[href="PCCN_Admin.html"]')) return;

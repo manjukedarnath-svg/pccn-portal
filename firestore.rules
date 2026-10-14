@@ -3,6 +3,10 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function isAdmin() { return request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
     function keep(k) { return request.resource.data.get(k, null) == resource.data.get(k, null); }
+    // hospital course director: named by an admin on users/{uid}.roles = { director: true, hospital: "<unit name as nurses type it>" }
+    function me() { return get(/databases/$(database)/documents/users/$(request.auth.uid)).data; }
+    function isDirector() { return request.auth != null && exists(/databases/$(database)/documents/users/$(request.auth.uid)) && me().get('roles', {}).get('director', false) == true; }
+    function directorOf(unit) { return isDirector() && unit is string && me().get('roles', {}).get('hospital', '').lower() == unit.lower(); }
     match /users/{uid} {
       allow create: if request.auth != null && request.auth.uid == uid;
       allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
@@ -43,6 +47,9 @@ service cloud.firestore {
                     && request.resource.data.declaredTotal >= 12
                     && request.resource.data.declaredTotal <= 36;
       allow read, update: if request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+      // a hospital course director reads the list (the page shows only their hospital) and verifies only nurses of their hospital
+      allow read: if isDirector();
+      allow update: if directorOf(resource.data.unit) && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['verifiedTotal', 'band', 'status', 'verifiedAt', 'verifiedBy', 'notes']);
       // a signed-in learner may read her own submissions (My Courses queries where email == her sign-in email)
       allow read: if request.auth != null && request.auth.token.email != null && resource.data.email == request.auth.token.email;
       allow delete: if false;

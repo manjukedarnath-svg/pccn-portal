@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PCCN — Competency Results (Unit Head)</title>
+<title>PCCN — Competency Results (Hospital Course Director)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -29,7 +29,7 @@
 <div style="background:linear-gradient(115deg,#2C0E4F 0%,#3E1266 42%,#6B1C72 78%,#A8265F 100%);color:#fff;padding:20px 0 24px">
   <div class="wrap" style="padding-bottom:0;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap">
     <div>
-      <div style="font-size:10px;letter-spacing:.22em;font-weight:700;color:#F374B0">PCCN · UNIT HEAD VIEW</div>
+      <div style="font-size:10px;letter-spacing:.22em;font-weight:700;color:#F374B0">PCCN · HOSPITAL COURSE DIRECTOR VIEW</div>
       <h1 style="font-size:25px;font-weight:800;margin:7px 0 0">Competency self-declarations</h1>
       <div style="font-size:12.5px;color:#CDB8DE;margin-top:6px">Open submissions from any nurse — filter to your hospital, verify at the bedside, then record the verified total.</div>
     </div>
@@ -88,6 +88,7 @@
 <script src="pccn-firebase-config.js"></script>
 <script>
 firebase.initializeApp(window.PCCN_FIREBASE_CONFIG);
+var DIRECTOR = '';
 var db = firebase.firestore(), all = [], KEYS = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 var LCOL = {1:'#FAE6EF',2:'#FCF3E8',3:'#EAF7F3'}, LTXT = {1:'#D6246E',2:'#B0661A',3:'#157A62'};
 
@@ -107,9 +108,15 @@ firebase.auth().onAuthStateChanged(function(u){
     document.getElementById('app').classList.add('hide');
     return;
   }
-  document.getElementById('gate').classList.add('hide');
-  document.getElementById('app').classList.remove('hide');
-  load();
+  /* admins see every hospital; a hospital course director sees and verifies only their own */
+  db.collection('users').doc(u.uid).get().then(function(d){
+    var r = (d.exists && d.data().roles) || {};
+    if (r.director && r.hospital) { DIRECTOR = String(r.hospital); var fu = document.getElementById('fu'); fu.value = DIRECTOR; fu.readOnly = true; fu.title = 'Hospital course director for ' + DIRECTOR; }
+  }).catch(function(){}).then(function(){
+    document.getElementById('gate').classList.add('hide');
+    document.getElementById('app').classList.remove('hide');
+    load();
+  });
 });
 
 function load(){
@@ -117,7 +124,7 @@ function load(){
     all = s.docs.map(function(d){ var o = d.data(); o._id = d.id; return o; });
     render();
   }).catch(function(x){
-    document.getElementById('rows').innerHTML = '<tr><td colspan="20" style="padding:18px;color:#D6246E;font-weight:600">Could not read submissions: '+esc(x.message||x.code)+'<br><span style="font-weight:500;color:#6B5580">If this says permission denied, your account is not yet in the <strong>admins</strong> collection in Firebase — see the guide, step 2.</span></td></tr>';
+    document.getElementById('rows').innerHTML = '<tr><td colspan="20" style="padding:18px;color:#D6246E;font-weight:600">Could not read submissions: '+esc(x.message||x.code)+'<br><span style="font-weight:500;color:#6B5580">If this says permission denied, your account is neither a course admin nor a hospital course director. Ask the course office (stepin.iapicc@gmail.com) to name you director for your hospital.</span></td></tr>';
   });
 }
 
@@ -126,6 +133,7 @@ function render(){
       fn = document.getElementById('fn').value.trim().toLowerCase(),
       fs = document.getElementById('fs').value;
   var rows = all.filter(function(r){
+    if (DIRECTOR && String(r.unit||'').trim().toLowerCase() !== DIRECTOR.trim().toLowerCase()) return false;
     return (!fu || String(r.unit||'').toLowerCase().indexOf(fu)>=0) && (!fn || String(r.name||'').toLowerCase().indexOf(fn)>=0);
   });
   if(fs==='low') rows.sort(function(a,b){return (a.declaredTotal||0)-(b.declaredTotal||0)});

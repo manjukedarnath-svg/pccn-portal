@@ -592,7 +592,7 @@ main{flex:1;}
       <div class="adm-grid2">
         <div class="adm-card">
           <h3>PICU nurse competency self-assessment</h3>
-          <p class="muted">Stage I: any nurse scores herself 1–3 across 12 competencies (no login, about 5 minutes). Stage II: a unit head or faculty verifies at the bedside and records the verified total and band on the results page.</p>
+          <p class="muted">Stage I: any nurse scores herself 1–3 across 12 competencies (no login, about 5 minutes). Stage II: the <b>hospital course director</b> verifies at the bedside and records the verified total and band on the results page. Name directors from a learner's record (Learners tab → Make hospital course director); each sees only submissions from their own hospital. Admins see every hospital.</p>
           <p><a class="adm-btn" href="PCCN_Competency_Results.html">Open results and verify</a> <a class="adm-btn ghost" href="PCCN_Competency_QR.html" target="_blank" rel="noopener">QR poster</a> <a class="adm-btn ghost" href="c.html" target="_blank" rel="noopener">Open the form</a></p>
           <p class="muted" style="margin-bottom:0;">Share link for nurses: <code id="cLink"></code></p>
         </div>
@@ -723,7 +723,7 @@ main{flex:1;}
   function compFor(email){ var k = ekey(email); if (!k) return null; var hits = COMP.filter(function(c){ return ekey(c.email) === k; }); if (!hits.length) return null; hits.sort(function(a, b){ return tsNum(b.submittedAt) - tsNum(a.submittedAt); }); return hits[0]; }
   function tsNum(t){ return t && t.toDate ? t.toDate().getTime() : (t ? new Date(t).getTime() || 0 : 0); }
   function compCell(v){ var c = compFor(v.email); if (!c) return '<span class="pill mute">—</span>'; return c.status === 'verified' ? '<span class="pill ok">Verified ' + (c.verifiedTotal || '') + '/36' + (c.band ? ' · ' + c.band : '') + '</span>' : '<span class="pill plum">Declared ' + (c.declaredTotal || '') + '/36</span>'; }
-  function rolesCell(v){ var r = []; if (ADMINS[v._uid]) r.push('<span class="pill no">Admin</span>'); if (v.roles && v.roles.organiser) r.push('<span class="pill plum">Organiser</span>'); return r.join(' ') || '<span class="pill mute">—</span>'; }
+  function rolesCell(v){ var r = []; if (ADMINS[v._uid]) r.push('<span class="pill no">Admin</span>'); if (v.roles && v.roles.organiser) r.push('<span class="pill plum">Organiser</span>'); if (v.roles && v.roles.director) r.push('<span class="pill ok" title="Hospital course director">Director · ' + esc(v.roles.hospital || '') + '</span>'); return r.join(' ') || '<span class="pill mute">—</span>'; }
   function renderLearners(){
     var q = ($('learnerSearch').value || '').toLowerCase(); var rows = $('usersRows'); var html = ''; var now = Date.now(), week = 0, enrolled = 0, ws = 0;
     USERS.forEach(function(v, idx){
@@ -745,6 +745,7 @@ main{flex:1;}
     var acts = [
       ['org', isOrg ? 'Remove organiser' : 'Make organiser', isOrg ? 'danger' : ''],
       ['adm', isAdm ? 'Remove admin' : 'Make admin', isAdm ? 'danger' : ''],
+      ['dir', (v.roles && v.roles.director) ? 'Remove hospital course director' : 'Make hospital course director…', (v.roles && v.roles.director) ? 'danger' : ''],
       ['enrol', en ? 'Remove from enrolment list' : 'Add to enrolment list', en ? 'danger' : ''],
       ['reset', 'Reset module progress…', 'ghost'],
       ['ws', w ? 'Clear workshop record' : 'Record workshop manually…', w ? 'danger' : 'ghost']
@@ -769,6 +770,10 @@ main{flex:1;}
   function act(kind, v){
     var ref = db.collection('users').doc(v._uid); var p;
     if (kind === 'org') p = ref.set({ roles: { organiser: !(v.roles && v.roles.organiser) } }, { merge: true });
+    else if (kind === 'dir') {
+      if (v.roles && v.roles.director) p = ref.set({ roles: { director: false, hospital: firebase.firestore.FieldValue.delete() } }, { merge: true });
+      else { var hosp = prompt('Hospital / unit name, exactly as nurses type it on the self-assessment form (e.g. "St Stephen\'s Hospital"). The director sees and verifies only submissions with this unit name.', (compFor(v.email) || {}).unit || ''); if (!hosp || !hosp.trim()) return; p = ref.set({ roles: { director: true, hospital: hosp.trim() } }, { merge: true }); }
+    }
     else if (kind === 'adm') { if (ADMINS[v._uid] && v._uid === ME.uid) return say('ldMsg', 'You cannot remove your own admin access.', true); p = ADMINS[v._uid] ? db.collection('admins').doc(v._uid).delete() : db.collection('admins').doc(v._uid).set({ name: v.name || '', email: v.email || '', addedBy: ME.uid, addedAt: firebase.firestore.FieldValue.serverTimestamp() }); }
     else if (kind === 'enrol') { var k = ekey(v.email); if (!k) return say('ldMsg', 'This account has no email.', true); p = ENROL[k] ? db.collection('enrolments').doc(k).delete() : db.collection('enrolments').doc(k).set({ name: v.name || '', email: k, mobile: '', fellow: false, ref: 'added from learner record', addedBy: ME.uid, addedAt: firebase.firestore.FieldValue.serverTimestamp() }); }
     else if (kind === 'reset') {
@@ -789,9 +794,9 @@ main{flex:1;}
   }
 
   $('dlCsv').onclick = function(){
-    var rows = [['Name', 'Email', 'Enrolled', 'Admin', 'Organiser', 'Modules passed', 'Workshop', 'Workshop %', 'Certificate', 'Joined']];
+    var rows = [['Name', 'Email', 'Enrolled', 'Admin', 'Organiser', 'Hospital course director', 'Modules passed', 'Workshop', 'Workshop %', 'Certificate', 'Joined']];
     USERS.forEach(function(v){ var w = v.progress && v.progress.workshop; var passed = v.progress ? Object.keys(v.progress).filter(function(k){ return k !== 'workshop' && v.progress[k].quiz && v.progress[k].quiz.pass; }).length : 0;
-      rows.push([v.name || '', v.email || '', ENROL[ekey(v.email)] ? 'yes' : 'no', ADMINS[v._uid] ? 'yes' : 'no', v.roles && v.roles.organiser ? 'yes' : 'no', passed, w ? (w.edition || '') : '', w ? w.pct : '', w ? (w.certificateId || '') : '', fmtDate(v.createdAt)]); });
+      rows.push([v.name || '', v.email || '', ENROL[ekey(v.email)] ? 'yes' : 'no', ADMINS[v._uid] ? 'yes' : 'no', v.roles && v.roles.organiser ? 'yes' : 'no', v.roles && v.roles.director ? (v.roles.hospital || 'yes') : 'no', passed, w ? (w.edition || '') : '', w ? w.pct : '', w ? (w.certificateId || '') : '', fmtDate(v.createdAt)]); });
     var csv = rows.map(function(r){ return r.map(function(c){ c = String(c); return /[",\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c; }).join(','); }).join('\n');
     var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' })); a.download = 'PCCN_learners.csv'; a.click();
   };
