@@ -528,6 +528,8 @@ main{flex:1;}
     <div class="dash-side">
       <div class="dslabel">Hands-on workshop</div>
       <div id="workshopCard" class="ws-card"><div class="ws-k">Required for certification</div><div class="ws-t">Checking your account…</div></div>
+      <div class="dslabel" style="margin-top:26px;">Competency self-assessment</div>
+      <div id="compCard" class="ws-card"><div class="ws-k">Stage I · 5 minutes</div><div class="ws-t">Score yourself across 12 competencies</div><div class="ws-s">Your honest baseline, verified later at the bedside by your unit head.</div><a class="ws-btn" href="c.html">Take the self-assessment</a></div>
       <div class="dslabel" style="margin-top:26px;">Certification pathway</div>
       <div id="trackerList"></div>
     </div>
@@ -1975,6 +1977,15 @@ var PCCN_MODULES = [
     var b = document.getElementById('wsOpen'); if (b) b.onclick = openApp;
   }
   renderWorkshopCard();
+  function renderComp(u){
+    var db = PCCN_AUTH.db(); var c = document.getElementById('compCard'); if (!u || !db || !c || !u.email) return;
+    db.collection('competency').where('email', '==', u.email).get().then(function(snap){
+      var best = null; snap.forEach(function(d){ var x = d.data(); var t = x.submittedAt && x.submittedAt.toDate ? x.submittedAt.toDate().getTime() : 0; if (!best || t > best._t) { x._t = t; best = x; } });
+      if (!best) return;
+      if (best.status === 'verified') { c.className = 'ws-card done'; c.innerHTML = '<div class="ws-k">Stage II · verified</div><div class="ws-t">' + best.verifiedTotal + ' / 36' + (best.band ? ' · band ' + best.band : '') + '</div><div class="ws-s">Self-declared ' + best.declaredTotal + ' / 36. Verified at the bedside' + (best.verifiedBy ? ' by ' + best.verifiedBy.replace(/[<>&]/g, '') : '') + '.</div><a class="ws-btn" href="c.html">Re-assess</a>'; }
+      else { c.innerHTML = '<div class="ws-k">Stage I · submitted</div><div class="ws-t">Self-declared ' + best.declaredTotal + ' / 36</div><div class="ws-s">Awaiting bedside verification by your unit head (Stage II).</div><a class="ws-btn" href="c.html">Re-assess</a>'; }
+    }).catch(function(e){ console.warn('competency status unavailable', e && e.code); });
+  }
   function wireWorkshop(){
     if (!window.PCCN_AUTH) return;
     PCCN_AUTH.onChange(function(u){
@@ -1983,6 +1994,7 @@ var PCCN_MODULES = [
         var v = d.exists ? d.data() : {}; WS = (v.progress && v.progress.workshop) || null;
         renderWorkshopCard(); renderPathway();
       }).catch(function(e){ console.warn('workshop status unavailable', e && e.code); });
+      renderComp(u);
     });
   }
   /* site settings: announcement, course start, enrolment status */

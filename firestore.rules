@@ -43,6 +43,8 @@ service cloud.firestore {
                     && request.resource.data.declaredTotal >= 12
                     && request.resource.data.declaredTotal <= 36;
       allow read, update: if request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+      // a signed-in learner may read her own submissions (My Courses queries where email == her sign-in email)
+      allow read: if request.auth != null && request.auth.token.email != null && resource.data.email == request.auth.token.email;
       allow delete: if false;
     }
   }

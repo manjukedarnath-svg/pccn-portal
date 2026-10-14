@@ -504,6 +504,7 @@ main{flex:1;}
       <button type="button" data-tab="enrol">Enrolments</button>
       <button type="button" data-tab="settings">Settings</button>
       <button type="button" data-tab="admins">Admins</button>
+      <button type="button" data-tab="comp">Competency</button>
     </div>
 
     <!-- ===== Learners ===== -->
@@ -521,7 +522,7 @@ main{flex:1;}
       </div>
       <div class="adm-card" style="padding:0;overflow:auto;">
         <table class="adm-table">
-          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Enrolled</th><th>Modules</th><th>Workshop</th><th>Roles</th><th>Joined</th></tr></thead>
+          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Enrolled</th><th>Modules</th><th>Workshop</th><th>Competency</th><th>Roles</th><th>Joined</th></tr></thead>
           <tbody id="usersRows"></tbody>
         </table>
       </div>
@@ -576,6 +577,28 @@ main{flex:1;}
           <p class="muted">One link per line, in the order the video slots appear on the module page (YouTube, Drive or Vimeo). A saved link makes that slot open the video; an empty line leaves it as "coming soon".</p>
           <div id="videoEditors"></div>
           <button type="button" id="vSave" class="adm-btn" style="margin-top:12px;">Save video links</button> <span id="vMsg" class="muted"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Competency ===== -->
+    <section class="adm-panel" data-panel="comp">
+      <div style="display:flex;gap:18px;flex-wrap:wrap;margin-bottom:22px;">
+        <div class="adm-stat"><div class="k">Submissions</div><div class="v" id="cStatN">–</div></div>
+        <div class="adm-stat"><div class="k">Verified (Stage II)</div><div class="v" id="cStatV" style="color:var(--good);">–</div></div>
+        <div class="adm-stat"><div class="k">Course registrants</div><div class="v" id="cStatR">–</div></div>
+        <div class="adm-stat"><div class="k">Mean declared / 36</div><div class="v" id="cStatM">–</div></div>
+      </div>
+      <div class="adm-grid2">
+        <div class="adm-card">
+          <h3>PICU nurse competency self-assessment</h3>
+          <p class="muted">Stage I: any nurse scores herself 1–3 across 12 competencies (no login, about 5 minutes). Stage II: a unit head or faculty verifies at the bedside and records the verified total and band on the results page.</p>
+          <p><a class="adm-btn" href="PCCN_Competency_Results.html">Open results and verify</a> <a class="adm-btn ghost" href="PCCN_Competency_QR.html" target="_blank" rel="noopener">QR poster</a> <a class="adm-btn ghost" href="c.html" target="_blank" rel="noopener">Open the form</a></p>
+          <p class="muted" style="margin-bottom:0;">Share link for nurses: <code id="cLink"></code></p>
+        </div>
+        <div class="adm-card">
+          <h3>Latest submissions</h3>
+          <table class="adm-table"><thead><tr><th>Name</th><th>Unit</th><th>Declared</th><th>Status</th><th>Date</th></tr></thead><tbody id="cRows"></tbody></table>
         </div>
       </div>
     </section>
@@ -665,7 +688,7 @@ main{flex:1;}
   var ekey = function(e){ return String(e || '').trim().toLowerCase(); };
   var fmtDate = function(ts){ var d = ts && ts.toDate ? ts.toDate() : (ts ? new Date(ts) : null); return d && !isNaN(d) ? d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'; };
   var MODULES = (window.PCCN_MODULES || []).map(function(m){ return { n: m.n, key: 'mod' + String(m.n).padStart(2, '0'), short: m.short }; });
-  var db, ME, USERS = [], ENROL = {}, ADMINS = {}, SITE = {}, VIDEOS = {};
+  var db, ME, USERS = [], ENROL = {}, ADMINS = {}, SITE = {}, VIDEOS = {}, COMP = [];
 
   /* tabs */
   document.querySelectorAll('#admTabs button').forEach(function(b){ b.onclick = function(){
@@ -682,8 +705,9 @@ main{flex:1;}
       db.collection('enrolments').get().then(function(s){ ENROL = {}; s.forEach(function(d){ ENROL[d.id] = d.data(); }); }),
       db.collection('admins').get().then(function(s){ ADMINS = {}; s.forEach(function(d){ ADMINS[d.id] = d.data() || {}; }); }),
       db.collection('config').doc('site').get().then(function(d){ SITE = d.exists ? d.data() : {}; }),
-      db.collection('config').doc('videos').get().then(function(d){ VIDEOS = d.exists ? d.data() : {}; })
-    ]).then(function(){ renderLearners(); renderEnrol(); renderSettings(); renderAdmins(); });
+      db.collection('config').doc('videos').get().then(function(d){ VIDEOS = d.exists ? d.data() : {}; }),
+      db.collection('competency').get().then(function(s){ COMP = []; s.forEach(function(d){ var x = d.data(); x._id = d.id; COMP.push(x); }); }).catch(function(){ COMP = []; })
+    ]).then(function(){ renderLearners(); renderEnrol(); renderSettings(); renderAdmins(); renderComp(); });
   }
 
   /* ---------- learners ---------- */
@@ -696,6 +720,9 @@ main{flex:1;}
     var keys = Object.keys(v.progress).filter(function(k){ return k !== 'workshop'; }).sort(); if (!keys.length) return '<span class="pill mute">—</span>';
     return keys.map(function(mk){ var p = v.progress[mk]; var q = p.quiz ? p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' ✓' : ' ✗') : (p.steps ? p.steps.length + ' steps' : ''); return '<span class="pill plum">' + mk.toUpperCase().replace('MOD', 'M') + ' ' + q + '</span> '; }).join('');
   }
+  function compFor(email){ var k = ekey(email); if (!k) return null; var hits = COMP.filter(function(c){ return ekey(c.email) === k; }); if (!hits.length) return null; hits.sort(function(a, b){ return tsNum(b.submittedAt) - tsNum(a.submittedAt); }); return hits[0]; }
+  function tsNum(t){ return t && t.toDate ? t.toDate().getTime() : (t ? new Date(t).getTime() || 0 : 0); }
+  function compCell(v){ var c = compFor(v.email); if (!c) return '<span class="pill mute">—</span>'; return c.status === 'verified' ? '<span class="pill ok">Verified ' + (c.verifiedTotal || '') + '/36' + (c.band ? ' · ' + c.band : '') + '</span>' : '<span class="pill plum">Declared ' + (c.declaredTotal || '') + '/36</span>'; }
   function rolesCell(v){ var r = []; if (ADMINS[v._uid]) r.push('<span class="pill no">Admin</span>'); if (v.roles && v.roles.organiser) r.push('<span class="pill plum">Organiser</span>'); return r.join(' ') || '<span class="pill mute">—</span>'; }
   function renderLearners(){
     var q = ($('learnerSearch').value || '').toLowerCase(); var rows = $('usersRows'); var html = ''; var now = Date.now(), week = 0, enrolled = 0, ws = 0;
@@ -703,9 +730,9 @@ main{flex:1;}
       var ts = v.createdAt && v.createdAt.toDate ? v.createdAt.toDate() : null; if (ts && (now - ts.getTime()) < 7 * 86400000) week++;
       var en = !!ENROL[ekey(v.email)]; if (en) enrolled++; if (v.progress && v.progress.workshop && v.progress.workshop.pass) ws++;
       if (q && !((v.name || '') + ' ' + (v.email || '')).toLowerCase().includes(q)) return;
-      html += '<tr data-row="' + idx + '"><td style="color:var(--ink-muted);">' + (idx + 1) + '</td><td style="font-weight:600;">' + esc(v.name || '—') + '</td><td>' + esc(v.email || '—') + '</td><td>' + (en ? '<span class="pill ok">Enrolled</span>' : '<span class="pill mute">Not listed</span>') + '</td><td>' + modCell(v) + '</td><td>' + wsCell(v) + '</td><td>' + rolesCell(v) + '</td><td style="white-space:nowrap;color:var(--ink-soft);">' + fmtDate(v.createdAt) + '</td></tr>';
+      html += '<tr data-row="' + idx + '"><td style="color:var(--ink-muted);">' + (idx + 1) + '</td><td style="font-weight:600;">' + esc(v.name || '—') + '</td><td>' + esc(v.email || '—') + '</td><td>' + (en ? '<span class="pill ok">Enrolled</span>' : '<span class="pill mute">Not listed</span>') + '</td><td>' + modCell(v) + '</td><td>' + wsCell(v) + '</td><td>' + compCell(v) + '</td><td>' + rolesCell(v) + '</td><td style="white-space:nowrap;color:var(--ink-soft);">' + fmtDate(v.createdAt) + '</td></tr>';
     });
-    rows.innerHTML = html || '<tr><td colspan="8" style="padding:22px;color:var(--ink-muted);">No accounts match.</td></tr>';
+    rows.innerHTML = html || '<tr><td colspan="9" style="padding:22px;color:var(--ink-muted);">No accounts match.</td></tr>';
     $('statTotal').textContent = USERS.length; $('stat7d').textContent = week; $('statEnrolled').textContent = enrolled + ' / ' + Object.keys(ENROL).length; $('statWs').textContent = ws;
   }
   $('learnerSearch').oninput = renderLearners;
@@ -725,6 +752,7 @@ main{flex:1;}
     $('ldActions').innerHTML = acts.map(function(a){ return '<button type="button" class="adm-btn ' + a[2] + '" data-act="' + a[0] + '">' + a[1] + '</button>'; }).join('') + ' <span id="ldMsg" class="muted"></span>';
     var det = '';
     if (w) det += '<p><b>Workshop:</b> ' + esc(w.edition || '') + ' · ' + esc(w.venue || '') + ' · ' + esc(w.date || '') + ' · ' + w.score + '/' + w.total + ' (' + w.pct + '%) ' + (w.pass ? 'pass' : 'fail') + (w.certificateId ? ' · ' + esc(w.certificateId) : '') + (w.manual ? ' · recorded manually by ' + esc(w.by || 'admin') : '') + '</p>';
+    var cc = compFor(v.email); if (cc) det += '<p><b>Competency:</b> declared ' + (cc.declaredTotal || '') + '/36' + (cc.status === 'verified' ? ', verified ' + (cc.verifiedTotal || '') + '/36 band ' + (cc.band || '') + ' by ' + esc(cc.verifiedBy || '') : ' (not yet verified)') + ' · ' + esc(cc.unit || '') + ' · <a href="PCCN_Competency_Results.html">open results</a></p>';
     if (en) det += '<p><b>Enrolment:</b> ' + esc(en.name || '') + ' · ' + esc(en.mobile || '') + ' · ' + (en.fellow ? 'IDPCCN Fellow' : 'Non-fellow') + (en.ref ? ' · ' + esc(en.ref) : '') + '</p>';
     var keys = v.progress ? Object.keys(v.progress).filter(function(k){ return k !== 'workshop'; }).sort() : [];
     if (!keys.length) det += '<p class="muted">No module activity yet.</p>';
@@ -821,6 +849,16 @@ main{flex:1;}
   $('sSave').onclick = function(){ say('sMsg', 'Saving…'); db.collection('config').doc('site').set({ enrolmentRequired: $('sEnrol').checked, courseStart: $('sStart').value, regDeadline: $('sDeadline').value, announcement: $('sAnnounce').value.trim(), updatedBy: ME.uid, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true }).then(function(){ say('sMsg', 'Saved.'); return loadAll(); }).catch(function(e){ say('sMsg', 'Could not save: ' + (e.code || e.message), true); }); };
   $('vSave').onclick = function(){ var v = {}; document.querySelectorAll('[data-vid]').forEach(function(t){ v[t.dataset.vid] = t.value.split('\n').map(function(l){ return l.trim(); }); while (v[t.dataset.vid].length && !v[t.dataset.vid][v[t.dataset.vid].length - 1]) v[t.dataset.vid].pop(); });
     say('vMsg', 'Saving…'); db.collection('config').doc('videos').set(Object.assign(v, { updatedBy: ME.uid, updatedAt: firebase.firestore.FieldValue.serverTimestamp() })).then(function(){ say('vMsg', 'Saved.'); }).catch(function(e){ say('vMsg', 'Could not save: ' + (e.code || e.message), true); }); };
+
+  /* ---------- competency ---------- */
+  function renderComp(){
+    var v = COMP.filter(function(c){ return c.status === 'verified'; }).length; var reg = COMP.filter(function(c){ return c.courseRegistrant; }).length;
+    var tot = COMP.map(function(c){ return +c.declaredTotal || 0; }).filter(Boolean); var mean = tot.length ? Math.round(tot.reduce(function(a, b){ return a + b; }, 0) / tot.length * 10) / 10 : '–';
+    $('cStatN').textContent = COMP.length; $('cStatV').textContent = v; $('cStatR').textContent = reg; $('cStatM').textContent = mean;
+    $('cLink').textContent = location.href.replace(/[^/]*$/, 'c.html');
+    var latest = COMP.slice().sort(function(a, b){ return tsNum(b.submittedAt) - tsNum(a.submittedAt); }).slice(0, 12);
+    $('cRows').innerHTML = latest.map(function(c){ return '<tr><td style="font-weight:600;">' + esc(c.name || '—') + (c.courseRegistrant ? ' <span class="pill plum">course</span>' : '') + '</td><td>' + esc([c.unit, c.city].filter(Boolean).join(', ')) + '</td><td>' + (c.declaredTotal || '') + '/36</td><td>' + (c.status === 'verified' ? '<span class="pill ok">Verified ' + (c.verifiedTotal || '') + (c.band ? ' · ' + c.band : '') + '</span>' : '<span class="pill mute">Declared</span>') + '</td><td style="white-space:nowrap;">' + fmtDate(c.submittedAt) + '</td></tr>'; }).join('') || '<tr><td colspan="5" style="padding:18px;color:var(--ink-muted);">No submissions yet.</td></tr>';
+  }
 
   /* ---------- admins ---------- */
   function renderAdmins(){
