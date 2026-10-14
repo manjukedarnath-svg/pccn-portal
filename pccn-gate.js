@@ -62,13 +62,19 @@
     if (!user || !db) return;
     db.collection('users').doc(user.uid).get().then(function(d){
       var r = (d.exists && d.data().roles) || {}; if (!r.director) return;
-      var links = document.querySelector('.pccn-nav-links'); if (!links || links.querySelector('a[href="PCCN_Competency_Results.html"]')) return;
-      var a = document.createElement('a'); a.href = 'PCCN_Competency_Results.html'; a.textContent = 'Verify competencies'; links.appendChild(a);
+      if (document.querySelector('a.pccn-director-link')) return;
+      var area = document.getElementById('navAuthArea') || document.querySelector('.pccn-nav-actions'); if (!area) return;
+      var a = document.createElement('a'); a.href = 'PCCN_Competency_Results.html'; a.textContent = 'Verify competencies'; a.className = 'pccn-director-link';
+      a.style.cssText = 'padding:8px 14px;border-radius:999px;font-size:.85rem;font-weight:700;color:#fff;background:#0F7159;text-decoration:none;white-space:nowrap;'; area.insertBefore(a, area.firstChild);
     }).catch(function(){});
     db.collection('admins').doc(user.uid).get().then(function(d){
       if (!d.exists) return;
-      var links = document.querySelector('.pccn-nav-links'); if (!links || links.querySelector('a[href="PCCN_Admin.html"]')) return;
-      var a = document.createElement('a'); a.href = 'PCCN_Admin.html'; a.textContent = 'Admin'; if (/PCCN_Admin/.test(location.pathname)) a.className = 'active'; links.appendChild(a);
+      if (document.querySelector('a[href="PCCN_Admin.html"].pccn-admin-link')) return;
+      /* pinned beside the account name so it never scrolls out of view on narrow screens */
+      var area = document.getElementById('navAuthArea') || document.querySelector('.pccn-nav-actions') || document.querySelector('.pccn-nav-links'); if (!area) return;
+      var a = document.createElement('a'); a.href = 'PCCN_Admin.html'; a.textContent = 'Admin'; a.className = 'pccn-admin-link' + (/PCCN_Admin/.test(location.pathname) ? ' active' : '');
+      a.style.cssText = 'padding:8px 14px;border-radius:999px;font-size:.85rem;font-weight:700;color:#fff;background:#4A1A73;text-decoration:none;white-space:nowrap;';
+      area.insertBefore(a, area.firstChild);
       window.PCCN_IS_ADMIN = true;
     }).catch(function(){});
   }
