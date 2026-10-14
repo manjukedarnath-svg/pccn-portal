@@ -11,13 +11,26 @@ service cloud.firestore {
       allow update: if request.auth != null && request.auth.uid == uid
                     && keep('roles') && keep('email') && keep('createdAt')
                     && request.resource.data.get('progress', {}).get('workshop', null) == resource.data.get('progress', {}).get('workshop', null);
-      // admins flag organisers (and nothing else) from the admin page
-      allow update: if isAdmin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['roles']);
+      // admins flag organisers, reset module progress and record a workshop manually from the admin page
+      allow update: if isAdmin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['roles', 'progress']);
       allow delete: if false;
     }
     match /admins/{uid} {
-      allow read: if request.auth != null && request.auth.uid == uid;
-      allow write: if false;
+      allow read: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      // admins add other admins and remove any admin but themselves; the first admin is created in the console
+      allow create: if isAdmin();
+      allow delete: if isAdmin() && request.auth.uid != uid;
+      allow update: if false;
+    }
+    // enrolment allowlist, keyed by lowercase email: loaded by admins; a learner may read only their own entry
+    match /enrolments/{email} {
+      allow read: if request.auth != null && (isAdmin() || (request.auth.token.email != null && request.auth.token.email.lower() == email));
+      allow write: if isAdmin();
+    }
+    // site settings and video links: public to read (module pages do not require sign-in), admins write
+    match /config/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
     // Competency self-assessment — OPEN to any nurse (anonymous auth), read/verify by admins only.
     match /competency/{docId} {

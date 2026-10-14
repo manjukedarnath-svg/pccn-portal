@@ -488,33 +488,157 @@ main{flex:1;}
       <a href="PCCN_Online_Sessions.html">Online Sessions</a>
       <a href="PCCN_Faculty.html">Faculty</a>
     </div>
-    <div class="pccn-nav-actions">
-      <a href="PCCN_Register.html" class="btn btn-pink btn-sm">Register</a>
-    </div>
+    <div class="pccn-nav-actions" id="navAuthArea"></div>
   </div>
 </nav>
 
-<main style="max-width:1120px;margin:0 auto;padding:52px 28px 100px;">
+<main style="max-width:1160px;margin:0 auto;padding:44px 28px 100px;">
   <div style="font-size:.78rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);margin-bottom:10px;">Board · Admin</div>
-  <h1 style="font-family:var(--serif);font-size:2.1rem;color:var(--ink);margin:0 0 6px;">Registrations dashboard</h1>
-  <p style="color:var(--ink-soft);margin:0 0 20px;">Every account, score and recorded answer — live from Firebase. Tap a row to see a candidate's answers.</p>
-  <button type="button" id="dlDoc" style="margin:0 0 24px;padding:13px 24px;border:none;border-radius:10px;background:var(--pink,#D6246E);color:#fff;font-family:var(--sans);font-weight:700;font-size:.9rem;cursor:pointer;">Download response sheet (.doc)</button>
+  <h1 style="font-family:var(--serif);font-size:2.1rem;color:var(--ink);margin:0 0 6px;">Course administration</h1>
+  <p style="color:var(--ink-soft);margin:0 0 22px;">Learners, enrolments, settings and admins — live from Firebase.</p>
   <div id="adminGate" style="background:#fff;border:1px solid var(--border);border-radius:16px;padding:34px;color:var(--ink-soft);">Checking access&hellip;</div>
+
   <div id="adminBody" style="display:none;">
-    <div style="display:flex;gap:18px;flex-wrap:wrap;margin-bottom:26px;">
-      <div style="flex:1;min-width:180px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px 26px;"><div style="font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px;">Total accounts</div><div id="statTotal" style="font-family:var(--serif);font-size:2.2rem;font-weight:700;color:var(--ink);">–</div></div>
-      <div style="flex:1;min-width:180px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px 26px;"><div style="font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px;">Last 7 days</div><div id="stat7d" style="font-family:var(--serif);font-size:2.2rem;font-weight:700;color:var(--good);">–</div></div>
-      <div style="flex:1;min-width:180px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px 26px;"><div style="font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px;">Newest signup</div><div id="statLatest" style="font-size:.95rem;font-weight:600;color:var(--ink);padding-top:10px;">–</div></div>
+    <div class="adm-tabs" id="admTabs">
+      <button type="button" data-tab="learners" class="on">Learners</button>
+      <button type="button" data-tab="enrol">Enrolments</button>
+      <button type="button" data-tab="settings">Settings</button>
+      <button type="button" data-tab="admins">Admins</button>
     </div>
-    <div style="background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;">
-      <table style="width:100%;border-collapse:collapse;font-size:.9rem;">
-        <thead><tr style="background:var(--cream);text-align:left;"><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">#</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Name</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Email</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Module progress &amp; scores</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Workshop</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Organiser</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Joined</th></tr></thead>
-        <tbody id="usersRows"></tbody>
-      </table>
-    </div>
-    <div style="font-size:.78rem;color:var(--ink-muted);margin-top:14px;">Tap any row for the full answer sheet. Scores &amp; answers sync when candidates are logged in; work done while signed out uploads on their next login.</div>
+
+    <!-- ===== Learners ===== -->
+    <section class="adm-panel on" data-panel="learners">
+      <div style="display:flex;gap:18px;flex-wrap:wrap;margin-bottom:22px;">
+        <div class="adm-stat"><div class="k">Total accounts</div><div class="v" id="statTotal">–</div></div>
+        <div class="adm-stat"><div class="k">Last 7 days</div><div class="v" id="stat7d" style="color:var(--good);">–</div></div>
+        <div class="adm-stat"><div class="k">Enrolled</div><div class="v" id="statEnrolled">–</div></div>
+        <div class="adm-stat"><div class="k">Workshop passed</div><div class="v" id="statWs">–</div></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;">
+        <input id="learnerSearch" type="search" placeholder="Search name or email" class="adm-input" style="max-width:320px;">
+        <button type="button" id="dlDoc" class="adm-btn ghost">Download response sheet (.doc)</button>
+        <button type="button" id="dlCsv" class="adm-btn ghost">Download learners (.csv)</button>
+      </div>
+      <div class="adm-card" style="padding:0;overflow:auto;">
+        <table class="adm-table">
+          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Enrolled</th><th>Modules</th><th>Workshop</th><th>Roles</th><th>Joined</th></tr></thead>
+          <tbody id="usersRows"></tbody>
+        </table>
+      </div>
+      <div style="font-size:.78rem;color:var(--ink-muted);margin-top:12px;">Tap a row for scores, answers and actions. Module progress syncs when the learner is signed in.</div>
+    </section>
+
+    <!-- ===== Enrolments ===== -->
+    <section class="adm-panel" data-panel="enrol">
+      <div class="adm-grid2">
+        <div class="adm-card">
+          <h3>Load the enrolment list</h3>
+          <p class="muted">Paste rows from the registration sheet, or choose the CSV/XLSX. Columns recognised: <b>name, email, mobile, fellow (yes/no), fee, transaction/ref</b>. The email is the key: it must be the one the learner uses to log in. Loading again updates existing entries.</p>
+          <input type="file" id="enrolFile" accept=".csv,.xlsx,.xls" class="adm-input">
+          <textarea id="enrolPaste" class="adm-input" style="min-height:120px;margin-top:10px;" placeholder="Or paste: Name, Email, Mobile, Fellow, Fee, Ref — one per line (tab or comma separated)"></textarea>
+          <div id="enrolPreview" class="muted" style="margin:10px 0;"></div>
+          <button type="button" id="enrolImport" class="adm-btn" disabled>Add to the enrolment list</button>
+          <span id="enrolMsg" class="muted" style="margin-left:10px;"></span>
+        </div>
+        <div class="adm-card">
+          <h3>Add one learner</h3>
+          <label class="adm-label">Name<input id="e1name" class="adm-input"></label>
+          <label class="adm-label">Email<input id="e1email" class="adm-input" type="email"></label>
+          <label class="adm-label">Mobile<input id="e1mobile" class="adm-input"></label>
+          <label class="adm-label" style="display:flex;align-items:center;gap:8px;"><input type="checkbox" id="e1fellow" style="width:auto;"> IDPCCN Fellow</label>
+          <label class="adm-label">Fee / reference<input id="e1ref" class="adm-input" placeholder="₹1000 · UPI 1234"></label>
+          <button type="button" id="e1add" class="adm-btn">Add</button> <span id="e1msg" class="muted"></span>
+          <hr style="border:0;border-top:1px solid var(--border);margin:18px 0;">
+          <p class="muted" style="margin:0;">Enrolment is what unlocks the modules once <b>Require enrolment</b> is on in Settings. Until then everyone who registers can open them.</p>
+        </div>
+      </div>
+      <div class="adm-card" style="padding:0;overflow:auto;margin-top:18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;"><h3 style="margin:0;">Enrolment list <span id="enrolCount" class="muted" style="font-weight:400;"></span></h3><input id="enrolSearch" type="search" placeholder="Search" class="adm-input" style="max-width:260px;"></div>
+        <table class="adm-table"><thead><tr><th>Name</th><th>Email</th><th>Mobile</th><th>Fellow</th><th>Fee / ref</th><th>Account</th><th>Added</th><th></th></tr></thead><tbody id="enrolRows"></tbody></table>
+      </div>
+    </section>
+
+    <!-- ===== Settings ===== -->
+    <section class="adm-panel" data-panel="settings">
+      <div class="adm-grid2">
+        <div class="adm-card">
+          <h3>Access</h3>
+          <label class="adm-label" style="display:flex;align-items:center;gap:10px;"><input type="checkbox" id="sEnrol" style="width:auto;"> <span><b>Require enrolment to open modules</b><br><span class="muted">Learners not on the enrolment list see a message instead of the module. Admins and the course office are never locked out of this page.</span></span></label>
+          <h3 style="margin-top:22px;">Course dates</h3>
+          <label class="adm-label">Course start<input id="sStart" class="adm-input" type="date"></label>
+          <label class="adm-label">Registration deadline<input id="sDeadline" class="adm-input" type="date"></label>
+          <h3 style="margin-top:22px;">Announcement on My Courses</h3>
+          <textarea id="sAnnounce" class="adm-input" style="min-height:80px;" placeholder="Shown at the top of every learner's My Courses page. Leave blank for none."></textarea>
+          <button type="button" id="sSave" class="adm-btn" style="margin-top:12px;">Save settings</button> <span id="sMsg" class="muted"></span>
+        </div>
+        <div class="adm-card">
+          <h3>Video links by module</h3>
+          <p class="muted">One link per line, in the order the video slots appear on the module page (YouTube, Drive or Vimeo). A saved link makes that slot open the video; an empty line leaves it as "coming soon".</p>
+          <div id="videoEditors"></div>
+          <button type="button" id="vSave" class="adm-btn" style="margin-top:12px;">Save video links</button> <span id="vMsg" class="muted"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Admins ===== -->
+    <section class="adm-panel" data-panel="admins">
+      <div class="adm-grid2">
+        <div class="adm-card">
+          <h3>Admins</h3>
+          <p class="muted">Admins can open this page, load enrolments, change settings and flag organisers. They need a registered course account first.</p>
+          <table class="adm-table"><thead><tr><th>Name</th><th>Email</th><th></th></tr></thead><tbody id="adminRows"></tbody></table>
+        </div>
+        <div class="adm-card">
+          <h3>Add an admin</h3>
+          <label class="adm-label">Email of a registered account<input id="aEmail" class="adm-input" type="email" placeholder="name@example.com"></label>
+          <button type="button" id="aAdd" class="adm-btn">Make admin</button> <span id="aMsg" class="muted"></span>
+          <hr style="border:0;border-top:1px solid var(--border);margin:18px 0;">
+          <p class="muted" style="margin:0;">Your account: <code id="meUid"></code></p>
+        </div>
+      </div>
+    </section>
   </div>
 </main>
+
+<!-- learner detail dialog -->
+<div id="learnerDlg" class="adm-dlg" style="display:none;"><div class="adm-dlg-card">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;"><div><h3 id="ldName" style="margin:0;"></h3><div id="ldEmail" class="muted"></div></div><button type="button" id="ldClose" class="adm-btn ghost" style="padding:8px 14px;">Close</button></div>
+  <div class="adm-actions" id="ldActions"></div>
+  <div id="ldDetail" style="margin-top:14px;font-size:.88rem;"></div>
+</div></div>
+
+<style>
+.adm-tabs{display:flex;gap:6px;margin-bottom:22px;border-bottom:1px solid var(--border);}
+.adm-tabs button{padding:12px 18px;border:none;background:none;font-family:var(--sans);font-weight:700;font-size:.92rem;color:var(--ink-muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;}
+.adm-tabs button.on{color:var(--pink);border-bottom-color:var(--pink);}
+.adm-panel{display:none;}.adm-panel.on{display:block;}
+.adm-stat{flex:1;min-width:150px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px 22px;}
+.adm-stat .k{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:6px;}
+.adm-stat .v{font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--ink);}
+.adm-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px 24px;}
+.adm-card h3{margin:0 0 8px;font-size:1.05rem;}
+.adm-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:18px;}
+.adm-input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--border);border-radius:10px;font-family:var(--sans);font-size:.9rem;background:#fff;color:var(--ink);}
+.adm-label{display:block;font-size:.82rem;font-weight:700;color:var(--ink-body);margin:10px 0 0;}
+.adm-label input,.adm-label textarea{margin-top:4px;font-weight:400;}
+.adm-btn{padding:11px 20px;border:none;border-radius:999px;background:var(--pink);color:#fff;font-family:var(--sans);font-weight:700;font-size:.88rem;cursor:pointer;}
+.adm-btn:disabled{opacity:.5;cursor:default;}
+.adm-btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--border-hover,#CBB8D6);}
+.adm-btn.danger{background:#fff;color:#A81F5B;border:1.5px solid #E6B3C8;}
+.adm-table{width:100%;border-collapse:collapse;font-size:.88rem;}
+.adm-table th{padding:12px 16px;text-align:left;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);background:var(--cream);white-space:nowrap;}
+.adm-table td{padding:11px 16px;border-top:1px solid var(--border);vertical-align:middle;}
+.adm-table tr[data-row]{cursor:pointer;}
+.adm-table tr[data-row]:hover{background:#FBF7F9;}
+.pill{display:inline-block;border-radius:8px;padding:3px 9px;font-size:.76rem;font-weight:700;white-space:nowrap;}
+.pill.ok{background:#EBF8F4;color:#0F7159;}.pill.no{background:#FBEAF2;color:#A81F5B;}.pill.mute{background:var(--cream);color:var(--ink-muted);}.pill.plum{background:#EEE4F5;color:#4A1A73;}
+.muted{color:var(--ink-muted);font-size:.85rem;}
+.adm-dlg{position:fixed;inset:0;background:rgba(31,9,56,.55);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;}
+.adm-dlg-card{background:#fff;border-radius:18px;padding:24px 26px;max-width:760px;width:100%;max-height:88vh;overflow:auto;}
+.adm-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.adm-actions .adm-btn{padding:9px 14px;font-size:.82rem;}
+.vid-mod{margin-top:10px;}.vid-mod b{display:block;font-size:.82rem;margin-bottom:4px;}.vid-mod textarea{min-height:58px;font-family:ui-monospace,Menlo,monospace;font-size:.8rem;}
+</style>
 
 <footer class="pccn-footer">
   <div class="pccn-footer-inner">
@@ -529,112 +653,195 @@ main{flex:1;}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="pccn-firebase-config.js"></script>
+<script src="pccn-modules-data.js"></script>
 <script src="pccn-auth.js"></script>
+<script src="pccn-gate.js"></script>
 <script>
-if (window.PCCN_AUTH) {
+(function(){
+  if (!window.PCCN_AUTH) return;
   PCCN_AUTH.requireLogin();
-  PCCN_AUTH.onChange(function(u){
-    if (!u) return;
-    var gate = document.getElementById('adminGate');
-    var db = PCCN_AUTH.db();
-    if (!db) { gate.textContent = 'Firestore unavailable.'; return; }
-    db.collection('admins').doc(u.uid).get().then(function(doc){
-      if (!doc.exists) {
-        gate.innerHTML = '<strong style="color:var(--ink);">This view is restricted to the PCCN board.</strong><br><br>You are signed in as <strong>' + (u.email||'') + '</strong>.<br>To grant this account admin access, add a document with this ID to the <code>admins</code> collection in Firestore:<br><br><code style="background:var(--cream);padding:6px 10px;border-radius:8px;display:inline-block;">' + u.uid + '</code>';
-        return null;
-      }
-      return db.collection('users').orderBy('createdAt','desc').get().then(function(snap){
-        gate.style.display = 'none';
-        document.getElementById('adminBody').style.display = 'block';
-        var rows = document.getElementById('usersRows');
-        var USERS = [];
-        snap.forEach(function(d){ var x = d.data(); x._uid = d.id; USERS.push(x); });
-        var now = Date.now(), week = 0, html = '';
-        function wsCell(v){
-          var w = v.progress && v.progress.workshop; if (!w) return '<span style="color:var(--ink-muted);">—</span>';
-          var c = w.pass ? '#0F7159' : '#A81F5B';
-          return '<span title="' + (w.edition || '') + ' · ' + (w.venue || '') + ' · ' + (w.date || '') + (w.certificateId ? ' · ' + w.certificateId : '') + '" style="display:inline-block;background:' + (w.pass ? '#EBF8F4' : '#FBEAF2') + ';color:' + c + ';border-radius:8px;padding:3px 9px;font-size:.78rem;font-weight:700;white-space:nowrap;">' + (w.pass ? '\u2713 ' : '\u2717 ') + w.pct + '%' + (w.edition ? ' · ' + w.edition.replace(/ Edition$/, '') : '') + '</span>';
-        }
-        function orgCell(v, uid){
-          var on = !!(v.roles && v.roles.organiser);
-          return '<label style="display:inline-flex;align-items:center;gap:6px;font-size:.8rem;cursor:pointer;white-space:nowrap;" onclick="event.stopPropagation()"><input type="checkbox" data-org="' + uid + '"' + (on ? ' checked' : '') + '> ' + (on ? 'Organiser' : '—') + '</label>';
-        }
-        function progSummary(v){
-          if (!v.progress) return '<span style="color:var(--ink-muted);">—</span>';
-          return Object.keys(v.progress).filter(function(k){ return k !== 'workshop'; }).sort().map(function(mk){
-            var p = v.progress[mk];
-            var q = p.quiz ? (p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' \u2713' : ' \u2717')) : (p.steps ? p.steps.length + ' steps' : '');
-            return '<span style="display:inline-block;background:var(--cream);border-radius:8px;padding:3px 9px;margin:2px 4px 2px 0;font-size:.78rem;font-weight:700;color:var(--plum-600,#4A1A73);">' + mk.toUpperCase() + ' ' + q + '</span>';
-          }).join('');
-        }
-        USERS.forEach(function(v, idx){
-          var i = idx + 1;
-          var ts = v.createdAt && v.createdAt.toDate ? v.createdAt.toDate() : null;
-          if (ts && (now - ts.getTime()) < 7*86400000) week++;
-          if (i === 1) document.getElementById('statLatest').textContent = v.name || v.email || '—';
-          html += '<tr data-row="' + idx + '" style="border-top:1px solid var(--hairline);cursor:pointer;"><td style="padding:13px 22px;color:var(--ink-muted);">' + i + '</td><td style="padding:13px 22px;font-weight:600;color:var(--ink);">' + (v.name||'—') + '</td><td style="padding:13px 22px;color:var(--ink-body);">' + (v.email||'—') + '</td><td style="padding:13px 22px;">' + progSummary(v) + '</td><td style="padding:13px 22px;">' + wsCell(v) + '</td><td style="padding:13px 22px;">' + orgCell(v, v._uid) + '</td><td style="padding:13px 22px;color:var(--ink-soft);white-space:nowrap;">' + (ts ? ts.toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : '—') + '</td></tr>';
-          var det = '';
-          if (v.progress) Object.keys(v.progress).filter(function(k){ return k !== 'workshop'; }).sort().forEach(function(mk){
-            var p = v.progress[mk];
-            det += '<div style="margin-bottom:14px;"><strong>' + mk.toUpperCase() + '</strong>';
-            if (p.quiz) det += ' — quiz ' + p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' (pass)' : ' (fail)');
-            if (p.steps) det += ' · steps: ' + p.steps.join(', ');
-            if (p.responses) {
-              det += '<table style="width:100%;border-collapse:collapse;margin-top:8px;font-size:.8rem;">';
-              Object.keys(p.responses).forEach(function(q){
-                det += '<tr><td style="padding:5px 10px;border:1px solid var(--hairline);width:55%;">' + q + '</td><td style="padding:5px 10px;border:1px solid var(--hairline);">' + p.responses[q].a + '</td></tr>';
-              });
-              det += '</table>';
-            }
-            det += '</div>';
-          });
-          html += '<tr data-det="' + idx + '" style="display:none;background:var(--cream);"><td colspan="7" style="padding:16px 26px;font-size:.85rem;color:var(--ink-body);">' + (det || 'No module activity yet.') + '</td></tr>';
-        });
-        rows.innerHTML = html || '<tr><td colspan="7" style="padding:22px;color:var(--ink-muted);">No registrations yet.</td></tr>';
-        document.getElementById('statTotal').textContent = USERS.length;
-        document.getElementById('stat7d').textContent = week;
-        /* organiser flag: lets this learner run a workshop in the PCCN Essentials app (admins only; see firestore.rules) */
-        rows.addEventListener('change', function(e){
-          var cb = e.target.closest('input[data-org]'); if (!cb) return;
-          var uid = cb.getAttribute('data-org'), on = cb.checked; cb.disabled = true;
-          db.collection('users').doc(uid).set({ roles: { organiser: on } }, { merge: true })
-            .then(function(){ cb.disabled = false; cb.parentNode.lastChild.textContent = ' ' + (on ? 'Organiser' : '—'); })
-            .catch(function(err){ cb.checked = !on; cb.disabled = false; alert('Could not save: ' + (err.code || err.message) + '\nPublish the updated firestore.rules first.'); });
-        });
-        rows.addEventListener('click', function(e){
-          var tr = e.target.closest('tr[data-row]'); if (!tr) return;
-          var det = rows.querySelector('tr[data-det="' + tr.getAttribute('data-row') + '"]');
-          if (det) det.style.display = det.style.display === 'none' ? 'table-row' : 'none';
-        });
-        document.getElementById('dlDoc').onclick = function(){
-          var doc = '<html><head><meta charset="utf-8"><title>PCCN Response Sheet</title></head><body style="font-family:Georgia,serif;">';
-          doc += '<h1>PCCN — Quiz &amp; Pre-Test Response Sheet</h1><p>Generated ' + new Date().toLocaleString('en-IN') + ' · ' + USERS.length + ' candidates</p>';
-          USERS.forEach(function(v){
-            doc += '<h2 style="border-bottom:2px solid #4A1A73;padding-bottom:4px;">' + (v.name||'—') + ' &lt;' + (v.email||'') + '&gt;</h2>';
-            if (!v.progress) { doc += '<p><em>No module activity.</em></p>'; return; }
-            Object.keys(v.progress).filter(function(k){ return k !== 'workshop'; }).sort().forEach(function(mk){
-              var p = v.progress[mk];
-              doc += '<h3>' + mk.toUpperCase() + (p.quiz ? ' — Quiz score: ' + p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' (PASS)' : ' (FAIL)') : '') + '</h3>';
-              if (p.responses) {
-                doc += '<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;width:100%;font-size:13px;"><tr style="background:#F6F0F5;"><th align="left">Question</th><th align="left">Answer given</th></tr>';
-                Object.keys(p.responses).forEach(function(q){ doc += '<tr><td>' + q + '</td><td>' + p.responses[q].a + '</td></tr>'; });
-                doc += '</table>';
-              } else { doc += '<p><em>No recorded answers.</em></p>'; }
-            });
-          });
-          doc += '</body></html>';
-          var blob = new Blob(['\ufeff' + doc], { type: 'application/msword' });
-          var a = document.createElement('a');
-          a.href = URL.createObjectURL(blob);
-          a.download = 'PCCN_Response_Sheet.doc';
-          a.click();
-        };
-      });
-    }).catch(function(err){
-      gate.innerHTML = 'Could not check access: <code>' + (err.code||err.message) + '</code><br><br>Most likely the Firestore security rules have not been published yet — see the setup steps shared in chat.';
+  var $ = function(id){ return document.getElementById(id); };
+  var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]; }); };
+  var ekey = function(e){ return String(e || '').trim().toLowerCase(); };
+  var fmtDate = function(ts){ var d = ts && ts.toDate ? ts.toDate() : (ts ? new Date(ts) : null); return d && !isNaN(d) ? d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'; };
+  var MODULES = (window.PCCN_MODULES || []).map(function(m){ return { n: m.n, key: 'mod' + String(m.n).padStart(2, '0'), short: m.short }; });
+  var db, ME, USERS = [], ENROL = {}, ADMINS = {}, SITE = {}, VIDEOS = {};
+
+  /* tabs */
+  document.querySelectorAll('#admTabs button').forEach(function(b){ b.onclick = function(){
+    document.querySelectorAll('#admTabs button').forEach(function(x){ x.classList.toggle('on', x === b); });
+    document.querySelectorAll('.adm-panel').forEach(function(p){ p.classList.toggle('on', p.dataset.panel === b.dataset.tab); });
+    try { localStorage.setItem('pccn_admin_tab', b.dataset.tab); } catch(e) {}
+  }; });
+  try { var t0 = localStorage.getItem('pccn_admin_tab'); if (t0) { var tb = document.querySelector('#admTabs button[data-tab="' + t0 + '"]'); if (tb) tb.click(); } } catch(e) {}
+
+  /* ---------- loading ---------- */
+  function loadAll(){
+    return Promise.all([
+      db.collection('users').orderBy('createdAt', 'desc').get().then(function(s){ USERS = []; s.forEach(function(d){ var x = d.data(); x._uid = d.id; USERS.push(x); }); }),
+      db.collection('enrolments').get().then(function(s){ ENROL = {}; s.forEach(function(d){ ENROL[d.id] = d.data(); }); }),
+      db.collection('admins').get().then(function(s){ ADMINS = {}; s.forEach(function(d){ ADMINS[d.id] = d.data() || {}; }); }),
+      db.collection('config').doc('site').get().then(function(d){ SITE = d.exists ? d.data() : {}; }),
+      db.collection('config').doc('videos').get().then(function(d){ VIDEOS = d.exists ? d.data() : {}; })
+    ]).then(function(){ renderLearners(); renderEnrol(); renderSettings(); renderAdmins(); });
+  }
+
+  /* ---------- learners ---------- */
+  function wsCell(v){
+    var w = v.progress && v.progress.workshop; if (!w) return '<span class="pill mute">—</span>';
+    return '<span class="pill ' + (w.pass ? 'ok' : 'no') + '" title="' + esc((w.edition || '') + ' · ' + (w.venue || '') + ' · ' + (w.date || '') + (w.certificateId ? ' · ' + w.certificateId : '')) + '">' + (w.pass ? '✓ ' : '✗ ') + w.pct + '%' + (w.edition ? ' · ' + String(w.edition).replace(/ Edition$/, '') : '') + (w.manual ? ' · manual' : '') + '</span>';
+  }
+  function modCell(v){
+    if (!v.progress) return '<span class="pill mute">—</span>';
+    var keys = Object.keys(v.progress).filter(function(k){ return k !== 'workshop'; }).sort(); if (!keys.length) return '<span class="pill mute">—</span>';
+    return keys.map(function(mk){ var p = v.progress[mk]; var q = p.quiz ? p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' ✓' : ' ✗') : (p.steps ? p.steps.length + ' steps' : ''); return '<span class="pill plum">' + mk.toUpperCase().replace('MOD', 'M') + ' ' + q + '</span> '; }).join('');
+  }
+  function rolesCell(v){ var r = []; if (ADMINS[v._uid]) r.push('<span class="pill no">Admin</span>'); if (v.roles && v.roles.organiser) r.push('<span class="pill plum">Organiser</span>'); return r.join(' ') || '<span class="pill mute">—</span>'; }
+  function renderLearners(){
+    var q = ($('learnerSearch').value || '').toLowerCase(); var rows = $('usersRows'); var html = ''; var now = Date.now(), week = 0, enrolled = 0, ws = 0;
+    USERS.forEach(function(v, idx){
+      var ts = v.createdAt && v.createdAt.toDate ? v.createdAt.toDate() : null; if (ts && (now - ts.getTime()) < 7 * 86400000) week++;
+      var en = !!ENROL[ekey(v.email)]; if (en) enrolled++; if (v.progress && v.progress.workshop && v.progress.workshop.pass) ws++;
+      if (q && !((v.name || '') + ' ' + (v.email || '')).toLowerCase().includes(q)) return;
+      html += '<tr data-row="' + idx + '"><td style="color:var(--ink-muted);">' + (idx + 1) + '</td><td style="font-weight:600;">' + esc(v.name || '—') + '</td><td>' + esc(v.email || '—') + '</td><td>' + (en ? '<span class="pill ok">Enrolled</span>' : '<span class="pill mute">Not listed</span>') + '</td><td>' + modCell(v) + '</td><td>' + wsCell(v) + '</td><td>' + rolesCell(v) + '</td><td style="white-space:nowrap;color:var(--ink-soft);">' + fmtDate(v.createdAt) + '</td></tr>';
     });
+    rows.innerHTML = html || '<tr><td colspan="8" style="padding:22px;color:var(--ink-muted);">No accounts match.</td></tr>';
+    $('statTotal').textContent = USERS.length; $('stat7d').textContent = week; $('statEnrolled').textContent = enrolled + ' / ' + Object.keys(ENROL).length; $('statWs').textContent = ws;
+  }
+  $('learnerSearch').oninput = renderLearners;
+  $('usersRows').addEventListener('click', function(e){ var tr = e.target.closest('tr[data-row]'); if (tr) openLearner(USERS[+tr.dataset.row]); });
+
+  function openLearner(v){
+    $('ldName').textContent = v.name || '—'; $('ldEmail').textContent = (v.email || '') + ' · ' + v._uid;
+    var isOrg = !!(v.roles && v.roles.organiser), isAdm = !!ADMINS[v._uid], w = v.progress && v.progress.workshop;
+    var en = ENROL[ekey(v.email)];
+    var acts = [
+      ['org', isOrg ? 'Remove organiser' : 'Make organiser', isOrg ? 'danger' : ''],
+      ['adm', isAdm ? 'Remove admin' : 'Make admin', isAdm ? 'danger' : ''],
+      ['enrol', en ? 'Remove from enrolment list' : 'Add to enrolment list', en ? 'danger' : ''],
+      ['reset', 'Reset module progress…', 'ghost'],
+      ['ws', w ? 'Clear workshop record' : 'Record workshop manually…', w ? 'danger' : 'ghost']
+    ];
+    $('ldActions').innerHTML = acts.map(function(a){ return '<button type="button" class="adm-btn ' + a[2] + '" data-act="' + a[0] + '">' + a[1] + '</button>'; }).join('') + ' <span id="ldMsg" class="muted"></span>';
+    var det = '';
+    if (w) det += '<p><b>Workshop:</b> ' + esc(w.edition || '') + ' · ' + esc(w.venue || '') + ' · ' + esc(w.date || '') + ' · ' + w.score + '/' + w.total + ' (' + w.pct + '%) ' + (w.pass ? 'pass' : 'fail') + (w.certificateId ? ' · ' + esc(w.certificateId) : '') + (w.manual ? ' · recorded manually by ' + esc(w.by || 'admin') : '') + '</p>';
+    if (en) det += '<p><b>Enrolment:</b> ' + esc(en.name || '') + ' · ' + esc(en.mobile || '') + ' · ' + (en.fellow ? 'IDPCCN Fellow' : 'Non-fellow') + (en.ref ? ' · ' + esc(en.ref) : '') + '</p>';
+    var keys = v.progress ? Object.keys(v.progress).filter(function(k){ return k !== 'workshop'; }).sort() : [];
+    if (!keys.length) det += '<p class="muted">No module activity yet.</p>';
+    keys.forEach(function(mk){ var p = v.progress[mk]; det += '<div style="margin-bottom:12px;"><b>' + mk.toUpperCase() + '</b>' + (p.quiz ? ' — quiz ' + p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' (pass)' : ' (fail)') : '') + (p.steps ? ' · steps: ' + esc(p.steps.join(', ')) : '');
+      if (p.responses) { det += '<table class="adm-table" style="margin-top:6px;font-size:.8rem;">'; Object.keys(p.responses).forEach(function(q){ det += '<tr><td style="width:55%;">' + esc(q) + '</td><td>' + esc(p.responses[q].a) + '</td></tr>'; }); det += '</table>'; }
+      det += '</div>'; });
+    $('ldDetail').innerHTML = det; $('learnerDlg').style.display = 'flex';
+    $('ldActions').onclick = function(e){ var b = e.target.closest('[data-act]'); if (!b) return; act(b.dataset.act, v); };
+  }
+  $('ldClose').onclick = function(){ $('learnerDlg').style.display = 'none'; };
+  $('learnerDlg').addEventListener('click', function(e){ if (e.target === $('learnerDlg')) $('learnerDlg').style.display = 'none'; });
+
+  function say(id, m, bad){ var el = $(id); if (!el) return; el.textContent = m; el.style.color = bad ? '#A81F5B' : ''; }
+  function act(kind, v){
+    var ref = db.collection('users').doc(v._uid); var p;
+    if (kind === 'org') p = ref.set({ roles: { organiser: !(v.roles && v.roles.organiser) } }, { merge: true });
+    else if (kind === 'adm') { if (ADMINS[v._uid] && v._uid === ME.uid) return say('ldMsg', 'You cannot remove your own admin access.', true); p = ADMINS[v._uid] ? db.collection('admins').doc(v._uid).delete() : db.collection('admins').doc(v._uid).set({ name: v.name || '', email: v.email || '', addedBy: ME.uid, addedAt: firebase.firestore.FieldValue.serverTimestamp() }); }
+    else if (kind === 'enrol') { var k = ekey(v.email); if (!k) return say('ldMsg', 'This account has no email.', true); p = ENROL[k] ? db.collection('enrolments').doc(k).delete() : db.collection('enrolments').doc(k).set({ name: v.name || '', email: k, mobile: '', fellow: false, ref: 'added from learner record', addedBy: ME.uid, addedAt: firebase.firestore.FieldValue.serverTimestamp() }); }
+    else if (kind === 'reset') {
+      var which = prompt('Reset which module? Type a number 1-12, or "all". Quiz scores and section progress for that module are removed from the account (the learner\'s device copy clears on their next sync).'); if (!which) return;
+      var upd = {}; if (/^all$/i.test(which)) { MODULES.forEach(function(m){ upd['progress.' + m.key] = firebase.firestore.FieldValue.delete(); }); } else { var n = parseInt(which, 10); if (!(n >= 1 && n <= 12)) return say('ldMsg', 'Enter 1-12 or all.', true); upd['progress.mod' + String(n).padStart(2, '0')] = firebase.firestore.FieldValue.delete(); }
+      p = ref.update(upd);
+    }
+    else if (kind === 'ws') {
+      if (v.progress && v.progress.workshop) { if (!confirm('Clear the workshop record for ' + (v.name || 'this learner') + '? The app will write it again on the next sync if it still holds a result.')) return; p = ref.update({ 'progress.workshop': firebase.firestore.FieldValue.delete() }); }
+      else {
+        var ed = prompt('Workshop edition / venue (e.g. "Delhi Edition · St Stephen\'s Hospital")'); if (!ed) return;
+        var dt = prompt('Date (e.g. 1 October 2026)') || ''; var pct = parseInt(prompt('Post-test percentage (50 or more passes)') || '', 10); if (isNaN(pct)) return say('ldMsg', 'Percentage needed.', true);
+        var parts = ed.split('·'); p = ref.set({ progress: { workshop: { workshopId: 'manual', edition: parts[0].trim(), venue: (parts[1] || '').trim(), date: dt, score: pct, total: 100, pct: pct, pass: pct >= 50, certificateId: '', ts: new Date().toISOString(), source: 'manual', manual: true, by: ME.email || ME.uid, syncedAt: new Date().toISOString() } } }, { merge: true });
+      }
+    }
+    if (!p) return;
+    say('ldMsg', 'Saving…'); p.then(function(){ return loadAll(); }).then(function(){ var nv = USERS.find(function(x){ return x._uid === v._uid; }); if (nv) openLearner(nv); say('ldMsg', 'Saved'); }).catch(function(e){ say('ldMsg', 'Could not save: ' + (e.code || e.message) + ' — publish the latest firestore.rules.', true); });
+  }
+
+  $('dlCsv').onclick = function(){
+    var rows = [['Name', 'Email', 'Enrolled', 'Admin', 'Organiser', 'Modules passed', 'Workshop', 'Workshop %', 'Certificate', 'Joined']];
+    USERS.forEach(function(v){ var w = v.progress && v.progress.workshop; var passed = v.progress ? Object.keys(v.progress).filter(function(k){ return k !== 'workshop' && v.progress[k].quiz && v.progress[k].quiz.pass; }).length : 0;
+      rows.push([v.name || '', v.email || '', ENROL[ekey(v.email)] ? 'yes' : 'no', ADMINS[v._uid] ? 'yes' : 'no', v.roles && v.roles.organiser ? 'yes' : 'no', passed, w ? (w.edition || '') : '', w ? w.pct : '', w ? (w.certificateId || '') : '', fmtDate(v.createdAt)]); });
+    var csv = rows.map(function(r){ return r.map(function(c){ c = String(c); return /[",\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c; }).join(','); }).join('\n');
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv' })); a.download = 'PCCN_learners.csv'; a.click();
+  };
+  $('dlDoc').onclick = function(){
+    var doc = '<html><head><meta charset="utf-8"><title>PCCN Response Sheet</title></head><body style="font-family:Georgia,serif;"><h1>PCCN — Quiz &amp; Pre-Test Response Sheet</h1><p>Generated ' + new Date().toLocaleString('en-IN') + ' · ' + USERS.length + ' candidates</p>';
+    USERS.forEach(function(v){ doc += '<h2 style="border-bottom:2px solid #4A1A73;padding-bottom:4px;">' + esc(v.name || '—') + ' &lt;' + esc(v.email || '') + '&gt;</h2>';
+      var keys = v.progress ? Object.keys(v.progress).filter(function(k){ return k !== 'workshop'; }).sort() : []; if (!keys.length) { doc += '<p><em>No module activity.</em></p>'; return; }
+      keys.forEach(function(mk){ var p = v.progress[mk]; doc += '<h3>' + mk.toUpperCase() + (p.quiz ? ' — Quiz score: ' + p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' (PASS)' : ' (FAIL)') : '') + '</h3>';
+        if (p.responses) { doc += '<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;width:100%;font-size:13px;"><tr style="background:#F6F0F5;"><th align="left">Question</th><th align="left">Answer given</th></tr>'; Object.keys(p.responses).forEach(function(q){ doc += '<tr><td>' + esc(q) + '</td><td>' + esc(p.responses[q].a) + '</td></tr>'; }); doc += '</table>'; } else doc += '<p><em>No recorded answers.</em></p>'; }); });
+    doc += '</body></html>'; var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + doc], { type: 'application/msword' })); a.download = 'PCCN_Response_Sheet.doc'; a.click();
+  };
+
+  /* ---------- enrolments ---------- */
+  var PENDING = [];
+  var pick = function(r, names){ for (var k in r) { var kk = k.toLowerCase().replace(/[^a-z]/g, ''); for (var i = 0; i < names.length; i++) if (kk === names[i] || kk.indexOf(names[i]) === 0) return String(r[k] == null ? '' : r[k]).trim(); } return ''; };
+  function rowsToEnrol(rows){
+    return rows.map(function(r){ var email = ekey(pick(r, ['email', 'emailaddress', 'mail'])); if (!email || !/@/.test(email)) return null;
+      var fel = pick(r, ['fellow', 'idpccn', 'areyouanidpccn']).toLowerCase(); var fee = pick(r, ['fee', 'amount']); var ref = pick(r, ['transaction', 'txn', 'ref', 'paymentid', 'utr']);
+      return { email: email, name: pick(r, ['name', 'fullname', 'participant', 'nameofthe']), mobile: pick(r, ['mobile', 'phone', 'contact', 'whatsapp']).replace(/[^\d+]/g, ''), fellow: /^(y|yes|true|fellow)/.test(fel), ref: [fee, ref].filter(Boolean).join(' · ') }; }).filter(Boolean);
+  }
+  function parsePaste(txt){
+    var lines = txt.split(/\r?\n/).map(function(l){ return l.trim(); }).filter(Boolean); if (!lines.length) return [];
+    var sep = lines[0].indexOf('\t') >= 0 ? '\t' : ','; var first = lines[0].split(sep).map(function(c){ return c.trim(); });
+    var hasHeader = !first.some(function(c){ return /@/.test(c); });
+    var header = hasHeader ? first : ['Name', 'Email', 'Mobile', 'Fellow', 'Fee', 'Ref']; var body = hasHeader ? lines.slice(1) : lines;
+    return body.map(function(l){ var cells = l.split(sep).map(function(c){ return c.trim().replace(/^"|"$/g, ''); }); var r = {}; header.forEach(function(h, i){ r[h] = cells[i] || ''; }); return r; });
+  }
+  function ensureXLSX(){ if (window.XLSX) return Promise.resolve(); return new Promise(function(res, rej){ var s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; s.onload = res; s.onerror = function(){ rej(new Error('Could not load the spreadsheet reader.')); }; document.head.appendChild(s); }); }
+  function preview(list){ PENDING = list; var n = list.length, upd = list.filter(function(x){ return ENROL[x.email]; }).length; $('enrolPreview').innerHTML = n ? '<b>' + n + '</b> learners found (' + (n - upd) + ' new, ' + upd + ' already listed and will be updated). First: ' + esc(list.slice(0, 3).map(function(x){ return x.name + ' <' + x.email + '>'; }).join('; ')) + (n > 3 ? '…' : '') : 'No rows with an email address found.'; $('enrolImport').disabled = !n; }
+  $('enrolPaste').oninput = function(){ preview(rowsToEnrol(parsePaste($('enrolPaste').value))); };
+  $('enrolFile').onchange = function(){ var f = $('enrolFile').files[0]; if (!f) return; say('enrolMsg', 'Reading…');
+    ensureXLSX().then(function(){ return f.arrayBuffer(); }).then(function(buf){ var wb = XLSX.read(buf, { type: 'array' }); var rows = []; wb.SheetNames.forEach(function(n){ rows = rows.concat(XLSX.utils.sheet_to_json(wb.Sheets[n], { defval: '' })); }); preview(rowsToEnrol(rows)); say('enrolMsg', ''); }).catch(function(e){ say('enrolMsg', e.message, true); }); };
+  $('enrolImport').onclick = function(){ if (!PENDING.length) return; $('enrolImport').disabled = true; say('enrolMsg', 'Saving ' + PENDING.length + '…');
+    var batches = [], b = db.batch(), n = 0;
+    PENDING.forEach(function(x){ b.set(db.collection('enrolments').doc(x.email), Object.assign({}, x, { addedBy: ME.uid, addedAt: firebase.firestore.FieldValue.serverTimestamp() }), { merge: true }); if (++n === 400) { batches.push(b.commit()); b = db.batch(); n = 0; } });
+    if (n) batches.push(b.commit());
+    Promise.all(batches).then(function(){ say('enrolMsg', 'Added ' + PENDING.length + '.'); $('enrolPaste').value = ''; $('enrolFile').value = ''; $('enrolPreview').textContent = ''; PENDING = []; return loadAll(); }).catch(function(e){ say('enrolMsg', 'Could not save: ' + (e.code || e.message), true); $('enrolImport').disabled = false; }); };
+  $('e1add').onclick = function(){ var email = ekey($('e1email').value); if (!/@/.test(email)) return say('e1msg', 'Email needed.', true);
+    db.collection('enrolments').doc(email).set({ email: email, name: $('e1name').value.trim(), mobile: $('e1mobile').value.replace(/[^\d+]/g, ''), fellow: $('e1fellow').checked, ref: $('e1ref').value.trim(), addedBy: ME.uid, addedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true })
+      .then(function(){ say('e1msg', 'Added.'); ['e1name', 'e1email', 'e1mobile', 'e1ref'].forEach(function(i){ $(i).value = ''; }); $('e1fellow').checked = false; return loadAll(); }).catch(function(e){ say('e1msg', 'Could not save: ' + (e.code || e.message), true); }); };
+  function renderEnrol(){
+    var q = ($('enrolSearch').value || '').toLowerCase(); var byEmail = {}; USERS.forEach(function(u){ if (u.email) byEmail[ekey(u.email)] = u; });
+    var keys = Object.keys(ENROL).sort(function(a, b){ return (ENROL[a].name || a).localeCompare(ENROL[b].name || b); }); $('enrolCount').textContent = '· ' + keys.length;
+    $('enrolRows').innerHTML = keys.filter(function(k){ return !q || (k + ' ' + (ENROL[k].name || '')).toLowerCase().includes(q); }).map(function(k){ var e = ENROL[k]; var u = byEmail[k];
+      return '<tr><td style="font-weight:600;">' + esc(e.name || '—') + '</td><td>' + esc(k) + '</td><td>' + esc(e.mobile || '') + '</td><td>' + (e.fellow ? '<span class="pill plum">Fellow</span>' : '<span class="pill mute">No</span>') + '</td><td>' + esc(e.ref || '') + '</td><td>' + (u ? '<span class="pill ok">Registered</span>' : '<span class="pill mute">Not yet</span>') + '</td><td style="white-space:nowrap;">' + fmtDate(e.addedAt) + '</td><td><button type="button" class="adm-btn danger" style="padding:6px 10px;font-size:.76rem;" data-del="' + esc(k) + '">Remove</button></td></tr>'; }).join('') || '<tr><td colspan="8" style="padding:22px;color:var(--ink-muted);">No one on the enrolment list yet.</td></tr>';
+  }
+  $('enrolSearch').oninput = renderEnrol;
+  $('enrolRows').addEventListener('click', function(e){ var b = e.target.closest('[data-del]'); if (!b || !confirm('Remove ' + b.dataset.del + ' from the enrolment list?')) return; db.collection('enrolments').doc(b.dataset.del).delete().then(loadAll).catch(function(err){ alert('Could not remove: ' + (err.code || err.message)); }); });
+
+  /* ---------- settings ---------- */
+  function renderSettings(){
+    $('sEnrol').checked = !!SITE.enrolmentRequired; $('sStart').value = SITE.courseStart || ''; $('sDeadline').value = SITE.regDeadline || ''; $('sAnnounce').value = SITE.announcement || '';
+    $('videoEditors').innerHTML = MODULES.map(function(m){ var k = String(m.n).padStart(2, '0'); return '<div class="vid-mod"><b>Module ' + k + ' · ' + esc(m.short) + '</b><textarea class="adm-input" data-vid="' + k + '" placeholder="one link per slot, in order">' + esc((VIDEOS[k] || []).join('\n')) + '</textarea></div>'; }).join('');
+  }
+  $('sSave').onclick = function(){ say('sMsg', 'Saving…'); db.collection('config').doc('site').set({ enrolmentRequired: $('sEnrol').checked, courseStart: $('sStart').value, regDeadline: $('sDeadline').value, announcement: $('sAnnounce').value.trim(), updatedBy: ME.uid, updatedAt: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true }).then(function(){ say('sMsg', 'Saved.'); return loadAll(); }).catch(function(e){ say('sMsg', 'Could not save: ' + (e.code || e.message), true); }); };
+  $('vSave').onclick = function(){ var v = {}; document.querySelectorAll('[data-vid]').forEach(function(t){ v[t.dataset.vid] = t.value.split('\n').map(function(l){ return l.trim(); }); while (v[t.dataset.vid].length && !v[t.dataset.vid][v[t.dataset.vid].length - 1]) v[t.dataset.vid].pop(); });
+    say('vMsg', 'Saving…'); db.collection('config').doc('videos').set(Object.assign(v, { updatedBy: ME.uid, updatedAt: firebase.firestore.FieldValue.serverTimestamp() })).then(function(){ say('vMsg', 'Saved.'); }).catch(function(e){ say('vMsg', 'Could not save: ' + (e.code || e.message), true); }); };
+
+  /* ---------- admins ---------- */
+  function renderAdmins(){
+    var byUid = {}; USERS.forEach(function(u){ byUid[u._uid] = u; });
+    $('adminRows').innerHTML = Object.keys(ADMINS).map(function(uid){ var u = byUid[uid] || ADMINS[uid] || {}; return '<tr><td style="font-weight:600;">' + esc(u.name || '—') + (uid === ME.uid ? ' <span class="pill mute">you</span>' : '') + '</td><td>' + esc(u.email || uid) + '</td><td>' + (uid === ME.uid ? '' : '<button type="button" class="adm-btn danger" style="padding:6px 10px;font-size:.76rem;" data-rm="' + uid + '">Remove</button>') + '</td></tr>'; }).join('');
+    $('meUid').textContent = ME.uid;
+  }
+  $('adminRows').addEventListener('click', function(e){ var b = e.target.closest('[data-rm]'); if (!b || !confirm('Remove admin access?')) return; db.collection('admins').doc(b.dataset.rm).delete().then(loadAll).catch(function(err){ alert('Could not remove: ' + (err.code || err.message)); }); });
+  $('aAdd').onclick = function(){ var email = ekey($('aEmail').value); var u = USERS.find(function(x){ return ekey(x.email) === email; }); if (!u) return say('aMsg', 'No registered account with that email. They must register on the portal first.', true);
+    db.collection('admins').doc(u._uid).set({ name: u.name || '', email: u.email || '', addedBy: ME.uid, addedAt: firebase.firestore.FieldValue.serverTimestamp() }).then(function(){ say('aMsg', 'Done.'); $('aEmail').value = ''; return loadAll(); }).catch(function(e){ say('aMsg', 'Could not save: ' + (e.code || e.message), true); }); };
+
+  /* ---------- gate ---------- */
+  PCCN_AUTH.onChange(function(u){
+    if (!u) return; ME = u; db = PCCN_AUTH.db(); var gate = $('adminGate');
+    if (!db) { gate.textContent = 'Firestore unavailable.'; return; }
+    db.collection('admins').doc(u.uid).get().then(function(d){
+      if (!d.exists) { gate.innerHTML = '<strong style="color:var(--ink);">This page is for PCCN course admins.</strong><br><br>You are signed in as <strong>' + esc(u.email || '') + '</strong>. An existing admin can add you from the Admins tab. For the very first admin, add a document with this ID to the <code>admins</code> collection in the Firebase console:<br><br><code style="background:var(--cream);padding:6px 10px;border-radius:8px;display:inline-block;">' + u.uid + '</code>'; return; }
+      return loadAll().then(function(){ gate.style.display = 'none'; $('adminBody').style.display = 'block'; });
+    }).catch(function(err){ gate.innerHTML = 'Could not check access: <code>' + esc(err.code || err.message) + '</code>. Publish the latest firestore.rules from the repo.'; });
   });
-}
+})();
 </script>
 </body>
 </html>

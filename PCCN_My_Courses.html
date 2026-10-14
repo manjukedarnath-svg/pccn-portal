@@ -512,6 +512,7 @@ main{flex:1;}
     </div>
   </div>
 
+  <div id="siteNotice" style="display:none;max-width:1120px;margin:22px auto 0;padding:0 28px;"></div>
   <div class="dash-body">
     <div>
       <div class="dash-stats">
@@ -1984,6 +1985,15 @@ var PCCN_MODULES = [
       }).catch(function(e){ console.warn('workshop status unavailable', e && e.code); });
     });
   }
+  /* site settings: announcement, course start, enrolment status */
+  document.addEventListener('pccn:config', function(ev){
+    var site = (ev.detail && ev.detail.site) || {}; var box = document.getElementById('siteNotice'); var html = '';
+    if (site.courseStart) { var cs = new Date(site.courseStart + 'T00:00:00'); var dd = Math.ceil((cs - new Date()) / 86400000); document.getElementById('countdownNum').textContent = dd > 0 ? dd : '0'; document.getElementById('countdownLabel').innerHTML = dd > 0 ? (dd === 1 ? 'day to<br>course start' : 'days to<br>course start') : 'Course<br>has started'; }
+    if (site.announcement) html += '<div style="background:#FFF3DD;border:1px solid #F3D9A4;border-radius:14px;padding:14px 18px;color:#5A3A00;font-size:.92rem;line-height:1.55;">' + site.announcement.replace(/[&<>]/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;' }[c]; }) + '</div>';
+    if (site.enrolmentRequired && window.PCCN_AUTH) PCCN_AUTH.onChange(function(u){ var db = PCCN_AUTH.db(); if (!u || !db) return;
+      db.collection('enrolments').doc(PCCN_GATE.emailKey(u.email)).get().then(function(d){ if (d.exists) return; box.innerHTML = html + '<div style="margin-top:10px;background:#FBEAF2;border:1px solid #F0B9D1;border-radius:14px;padding:14px 18px;color:#8A1240;font-size:.92rem;line-height:1.55;"><b>Your enrolment is not on the list yet.</b> Modules open once the course office adds you. If you have paid, email <a href="mailto:stepin.iapicc@gmail.com" style="color:#8A1240;">stepin.iapicc@gmail.com</a> with your name, mobile number and payment reference.</div>'; box.style.display = 'block'; }).catch(function(){}); });
+    if (html) { box.innerHTML = html; box.style.display = 'block'; }
+  });
   /* pccn-auth.js loads after this script */
   if (window.PCCN_AUTH) wireWorkshop(); else window.addEventListener('load', wireWorkshop);
 
@@ -2002,6 +2012,7 @@ var PCCN_MODULES = [
 <script src="pccn-firebase-config.js"></script>
 <script src="pccn-app-config.js"></script>
 <script src="pccn-auth.js"></script>
+<script src="pccn-gate.js"></script>
 <script>
 if (window.PCCN_AUTH) PCCN_AUTH.requireLogin();
 </script>
