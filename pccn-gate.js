@@ -65,7 +65,7 @@
       if (document.querySelector('a.pccn-director-link')) return;
       var area = document.getElementById('navAuthArea') || document.querySelector('.pccn-nav-actions'); if (!area) return;
       var a = document.createElement('a'); a.href = 'PCCN_Competency_Results.html'; a.textContent = 'Verify competencies'; a.className = 'pccn-director-link';
-      a.style.cssText = 'padding:8px 14px;border-radius:999px;font-size:.85rem;font-weight:700;color:#fff;background:#0F7159;text-decoration:none;white-space:nowrap;'; area.insertBefore(a, area.firstChild);
+      a.style.cssText = 'padding:8px 14px;border-radius:999px;font-size:.85rem;font-weight:700;color:#fff;background:#0F7159;text-decoration:none;white-space:nowrap;'; area.insertBefore(a, area.firstChild); navFit();
     }).catch(function(){});
     db.collection('admins').doc(user.uid).get().then(function(d){
       if (!d.exists) return;
@@ -75,9 +75,44 @@
       var a = document.createElement('a'); a.href = 'PCCN_Admin.html'; a.textContent = 'Admin'; a.className = 'pccn-admin-link' + (/PCCN_Admin/.test(location.pathname) ? ' active' : '');
       a.style.cssText = 'padding:8px 14px;border-radius:999px;font-size:.85rem;font-weight:700;color:#fff;background:#4A1A73;text-decoration:none;white-space:nowrap;';
       area.insertBefore(a, area.firstChild);
-      window.PCCN_IS_ADMIN = true;
+      window.PCCN_IS_ADMIN = true; navFit();
     }).catch(function(){});
   }
+
+
+  /* nav: when the links don't fit beside the account buttons, fold them into a Menu dropdown instead of clipping */
+  function navFit(){
+    document.querySelectorAll('.pccn-nav').forEach(function(nav){
+      var links = nav.querySelector('.pccn-nav-links'); if (!links) return;
+      var btn = nav.querySelector('.pccn-menu-btn');
+      if (!btn) {
+        btn = document.createElement('button'); btn.type = 'button'; btn.className = 'pccn-menu-btn'; btn.innerHTML = 'Menu &#9662;';
+        btn.addEventListener('click', function(e){ e.stopPropagation(); nav.classList.toggle('pccn-menu-open'); });
+        links.parentNode.insertBefore(btn, links);
+        document.addEventListener('click', function(){ nav.classList.remove('pccn-menu-open'); });
+      }
+      nav.classList.remove('pccn-nav-compact', 'pccn-menu-open');
+      if (getComputedStyle(links).display === 'none') return;          /* page's own mobile hamburger is active */
+      if (links.scrollWidth > links.clientWidth + 2) nav.classList.add('pccn-nav-compact');
+    });
+  }
+  (function(){
+    var st = document.createElement('style');
+    st.textContent = '.pccn-menu-btn{display:none;}' +
+      '.pccn-nav-compact .pccn-menu-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;border:1.5px solid rgba(255,255,255,.35);background:transparent;color:inherit;font:600 .9rem Poppins,-apple-system,sans-serif;cursor:pointer;margin-right:auto;}' +
+      '.pccn-nav:not(.dark).pccn-nav-compact .pccn-menu-btn{border-color:#D8C2E0;color:#1F0938;}' +
+      '.pccn-nav.dark.pccn-nav-compact .pccn-menu-btn{color:#fff;}' +
+      '.pccn-nav-compact .pccn-nav-inner{position:relative;}' +
+      '.pccn-nav-compact .pccn-nav-links{position:absolute;top:100%;left:0;min-width:240px;flex-direction:column;align-items:stretch;padding:8px;border-radius:0 0 14px 14px;box-shadow:0 16px 28px rgba(44,14,79,.22);background:#fff;visibility:hidden;opacity:0;z-index:60;flex:none;overflow:visible;}' +
+      '.pccn-nav.dark.pccn-nav-compact .pccn-nav-links{background:#2C0E4F;}.pccn-nav.dark.pccn-nav-compact .pccn-nav-links a{color:#fff;}' +
+      '.pccn-nav-compact.pccn-menu-open .pccn-nav-links{visibility:visible;opacity:1;}' +
+      '.pccn-nav-compact .pccn-nav-links a{padding:12px 14px;font-size:.95rem;}';
+    document.head.appendChild(st);
+    var t; window.addEventListener('resize', function(){ clearTimeout(t); t = setTimeout(navFit, 120); });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', navFit); else navFit();
+    window.addEventListener('load', navFit);
+  })();
+  window.PCCN_NAVFIT = navFit;
 
   window.PCCN_GATE = { site: function(){ return site; }, videos: function(){ return videos; }, ready: null, emailKey: emailKey };
   PCCN_GATE.ready = readConfig().then(function(){

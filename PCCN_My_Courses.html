@@ -2003,21 +2003,25 @@ var PCCN_MODULES = [
   /* site settings: announcement, course start, enrolment status */
   document.addEventListener('pccn:config', function(ev){
     var site = (ev.detail && ev.detail.site) || {}; var box = document.getElementById('siteNotice'); var html = '';
-    if (site.courseStart) { var cs = new Date(site.courseStart + 'T00:00:00'); var dd = Math.ceil((cs - new Date()) / 86400000); document.getElementById('countdownNum').textContent = dd > 0 ? dd : '0'; document.getElementById('countdownLabel').innerHTML = dd > 0 ? (dd === 1 ? 'day to<br>course start' : 'days to<br>course start') : 'Course<br>has started'; }
+    if (site.courseStart) { var cs = new Date(site.courseStart + 'T00:00:00'); var dd = Math.ceil((cs - new Date()) / 86400000); setCountdown(cs); }
     if (site.announcement) html += '<div style="background:#FFF3DD;border:1px solid #F3D9A4;border-radius:14px;padding:14px 18px;color:#5A3A00;font-size:.92rem;line-height:1.55;">' + site.announcement.replace(/[&<>]/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;' }[c]; }) + '</div>';
-    if (site.enrolmentRequired && window.PCCN_AUTH) PCCN_AUTH.onChange(function(u){ var db = PCCN_AUTH.db(); if (!u || !db) return;
-      db.collection('enrolments').doc(PCCN_GATE.emailKey(u.email)).get().then(function(d){ if (d.exists) return; box.innerHTML = html + '<div style="margin-top:10px;background:#FBEAF2;border:1px solid #F0B9D1;border-radius:14px;padding:14px 18px;color:#8A1240;font-size:.92rem;line-height:1.55;"><b>Your enrolment is not on the list yet.</b> Modules open once the course office adds you. If you have paid, email <a href="mailto:stepin.iapicc@gmail.com" style="color:#8A1240;">stepin.iapicc@gmail.com</a> with your name, mobile number and payment reference.</div>'; box.style.display = 'block'; }).catch(function(){}); });
+    if (window.PCCN_AUTH) PCCN_AUTH.onChange(function(u){ var db = PCCN_AUTH.db(); if (!u || !db) return;
+      db.collection('admins').doc(u.uid).get().then(function(a){
+        if (a.exists) { box.innerHTML = html + '<div style="margin-top:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:#F1E9F7;border:1px solid #D8C2E0;border-radius:14px;padding:14px 18px;color:#3E1266;font-size:.92rem;line-height:1.55;"><span><b>Course admin.</b> You see every module without enrolment. Learner progress, enrolments and settings are in the admin console.</span><a href="PCCN_Admin.html" style="margin-left:auto;padding:9px 16px;border-radius:999px;background:#4A1A73;color:#fff;font-weight:700;text-decoration:none;white-space:nowrap;">Open admin console</a></div>'; box.style.display = 'block'; return null; }
+        if (!site.enrolmentRequired) return null;
+        return db.collection('enrolments').doc(PCCN_GATE.emailKey(u.email)).get();
+      }).then(function(d){ if (!d || d.exists) return; box.innerHTML = html + '<div style="margin-top:10px;background:#FBEAF2;border:1px solid #F0B9D1;border-radius:14px;padding:14px 18px;color:#8A1240;font-size:.92rem;line-height:1.55;"><b>Your enrolment is not on the list yet.</b> Modules open once the course office adds you. If you have paid, email <a href="mailto:stepin.iapicc@gmail.com" style="color:#8A1240;">stepin.iapicc@gmail.com</a> with your name, mobile number and payment reference.</div>'; box.style.display = 'block'; }).catch(function(){}); });
     if (html) { box.innerHTML = html; box.style.display = 'block'; }
   });
   /* pccn-auth.js loads after this script */
   if (window.PCCN_AUTH) wireWorkshop(); else window.addEventListener('load', wireWorkshop);
 
-  var courseStart = new Date('2026-08-15T00:00:00');
-  var today = new Date();
-  var days = Math.ceil((courseStart - today) / 86400000);
-  document.getElementById('countdownNum').textContent = days > 0 ? days : '0';
-  if (days === 1) document.getElementById('countdownLabel').innerHTML = 'day to<br>course start';
-  else if (days <= 0) document.getElementById('countdownLabel').innerHTML = 'Course<br>has started';
+  function setCountdown(cs){
+    var dd = Math.ceil((cs - new Date()) / 86400000), n = document.getElementById('countdownNum'), l = document.getElementById('countdownLabel');
+    if (dd > 0) { n.textContent = dd; l.innerHTML = dd === 1 ? 'day to<br>course start' : 'days to<br>course start'; }
+    else { n.textContent = Math.floor(-dd / 7) + 1; l.innerHTML = 'week of<br>the course'; }
+  }
+  setCountdown(new Date('2026-08-15T00:00:00'));
 })();
 </script>
 
