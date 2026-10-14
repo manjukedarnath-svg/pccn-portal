@@ -1,0 +1,266 @@
+{
+ "id": "s3",
+ "module": "02",
+ "title": "Escalation Drill",
+ "subtitle": "3-year-old with worsening bronchiolitis — from nasal prongs to bag-mask",
+ "duration": "12–15 min",
+ "patient": {
+  "age": "3 years",
+  "weight": "14 kg",
+  "sex": "boy"
+ },
+ "stem": "Night shift on the paediatric ward, 1:10 am. Aarav, 3 years, was admitted at 6 pm with bronchiolitis on nasal prongs 2 L/min. You are the ward nurse; the resident is in the emergency room with another child.",
+ "parent": "\"He was better at 10 o'clock. Now he's breathing so fast and making that noise again. He won't settle, he keeps pushing me away.\"",
+ "vitals": {
+  "hr": 152,
+  "rr": 58,
+  "spo2": 90,
+  "bp": "92/58",
+  "crt": 2,
+  "temp": 38.0,
+  "avpu": "A",
+  "note": "On nasal prongs 2 L/min. Marked subcostal and intercostal recessions, tracheal tug, intermittent grunting. Widespread wheeze and crackles. Agitated, pushes the mask away. Chest still moving well."
+ },
+ "decisions": [
+  {
+   "id": "d1",
+   "title": "Distress or failure?",
+   "prompt": "Using the 3 E's — Effort, Efficacy, Effects — how do you classify him right now?",
+   "options": [
+    {
+     "text": "Mild distress; increase the prongs to 3 L/min and recheck at the 2 am round",
+     "vitals": {
+      "spo2": 88,
+      "rr": 60
+     },
+     "outcome": "Prongs turned up to 3 L/min. At 1:40 am he is grunting louder: SpO₂ 88 %, RR 60.",
+     "best": false,
+     "note": "Grunting, tracheal tug and SpO₂ 90 % on oxygen are not mild. Grunting is the child generating his own PEEP: a sign of impending failure. Fifty minutes unobserved is dangerous."
+    },
+    {
+     "text": "Severe distress with impending respiratory failure: high effort, falling efficacy (SpO₂ 90 % on oxygen), effects beginning (agitation, tachycardia). Escalate now.",
+     "vitals": {},
+     "outcome": "You press the call bell for the resident and stay with him.",
+     "best": true,
+     "note": "Effort is maximal, efficacy is failing despite oxygen, and agitation is an early effect of hypoxaemia. He is still compensating, which is exactly when escalation prevents failure."
+    },
+    {
+     "text": "Respiratory failure: he is grunting, so bag-mask ventilation now",
+     "vitals": {
+      "hr": 170
+     },
+     "outcome": "You start bagging. He is awake and fights the mask; his own breaths clash with yours. HR 170 and he is more agitated.",
+     "best": false,
+     "note": "He is breathing hard, awake, agitated and moving his chest well. That is impending failure, not failure. Bagging an awake, vigorously breathing child is ineffective and distressing. Escalate support, prepare the bag, keep watching."
+    },
+    {
+     "text": "Anxiety from the hospital environment; give the mother a chair and dim the lights",
+     "vitals": {
+      "spo2": 87,
+      "hr": 160
+     },
+     "outcome": "Lights dimmed, his mother in a chair. Fifteen minutes later he is still grunting: SpO₂ 87 %, HR 160.",
+     "best": false,
+     "note": "Agitation in a hypoxaemic child is the hypoxaemia. Comfort measures are good; they are not the treatment."
+    }
+   ]
+  },
+  {
+   "id": "d2",
+   "title": "Choose the device",
+   "prompt": "You have called for the resident. In the meantime, what is the right next step in oxygen support?",
+   "options": [
+    {
+     "text": "Increase nasal prongs to 4 L/min",
+     "vitals": {
+      "spo2": 90,
+      "rr": 60
+     },
+     "outcome": "At 4 L/min he rubs at his nose and cries; the gas is cold and dry. SpO₂ stays at 90 %, RR 60.",
+     "best": false,
+     "note": "Standard nasal prongs above 2 L/min in a child give dry, cold gas and little extra FiO₂; the nose will not tolerate it. He needs a step up, not more of the same."
+    },
+    {
+     "text": "Start HFNC at 2 L/kg/min (about 28 L/min), FiO₂ 0.4–0.6, heated and humidified, titrated to SpO₂ 94–98 % — with a non-rebreather mask as a bridge while the circuit is set up",
+     "vitals": {
+      "spo2": 95,
+      "rr": 48,
+      "hr": 140,
+      "note": "On HFNC 28 L/min FiO₂ 0.5 after 20 minutes. Grunting stopped. Recessions less."
+     },
+     "outcome": "Non-rebreather on while you assemble the HFNC circuit. Twenty minutes on 28 L/min, FiO₂ 0.5: the grunting stops and the recessions ease.",
+     "best": true,
+     "note": "HFNC flushes dead space, gives a PEEP-like effect and warms and humidifies the gas; it is the next step for moderate–severe bronchiolitis. Set up per your unit protocol; the non-rebreather bridges the few minutes of assembly."
+    },
+    {
+     "text": "Non-rebreather mask at 15 L/min and continue observing on the ward",
+     "vitals": {
+      "spo2": 96,
+      "rr": 56,
+      "hr": 150,
+      "note": "SpO₂ up but still grunting and recessing."
+     },
+     "outcome": "On the non-rebreather SpO₂ climbs to 96 % — but he is still grunting and recessing at RR 56.",
+     "best": false,
+     "note": "A reasonable bridge, but not the destination. A non-rebreather gives high FiO₂ with no flow support, so the work of breathing does not fall. If SpO₂ improves but the recessions and grunting do not, he is still heading for failure."
+    },
+    {
+     "text": "Nebulised salbutamol and wait for the response",
+     "vitals": {
+      "spo2": 89,
+      "hr": 168
+     },
+     "outcome": "Nebuliser running. Fifteen minutes later SpO₂ 89 %, HR 168, no change in his effort.",
+     "best": false,
+     "note": "Bronchodilators have no consistent benefit in bronchiolitis, and a nebuliser does not treat hypoxaemia with impending failure. If your protocol allows a trial, it must not delay the escalation of oxygen support."
+    }
+   ]
+  },
+  {
+   "id": "d3",
+   "title": "Is HFNC working? Nursing care",
+   "prompt": "One hour on HFNC 28 L/min, FiO₂ 0.5: HR 138, RR 44, SpO₂ 95 %, no grunting, recessions milder, settled on mother's lap. What do you do now?",
+   "options": [
+    {
+     "text": "He is better; wean the flow to 10 L/min and let him sleep",
+     "vitals": {
+      "spo2": 91,
+      "rr": 54
+     },
+     "outcome": "Flow weaned to 10 L/min. Within 40 minutes RR is 54, SpO₂ 91 %, and the recessions are back.",
+     "best": false,
+     "note": "Improvement after one hour means it is working; it is not a reason to remove the support that is working. Weaning is a daytime, team decision, FiO₂ first and then flow."
+    },
+    {
+     "text": "HFNC is working (HR and RR falling, SpO₂ up within 1–2 hours). Continue; check the prongs fill less than half of each nostril, check the nasal bridge and ears for pressure, keep him nil by mouth or on NG feeds per protocol, head up, reassess every 30 minutes, document.",
+     "vitals": {},
+     "outcome": "Prongs checked, nasal bridge padded, NG feeds started, head up. He sleeps on HFNC with his mother beside him.",
+     "best": true,
+     "note": "A fall in HR and RR in the first 1–2 hours is the sign of response. Then the nursing care that keeps it safe: prong size, skin, feeding plan, positioning and a reassessment schedule."
+    },
+    {
+     "text": "Start oral feeds now that he is comfortable",
+     "vitals": {},
+     "outcome": "He takes a few sips of milk, coughs and splutters. SpO₂ dips to 89 % and he is breathing faster.",
+     "best": false,
+     "note": "A child at RR 44 on high flow is at risk of aspiration; feeding is by NG or IV until he is clearly settling. Follow your unit protocol."
+    },
+    {
+     "text": "Increase FiO₂ to 1.0 to be safe overnight",
+     "vitals": {
+      "spo2": 100
+     },
+     "outcome": "FiO₂ turned to 1.0. The monitor reads 100 % — and will keep reading high even as he tires.",
+     "best": false,
+     "note": "SpO₂ 95 % is in target. Unneeded oxygen hides deterioration (the saturation stays high while the child tires) and is not harmless. Titrate to 94–98 %."
+    }
+   ]
+  },
+  {
+   "id": "d4",
+   "title": "Sudden deterioration",
+   "prompt": "3:40 am. The monitor alarms. He is pale, drowsy, breathing is slow and shallow, RR 14, SpO₂ 82 % and falling, HR 88. Then a 15-second pause in breathing.",
+   "options": [
+    {
+     "text": "Increase HFNC to 40 L/min and FiO₂ 1.0",
+     "vitals": {
+      "spo2": 76,
+      "hr": 70,
+      "note": "Second apnoeic pause."
+     },
+     "outcome": "At 40 L/min the monitor still shows SpO₂ 76 %, HR 70. A second apnoeic pause.",
+     "best": false,
+     "note": "HFNC supports breathing; it does not breathe for a child. Slowing respirations, drowsiness and apnoea are respiratory failure: he needs ventilation now."
+    },
+    {
+     "text": "Call for help (emergency bell, resident, crash trolley). Remove the HFNC prongs, open the airway (head tilt–chin lift, sniffing position), bag-mask ventilate with 100 % oxygen at 1 breath every 2–3 seconds (20–30 breaths/min), two-person technique, watch for chest rise. Check the pulse.",
+     "vitals": {
+      "spo2": 94,
+      "hr": 110,
+      "rr": 24,
+      "note": "Chest rising with each squeeze. Colour returning. Resident at the bedside."
+     },
+     "outcome": "Chest rising with each squeeze, colour returning. SpO₂ 94 %, HR 110. The resident reaches the bedside.",
+     "best": true,
+     "note": "Apnoea or inadequate breathing with a pulse = rescue breathing: one breath every 2–3 seconds for a child, just enough volume to see the chest rise, two people (one seals, one squeezes). If the pulse falls below 60 with poor perfusion despite ventilation, start compressions."
+    },
+    {
+     "text": "Give a nebulised adrenaline and rub his sternum to wake him",
+     "vitals": {
+      "spo2": 72,
+      "hr": 58
+     },
+     "outcome": "The sternal rub produces a brief grimace and nothing more. SpO₂ 72 %, HR 58.",
+     "best": false,
+     "note": "Neither treats apnoea. A sternal rub is a response check, not a treatment; a nebuliser needs a breathing child."
+    },
+    {
+     "text": "Bag-mask at 40–60 breaths/min as fast as possible to bring the saturation up",
+     "vitals": {
+      "spo2": 90,
+      "hr": 100,
+      "note": "Abdomen distending; vomit in the mask."
+     },
+     "outcome": "SpO₂ rises to 90 %, but the abdomen is distending and he vomits into the mask.",
+     "best": false,
+     "note": "Over-ventilation inflates the stomach, raises intrathoracic pressure and drops cardiac output. One breath every 2–3 seconds, chest rise only."
+    }
+   ]
+  },
+  {
+   "id": "d5",
+   "title": "ISBAR handover for intubation and PICU",
+   "prompt": "The resident is bagging with you and the intensivist is on the phone. Give the handover.",
+   "options": [
+    {
+     "text": "\"The bronchiolitis in bed 6 has gone bad, please come.\"",
+     "vitals": {},
+     "outcome": "\"Which child? What is the saturation? Is he breathing?\" The intensivist asks you to call back with details; three minutes are lost.",
+     "best": false,
+     "note": "No numbers, no sequence, no request. The intensivist cannot plan from this."
+    },
+    {
+     "text": "\"Dr Rao, this is Nurse Priya, paediatric ward. Aarav, 3 years, 14 kg, bronchiolitis day 3. Admitted on 2 L prongs; at 1 am severe distress, SpO₂ 90 %, started HFNC 28 L FiO₂ 0.5 and improved. At 3:40 he became drowsy and apnoeic, SpO₂ 82 %, HR 88. We are bag-mask ventilating with 100 % oxygen, SpO₂ now 94 %, HR 110, IV in situ, glucose 5.2. We need you here now for intubation and PICU transfer.\"",
+     "vitals": {},
+     "outcome": "The intensivist confirms she is coming with the intubation kit and will be there in 5 minutes.",
+     "best": true,
+     "note": "Identify, Situation, Background in time order, Assessment with current numbers and what is already done, Recommendation with urgency. The intensivist arrives knowing what to bring."
+    },
+    {
+     "text": "\"We've been bagging him, he's pink now, can you decide in the morning?\"",
+     "vitals": {},
+     "outcome": "\"In the morning?\" The intensivist asks for numbers; when she hears 'apnoea' she says she is coming now, but minutes are lost in the confusion.",
+     "best": false,
+     "note": "A child who needed bag-mask ventilation for apnoea needs definitive airway planning now, not in the morning. \"Pink now\" is because you are breathing for him."
+    },
+    {
+     "text": "Give the handover to the mother so she can tell the intensivist",
+     "vitals": {},
+     "outcome": "The mother, crying, tries to explain on the phone. The intensivist cannot get the numbers she needs.",
+     "best": false,
+     "note": "Clinical handover is nurse to clinician, closed-loop. The mother needs her own explanation, separately and gently."
+    }
+   ]
+  }
+ ],
+ "debrief": [
+  "At 1:10 am, which of the 3 E's told you this was impending failure rather than distress?",
+  "What signs in the first 1–2 hours told you HFNC was working, and what would have told you it was failing?",
+  "Why is the ventilation rate 1 breath every 2–3 seconds and not faster? What happens if you bag too fast?"
+ ],
+ "takeHome": [
+  "Grunting, SpO₂ falling on oxygen and agitation = impending failure: escalate while the child is still compensating.",
+  "HFNC at 2 L/kg/min is the step after nasal prongs; bridge with a non-rebreather while setting up.",
+  "Response to HFNC shows in HR and RR within 1–2 hours; the nursing care keeps it safe.",
+  "Apnoea or inadequate breathing with a pulse: bag-mask at 1 breath every 2–3 seconds, chest rise only, two-person.",
+  "ISBAR in time order with current numbers brings the intensivist ready to intubate."
+ ],
+ "references": [
+  "AHA PALS Provider Manual 2020: respiratory distress and failure, rescue breathing rates (1 breath every 2–3 s), bag-mask technique.",
+  "IAP ICC PCCN Module 02: 3 E's, oxygen delivery devices, HFNC, bag-mask ventilation."
+ ],
+ "ending": {
+  "smooth": "The intensivist intubates him with you assisting, and he is transferred to PICU stable on the ventilator. His mother was kept informed throughout.",
+  "detour": "He is intubated and transferred to PICU, but after a longer period of hypoxaemia; the team watch closely for aspiration and hypoxic injury."
+ }
+}

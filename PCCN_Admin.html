@@ -719,8 +719,10 @@ main{flex:1;}
   function modCell(v){
     if (!v.progress) return '<span class="pill mute">—</span>';
     var keys = Object.keys(v.progress).filter(function(k){ return k !== 'workshop'; }).sort(); if (!keys.length) return '<span class="pill mute">—</span>';
-    return keys.map(function(mk){ var p = v.progress[mk]; var q = p.quiz ? p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' ✓' : ' ✗') : (p.steps ? p.steps.length + ' steps' : ''); return '<span class="pill plum">' + mk.toUpperCase().replace('MOD', 'M') + ' ' + q + '</span> '; }).join('');
+    return keys.map(function(mk){ var p = v.progress[mk]; var q = p.quiz ? p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' ✓' : ' ✗') : (p.steps ? p.steps.length + ' steps' : ''); return '<span class="pill plum">' + mk.toUpperCase().replace('MOD', 'M') + ' ' + q + '</span> '; }).join('') + simPill(v);
   }
+  function simsDone(v){ var n = 0; Object.keys(v.progress || {}).forEach(function(k){ var p = v.progress[k]; if (p && p.sim) n += Object.keys(p.sim).length; }); return n; }
+  function simPill(v){ var n = simsDone(v); return n ? '<span class="pill ok" title="Virtual simulations completed">Sims ' + n + '/4</span>' : ''; }
   function compFor(email){ var k = ekey(email); if (!k) return null; var hits = COMP.filter(function(c){ return ekey(c.email) === k; }); if (!hits.length) return null; hits.sort(function(a, b){ return tsNum(b.submittedAt) - tsNum(a.submittedAt); }); return hits[0]; }
   function tsNum(t){ return t && t.toDate ? t.toDate().getTime() : (t ? new Date(t).getTime() || 0 : 0); }
   function compCell(v){ var c = compFor(v.email); if (!c) return '<span class="pill mute">—</span>'; return c.status === 'verified' ? '<span class="pill ok">Verified ' + (c.verifiedTotal || '') + '/36' + (c.band ? ' · ' + c.band : '') + '</span>' : '<span class="pill plum">Declared ' + (c.declaredTotal || '') + '/36</span>'; }
@@ -758,7 +760,7 @@ main{flex:1;}
     if (en) det += '<p><b>Enrolment:</b> ' + esc(en.name || '') + ' · ' + esc(en.mobile || '') + ' · ' + (en.fellow ? 'IDPCCN Fellow' : 'Non-fellow') + (en.ref ? ' · ' + esc(en.ref) : '') + '</p>';
     var keys = v.progress ? Object.keys(v.progress).filter(function(k){ return k !== 'workshop'; }).sort() : [];
     if (!keys.length) det += '<p class="muted">No module activity yet.</p>';
-    keys.forEach(function(mk){ var p = v.progress[mk]; det += '<div style="margin-bottom:12px;"><b>' + mk.toUpperCase() + '</b>' + (p.quiz ? ' — quiz ' + p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' (pass)' : ' (fail)') : '') + (p.steps ? ' · steps: ' + esc(p.steps.join(', ')) : '');
+    keys.forEach(function(mk){ var p = v.progress[mk]; det += '<div style="margin-bottom:12px;"><b>' + mk.toUpperCase() + '</b>' + (p.quiz ? ' — quiz ' + p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' (pass)' : ' (fail)') : '') + (p.steps ? ' · steps: ' + esc(p.steps.join(', ')) : '') + (p.sim ? ' · simulations: ' + Object.keys(p.sim).sort().map(function(id){ var r = p.sim[id]; return esc(id.toUpperCase()) + ' (' + new Date(r.completedAt).toLocaleDateString() + ', first-choice ' + r.firstTime + '/' + r.of + ', detours ' + r.detours + ')'; }).join('; ') : '');
       if (p.responses) { det += '<table class="adm-table" style="margin-top:6px;font-size:.8rem;">'; Object.keys(p.responses).forEach(function(q){ det += '<tr><td style="width:55%;">' + esc(q) + '</td><td>' + esc(p.responses[q].a) + '</td></tr>'; }); det += '</table>'; }
       det += '</div>'; });
     $('ldDetail').innerHTML = det; $('learnerDlg').style.display = 'flex';

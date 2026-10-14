@@ -709,11 +709,8 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
   <section class="mod-section" id="sim">
     <div class="sec-head"><span class="sec-num">S</span><h2 class="sec-title">The Virtual Triage</h2></div>
     <div class="sec-underline"></div>
-    <p class="sec-sub">Breakout scenarios · after you finish the lectures above</p>
-    <div class="grid2">
-      <div class="card"><span class="tag amber">Scenario A</span><h3>8-month-old, respiratory distress</h3><p>Run PAT → ABCDE → triage in real time.</p></div>
-      <div class="card"><span class="tag amber">Scenario B</span><h3>4-year-old, minor injury</h3><p>Practise triaging <i>down</i> just as confidently.</p></div>
-    </div>
+    <p class="sec-sub">Virtual simulation · each decision changes how the case unfolds</p>
+    <div class="pccn-sim" data-sims="s1,s2"><p class="sec-sub">Loading the scenario…</p></div>
   </section>
 
   <!-- READY RECKONER -->
@@ -1016,6 +1013,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
 <script src="pccn-firebase-config.js"></script>
 <script src="pccn-auth.js"></script>
 <script src="pccn-gate.js"></script>
+<script src="pccn-sim.js"></script>
 <script>
 (function(){
   var secs = [].slice.call(document.querySelectorAll('.mod-section'));
