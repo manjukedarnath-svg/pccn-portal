@@ -1,0 +1,271 @@
+{
+ "id": "s4",
+ "module": "03",
+ "title": "The Septic Child",
+ "subtitle": "6-year-old with fever, hypotension and delayed capillary refill",
+ "duration": "12–15 min",
+ "patient": {
+  "age": "6 years",
+  "weight": "20 kg",
+  "sex": "girl"
+ },
+ "stem": "Paediatric emergency, 11:20 pm. Meera, 6 years, is carried in by her father. Fever for three days, now very sleepy. You are the emergency nurse; the doctor is two beds away.",
+ "parent": "\"She had fever and loose motions since Thursday. The medical shop gave her syrup. Today she stopped drinking, passed urine only once, and since evening she just wants to sleep. Her hands are so cold.\"",
+ "vitals": {
+  "hr": 152,
+  "rr": 32,
+  "spo2": 96,
+  "bp": "78/40",
+  "crt": 4,
+  "temp": 39.5,
+  "avpu": "V",
+  "note": "Lethargic, opens eyes to voice, weak cry. Mottled knees, cold hands and feet to the wrists, peripheral pulses weak, central pulses present. No recessions. Dry lips. Hypotension threshold for 6 years = 70 + (2 × 6) = 82 mmHg systolic."
+ },
+ "decisions": [
+  {
+   "id": "d1",
+   "title": "PAT from the doorway",
+   "prompt": "Appearance: lethargic, weak cry, poor interaction. Work of breathing: fast but no recessions. Circulation to skin: mottled, pale. First impression?",
+   "options": [
+    {
+     "text": "Respiratory distress — RR 32 at 6 years is fast",
+     "vitals": {
+      "crt": 5
+     },
+     "outcome": "You give oxygen and set up a nebuliser. Her hands grow colder; CRT 5 s.",
+     "best": false,
+     "note": "The rate is up, but there is no increased effort; this is the breathing of acidosis and fever, not a lung problem. The abnormal sides are appearance and circulation."
+    },
+    {
+     "text": "Shock — abnormal appearance with abnormal circulation to skin",
+     "vitals": {},
+     "outcome": "You call the doctor over and move her to the resuscitation bay.",
+     "best": true,
+     "note": "Mottled, pale skin with a lethargic, poorly interacting child is shock until proved otherwise, and the abnormal appearance tells you the brain is already under-perfused: this is decompensated, not early."
+    },
+    {
+     "text": "CNS dysfunction — lethargy with fever means meningitis",
+     "vitals": {
+      "crt": 5,
+      "hr": 158
+     },
+     "outcome": "You start preparing a lumbar puncture tray. Meanwhile CRT is 5 s and HR 158.",
+     "best": false,
+     "note": "Lethargy with normal circulation would point to a primary brain problem. Here the skin is mottled and cold: the brain is lethargic because of shock. Treat the shock; look for the source after."
+    },
+    {
+     "text": "Stable but dehydrated — oral rehydration salts and observe",
+     "vitals": {
+      "crt": 5,
+      "avpu": "P"
+     },
+     "outcome": "She is given ORS and does not drink it. Twenty minutes later she responds only to pain; CRT 5 s.",
+     "best": false,
+     "note": "Dehydration that produces mottling, CRT 4 s and lethargy is hypovolaemic shock and needs IV fluid now. ORS Plan A/B is for a child who is alert and can drink."
+    }
+   ]
+  },
+  {
+   "id": "d2",
+   "title": "ABCDE — the first five minutes",
+   "prompt": "You have called the doctor over. What are your first actions while the doctor assesses?",
+   "options": [
+    {
+     "text": "Full history and head-to-toe examination to find the source of infection",
+     "vitals": {
+      "crt": 5,
+      "hr": 160
+     },
+     "outcome": "Ten minutes into the history and examination she still has no IV line. CRT 5 s, HR 160.",
+     "best": false,
+     "note": "Source-finding is for after resuscitation. In the first five minutes the only question is: oxygen, access, glucose."
+    },
+    {
+     "text": "Oxygen by non-rebreather, continuous monitoring, two IV cannulas (IO if no IV within 5 minutes), bedside glucose, blood culture drawn with the first cannula, fluid warmed and ready, weight 20 kg confirmed",
+     "vitals": {
+      "note": "Glucose 3.1 mmol/L (56 mg/dL). IV ×2 in 4 minutes. Culture sent."
+     },
+     "outcome": "Oxygen on, monitored. Two IV lines in 4 minutes; blood culture sent. Bedside glucose 3.1 mmol/L (56 mg/dL).",
+     "best": true,
+     "note": "Oxygen even with SpO₂ 96 % (shock is a delivery problem), monitoring, access within 5 minutes with IO as the fallback, glucose (hypoglycaemia is common and fatal), culture before antibiotics but antibiotics never delayed for a culture."
+    },
+    {
+     "text": "Paracetamol for the fever and a cold sponge; shock will improve once the temperature falls",
+     "vitals": {
+      "crt": 5,
+      "hr": 160
+     },
+     "outcome": "The cold sponge makes her shiver and the mottling spreads up her legs. CRT 5 s, HR 160.",
+     "best": false,
+     "note": "The fever is not causing the shock. A cold sponge worsens peripheral vasoconstriction. Antipyretics can come after the bolus."
+    },
+    {
+     "text": "Insert a urinary catheter first to measure output",
+     "vitals": {
+      "crt": 5
+     },
+     "outcome": "The catheter takes 10 minutes. There is still no IV line; CRT 5 s.",
+     "best": false,
+     "note": "Urine output is a useful trend, but it is not a first-five-minutes action and it is not access. Oxygen, IV/IO, glucose, fluid."
+    }
+   ]
+  },
+  {
+   "id": "d3",
+   "title": "Classify the shock",
+   "prompt": "HR 152, BP 78/40 (threshold 82), CRT 4 s, cold mottled limbs, weak peripheral pulses, lethargic, fever 39.5 with diarrhoea. How do you classify it?",
+   "options": [
+    {
+     "text": "Compensated shock — the systolic BP is only a little low",
+     "vitals": {},
+     "outcome": "Labelled compensated, the plan becomes maintenance fluid and observation. BP drops to 76/40.",
+     "best": false,
+     "note": "Compensated shock has a normal BP. 78 is below 70 + (2 × age) = 82. Any hypotension in a child is decompensated shock and means the compensatory mechanisms have failed."
+    },
+    {
+     "text": "Hypotensive (decompensated) shock, septic with hypovolaemia, cold shock pattern",
+     "vitals": {},
+     "outcome": "Decompensated septic shock with hypovolaemia, cold pattern. The doctor agrees and asks for fluid.",
+     "best": true,
+     "note": "Hypotension defines decompensated shock. Fever plus a likely source (gastroenteritis) makes it septic, with fluid loss from diarrhoea adding hypovolaemia. Cold extremities, weak pulses and prolonged CRT are the cold-shock pattern."
+    },
+    {
+     "text": "Cardiogenic shock — tachycardia at 152 means the heart is failing",
+     "vitals": {},
+     "outcome": "Thinking cardiogenic, the doctor asks for 5 mL/kg over 20 minutes. BP stays 78/40, CRT 4 s.",
+     "best": false,
+     "note": "Cardiogenic shock shows a large liver, crackles, gallop, and worsening with fluid. There is no such history. Tachycardia is the child's compensation, not the cause."
+    },
+    {
+     "text": "Warm shock — she has a fever, so she must be vasodilated",
+     "vitals": {},
+     "outcome": "A warm-shock plan is discussed. But her limbs are cold and her pulses weak — the picture does not fit, and time passes.",
+     "best": false,
+     "note": "Warm shock is flash CRT, bounding pulses and warm extremities with a wide pulse pressure. She is cold, mottled, CRT 4 s with weak pulses: cold shock. The distinction matters for the first vasoactive drug."
+    }
+   ]
+  },
+  {
+   "id": "d4",
+   "title": "Fluid resuscitation",
+   "prompt": "The doctor orders fluid. Which first bolus do you give, and how?",
+   "options": [
+    {
+     "text": "20 mL/kg (400 mL) isotonic crystalloid over 5–10 minutes by push–pull or pressure bag; reassess HR, CRT, pulses, BP, mental status, liver edge and chest after each bolus; dextrose 10 % 2 mL/kg for the glucose of 3.1",
+     "vitals": {
+      "hr": 142,
+      "bp": "82/44",
+      "crt": 3,
+      "avpu": "V",
+      "note": "After bolus 1 (400 mL): slightly warmer hands. Antibiotic given at 25 minutes. No crackles, liver not enlarged."
+     },
+     "outcome": "400 mL in over 8 minutes by push–pull, and 10 % dextrose 40 mL for the glucose. Hands slightly warmer: HR 142, BP 82/44. Antibiotic in at 25 minutes. Chest clear, liver not enlarged.",
+     "best": true,
+     "note": "10–20 mL/kg isotonic crystalloid fast, reassess after every bolus, repeat if still in shock and no signs of overload. Treat the hypoglycaemia at the same time. Blood culture is sent; first-dose antibiotic goes in within the hour."
+    },
+    {
+     "text": "20 mL/kg isotonic crystalloid over 1 hour on the infusion pump",
+     "vitals": {
+      "crt": 4,
+      "bp": "76/40",
+      "avpu": "P"
+     },
+     "outcome": "The pump runs at 400 mL/h. Thirty minutes in she is still mottled, BP 76/40, now responding only to pain.",
+     "best": false,
+     "note": "Right volume, wrong speed. A bolus in shock is given over 5–10 minutes; over an hour it is maintenance, and she stays in shock for an hour."
+    },
+    {
+     "text": "5 % dextrose 400 mL fast",
+     "vitals": {
+      "crt": 4,
+      "note": "Na falling. Still in shock."
+     },
+     "outcome": "400 mL of 5 % dextrose in. The repeat sodium is falling; she is still mottled, CRT 4 s.",
+     "best": false,
+     "note": "Dextrose 5 % is free water once the glucose is metabolised; it does not stay in the circulation and will drop the sodium. Shock boluses are isotonic. Treat the low glucose separately with 10 % dextrose 2 mL/kg."
+    },
+    {
+     "text": "5 mL/kg (100 mL) to be safe, in case it is cardiogenic",
+     "vitals": {
+      "crt": 4,
+      "bp": "78/42"
+     },
+     "outcome": "100 mL in. A small change: BP 78/42, CRT still 4 s.",
+     "best": false,
+     "note": "Small, slow boluses (5–10 mL/kg) are right for cardiogenic shock or where overload is a concern — but she has no cardiac signs and is hypotensive from sepsis and fluid loss. Under-resuscitation prolongs shock. Use 10–20 mL/kg and reassess."
+    }
+   ]
+  },
+  {
+   "id": "d5",
+   "title": "Reassess: fluid-refractory shock",
+   "prompt": "After two boluses (40 mL/kg, 800 mL) and the antibiotic: HR 140, BP 80/42, CRT 3 s, still cold to the wrists, lethargic. Chest clear, liver 1 cm, no breathlessness. What now?",
+   "options": [
+    {
+     "text": "Third and fourth boluses until the BP is normal",
+     "vitals": {
+      "note": "After bolus 4: crackles at both bases, liver 3 cm, RR 40."
+     },
+     "outcome": "After the fourth bolus: crackles at both bases, liver 3 cm, RR 40, SpO₂ 92 %.",
+     "best": false,
+     "note": "Shock that persists after 40–60 mL/kg is fluid-refractory; more fluid without a vasoactive drug risks overload. Reassess the liver and chest after every bolus and start preparing the infusion now."
+    },
+    {
+     "text": "Fluid-refractory cold septic shock: tell the doctor, prepare an adrenaline infusion (0.05–0.3 micrograms/kg/min, can run through a peripheral or IO line while central access is arranged), continue monitoring every 5 minutes, call PICU",
+     "vitals": {
+      "hr": 128,
+      "bp": "92/50",
+      "crt": 2,
+      "avpu": "A",
+      "note": "Adrenaline 0.1 microgram/kg/min running via peripheral line. Warmer to the elbows. Passed urine 60 mL. PICU accepting."
+     },
+     "outcome": "Adrenaline at 0.1 microgram/kg/min through the peripheral line. Warm to the elbows, HR 128, BP 92/50, CRT 2 s, alert. She passes 60 mL of urine. PICU accepts her.",
+     "best": true,
+     "note": "Persistent shock after 40–60 mL/kg is fluid-refractory. In cold shock, adrenaline is the first-line vasoactive, started early and peripherally if needed. Reassess continuously and arrange PICU."
+    },
+    {
+     "text": "Start dopamine as the first drug and wait for a central line before any infusion",
+     "vitals": {
+      "crt": 4,
+      "bp": "76/40"
+     },
+     "outcome": "Forty minutes pass waiting for a central line with no vasoactive drug running. BP 76/40, CRT 4 s.",
+     "best": false,
+     "note": "Adrenaline (cold shock) or noradrenaline (warm shock) are preferred over dopamine. Waiting for a central line delays the drug; a dilute infusion can run peripherally with site checks every 15 minutes."
+    },
+    {
+     "text": "Furosemide — she has had 800 mL and must be overloaded",
+     "vitals": {
+      "crt": 5,
+      "bp": "70/36",
+      "avpu": "P"
+     },
+     "outcome": "Furosemide given. BP falls to 70/36, CRT 5 s, she responds only to pain.",
+     "best": false,
+     "note": "There are no signs of overload (chest clear, liver 1 cm, not breathless) and she is still hypotensive. A diuretic now deepens the shock. Overload is a clinical diagnosis, not a volume count."
+    }
+   ]
+  }
+ ],
+ "debrief": [
+  "Which PAT findings told you this was shock and not meningitis or dehydration? What made it decompensated?",
+  "Name the three things that must happen in the first five minutes and the one drug that must be in within the hour.",
+  "What do you check after every bolus, and what tells you to stop fluid and start a vasoactive drug?"
+ ],
+ "takeHome": [
+  "Lethargy with mottled skin is shock; hypotension (SBP below 70 + 2 × age) makes it decompensated.",
+  "First five minutes: oxygen, monitoring, IV/IO within 5 minutes, glucose, culture, antibiotic within the hour.",
+  "Cold shock = cold limbs, weak pulses, prolonged CRT. Warm shock = flash CRT, bounding pulses.",
+  "10–20 mL/kg isotonic crystalloid over 5–10 minutes; reassess perfusion, liver and chest after every bolus.",
+  "Shock after 40–60 mL/kg is fluid-refractory: adrenaline for cold shock, peripherally if needed, and call PICU."
+ ],
+ "references": [
+  "Surviving Sepsis Campaign International Guidelines for the Management of Septic Shock in Children (Weiss et al., 2020): fluid boluses, adrenaline/noradrenaline over dopamine, peripheral vasoactive infusion.",
+  "AHA PALS Provider Manual 2020: recognition of shock, hypotension thresholds, fluid resuscitation.",
+  "IAP ICC PCCN Module 03: types of shock, fluid resuscitation, NIBP."
+ ],
+ "ending": {
+  "smooth": "Meera reaches PICU warm to the elbows, passing urine, on adrenaline. She is weaned off the infusion on day 2.",
+  "detour": "Meera reaches PICU, but the time spent in shock means she needs ventilation and a longer course of vasoactive support."
+ }
+}

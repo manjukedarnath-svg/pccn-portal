@@ -1,0 +1,235 @@
+{
+ "id": "s2",
+ "module": "01",
+ "title": "Virtual Triage B",
+ "subtitle": "4-year-old with a minor injury — triaging down safely",
+ "duration": "10 min",
+ "patient": {
+  "age": "4 years",
+  "weight": "16 kg",
+  "sex": "boy"
+ },
+ "stem": "Sunday evening, 6:15 pm. A father walks in holding a crying 4-year-old boy with a blood-stained towel on his head. You are the triage nurse. The waiting area already has eleven children.",
+ "parent": "\"He fell off the dining chair about 20 minutes ago and hit his head on the floor. There was a lot of blood. He cried straight away. He hasn't vomited. He's been talking to me the whole way here.\"",
+ "vitals": {
+  "hr": 112,
+  "rr": 24,
+  "spo2": 98,
+  "bp": "98/62",
+  "crt": 1,
+  "temp": 36.9,
+  "avpu": "A",
+  "note": "Crying loudly but stops when father speaks to him, pushes your hand away, walked in holding father's hand. 2 cm laceration over the left parietal scalp, oozing, no active bleeding. Pupils equal and reactive. No other injury."
+ },
+ "decisions": [
+  {
+   "id": "d1",
+   "title": "PAT from the doorway",
+   "prompt": "Appearance: loud cry, consolable, fighting you off, walked in. Work of breathing: normal. Circulation to skin: pink. Your first impression?",
+   "options": [
+    {
+     "text": "Stable — all three sides of the PAT are normal",
+     "vitals": {},
+     "outcome": "You settle on a reassuring first impression and move to a focused assessment.",
+     "best": true,
+     "note": "A loud, consolable cry with normal tone and interaction is a reassuring appearance; a child who walked in and pushes you away is not critically unwell. Stable on the PAT means you have time for a focused assessment — it does not mean \"nothing to do\"."
+    },
+    {
+     "text": "CNS dysfunction — head injury with crying means raised intracranial pressure",
+     "vitals": {},
+     "outcome": "You rush him into the resuscitation bay. He stops crying when his father speaks to him and starts pulling at the monitor leads. The team asks why he is there.",
+     "best": false,
+     "note": "Crying is not an abnormal appearance; it is the expected response of a frightened 4-year-old in pain. CNS dysfunction on the PAT means abnormal appearance with normal breathing and circulation: drowsy, floppy, not interacting, or a high-pitched inconsolable cry."
+    },
+    {
+     "text": "Shock — scalp wounds bleed heavily, he must have lost a lot of blood",
+     "vitals": {},
+     "outcome": "You ask for IV access and fluid. He fights the cannulation; the waiting list grows while a well-perfused child takes up your time.",
+     "best": false,
+     "note": "Scalp wounds bleed dramatically, but his circulation side is normal: pink, warm, CRT 1 s, HR 112. A towel of blood looks like more than it is. Shock from a scalp laceration alone is very rare in a 4-year-old."
+    },
+    {
+     "text": "Respiratory distress — he is breathing fast because he is crying",
+     "vitals": {},
+     "outcome": "You put an oxygen mask on him. He pulls it off and cries harder. Once settled on his father's lap his breathing is quiet and regular at 24.",
+     "best": false,
+     "note": "Crying raises the rate but there is no flaring, no recession, no abnormal sound. Work of breathing is normal. Count the rate again once he settles."
+    }
+   ]
+  },
+  {
+   "id": "d2",
+   "title": "Focused assessment",
+   "prompt": "He is stable on the PAT, so you have time. Which focused assessment do you do now?",
+   "options": [
+    {
+     "text": "Clean and dress the wound first, then ask about the fall",
+     "vitals": {},
+     "outcome": "Ten minutes go into cleaning and dressing the wound. The head-injury screen still has not been done, and the next child is waiting.",
+     "best": false,
+     "note": "Wound care can wait a few minutes; the head-injury screen cannot. If he needs a CT or a doctor urgently, you must know now."
+    },
+    {
+     "text": "Head-injury screen: mechanism and height of fall, loss of consciousness, vomiting (how many times), drowsiness or unusual behaviour, seizure, headache; examine the scalp for a boggy swelling and check pupils; then a full set of vital signs",
+     "vitals": {},
+     "outcome": "Fall from about 60 cm, cried at once, no loss of consciousness, no vomiting, behaving normally. No boggy swelling; pupils equal and reactive. HR 108, RR 24, SpO₂ 98 %, BP 98/62.",
+     "best": true,
+     "note": "A fall of under 1 metre with immediate cry, no loss of consciousness, no vomiting, normal behaviour, equal pupils and no boggy haematoma puts him in the low-risk group. Vital signs complete the picture."
+    },
+    {
+     "text": "Send him straight for a CT head; every head injury with bleeding needs imaging",
+     "vitals": {},
+     "outcome": "Radiology asks for the doctor's request and the indication. You have neither; he waits in the corridor for 30 minutes.",
+     "best": false,
+     "note": "A CT is a doctor's decision, and a low-mechanism fall with no red flags does not need one. Unnecessary CT exposes a 4-year-old to radiation. Your job is to screen and report."
+    },
+    {
+     "text": "Give an anti-emetic and paracetamol now so he is comfortable in the queue",
+     "vitals": {},
+     "outcome": "Anti-emetic and paracetamol given. He is comfortable — and if he vomits later, the drug may hide it.",
+     "best": false,
+     "note": "Paracetamol is reasonable, but an anti-emetic would mask vomiting, which is one of your re-triage signs. Do not treat the symptom you are relying on to detect deterioration."
+    }
+   ]
+  },
+  {
+   "id": "d3",
+   "title": "Triage category",
+   "prompt": "No loss of consciousness, no vomiting, alert and playing with his father's phone, pupils equal, a small laceration that has stopped oozing, vitals normal. Which level?",
+   "options": [
+    {
+     "text": "Level 2 · Emergent — any head injury with a wound, to be safe",
+     "vitals": {},
+     "outcome": "He takes the Level 2 cubicle. Ten minutes later a wheezing child arrives and has to wait in a chair.",
+     "best": false,
+     "note": "Over-triage has a cost: he takes a Level 2 slot while a child with breathing difficulty waits. Triage is about matching urgency to need, in both directions. Reserve Level 2 for red flags."
+    },
+    {
+     "text": "Level 4 · Less urgent — wound closure by the doctor, observation in the waiting area, re-triage if anything changes",
+     "vitals": {},
+     "outcome": "Level 4. He sits with his father, playing on the phone, within your sight.",
+     "best": true,
+     "note": "A low-risk head injury with a laceration needing closure is Level 4: seen within the hour, father told the warning signs, and you re-check him on your waiting-area rounds. Triaging down confidently is as important as triaging up."
+    },
+    {
+     "text": "Level 5 · Non-urgent — put a dressing on and send him to the OPD tomorrow",
+     "vitals": {},
+     "outcome": "His father is handed a dressing and told to come to OPD tomorrow. At the door he turns back: \"Is nobody going to stitch it?\"",
+     "best": false,
+     "note": "The laceration needs closure today, and a head injury needs a doctor's assessment and documented advice before discharge. Level 5 sends him away without either."
+    },
+    {
+     "text": "Level 3 · Urgent — in case he deteriorates",
+     "vitals": {},
+     "outcome": "Level 3. He will be seen a little sooner, but no one has yet told the father what to watch for.",
+     "best": false,
+     "note": "Defensible if your waiting area is unmonitored, but with no red flags the evidence supports Level 4 with clear re-triage criteria. Whichever level, what matters is that the re-triage triggers are set and the father knows them."
+    }
+   ]
+  },
+  {
+   "id": "d4",
+   "title": "Advice to the family while they wait",
+   "prompt": "Father asks: \"Is he going to be all right? What should I watch for?\" What do you tell him?",
+   "options": [
+    {
+     "text": "\"He's fine, don't worry, just wait for your turn.\"",
+     "vitals": {},
+     "outcome": "The father nods and sits down. He does not know what to watch for.",
+     "best": false,
+     "note": "Reassurance without instructions. The father is your best observer for the next hour; give him a job."
+    },
+    {
+     "text": "\"He looks well now. Come straight to me if he vomits, becomes drowsy or hard to wake, behaves strangely, has a fit, complains of a worsening headache, or if the wound starts bleeding again. Keep him sitting with you; no running about. I'll check on him every 15 minutes.\"",
+     "vitals": {},
+     "outcome": "The father repeats the warning signs back to you and sits where you can see them both.",
+     "best": true,
+     "note": "Specific warning signs in plain words, what to do if they appear, and a promise of regular review. This is family-centred care and it is also your safety net."
+    },
+    {
+     "text": "\"Keep him awake at all costs; if he sleeps he could slip into a coma.\"",
+     "vitals": {},
+     "outcome": "The father shakes the boy awake every few minutes. The child is tired and crying, and the father is frightened.",
+     "best": false,
+     "note": "A myth that frightens parents. A tired 4-year-old may sleep; what matters is that he is rousable. Teach the father to check that he wakes normally, not to keep him awake."
+    },
+    {
+     "text": "Hand him the printed head-injury leaflet and move to the next patient",
+     "vitals": {},
+     "outcome": "The father glances at the leaflet and folds it into his pocket.",
+     "best": false,
+     "note": "A leaflet supports a conversation; it does not replace one. Many parents will not read it, and he needs to know to come to you, not just to \"seek help\"."
+    }
+   ]
+  },
+  {
+   "id": "d5",
+   "title": "Re-triage",
+   "prompt": "Forty minutes later the father comes to the desk: \"Sister, he has vomited twice and now he wants to sleep.\" What do you do?",
+   "options": [
+    {
+     "text": "\"Vomiting is common after a fright; let him sleep, the doctor will see him soon.\"",
+     "vitals": {
+      "hr": 68,
+      "avpu": "V",
+      "note": "Drowsy, rouses to voice, pupils equal, HR falling."
+     },
+     "outcome": "Twenty minutes later the father shouts from the waiting area: the boy is very hard to wake. HR 68, rouses only to pain, left pupil slightly larger than the right.",
+     "best": false,
+     "note": "Two vomits and new drowsiness after a head injury are red flags. This is exactly the change your advice was designed to catch. Act on it."
+    },
+    {
+     "text": "Bring him to a monitored bed, repeat the PAT and ABCDE with pupils, upgrade to Level 2 and call the doctor now with an ISBAR handover: \"4-year-old, head injury 1 hour ago, now vomited twice and drowsy, I need you here now\"",
+     "vitals": {
+      "hr": 96,
+      "avpu": "V",
+      "note": "Drowsy but rousable, pupils equal, no further vomiting. Doctor at the bedside in 4 minutes."
+     },
+     "outcome": "On a monitored bed: drowsy but rousable, pupils equal, HR 96, no further vomiting. The doctor is at the bedside in 4 minutes and a CT is arranged.",
+     "best": true,
+     "note": "Triage is dynamic: a change in the child changes the category. Re-assess, upgrade, escalate with numbers and a timeframe. The earlier advice to the father is what brought him to you in time."
+    },
+    {
+     "text": "Give an anti-emetic and put him back in the queue",
+     "vitals": {
+      "avpu": "V",
+      "hr": 64
+     },
+     "outcome": "After the anti-emetic he sleeps in the queue. On your next round he rouses only to voice and HR is 64.",
+     "best": false,
+     "note": "Treating the symptom hides the sign. Vomiting after head injury is information, not a nuisance."
+    },
+    {
+     "text": "Move him up one level to Level 3 and let the doctor know at the next round",
+     "vitals": {
+      "avpu": "V"
+     },
+     "outcome": "Level 3. The doctor is at the far end of the department and will see him on the round. Fifteen minutes later he is harder to wake.",
+     "best": false,
+     "note": "Red flags after head injury go to Level 2 with the doctor called now, not informed later."
+    }
+   ]
+  }
+ ],
+ "debrief": [
+  "Why is triaging down correctly as important as triaging up? What happens to the department when every child is Level 2?",
+  "Which single piece of advice to the father made the difference at the 40-minute mark?",
+  "List the head-injury red flags you would teach a new triage nurse."
+ ],
+ "takeHome": [
+  "A stable PAT buys time for a focused assessment; it does not end the assessment.",
+  "Screen head injuries for red flags before wound care.",
+  "Triage down with confidence when there are no red flags — and set re-triage triggers.",
+  "Give parents specific warning signs and a route back to you.",
+  "Triage is dynamic: a change in the child changes the level, and the doctor is called now."
+ ],
+ "references": [
+  "AHA PALS Provider Manual 2020: Pediatric Assessment Triangle.",
+  "NICE NG232 Head injury: assessment and early management (2023): red flags in children.",
+  "IAP ICC PCCN Module 01: triage levels, DIRECT approach."
+ ],
+ "ending": {
+  "smooth": "The CT shows a small extradural haematoma. The neurosurgeon operates that night; because the change was caught early he goes home on day 4 with no deficit.",
+  "detour": "The CT shows an extradural haematoma. He reaches theatre, but later and drowsier than he should have, and his recovery is slower."
+ }
+}

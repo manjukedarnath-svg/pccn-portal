@@ -1,0 +1,255 @@
+{
+ "id": "s1",
+ "module": "01",
+ "title": "Virtual Triage A",
+ "subtitle": "8-month-old with respiratory distress",
+ "duration": "10–12 min",
+ "patient": {
+  "age": "8 months",
+  "weight": "8 kg",
+  "sex": "girl"
+ },
+ "stem": "It is 7:40 pm in the paediatric emergency room. A mother hurries in carrying her 8-month-old daughter. You are the triage nurse.",
+ "parent": "\"Sister, she has had a cold and cough for three days. Since this afternoon she is breathing very fast and she won't take the breast. She feels hot.\"",
+ "vitals": {
+  "hr": 168,
+  "rr": 64,
+  "spo2": 89,
+  "bp": "—",
+  "crt": 2,
+  "temp": 38.2,
+  "avpu": "A",
+  "note": "Irritable but consolable in mother's arms. Nasal flaring, subcostal and intercostal recessions, audible wheeze. Pink lips, warm hands. Room air."
+ },
+ "decisions": [
+  {
+   "id": "d1",
+   "title": "PAT from the doorway",
+   "prompt": "Before you touch her, you form a first impression from 30–60 seconds at the doorway. Appearance: irritable, consoles with mother, good tone, looks at you. Work of breathing: fast, flaring, recessions, wheeze. Circulation to skin: pink, no mottling. What is your first impression?",
+   "options": [
+    {
+     "text": "Stable — a well-looking infant with a cough; routine queue",
+     "vitals": {
+      "spo2": 87,
+      "rr": 66
+     },
+     "outcome": "You send her to the waiting queue. Twelve minutes later her mother rushes back: she has stopped crying and is breathing faster. SpO₂ 87 %, RR 66.",
+     "best": false,
+     "note": "Two sides of the PAT are abnormal. Increased work of breathing with flaring and recessions is never \"stable\"; this child must not wait in the routine queue."
+    },
+    {
+     "text": "Respiratory distress — appearance normal, work of breathing increased, circulation normal",
+     "vitals": {},
+     "outcome": "You take her straight past the queue to the triage bed and keep her on her mother's lap.",
+     "best": true,
+     "note": "Normal appearance (consolable, good tone, interactive) with increased work of breathing is respiratory distress: the infant is compensating, and compensation can be lost quickly in an 8-month-old."
+    },
+    {
+     "text": "Respiratory failure — she is grunting and about to stop breathing",
+     "vitals": {},
+     "outcome": "You rush her to the resuscitation bay and call the team. The registrar finds an alert, consolable infant on her mother's lap and asks for your assessment. Her breathing still has not been assessed.",
+     "best": false,
+     "note": "In respiratory failure appearance is abnormal: lethargy, poor tone, not interacting, or a slowing or silent chest. She is irritable but consolable and interactive. Over-calling failure wastes the resuscitation bay; under-calling distress is the greater danger — reassess every few minutes."
+    },
+    {
+     "text": "Shock — tachycardia of 168 means poor perfusion",
+     "vitals": {},
+     "outcome": "You ask for an IV line and a fluid bolus. While the trolley is prepared nobody attends to her breathing; the recessions are deeper.",
+     "best": false,
+     "note": "Tachycardia alone is not shock. Her circulation-to-skin side is normal: pink, warm, CRT 2 s. Fever, distress and crying all raise the heart rate. Shock needs abnormal circulation signs: pallor, mottling, cool extremities, delayed CRT."
+    }
+   ]
+  },
+  {
+   "id": "d2",
+   "title": "First hands-on action",
+   "prompt": "You move to the triage bed. What is the first thing you do?",
+   "options": [
+    {
+     "text": "Take a full SAMPLE history from the mother before examining the child",
+     "vitals": {
+      "spo2": 87
+     },
+     "outcome": "The mother describes three days of cold and cough while the baby works harder to breathe beside her. By the end of the history SpO₂ has drifted to 87 %.",
+     "best": false,
+     "note": "History comes after the primary assessment in a child with increased work of breathing. ABCDE first; the SAMPLE history belongs to the secondary assessment once A and B are managed."
+    },
+    {
+     "text": "Airway and breathing: keep her upright on mother, gently suction the nose, count the respiratory rate for a full minute, attach a pulse oximeter, listen to both sides of the chest",
+     "vitals": {
+      "spo2": 89,
+      "rr": 62
+     },
+     "outcome": "Upright on her mother, nose cleared of thick secretions. You count 62 a minute. The oximeter settles at 89 % on room air with a good trace. Wheeze and crackles on both sides.",
+     "best": true,
+     "note": "A then B. Position of comfort, clear the nose (infants are nose-breathers), measure rather than estimate the rate, get an SpO₂, and auscultate for wheeze, crackles and air entry on both sides."
+    },
+    {
+     "text": "Secure an IV line and send bloods",
+     "vitals": {
+      "rr": 70,
+      "hr": 176
+     },
+     "outcome": "Two attempts at a cannula. She screams and struggles: RR 70, HR 176, the recessions deepen.",
+     "best": false,
+     "note": "An IV is not an A or B intervention, and the struggle will worsen her breathing. Nothing here needs IV access yet."
+    },
+    {
+     "text": "Give paracetamol 15 mg/kg for the fever and re-check in an hour",
+     "vitals": {
+      "spo2": 86
+     },
+     "outcome": "Paracetamol given and you turn to the next child. When you glance back she is quieter, but dusky around the lips. SpO₂ 86 %.",
+     "best": false,
+     "note": "The fever is not what is threatening her; the breathing is. Antipyretic can come later. An hour unobserved is far too long for an infant with SpO₂ 89 %."
+    }
+   ]
+  },
+  {
+   "id": "d3",
+   "title": "Oxygen",
+   "prompt": "SpO₂ reads 89 % on room air with a good trace. Your respiratory rate count is 62. What do you do about oxygen?",
+   "options": [
+    {
+     "text": "No oxygen yet; observe for 15 minutes and recheck",
+     "vitals": {
+      "spo2": 86,
+      "hr": 174
+     },
+     "outcome": "Fifteen minutes later she is tiring: SpO₂ 86 %, HR 174, the cry is weaker.",
+     "best": false,
+     "note": "SpO₂ 89 % with increased work of breathing is below the target of 94–98 %. Start oxygen now; observing does not treat hypoxaemia and the infant is tiring."
+    },
+    {
+     "text": "Nasal prongs at 1–2 L/min, titrate to keep SpO₂ 94–98 %, keep her on mother's lap",
+     "vitals": {
+      "spo2": 95,
+      "rr": 56,
+      "hr": 160
+     },
+     "outcome": "Prongs at 1 L/min, titrated up to 2 L/min. She settles at the breast. SpO₂ 95 %, RR 56, HR 160.",
+     "best": true,
+     "note": "Low-flow nasal prongs are the first step for an infant in distress with mild hypoxaemia: well tolerated, allows feeding and comfort, and you titrate to the target. Reassess within minutes."
+    },
+    {
+     "text": "Non-rebreather mask at 15 L/min",
+     "vitals": {
+      "spo2": 97,
+      "rr": 60,
+      "hr": 170
+     },
+     "outcome": "The mask goes on and she fights it. SpO₂ climbs to 97 % but she is screaming, HR 170, and her mother is struggling to hold the mask on her face.",
+     "best": false,
+     "note": "Not wrong for severe hypoxaemia, but a mask on a crying infant increases distress and oxygen use, and 15 L/min gives far more FiO₂ than she needs. Start low and titrate; keep the non-rebreather for SpO₂ below 90 % that does not respond, or for shock."
+    },
+    {
+     "text": "Bag-mask ventilation at 20 breaths/min",
+     "vitals": {
+      "spo2": 92,
+      "hr": 180
+     },
+     "outcome": "You start bagging. She fights the mask, her abdomen distends and she vomits. SpO₂ 92 %, HR 180.",
+     "best": false,
+     "note": "Bag-mask ventilation is for a child who is not breathing adequately: apnoea, gasping, or failure with a silent chest. She is breathing fast with good effort. Bagging a conscious, distressed infant causes gastric distension and vomiting."
+    }
+   ]
+  },
+  {
+   "id": "d4",
+   "title": "Triage category",
+   "prompt": "On oxygen her SpO₂ is 95 %, RR 56, HR 160, still recessing. Which triage level, and what does it mean for her?",
+   "options": [
+    {
+     "text": "Level 1 · Resuscitation — straight to the resuscitation bay, call the team",
+     "vitals": {},
+     "outcome": "The resuscitation team gathers round a pink, alert infant on oxygen. Five minutes later an ambulance brings in a child in arrest — and the only resuscitation bay is occupied.",
+     "best": false,
+     "note": "Level 1 is for failure or arrest: apnoea, silent chest, unresponsive, hypotensive shock. She responded to oxygen and is still compensating. Over-triage here blocks the bay for the next child who needs it; the right answer is Level 2 with the doctor at the bedside in minutes."
+    },
+    {
+     "text": "Level 2 · Emergent — doctor to see within 10 minutes, continuous monitoring, nurse stays with her",
+     "vitals": {},
+     "outcome": "She stays on the monitored triage bed with you beside her: continuous SpO₂ and heart rate, reassessed every 5 minutes.",
+     "best": true,
+     "note": "Respiratory distress needing oxygen is Level 2: continuous SpO₂ and heart-rate monitoring, reassess every 5 minutes, escalate immediately if she tires. She does not leave your sight."
+    },
+    {
+     "text": "Level 4 · Less urgent — she is pink on oxygen, she can wait her turn",
+     "vitals": {
+      "spo2": 90,
+      "rr": 64
+     },
+     "outcome": "She goes back to the waiting area on a portable cylinder. Twenty minutes later SpO₂ is 90 % and RR 64; the recessions are deeper.",
+     "best": false,
+     "note": "A pink SpO₂ on oxygen does not make her less urgent; it means the oxygen is working for now. The work of breathing is unchanged and infants tire without warning. Level 4 means she could wait an hour unmonitored."
+    },
+    {
+     "text": "Level 5 · Non-urgent — give a nebuliser and send to the OPD queue",
+     "vitals": {
+      "spo2": 86,
+      "rr": 68,
+      "hr": 178
+     },
+     "outcome": "Her mother carries her to the OPD queue. Thirty minutes later she is rushed back: grey, RR 68, SpO₂ 86 %, HR 178.",
+     "best": false,
+     "note": "An infant on oxygen for respiratory distress is not an outpatient. This is the triage decision that leads to a collapse in the waiting area."
+    }
+   ]
+  },
+  {
+   "id": "d5",
+   "title": "ISBAR call to the doctor",
+   "prompt": "You phone the paediatric registrar. Which handover gets the doctor to the bedside fastest, with the right picture?",
+   "options": [
+    {
+     "text": "\"Doctor, there's a baby here with a cough and fever, can you come when you're free?\"",
+     "vitals": {},
+     "outcome": "\"I'll come when I finish here.\" Thirty minutes pass and the registrar has not arrived.",
+     "best": false,
+     "note": "No identification, no situation, no objective data, no request with a timeframe. \"When you're free\" invites a 40-minute wait."
+    },
+    {
+     "text": "\"Doctor, this is Sister Rani in triage. I have an 8-month-old, 8 kg, in respiratory distress: RR 62, SpO₂ 89 % on air, now 95 % on 2 L nasal prongs, HR 160, wheeze both sides, recessions, Temp 38.2. I've triaged her Level 2. I need you at the bedside within 10 minutes.\"",
+     "vitals": {},
+     "outcome": "The registrar repeats the numbers back and says she is on her way. She is at the bedside in six minutes.",
+     "best": true,
+     "note": "ISBAR: Identify yourself and the patient, Situation in one line, Background and Assessment with numbers, and a Recommendation with a timeframe. The doctor can picture the child before arriving."
+    },
+    {
+     "text": "\"Doctor, bed 3, 8 months, looks like bronchiolitis, I've started oxygen, see her after the ward round.\"",
+     "vitals": {},
+     "outcome": "The registrar finishes the ward round first. Fifty minutes pass before she arrives.",
+     "best": false,
+     "note": "A diagnosis is offered but no vital signs, no request and no timeframe. \"After the ward round\" could be an hour. State the numbers and what you need."
+    },
+    {
+     "text": "Send a WhatsApp message with the vitals to the on-call group and continue monitoring",
+     "vitals": {},
+     "outcome": "The message shows two grey ticks. Twenty-five minutes later nobody has replied.",
+     "best": false,
+     "note": "A Level 2 child needs a closed-loop call: you speak, the doctor confirms they are coming and when. A group message may not be read."
+    }
+   ]
+  }
+ ],
+ "debrief": [
+  "What were the two abnormal sides of the PAT, and why did they add up to distress rather than failure?",
+  "At which point would you have upgraded her to Level 1? Name three signs.",
+  "What would you check at each 5-minute reassessment while waiting for the doctor?"
+ ],
+ "takeHome": [
+  "PAT from the doorway in under a minute: appearance decides distress versus failure.",
+  "Position, suction, measure the rate, SpO₂, listen: A then B before any history.",
+  "Oxygen to a target of 94–98 %: start low, titrate, reassess.",
+  "Distress on oxygen is Level 2, never Level 4: monitored, reassessed every 5 minutes.",
+  "ISBAR with numbers and a timeframe gets the doctor to the bed."
+ ],
+ "references": [
+  "AHA PALS Provider Manual 2020: Pediatric Assessment Triangle, respiratory distress and failure, oxygen therapy.",
+  "IAP ICC PCCN Module 01: PAT, ABCDE, triage levels, DIRECT approach."
+ ],
+ "ending": {
+  "smooth": "The registrar confirms bronchiolitis and admits her to the HDU on nasal prongs. By the next morning she is feeding at the breast and the recessions are settling.",
+  "detour": "She reaches the doctor and the HDU, but the detours meant a longer spell of hypoxaemia and a tiring infant; she needed high-flow oxygen on admission."
+ }
+}

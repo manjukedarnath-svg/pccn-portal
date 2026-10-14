@@ -729,12 +729,8 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
   <section class="mod-section" id="sim">
     <div class="sec-head"><span class="sec-num">S</span><h2 class="sec-title">The Septic Child</h2></div>
     <div class="sec-underline"></div>
-    <p class="sec-sub">Virtual simulation · after you finish the lectures above</p>
-    <div class="card">
-      <span class="tag orange">Scenario</span>
-      <h3>6-year-old — fever, hypotension, delayed CRT</h3>
-      <p>Run PAT → ABCDE → classify the shock → fluid bolus → reassess → escalate to vasoactive support if fluid-refractory. Faculty debrief follows.</p>
-    </div>
+    <p class="sec-sub">Virtual simulation · each decision changes how the case unfolds</p>
+    <div class="pccn-sim" data-sims="s4"><p class="sec-sub">Loading the scenario…</p></div>
   </section>
 
   <!-- READY RECKONER -->
@@ -1039,6 +1035,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
 <script src="pccn-firebase-config.js"></script>
 <script src="pccn-auth.js"></script>
 <script src="pccn-gate.js"></script>
+<script src="pccn-sim.js"></script>
 <script>
 (function(){
   var secs = [].slice.call(document.querySelectorAll('.mod-section'));
