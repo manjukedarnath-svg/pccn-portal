@@ -508,7 +508,7 @@ main{flex:1;}
     </div>
     <div style="background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;">
       <table style="width:100%;border-collapse:collapse;font-size:.9rem;">
-        <thead><tr style="background:var(--cream);text-align:left;"><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">#</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Name</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Email</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Module progress &amp; scores</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Joined</th></tr></thead>
+        <thead><tr style="background:var(--cream);text-align:left;"><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">#</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Name</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Email</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Module progress &amp; scores</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Workshop</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Organiser</th><th style="padding:14px 22px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);">Joined</th></tr></thead>
         <tbody id="usersRows"></tbody>
       </table>
     </div>
@@ -548,8 +548,17 @@ if (window.PCCN_AUTH) {
         document.getElementById('adminBody').style.display = 'block';
         var rows = document.getElementById('usersRows');
         var USERS = [];
-        snap.forEach(function(d){ USERS.push(d.data()); });
+        snap.forEach(function(d){ var x = d.data(); x._uid = d.id; USERS.push(x); });
         var now = Date.now(), week = 0, html = '';
+        function wsCell(v){
+          var w = v.progress && v.progress.workshop; if (!w) return '<span style="color:var(--ink-muted);">—</span>';
+          var c = w.pass ? '#0F7159' : '#A81F5B';
+          return '<span title="' + (w.edition || '') + ' · ' + (w.venue || '') + ' · ' + (w.date || '') + (w.certificateId ? ' · ' + w.certificateId : '') + '" style="display:inline-block;background:' + (w.pass ? '#EBF8F4' : '#FBEAF2') + ';color:' + c + ';border-radius:8px;padding:3px 9px;font-size:.78rem;font-weight:700;white-space:nowrap;">' + (w.pass ? '\u2713 ' : '\u2717 ') + w.pct + '%' + (w.edition ? ' · ' + w.edition.replace(/ Edition$/, '') : '') + '</span>';
+        }
+        function orgCell(v, uid){
+          var on = !!(v.roles && v.roles.organiser);
+          return '<label style="display:inline-flex;align-items:center;gap:6px;font-size:.8rem;cursor:pointer;white-space:nowrap;" onclick="event.stopPropagation()"><input type="checkbox" data-org="' + uid + '"' + (on ? ' checked' : '') + '> ' + (on ? 'Organiser' : '—') + '</label>';
+        }
         function progSummary(v){
           if (!v.progress) return '<span style="color:var(--ink-muted);">—</span>';
           return Object.keys(v.progress).sort().map(function(mk){
@@ -563,7 +572,7 @@ if (window.PCCN_AUTH) {
           var ts = v.createdAt && v.createdAt.toDate ? v.createdAt.toDate() : null;
           if (ts && (now - ts.getTime()) < 7*86400000) week++;
           if (i === 1) document.getElementById('statLatest').textContent = v.name || v.email || '—';
-          html += '<tr data-row="' + idx + '" style="border-top:1px solid var(--hairline);cursor:pointer;"><td style="padding:13px 22px;color:var(--ink-muted);">' + i + '</td><td style="padding:13px 22px;font-weight:600;color:var(--ink);">' + (v.name||'—') + '</td><td style="padding:13px 22px;color:var(--ink-body);">' + (v.email||'—') + '</td><td style="padding:13px 22px;">' + progSummary(v) + '</td><td style="padding:13px 22px;color:var(--ink-soft);white-space:nowrap;">' + (ts ? ts.toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : '—') + '</td></tr>';
+          html += '<tr data-row="' + idx + '" style="border-top:1px solid var(--hairline);cursor:pointer;"><td style="padding:13px 22px;color:var(--ink-muted);">' + i + '</td><td style="padding:13px 22px;font-weight:600;color:var(--ink);">' + (v.name||'—') + '</td><td style="padding:13px 22px;color:var(--ink-body);">' + (v.email||'—') + '</td><td style="padding:13px 22px;">' + progSummary(v) + '</td><td style="padding:13px 22px;">' + wsCell(v) + '</td><td style="padding:13px 22px;">' + orgCell(v, v._uid) + '</td><td style="padding:13px 22px;color:var(--ink-soft);white-space:nowrap;">' + (ts ? ts.toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : '—') + '</td></tr>';
           var det = '';
           if (v.progress) Object.keys(v.progress).sort().forEach(function(mk){
             var p = v.progress[mk];
@@ -579,11 +588,19 @@ if (window.PCCN_AUTH) {
             }
             det += '</div>';
           });
-          html += '<tr data-det="' + idx + '" style="display:none;background:var(--cream);"><td colspan="5" style="padding:16px 26px;font-size:.85rem;color:var(--ink-body);">' + (det || 'No module activity yet.') + '</td></tr>';
+          html += '<tr data-det="' + idx + '" style="display:none;background:var(--cream);"><td colspan="7" style="padding:16px 26px;font-size:.85rem;color:var(--ink-body);">' + (det || 'No module activity yet.') + '</td></tr>';
         });
-        rows.innerHTML = html || '<tr><td colspan="5" style="padding:22px;color:var(--ink-muted);">No registrations yet.</td></tr>';
+        rows.innerHTML = html || '<tr><td colspan="7" style="padding:22px;color:var(--ink-muted);">No registrations yet.</td></tr>';
         document.getElementById('statTotal').textContent = USERS.length;
         document.getElementById('stat7d').textContent = week;
+        /* organiser flag: lets this learner run a workshop in the PCCN Essentials app (admins only; see firestore.rules) */
+        rows.addEventListener('change', function(e){
+          var cb = e.target.closest('input[data-org]'); if (!cb) return;
+          var uid = cb.getAttribute('data-org'), on = cb.checked; cb.disabled = true;
+          db.collection('users').doc(uid).set({ roles: { organiser: on } }, { merge: true })
+            .then(function(){ cb.disabled = false; cb.parentNode.lastChild.textContent = ' ' + (on ? 'Organiser' : '—'); })
+            .catch(function(err){ cb.checked = !on; cb.disabled = false; alert('Could not save: ' + (err.code || err.message) + '\nPublish the updated firestore.rules first.'); });
+        });
         rows.addEventListener('click', function(e){
           var tr = e.target.closest('tr[data-row]'); if (!tr) return;
           var det = rows.querySelector('tr[data-det="' + tr.getAttribute('data-row') + '"]');

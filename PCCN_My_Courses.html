@@ -447,6 +447,14 @@ main{flex:1;}
 .dash-mod-row .dscore{font-size:.85rem;color:var(--ink-muted);width:60px;text-align:right;}
 .dash-side{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px;position:sticky;top:88px;}
 .dash-side .dslabel{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--good-ink);margin-bottom:18px;}
+.ws-card{border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:6px;background:var(--cream,#FBF7F9);}
+.ws-card .ws-k{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);}
+.ws-card .ws-t{font-weight:700;font-size:1rem;margin:6px 0 4px;}
+.ws-card .ws-s{font-size:.82rem;color:var(--ink-muted);line-height:1.5;}
+.ws-card .ws-s b{color:var(--ink);}
+.ws-card .ws-btn{display:inline-block;margin-top:12px;padding:10px 18px;border-radius:999px;background:var(--pink);color:#fff;font-weight:700;font-size:.85rem;border:none;cursor:pointer;font-family:var(--sans);}
+.ws-card .ws-btn:hover{background:var(--pink-dark);}
+.ws-card.done{border-color:#0F7159;background:#EBF8F4;}
 .tracker-step{display:flex;gap:14px;}
 .tracker-rail{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
 .tracker-mark{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;border:2px solid;}
@@ -517,7 +525,9 @@ main{flex:1;}
     </div>
 
     <div class="dash-side">
-      <div class="dslabel">Certification pathway</div>
+      <div class="dslabel">Hands-on workshop</div>
+      <div id="workshopCard" class="ws-card"><div class="ws-k">Required for certification</div><div class="ws-t">Checking your account…</div></div>
+      <div class="dslabel" style="margin-top:26px;">Certification pathway</div>
       <div id="trackerList"></div>
     </div>
   </div>
@@ -1912,25 +1922,70 @@ var PCCN_MODULES = [
   });
   document.getElementById('completeCount').textContent = completeCount + ' / 12';
 
+  var WS = null; /* progress.workshop from the account, written by the PCCN Essentials app */
+  function renderPathway(){
+  var trackerList = document.getElementById('trackerList'); trackerList.innerHTML = '';
+  var wsDone = !!(WS && WS.pass);
   var pathway = [
     { title:'Pre-test &gt; 50%', status:'Not yet available' },
     { title:'70% attendance', status:'Not yet available' },
-    { title:'Hands-on workshop', status:'TBD · Zone-wise' },
-    { title:'Final exam &gt; 50%', status: completeCount >= 12 ? 'All modules complete' : 'Not yet available' }
+    { title:'Hands-on workshop', status: wsDone ? 'Completed · ' + (WS.date || '') + (WS.venue ? ' · ' + WS.venue : '') : WS ? 'Attended · post-test ' + WS.pct + '% (50% needed)' : 'Find a workshop in the PCCN Essentials app', done: wsDone },
+    { title:'Final exam &gt; 50%', status: completeCount >= 12 ? 'All modules complete' : 'Not yet available' },
+    { title:'Course certificate', status: (completeCount >= 12 && wsDone) ? 'Ready to issue' : 'Needs all 12 modules and the workshop', done: completeCount >= 12 && wsDone }
   ];
-  var trackerList = document.getElementById('trackerList');
   pathway.forEach(function(s, i){
-    var done = i === 3 && completeCount >= 12;
+    var done = s.done || (i === 3 && completeCount >= 12);
     var row = document.createElement('div');
     row.className = 'tracker-step';
     row.innerHTML =
       '<div class="tracker-rail">' +
         '<div class="tracker-mark" style="background:'+(done?'#0F7159':'#fff')+';color:'+(done?'#fff':'#8A7796')+';border-color:'+(done?'#0F7159':'#EEE4EC')+';">'+(done?'✓':(i+1))+'</div>' +
-        (i < 3 ? '<span class="tracker-line" style="background:#EEE4EC;"></span>' : '') +
+        (i < pathway.length - 1 ? '<span class="tracker-line" style="background:#EEE4EC;"></span>' : '') +
       '</div>' +
       '<div class="tracker-content"><div class="ttitle">'+s.title+'</div><div class="tstatus">'+s.status+'</div></div>';
     trackerList.appendChild(row);
   });
+  }
+  renderPathway();
+
+  /* ---- hands-on workshop card: opens the PCCN Essentials app with this account ---- */
+  function openApp(){
+    var u = window.PCCN_AUTH && PCCN_AUTH.currentUser();
+    if (!u || !window.PCCN_APP_URL) { window.location.href = window.PCCN_APP_URL || '#'; return; }
+    u.getIdToken().then(function(t){
+      var f = document.createElement('form'); f.method = 'POST'; f.action = PCCN_APP_URL.replace(/\/+$/, '') + '/portal';
+      var i = document.createElement('input'); i.type = 'hidden'; i.name = 'idToken'; i.value = t; f.appendChild(i);
+      document.body.appendChild(f); f.submit();
+    });
+  }
+  function renderWorkshopCard(){
+    var c = document.getElementById('workshopCard'); if (!c) return;
+    var btn = '<button type="button" class="ws-btn" id="wsOpen">' + (WS ? 'Open the workshop app' : 'Open the PCCN Essentials app') + '</button>';
+    if (WS && WS.pass) {
+      c.className = 'ws-card done';
+      c.innerHTML = '<div class="ws-k">Required for certification · completed</div><div class="ws-t">' + (WS.edition || 'Workshop') + '</div><div class="ws-s">' + (WS.venue || '') + (WS.date ? ' · ' + WS.date : '') + '<br>Post-test <b>' + WS.score + '/' + WS.total + ' (' + WS.pct + '%)</b>' + (WS.certificateId ? '<br>Certificate ' + WS.certificateId : '') + '</div>' + btn;
+    } else if (WS) {
+      c.className = 'ws-card';
+      c.innerHTML = '<div class="ws-k">Required for certification · not yet passed</div><div class="ws-t">' + (WS.edition || 'Workshop') + '</div><div class="ws-s">Post-test <b>' + WS.pct + '%</b> — 50% is needed. Ask your workshop coordinator about a retest.</div>' + btn;
+    } else {
+      c.className = 'ws-card';
+      c.innerHTML = '<div class="ws-k">Required for certification</div><div class="ws-t">One hands-on day at a host hospital</div><div class="ws-s">Four workstations, two simulations, pre- and post-test. Open the app with this account: your result is recorded here automatically.</div>' + btn;
+    }
+    var b = document.getElementById('wsOpen'); if (b) b.onclick = openApp;
+  }
+  renderWorkshopCard();
+  function wireWorkshop(){
+    if (!window.PCCN_AUTH) return;
+    PCCN_AUTH.onChange(function(u){
+      var db = PCCN_AUTH.db(); if (!u || !db) return;
+      db.collection('users').doc(u.uid).get().then(function(d){
+        var v = d.exists ? d.data() : {}; WS = (v.progress && v.progress.workshop) || null;
+        renderWorkshopCard(); renderPathway();
+      }).catch(function(e){ console.warn('workshop status unavailable', e && e.code); });
+    });
+  }
+  /* pccn-auth.js loads after this script */
+  if (window.PCCN_AUTH) wireWorkshop(); else window.addEventListener('load', wireWorkshop);
 
   var courseStart = new Date('2026-08-15T00:00:00');
   var today = new Date();
@@ -1945,6 +2000,7 @@ var PCCN_MODULES = [
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="pccn-firebase-config.js"></script>
+<script src="pccn-app-config.js"></script>
 <script src="pccn-auth.js"></script>
 <script>
 if (window.PCCN_AUTH) PCCN_AUTH.requireLogin();
