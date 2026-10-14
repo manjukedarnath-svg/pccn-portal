@@ -561,7 +561,7 @@ if (window.PCCN_AUTH) {
         }
         function progSummary(v){
           if (!v.progress) return '<span style="color:var(--ink-muted);">—</span>';
-          return Object.keys(v.progress).sort().map(function(mk){
+          return Object.keys(v.progress).filter(function(k){ return k !== 'workshop'; }).sort().map(function(mk){
             var p = v.progress[mk];
             var q = p.quiz ? (p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' \u2713' : ' \u2717')) : (p.steps ? p.steps.length + ' steps' : '');
             return '<span style="display:inline-block;background:var(--cream);border-radius:8px;padding:3px 9px;margin:2px 4px 2px 0;font-size:.78rem;font-weight:700;color:var(--plum-600,#4A1A73);">' + mk.toUpperCase() + ' ' + q + '</span>';
@@ -574,7 +574,7 @@ if (window.PCCN_AUTH) {
           if (i === 1) document.getElementById('statLatest').textContent = v.name || v.email || '—';
           html += '<tr data-row="' + idx + '" style="border-top:1px solid var(--hairline);cursor:pointer;"><td style="padding:13px 22px;color:var(--ink-muted);">' + i + '</td><td style="padding:13px 22px;font-weight:600;color:var(--ink);">' + (v.name||'—') + '</td><td style="padding:13px 22px;color:var(--ink-body);">' + (v.email||'—') + '</td><td style="padding:13px 22px;">' + progSummary(v) + '</td><td style="padding:13px 22px;">' + wsCell(v) + '</td><td style="padding:13px 22px;">' + orgCell(v, v._uid) + '</td><td style="padding:13px 22px;color:var(--ink-soft);white-space:nowrap;">' + (ts ? ts.toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : '—') + '</td></tr>';
           var det = '';
-          if (v.progress) Object.keys(v.progress).sort().forEach(function(mk){
+          if (v.progress) Object.keys(v.progress).filter(function(k){ return k !== 'workshop'; }).sort().forEach(function(mk){
             var p = v.progress[mk];
             det += '<div style="margin-bottom:14px;"><strong>' + mk.toUpperCase() + '</strong>';
             if (p.quiz) det += ' — quiz ' + p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' (pass)' : ' (fail)');
@@ -612,7 +612,7 @@ if (window.PCCN_AUTH) {
           USERS.forEach(function(v){
             doc += '<h2 style="border-bottom:2px solid #4A1A73;padding-bottom:4px;">' + (v.name||'—') + ' &lt;' + (v.email||'') + '&gt;</h2>';
             if (!v.progress) { doc += '<p><em>No module activity.</em></p>'; return; }
-            Object.keys(v.progress).sort().forEach(function(mk){
+            Object.keys(v.progress).filter(function(k){ return k !== 'workshop'; }).sort().forEach(function(mk){
               var p = v.progress[mk];
               doc += '<h3>' + mk.toUpperCase() + (p.quiz ? ' — Quiz score: ' + p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' (PASS)' : ' (FAIL)') : '') + '</h3>';
               if (p.responses) {
