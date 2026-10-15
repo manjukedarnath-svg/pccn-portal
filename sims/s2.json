@@ -24,43 +24,44 @@
  "decisions": [
   {
    "id": "d1",
-   "title": "PAT from the doorway",
-   "prompt": "Appearance: loud cry, consolable, fighting you off, walked in. Work of breathing: normal. Circulation to skin: pink. Your first impression?",
+   "title": "Impression",
+   "prompt": "From the doorway: a loud cry that settles when his father speaks, fighting you off, walked in; breathing normal; pink. What is your impression — stable or unstable, life-threatening or not?",
    "options": [
     {
-     "text": "Stable — all three sides of the PAT are normal",
+     "text": "Stable — PAT normal; minor head injury with a scalp wound",
      "vitals": {},
      "outcome": "You settle on a reassuring first impression and move to a focused assessment.",
      "best": true,
      "note": "A loud, consolable cry with normal tone and interaction is a reassuring appearance; a child who walked in and pushes you away is not critically unwell. Stable on the PAT means you have time for a focused assessment — it does not mean \"nothing to do\"."
     },
     {
-     "text": "CNS dysfunction — head injury with crying means raised intracranial pressure",
+     "text": "Unstable — neurological: raised intracranial pressure from the head injury",
      "vitals": {},
      "outcome": "You rush him into the resuscitation bay. He stops crying when his father speaks to him and starts pulling at the monitor leads. The team asks why he is there.",
      "best": false,
      "note": "Crying is not an abnormal appearance; it is the expected response of a frightened 4-year-old in pain. CNS dysfunction on the PAT means abnormal appearance with normal breathing and circulation: drowsy, floppy, not interacting, or a high-pitched inconsolable cry."
     },
     {
-     "text": "Shock — scalp wounds bleed heavily, he must have lost a lot of blood",
+     "text": "Unstable — circulation: shock from blood loss",
      "vitals": {},
      "outcome": "You ask for IV access and fluid. He fights the cannulation; the waiting list grows while a well-perfused child takes up your time.",
      "best": false,
      "note": "Scalp wounds bleed dramatically, but his circulation side is normal: pink, warm, CRT 1 s, HR 112. A towel of blood looks like more than it is. Shock from a scalp laceration alone is very rare in a 4-year-old."
     },
     {
-     "text": "Respiratory distress — he is breathing fast because he is crying",
+     "text": "Unstable — breathing affected: he is breathing fast",
      "vitals": {},
      "outcome": "You put an oxygen mask on him. He pulls it off and cries harder. Once settled on his father's lap his breathing is quiet and regular at 24.",
      "best": false,
      "note": "Crying raises the rate but there is no flaring, no recession, no abnormal sound. Work of breathing is normal. Count the rate again once he settles."
     }
-   ]
+   ],
+   "key": "Stable — PAT normal; no immediate threat. Minor head injury with a scalp laceration."
   },
   {
    "id": "d2",
-   "title": "Focused assessment",
-   "prompt": "He is stable on the PAT, so you have time. Which focused assessment do you do now?",
+   "title": "Intervention",
+   "prompt": "He is stable on the PAT, so you have time. What is your intervention now?",
    "options": [
     {
      "text": "Clean and dress the wound first, then ask about the fall",
@@ -90,7 +91,8 @@
      "best": false,
      "note": "Paracetamol is reasonable, but an anti-emetic would mask vomiting, which is one of your re-triage signs. Do not treat the symptom you are relying on to detect deterioration."
     }
-   ]
+   ],
+   "key": "Focused head-injury assessment first — mechanism and height of fall, loss of consciousness, vomiting, behaviour, seizure, headache; scalp and pupils — with a full set of vital signs; wound care after that."
   },
   {
    "id": "d3",

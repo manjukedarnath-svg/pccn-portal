@@ -24,138 +24,107 @@
  "decisions": [
   {
    "id": "d1",
-   "title": "PAT from the doorway",
-   "prompt": "Before you touch her, you form a first impression from 30–60 seconds at the doorway. Appearance: irritable, consoles with mother, good tone, looks at you. Work of breathing: fast, flaring, recessions, wheeze. Circulation to skin: pink, no mottling. What is your first impression?",
+   "title": "Impression",
+   "prompt": "From the doorway: irritable but consolable on her mother, good tone, looking at you; breathing fast with flaring, recessions and wheeze; pink, no mottling. What is your impression — stable or unstable, life-threatening or not, and which system is affected?",
+   "key": "Unstable, non-life-threatening; breathing affected — respiratory distress.",
    "options": [
     {
-     "text": "Stable — a well-looking infant with a cough; routine queue",
+     "text": "Stable — a well infant with a cough; she can wait in the routine queue",
+     "best": false,
      "vitals": {
       "spo2": 87,
       "rr": 66
      },
      "outcome": "You send her to the waiting queue. Twelve minutes later her mother rushes back: she has stopped crying and is breathing faster. SpO₂ 87 %, RR 66.",
-     "best": false,
      "note": "Two sides of the PAT are abnormal. Increased work of breathing with flaring and recessions is never \"stable\"; this child must not wait in the routine queue."
     },
     {
-     "text": "Respiratory distress — appearance normal, work of breathing increased, circulation normal",
-     "vitals": {},
-     "outcome": "You take her straight past the queue to the triage bed and keep her on her mother's lap.",
+     "text": "Unstable, non-life-threatening — breathing affected: respiratory distress",
      "best": true,
-     "note": "Normal appearance (consolable, good tone, interactive) with increased work of breathing is respiratory distress: the infant is compensating, and compensation can be lost quickly in an 8-month-old."
+     "vitals": {},
+     "outcome": "You take her straight past the queue to the triage bed, keep her upright on her mother’s lap and attach the monitor.",
+     "note": "Unstable but not yet life-threatening: appearance is normal (consolable, good tone, interactive) while work of breathing is increased — respiratory distress, lower airway (wheeze). The infant is compensating, and compensation can be lost quickly at 8 months, so she needs treatment now and close watching."
     },
     {
-     "text": "Respiratory failure — she is grunting and about to stop breathing",
-     "vitals": {},
-     "outcome": "You rush her to the resuscitation bay and call the team. The registrar finds an alert, consolable infant on her mother's lap and asks for your assessment. Her breathing still has not been assessed.",
+     "text": "Unstable, life-threatening — respiratory failure; start bag-mask ventilation",
      "best": false,
+     "vitals": {
+      "hr": 180
+     },
+     "outcome": "You call the resuscitation team and reach for the bag and mask. She is awake, consolable and fighting the mask; her chest is moving well. The team asks why she is being bagged.",
      "note": "In respiratory failure appearance is abnormal: lethargy, poor tone, not interacting, or a slowing or silent chest. She is irritable but consolable and interactive. Over-calling failure wastes the resuscitation bay; under-calling distress is the greater danger — reassess every few minutes."
     },
     {
-     "text": "Shock — tachycardia of 168 means poor perfusion",
+     "text": "Unstable — circulation affected: shock, because the heart rate is 168",
+     "best": false,
      "vitals": {},
      "outcome": "You ask for an IV line and a fluid bolus. While the trolley is prepared nobody attends to her breathing; the recessions are deeper.",
-     "best": false,
      "note": "Tachycardia alone is not shock. Her circulation-to-skin side is normal: pink, warm, CRT 2 s. Fever, distress and crying all raise the heart rate. Shock needs abnormal circulation signs: pallor, mottling, cool extremities, delayed CRT."
     }
    ]
   },
   {
    "id": "d2",
-   "title": "First hands-on action",
-   "prompt": "You move to the triage bed. What is the first thing you do?",
+   "title": "Intervention",
+   "prompt": "She is unstable with respiratory distress and wheeze, SpO₂ 89 % on room air. What is your intervention?",
+   "key": "Start oxygen — any form is acceptable (nasal prongs, face mask, non-rebreather) — titrated to SpO₂ 94–98 %, and prepare nebulisation (salbutamol, oxygen-driven at 6–8 L/min).",
    "options": [
     {
-     "text": "Take a full SAMPLE history from the mother before examining the child",
-     "vitals": {
-      "spo2": 87
-     },
-     "outcome": "The mother describes three days of cold and cough while the baby works harder to breathe beside her. By the end of the history SpO₂ has drifted to 87 %.",
-     "best": false,
-     "note": "History comes after the primary assessment in a child with increased work of breathing. ABCDE first; the SAMPLE history belongs to the secondary assessment once A and B are managed."
-    },
-    {
-     "text": "Airway and breathing: keep her upright on mother, gently suction the nose, count the respiratory rate for a full minute, attach a pulse oximeter, listen to both sides of the chest",
-     "vitals": {
-      "spo2": 89,
-      "rr": 62
-     },
-     "outcome": "Upright on her mother, nose cleared of thick secretions. You count 62 a minute. The oximeter settles at 89 % on room air with a good trace. Wheeze and crackles on both sides.",
+     "text": "Start oxygen (any device) titrated to SpO₂ 94–98 % and prepare a salbutamol nebulisation",
      "best": true,
-     "note": "A then B. Position of comfort, clear the nose (infants are nose-breathers), measure rather than estimate the rate, get an SpO₂, and auscultate for wheeze, crackles and air entry on both sides."
-    },
-    {
-     "text": "Secure an IV line and send bloods",
-     "vitals": {
-      "rr": 70,
-      "hr": 176
-     },
-     "outcome": "Two attempts at a cannula. She screams and struggles: RR 70, HR 176, the recessions deepen.",
-     "best": false,
-     "note": "An IV is not an A or B intervention, and the struggle will worsen her breathing. Nothing here needs IV access yet."
-    },
-    {
-     "text": "Give paracetamol 15 mg/kg for the fever and re-check in an hour",
-     "vitals": {
-      "spo2": 86
-     },
-     "outcome": "Paracetamol given and you turn to the next child. When you glance back she is quieter, but dusky around the lips. SpO₂ 86 %.",
-     "best": false,
-     "note": "The fever is not what is threatening her; the breathing is. Antipyretic can come later. An hour unobserved is far too long for an infant with SpO₂ 89 %."
-    }
-   ]
-  },
-  {
-   "id": "d3",
-   "title": "Oxygen",
-   "prompt": "SpO₂ reads 89 % on room air with a good trace. Your respiratory rate count is 62. What do you do about oxygen?",
-   "options": [
-    {
-     "text": "No oxygen yet; observe for 15 minutes and recheck",
-     "vitals": {
-      "spo2": 86,
-      "hr": 174
-     },
-     "outcome": "Fifteen minutes later she is tiring: SpO₂ 86 %, HR 174, the cry is weaker.",
-     "best": false,
-     "note": "SpO₂ 89 % with increased work of breathing is below the target of 94–98 %. Start oxygen now; observing does not treat hypoxaemia and the infant is tiring."
-    },
-    {
-     "text": "Nasal prongs at 1–2 L/min, titrate to keep SpO₂ 94–98 %, keep her on mother's lap",
      "vitals": {
       "spo2": 95,
       "rr": 56,
       "hr": 160
      },
-     "outcome": "Prongs at 1 L/min, titrated up to 2 L/min. She settles at the breast. SpO₂ 95 %, RR 56, HR 160.",
-     "best": true,
-     "note": "Low-flow nasal prongs are the first step for an infant in distress with mild hypoxaemia: well tolerated, allows feeding and comfort, and you titrate to the target. Reassess within minutes."
+     "outcome": "Oxygen on; she settles on her mother’s lap. SpO₂ rises to 95 %, RR 56, HR 160. The salbutamol nebuliser is drawn up and ready, to be driven with oxygen at 6–8 L/min.",
+     "note": "Oxygen first, by whatever device she tolerates, to a target of 94–98 %; then treat the wheeze — prepare an oxygen-driven salbutamol nebulisation. Reassess within minutes."
     },
     {
-     "text": "Non-rebreather mask at 15 L/min",
-     "vitals": {
-      "spo2": 97,
-      "rr": 60,
-      "hr": 170
-     },
-     "outcome": "The mask goes on and she fights it. SpO₂ climbs to 97 % but she is screaming, HR 170, and her mother is struggling to hold the mask on her face.",
+     "text": "Start oxygen only, and keep watching",
      "best": false,
-     "note": "Not wrong for severe hypoxaemia, but a mask on a crying infant increases distress and oxygen use, and 15 L/min gives far more FiO₂ than she needs. Start low and titrate; keep the non-rebreather for SpO₂ below 90 % that does not respond, or for shock."
+     "vitals": {
+      "spo2": 94,
+      "rr": 62,
+      "hr": 164
+     },
+     "outcome": "SpO₂ creeps up to 94 %, but the wheeze and recessions are unchanged and she is still breathing at 62 a minute.",
+     "note": "Oxygen treats the hypoxaemia, not the bronchospasm. With a wheeze, prepare the nebuliser at the same time."
     },
     {
-     "text": "Bag-mask ventilation at 20 breaths/min",
-     "vitals": {
-      "spo2": 92,
-      "hr": 180
-     },
-     "outcome": "You start bagging. She fights the mask, her abdomen distends and she vomits. SpO₂ 92 %, HR 180.",
+     "text": "Give a salbutamol nebulisation with room air or a compressor, without oxygen",
      "best": false,
-     "note": "Bag-mask ventilation is for a child who is not breathing adequately: apnoea, gasping, or failure with a silent chest. She is breathing fast with good effort. Bagging a conscious, distressed infant causes gastric distension and vomiting."
+     "vitals": {
+      "spo2": 86,
+      "hr": 174
+     },
+     "outcome": "The nebuliser hisses on a compressor. SpO₂ drifts down to 86 % and her heart rate climbs to 174.",
+     "note": "A hypoxaemic child should be nebulised with oxygen (6–8 L/min), never with air; salbutamol can briefly worsen ventilation–perfusion mismatch."
+    },
+    {
+     "text": "Secure an IV line and send bloods first",
+     "best": false,
+     "vitals": {
+      "rr": 70,
+      "hr": 176
+     },
+     "outcome": "Two attempts at a cannula. She screams and struggles: RR 70, HR 176, the recessions deepen.",
+     "note": "An IV is not an A or B intervention, and the struggle will worsen her breathing. Nothing here needs IV access yet."
+    },
+    {
+     "text": "No oxygen yet — observe for 15 minutes and recheck",
+     "best": false,
+     "vitals": {
+      "spo2": 86,
+      "hr": 174
+     },
+     "outcome": "Fifteen minutes later she is tiring: SpO₂ 86 %, HR 174, the cry is weaker.",
+     "note": "SpO₂ 89 % with increased work of breathing is below the target of 94–98 %. Start oxygen now; observing does not treat hypoxaemia and the infant is tiring."
     }
    ]
   },
   {
-   "id": "d4",
+   "id": "d3",
    "title": "Triage category",
    "prompt": "On oxygen her SpO₂ is 95 %, RR 56, HR 160, still recessing. Which triage level, and what does it mean for her?",
    "options": [
@@ -197,7 +166,7 @@
    ]
   },
   {
-   "id": "d5",
+   "id": "d4",
    "title": "ISBAR call to the doctor",
    "prompt": "You phone the paediatric registrar. Which handover gets the doctor to the bedside fastest, with the right picture?",
    "options": [
@@ -233,14 +202,13 @@
   }
  ],
  "debrief": [
-  "What were the two abnormal sides of the PAT, and why did they add up to distress rather than failure?",
+  "What was your impression, and which findings made her unstable but not yet life-threatening?",
   "At which point would you have upgraded her to Level 1? Name three signs.",
   "What would you check at each 5-minute reassessment while waiting for the doctor?"
  ],
  "takeHome": [
-  "PAT from the doorway in under a minute: appearance decides distress versus failure.",
-  "Position, suction, measure the rate, SpO₂, listen: A then B before any history.",
-  "Oxygen to a target of 94–98 %: start low, titrate, reassess.",
+  "Impression first: stable or unstable, life-threatening or not, and which system — here, unstable non-life-threatening respiratory distress.",
+  "Intervention: oxygen by any device to SpO₂ 94–98 %, and prepare an oxygen-driven salbutamol nebulisation for the wheeze.",
   "Distress on oxygen is Level 2, never Level 4: monitored, reassessed every 5 minutes.",
   "ISBAR with numbers and a timeframe gets the doctor to the bed."
  ],

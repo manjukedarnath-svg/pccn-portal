@@ -24,11 +24,11 @@
  "decisions": [
   {
    "id": "d1",
-   "title": "PAT from the doorway",
-   "prompt": "Appearance: lethargic, weak cry, poor interaction. Work of breathing: fast but no recessions. Circulation to skin: mottled, pale. First impression?",
+   "title": "Impression",
+   "prompt": "Lethargic with a weak cry, breathing fast without recessions, mottled and cold to the wrists. What is your impression — stable or unstable, life-threatening or not, and which system?",
    "options": [
     {
-     "text": "Respiratory distress — RR 32 at 6 years is fast",
+     "text": "Unstable — breathing: respiratory distress, RR 32 is fast",
      "vitals": {
       "crt": 5
      },
@@ -37,14 +37,14 @@
      "note": "The rate is up, but there is no increased effort; this is the breathing of acidosis and fever, not a lung problem. The abnormal sides are appearance and circulation."
     },
     {
-     "text": "Shock — abnormal appearance with abnormal circulation to skin",
+     "text": "Unstable, life-threatening — circulation: shock",
      "vitals": {},
      "outcome": "You call the doctor over and move her to the resuscitation bay.",
      "best": true,
      "note": "Mottled, pale skin with a lethargic, poorly interacting child is shock until proved otherwise, and the abnormal appearance tells you the brain is already under-perfused: this is decompensated, not early."
     },
     {
-     "text": "CNS dysfunction — lethargy with fever means meningitis",
+     "text": "Unstable — neurological: lethargy with fever means meningitis",
      "vitals": {
       "crt": 5,
       "hr": 158
@@ -54,7 +54,7 @@
      "note": "Lethargy with normal circulation would point to a primary brain problem. Here the skin is mottled and cold: the brain is lethargic because of shock. Treat the shock; look for the source after."
     },
     {
-     "text": "Stable but dehydrated — oral rehydration salts and observe",
+     "text": "Stable — dehydrated; oral rehydration salts and observe",
      "vitals": {
       "crt": 5,
       "avpu": "P"
@@ -63,12 +63,13 @@
      "best": false,
      "note": "Dehydration that produces mottling, CRT 4 s and lethargy is hypovolaemic shock and needs IV fluid now. ORS Plan A/B is for a child who is alert and can drink."
     }
-   ]
+   ],
+   "key": "Unstable, life-threatening — circulation: shock (decompensated, most likely septic)."
   },
   {
    "id": "d2",
-   "title": "ABCDE — the first five minutes",
-   "prompt": "You have called the doctor over. What are your first actions while the doctor assesses?",
+   "title": "Intervention",
+   "prompt": "You have called the doctor over. What is your intervention in the first five minutes?",
    "options": [
     {
      "text": "Full history and head-to-toe examination to find the source of infection",
@@ -108,7 +109,8 @@
      "best": false,
      "note": "Urine output is a useful trend, but it is not a first-five-minutes action and it is not access. Oxygen, IV/IO, glucose, fluid."
     }
-   ]
+   ],
+   "key": "Oxygen, continuous monitoring, IV/IO access within 5 minutes, bedside glucose, blood culture, warmed isotonic fluid ready for a bolus; antibiotics within the hour."
   },
   {
    "id": "d3",

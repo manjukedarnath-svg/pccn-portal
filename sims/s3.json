@@ -24,11 +24,11 @@
  "decisions": [
   {
    "id": "d1",
-   "title": "Distress or failure?",
-   "prompt": "Using the 3 E's — Effort, Efficacy, Effects — how do you classify him right now?",
+   "title": "Impression",
+   "prompt": "Using effort, efficacy and effects: what is your impression — stable or unstable, life-threatening or not, and which system is affected?",
    "options": [
     {
-     "text": "Mild distress; increase the prongs to 3 L/min and recheck at the 2 am round",
+     "text": "Unstable, non-life-threatening — mild distress; turn the prongs up and recheck at the 2 am round",
      "vitals": {
       "spo2": 88,
       "rr": 60
@@ -38,14 +38,14 @@
      "note": "Grunting, tracheal tug and SpO₂ 90 % on oxygen are not mild. Grunting is the child generating his own PEEP: a sign of impending failure. Fifty minutes unobserved is dangerous."
     },
     {
-     "text": "Severe distress with impending respiratory failure: high effort, falling efficacy (SpO₂ 90 % on oxygen), effects beginning (agitation, tachycardia). Escalate now.",
+     "text": "Unstable — severe respiratory distress with impending respiratory failure; escalate now",
      "vitals": {},
      "outcome": "You press the call bell for the resident and stay with him.",
      "best": true,
      "note": "Effort is maximal, efficacy is failing despite oxygen, and agitation is an early effect of hypoxaemia. He is still compensating, which is exactly when escalation prevents failure."
     },
     {
-     "text": "Respiratory failure: he is grunting, so bag-mask ventilation now",
+     "text": "Unstable, life-threatening — respiratory failure; bag-mask ventilate now",
      "vitals": {
       "hr": 170
      },
@@ -54,7 +54,7 @@
      "note": "He is breathing hard, awake, agitated and moving his chest well. That is impending failure, not failure. Bagging an awake, vigorously breathing child is ineffective and distressing. Escalate support, prepare the bag, keep watching."
     },
     {
-     "text": "Anxiety from the hospital environment; give the mother a chair and dim the lights",
+     "text": "Not a breathing problem — he is anxious about the hospital",
      "vitals": {
       "spo2": 87,
       "hr": 160
@@ -63,12 +63,13 @@
      "best": false,
      "note": "Agitation in a hypoxaemic child is the hypoxaemia. Comfort measures are good; they are not the treatment."
     }
-   ]
+   ],
+   "key": "Unstable — breathing: severe respiratory distress with impending respiratory failure (lower airway / lung tissue). Escalate now."
   },
   {
    "id": "d2",
-   "title": "Choose the device",
-   "prompt": "You have called for the resident. In the meantime, what is the right next step in oxygen support?",
+   "title": "Intervention",
+   "prompt": "You have called for the resident. What is your intervention for his breathing?",
    "options": [
     {
      "text": "Increase nasal prongs to 4 L/min",
@@ -114,7 +115,8 @@
      "best": false,
      "note": "Bronchodilators have no consistent benefit in bronchiolitis, and a nebuliser does not treat hypoxaemia with impending failure. If your protocol allows a trial, it must not delay the escalation of oxygen support."
     }
-   ]
+   ],
+   "key": "Escalate respiratory support: HFNC at about 2 L/kg/min, heated and humidified, FiO2 titrated to SpO2 94–98 %, with a non-rebreather mask as a bridge while it is set up."
   },
   {
    "id": "d3",
