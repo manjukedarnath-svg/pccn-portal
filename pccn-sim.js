@@ -233,7 +233,7 @@
         if (on !== lineState) { lineState = on; story.querySelectorAll('.s').forEach(function(s){ s.classList.toggle('on', on[+s.getAttribute('data-j')] === '1'); });
           var cap = story.querySelector('.cap'); if (cap) { var cur = ''; sg.lines.forEach(function(l){ if (t >= l.t0) cur = l.text; }); cap.textContent = cur; } }
         if (clip.monitorOn !== null && clip.monitorOn !== undefined && t >= clip.monitorOn && !monShown) { monShown = true; stage.classList.add('mon'); mon.resize(); requestAnimationFrame(function(){ mon.resize(); stage.classList.add('shown'); }); mon.show(true); }
-        mon.set(vitalsAt(Math.min(t, clip.duration)), clip.alarm);
+        lastV = vitalsAt(Math.min(t, clip.duration)); mon.set(lastV, clip.alarm);
         if (t >= clip.duration && clipDone) { var f = clipDone; clipDone = null; var sk = story.querySelector('.psim-skip'); if (sk) sk.remove(); f(); }
       }
       if (monShown) { mon.step(dt); mon.draw(ts); }
@@ -267,7 +267,7 @@
         var txt = ta.value.trim(); if (txt.length < 3) { stat.textContent = 'Type what you would do.'; return; }
         btn.disabled = true; stat.textContent = 'Reading your answer…';
         if (judgeOk === false) return choices(txt);
-        fetch(judgeUrl(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sim: sim.id, decision: di, answer: txt, probed: probed }) })
+        fetch(judgeUrl(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sim: sim.id, decision: di, answer: txt, probed: probed, after: tried.length ? lastOutcome : '', now: lastV && monShown ? { hr: Math.round(lastV.hr), rr: Math.round(lastV.rr), spo2: Math.round(lastV.spo2), bp: lastV.bp, o2: lastV.o2 || '' } : null }) })
           .then(function(r){ return r.json(); })
           .then(function(j){
             if (j.choice !== undefined && j.choice !== null) return take(j.choice, txt);
@@ -284,10 +284,10 @@
       now.querySelectorAll('.psim-opt').forEach(function(b){ b.addEventListener('click', function(){ take(+b.getAttribute('data-i'), txt || sim.decisions[di].options[+b.getAttribute('data-i')].text); }); });
       now.querySelectorAll('[data-force]').forEach(function(b){ b.addEventListener('click', function(){ take(+b.getAttribute('data-force'), txt, true); }); });
     }
-    var rescuing = false;
+    var rescuing = false, lastV = null, lastOutcome = '';
     function take(i, txt, forced){
       var d = sim.decisions[di], o = d.options[i]; if (!o) return;
-      var repeat = !o.best && tried.indexOf(i) !== -1;
+      var repeat = !o.best && tried.indexOf(i) !== -1; lastOutcome = o.outcome || '';
       probed = false; tried.push(i); answers.push({ d: di, text: txt, limb: i, forced: !!forced });
       mon.unlock();
       var wrongs = tried.filter(function(x){ return !d.options[x].best; }).length;
