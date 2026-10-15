@@ -23,6 +23,7 @@
 
   /* video slots: a saved link makes the placeholder open it in a new tab */
   function wireVideos(){
+    if (window.PCCN_VIDEO_INLINE) return;
     if (!modNo || !videos || !videos[modNo]) return;
     var links = videos[modNo]; var slots = document.querySelectorAll('.video-slot');
     slots.forEach(function(s, i){

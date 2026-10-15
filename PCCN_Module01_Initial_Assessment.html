@@ -331,7 +331,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <div class="sec-underline"></div>
     <p class="sec-sub">Lecture: &ldquo;Why Children Are Different&rdquo;</p>
 
-    <div class="video-slot">
+    <div class="video-slot" data-video="v01">
       <div class="play-btn">▶</div>
       <div class="video-meta"><b>Watch: Why Children Are Different</b><span>~10 MIN · LIFETIME ACCESS</span></div>
     </div>
@@ -436,7 +436,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <div class="sec-underline"></div>
     <p class="sec-sub">Lecture: &ldquo;PAT &amp; Primary Assessment&rdquo;</p>
 
-    <div class="video-slot">
+    <div class="video-slot" data-video="v02">
       <div class="play-btn">▶</div>
       <div class="video-meta"><b>Watch: PAT &amp; Primary Assessment</b><span>~16 MIN · LIFETIME ACCESS</span></div>
     </div>
@@ -549,7 +549,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <div class="sec-underline"></div>
     <p class="sec-sub">Lecture: &ldquo;The DIRECT Approach&rdquo;</p>
 
-    <div class="video-slot">
+    <div class="video-slot" data-video="v03">
       <div class="play-btn">▶</div>
       <div class="video-meta"><b>Watch: The DIRECT Approach</b><span>~14 MIN · LIFETIME ACCESS</span></div>
     </div>
@@ -1013,6 +1013,8 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
 <script src="pccn-firebase-config.js"></script>
 <script src="pccn-auth.js"></script>
 <script src="pccn-gate.js"></script>
+<script src="pccn-videos.js"></script>
+<script src="pccn-video.js"></script>
 <script src="pccn-sim.js"></script>
 <script>
 (function(){
@@ -1103,6 +1105,9 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     toc.innerHTML = html;
   }
   renderTOC();
+  /* videos and simulations report completion here (pccn-video.js, pccn-sim.js) */
+  document.addEventListener('pccn:step', function(e){ var id = e.detail && e.detail.id; if (!id || done.indexOf(id) !== -1) return; done.push(id); saveLocal(); syncRemote(); renderTOC(); });
+  window.PCCN_STEPS = function(){ return done.slice(); };
   // completion buttons at the end of every section (quiz auto-completes on pass too)
   seq.forEach(function(sec, i){
     var b = document.createElement('button');

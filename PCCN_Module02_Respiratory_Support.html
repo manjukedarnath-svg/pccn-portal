@@ -252,7 +252,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <div class="sec-underline"></div>
     <p class="sec-sub">Lecture: "Respiratory Distress vs Failure"</p>
 
-    <div class="video-slot">
+    <div class="video-slot" data-video="v04">
       <div class="play-btn">▶</div>
       <div class="video-meta"><b>Watch: Respiratory Distress vs Failure</b><span>~10 min · lifetime access</span></div>
     </div>
@@ -317,7 +317,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <div class="sec-underline"></div>
     <p class="sec-sub">Lecture: "Oxygen Delivery Systems"</p>
 
-    <div class="video-slot">
+    <div class="video-slot" data-video="v05">
       <div class="play-btn">▶</div>
       <div class="video-meta"><b>Watch: Oxygen Delivery Systems</b><span>~12 min · lifetime access</span></div>
     </div>
@@ -354,7 +354,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <div class="sec-underline"></div>
     <p class="sec-sub">Lecture: "Bag Mask Ventilation"</p>
 
-    <div class="video-slot">
+    <div class="video-slot" data-video="v06">
       <div class="play-btn">▶</div>
       <div class="video-meta"><b>Watch: Bag Mask Ventilation</b><span>~14 min · lifetime access</span></div>
     </div>
@@ -398,7 +398,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <div class="sec-underline"></div>
     <p class="sec-sub">Lecture: "HFNC"</p>
 
-    <div class="video-slot">
+    <div class="video-slot" data-video="v07">
       <div class="play-btn">▶</div>
       <div class="video-meta"><b>Watch: HFNC</b><span>~14 min · lifetime access</span></div>
     </div>
@@ -478,7 +478,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <div class="sec-underline"></div>
     <p class="sec-sub">Lecture: "Art of Nebulisation"</p>
 
-    <div class="video-slot">
+    <div class="video-slot" data-video="v08">
       <div class="play-btn">▶</div>
       <div class="video-meta"><b>Watch: Art of Nebulisation</b><span>~10 min · lifetime access</span></div>
     </div>
@@ -821,6 +821,8 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
 <script src="pccn-firebase-config.js"></script>
 <script src="pccn-auth.js"></script>
 <script src="pccn-gate.js"></script>
+<script src="pccn-videos.js"></script>
+<script src="pccn-video.js"></script>
 <script src="pccn-sim.js"></script>
 <script>
 (function(){
@@ -911,6 +913,9 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     toc.innerHTML = html;
   }
   renderTOC();
+  /* videos and simulations report completion here (pccn-video.js, pccn-sim.js) */
+  document.addEventListener('pccn:step', function(e){ var id = e.detail && e.detail.id; if (!id || done.indexOf(id) !== -1) return; done.push(id); saveLocal(); syncRemote(); renderTOC(); });
+  window.PCCN_STEPS = function(){ return done.slice(); };
   // completion buttons at the end of every section (quiz auto-completes on pass too)
   seq.forEach(function(sec, i){
     var b = document.createElement('button');

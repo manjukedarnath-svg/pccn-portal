@@ -264,7 +264,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <div class="sec-underline"></div>
     <p class="sec-sub">Lecture: "Clinical features of dehydration"</p>
 
-    <div class="video-slot">
+    <div class="video-slot" data-video="v09">
       <div class="play-btn">▶</div>
       <div class="video-meta"><b>Watch: Clinical Features of Dehydration</b><span>~10 min · lifetime access</span></div>
     </div>
@@ -306,7 +306,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <div class="sec-underline"></div>
     <p class="sec-sub">Lecture: "Types of shock — type and severity"</p>
 
-    <div class="video-slot">
+    <div class="video-slot" data-video="v10">
       <div class="play-btn">▶</div>
       <div class="video-meta"><b>Watch: Types of Shock — Type and Severity</b><span>~12 min · lifetime access</span></div>
     </div>
@@ -365,7 +365,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <div class="sec-underline"></div>
     <p class="sec-sub">Lecture: "Fluid resuscitation"</p>
 
-    <div class="video-slot">
+    <div class="video-slot" data-video="v11">
       <div class="play-btn">▶</div>
       <div class="video-meta"><b>Watch: Fluid Resuscitation</b><span>~14 min · lifetime access</span></div>
     </div>
@@ -459,7 +459,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <div class="sec-underline"></div>
     <p class="sec-sub">Lecture: "NIBP — how to choose"</p>
 
-    <div class="video-slot">
+    <div class="video-slot" data-video="v12">
       <div class="play-btn">▶</div>
       <div class="video-meta"><b>Watch: NIBP — How to Choose</b><span>~8 min · lifetime access</span></div>
     </div>
@@ -580,7 +580,7 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     <div class="sec-underline"></div>
     <p class="sec-sub">Lecture: "Physiologically difficult airway &amp; peri-intubation resuscitation"</p>
 
-    <div class="video-slot">
+    <div class="video-slot" data-video="v13">
       <div class="play-btn">▶</div>
       <div class="video-meta"><b>Watch: The Physiologically Difficult Airway</b><span>~15 min · lifetime access</span></div>
     </div>
@@ -1035,6 +1035,8 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
 <script src="pccn-firebase-config.js"></script>
 <script src="pccn-auth.js"></script>
 <script src="pccn-gate.js"></script>
+<script src="pccn-videos.js"></script>
+<script src="pccn-video.js"></script>
 <script src="pccn-sim.js"></script>
 <script>
 (function(){
@@ -1125,6 +1127,9 @@ header.hero{background:linear-gradient(115deg,rgba(31,9,56,.93) 25%,rgba(62,18,1
     toc.innerHTML = html;
   }
   renderTOC();
+  /* videos and simulations report completion here (pccn-video.js, pccn-sim.js) */
+  document.addEventListener('pccn:step', function(e){ var id = e.detail && e.detail.id; if (!id || done.indexOf(id) !== -1) return; done.push(id); saveLocal(); syncRemote(); renderTOC(); });
+  window.PCCN_STEPS = function(){ return done.slice(); };
   // completion buttons at the end of every section (quiz auto-completes on pass too)
   seq.forEach(function(sec, i){
     var b = document.createElement('button');

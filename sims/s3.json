@@ -262,5 +262,6 @@
  "ending": {
   "smooth": "The intensivist intubates him with you assisting, and he is transferred to PICU stable on the ventilator. His mother was kept informed throughout.",
   "detour": "He is intubated and transferred to PICU, but after a longer period of hypoxaemia; the team watch closely for aspiration and hypoxic injury."
- }
+ },
+ "video": "sims/video/s3/"
 }

@@ -83,21 +83,33 @@
     if (sim.video) ov.classList.add('vid');
     document.body.appendChild(ov); var prevOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden';
     var feed = ov.querySelector('.psim-feed'), now = ov.querySelector('.psim-now');
-    var vid = ov.querySelector('video'), vNext = null;
+    var vid = ov.querySelector('video'), vNext = null, vo = new Audio(), voiceOn = false, curClip = '';
+    try { voiceOn = localStorage.getItem('pccn_sim_voice') === '1'; } catch(e) {}
+    function voiceLabel(){ var b = ov.querySelector('[data-v="voice"]'); if (b) b.textContent = voiceOn ? '\uD83D\uDD0A Voice-over on' : '\uD83D\uDD07 Voice-over off'; }
+    function voSync(){ if (!voiceOn || !vo.src) return; try { vo.currentTime = vid.currentTime; } catch(e) {} if (!vid.paused) { var p = vo.play(); if (p && p.catch) p.catch(function(){}); } }
     function play(name, then){
       if (!vid) { then(); return; }
       vNext = then; now.innerHTML = '<div class="psim-wait">Watch the case unfold \u2014 your choices appear when the clip ends.</div>';
+      curClip = name; vo.pause(); vo.removeAttribute('src'); if (voiceOn) vo.src = sim.video + 'voice/' + name + '.m4a';
       vid.src = sim.video + name + '.mp4'; var pr = vid.play(); if (pr && pr.catch) pr.catch(function(){});
       ov.scrollTo({ top: 0, behavior: 'smooth' });
     }
     function vDone(){ if (!vNext) return; var f = vNext; vNext = null; f(); setTimeout(function(){ var y = now.getBoundingClientRect().top + ov.scrollTop - 140; ov.scrollTo({ top: Math.max(0, y), behavior: 'smooth' }); }, 60); }
     if (vid) {
       vid.addEventListener('ended', vDone);
+      vid.addEventListener('play', voSync); vid.addEventListener('seeked', voSync);
+      vid.addEventListener('pause', function(){ vo.pause(); });
+      voiceLabel();
+      ov.querySelector('[data-v="voice"]').addEventListener('click', function(){
+        voiceOn = !voiceOn; try { localStorage.setItem('pccn_sim_voice', voiceOn ? '1' : '0'); } catch(e) {}
+        voiceLabel();
+        if (voiceOn && curClip) { vo.src = sim.video + 'voice/' + curClip + '.m4a'; voSync(); } else { vo.pause(); }
+      });
       vid.addEventListener('error', vDone);
       ov.querySelector('[data-v="replay"]').addEventListener('click', function(){ vid.currentTime = 0; vid.play(); });
-      ov.querySelector('[data-v="skip"]').addEventListener('click', function(){ vid.pause(); vDone(); });
+      ov.querySelector('[data-v="skip"]').addEventListener('click', function(){ vid.pause(); vo.pause(); vDone(); });
     }
-    function close(){ if (vid) { vid.pause(); vid.removeAttribute('src'); } ov.remove(); document.body.style.overflow = prevOverflow; if (onClose) onClose(); }
+    function close(){ if (vid) { vid.pause(); vid.removeAttribute('src'); vo.pause(); } ov.remove(); document.body.style.overflow = prevOverflow; if (onClose) onClose(); }
     ov.querySelector('.psim-x').addEventListener('click', close);
 
     function monitor(changed){
@@ -148,6 +160,8 @@
       if (vid && !finish.played) { finish.played = true; play(smooth ? 'end_smooth' : 'end_detour', finish); return; }
       var rec = { completedAt: new Date().toISOString(), path: path, firstTime: firstTime, detours: detours, of: sim.decisions.length };
       persist(sim, rec);
+      var BYMOD = { '01': ['s1', 's2'], '02': ['s3'], '03': ['s4'] }, need = BYMOD[sim.module] || [sim.id];
+      if (need.every(function(x){ return !!saved(x); })) document.dispatchEvent(new CustomEvent('pccn:step', { detail: { id: 'sim' } }));
       var rows = sim.decisions.map(function(d, k){
         var best = d.options.filter(function(o){ return o.best; })[0];
         return '<div class="psim-row"><h5>' + (k + 1) + '. ' + esc(d.title) + '</h5>' +
