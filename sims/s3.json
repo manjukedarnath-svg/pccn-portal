@@ -64,7 +64,10 @@
      "note": "Agitation in a hypoxaemic child is the hypoxaemia. Comfort measures are good; they are not the treatment."
     }
    ],
-   "key": "Unstable — breathing: severe respiratory distress with impending respiratory failure (lower airway / lung tissue). Escalate now."
+   "key": "Unstable — breathing: severe respiratory distress with impending respiratory failure (lower airway / lung tissue). Escalate now.",
+   "must": [
+    "severe respiratory distress or impending respiratory failure"
+   ]
   },
   {
    "id": "d2",
@@ -116,7 +119,10 @@
      "note": "Bronchodilators have no consistent benefit in bronchiolitis, and a nebuliser does not treat hypoxaemia with impending failure. If your protocol allows a trial, it must not delay the escalation of oxygen support."
     }
    ],
-   "key": "Escalate respiratory support: HFNC at about 2 L/kg/min, heated and humidified, FiO2 titrated to SpO2 94–98 %, with a non-rebreather mask as a bridge while it is set up."
+   "key": "Escalate respiratory support: HFNC at about 2 L/kg/min, heated and humidified, FiO2 titrated to SpO2 94–98 %, with a non-rebreather mask as a bridge while it is set up.",
+   "must": [
+    "high-flow nasal cannula (HFNC)"
+   ]
   },
   {
    "id": "d3",

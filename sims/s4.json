@@ -64,7 +64,10 @@
      "note": "Dehydration that produces mottling, CRT 4 s and lethargy is hypovolaemic shock and needs IV fluid now. ORS Plan A/B is for a child who is alert and can drink."
     }
    ],
-   "key": "Unstable, life-threatening — circulation: shock (decompensated, most likely septic)."
+   "key": "Unstable, life-threatening — circulation: shock (decompensated, most likely septic).",
+   "must": [
+    "shock / circulation affected"
+   ]
   },
   {
    "id": "d2",
@@ -110,7 +113,12 @@
      "note": "Urine output is a useful trend, but it is not a first-five-minutes action and it is not access. Oxygen, IV/IO, glucose, fluid."
     }
    ],
-   "key": "Oxygen, continuous monitoring, IV/IO access within 5 minutes, bedside glucose, blood culture, warmed isotonic fluid ready for a bolus; antibiotics within the hour."
+   "key": "Oxygen, continuous monitoring, IV/IO access within 5 minutes, bedside glucose, blood culture, warmed isotonic fluid ready for a bolus; antibiotics within the hour.",
+   "must": [
+    "oxygen",
+    "IV or IO access",
+    "glucose check"
+   ]
   },
   {
    "id": "d3",

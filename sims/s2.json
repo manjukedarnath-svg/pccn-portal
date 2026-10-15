@@ -56,7 +56,10 @@
      "note": "Crying raises the rate but there is no flaring, no recession, no abnormal sound. Work of breathing is normal. Count the rate again once he settles."
     }
    ],
-   "key": "Stable — PAT normal; no immediate threat. Minor head injury with a scalp laceration."
+   "key": "Stable — PAT normal; no immediate threat. Minor head injury with a scalp laceration.",
+   "must": [
+    "stable / no immediate threat"
+   ]
   },
   {
    "id": "d2",
@@ -92,7 +95,10 @@
      "note": "Paracetamol is reasonable, but an anti-emetic would mask vomiting, which is one of your re-triage signs. Do not treat the symptom you are relying on to detect deterioration."
     }
    ],
-   "key": "Focused head-injury assessment first — mechanism and height of fall, loss of consciousness, vomiting, behaviour, seizure, headache; scalp and pupils — with a full set of vital signs; wound care after that."
+   "key": "Focused head-injury assessment first — mechanism and height of fall, loss of consciousness, vomiting, behaviour, seizure, headache; scalp and pupils — with a full set of vital signs; wound care after that.",
+   "must": [
+    "head-injury screen or neurological check before wound care"
+   ]
   },
   {
    "id": "d3",
