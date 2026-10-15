@@ -523,7 +523,7 @@ main{flex:1;}
       </div>
       <div class="adm-card" style="padding:0;overflow:auto;">
         <table class="adm-table">
-          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Enrolled</th><th>Modules</th><th>Workshop</th><th>Competency</th><th>Roles</th><th>Joined</th></tr></thead>
+          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Enrolled</th><th>Modules</th><th>Videos</th><th>Sims</th><th>Workshop</th><th>Competency</th><th>Roles</th><th>Joined</th></tr></thead>
           <tbody id="usersRows"></tbody>
         </table>
       </div>
@@ -719,10 +719,13 @@ main{flex:1;}
   function modCell(v){
     if (!v.progress) return '<span class="pill mute">—</span>';
     var keys = Object.keys(v.progress).filter(function(k){ return k !== 'workshop'; }).sort(); if (!keys.length) return '<span class="pill mute">—</span>';
-    return keys.map(function(mk){ var p = v.progress[mk]; var q = p.quiz ? p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' ✓' : ' ✗') : (p.steps ? p.steps.length + ' steps' : ''); return '<span class="pill plum">' + mk.toUpperCase().replace('MOD', 'M') + ' ' + q + '</span> '; }).join('') + simPill(v);
+    return keys.map(function(mk){ var p = v.progress[mk]; var q = p.quiz ? p.quiz.score + '/' + p.quiz.total + (p.quiz.pass ? ' ✓' : ' ✗') : (p.steps ? p.steps.length + ' steps' : ''); return '<span class="pill plum">' + mk.toUpperCase().replace('MOD', 'M') + ' ' + q + '</span> '; }).join('');
   }
   function simsDone(v){ var n = 0; Object.keys(v.progress || {}).forEach(function(k){ var p = v.progress[k]; if (p && p.sim) n += Object.keys(p.sim).length; }); return n; }
   function simPill(v){ var n = simsDone(v); return n ? '<span class="pill ok" title="Virtual simulations completed">Sims ' + n + '/4</span>' : ''; }
+  function vidsDone(v){ var n = 0; Object.keys(v.progress || {}).forEach(function(k){ var p = v.progress[k]; (p && p.steps || []).forEach(function(x){ if (/^v\d\d$/.test(x)) n++; }); }); return n; }
+  function vidCell(v){ var n = vidsDone(v); return '<span class="pill ' + (n ? (n >= 13 ? 'ok' : 'plum') : 'mute') + '">' + n + '/13</span>'; }
+  function simCell(v){ var n = simsDone(v); return '<span class="pill ' + (n ? (n >= 4 ? 'ok' : 'plum') : 'mute') + '">' + n + '/4</span>'; }
   function compFor(email){ var k = ekey(email); if (!k) return null; var hits = COMP.filter(function(c){ return ekey(c.email) === k; }); if (!hits.length) return null; hits.sort(function(a, b){ return tsNum(b.submittedAt) - tsNum(a.submittedAt); }); return hits[0]; }
   function tsNum(t){ return t && t.toDate ? t.toDate().getTime() : (t ? new Date(t).getTime() || 0 : 0); }
   function compCell(v){ var c = compFor(v.email); if (!c) return '<span class="pill mute">—</span>'; return c.status === 'verified' ? '<span class="pill ok">Verified ' + (c.verifiedTotal || '') + '/36' + (c.band ? ' · ' + c.band : '') + '</span>' : '<span class="pill plum">Declared ' + (c.declaredTotal || '') + '/36</span>'; }
@@ -733,9 +736,9 @@ main{flex:1;}
       var ts = v.createdAt && v.createdAt.toDate ? v.createdAt.toDate() : null; if (ts && (now - ts.getTime()) < 7 * 86400000) week++;
       var en = !!ENROL[ekey(v.email)]; if (en) enrolled++; if (v.progress && v.progress.workshop && v.progress.workshop.pass) ws++;
       if (q && !((v.name || '') + ' ' + (v.email || '')).toLowerCase().includes(q)) return;
-      html += '<tr data-row="' + idx + '"><td style="color:var(--ink-muted);">' + (idx + 1) + '</td><td style="font-weight:600;">' + esc(v.name || '—') + '</td><td>' + esc(v.email || '—') + '</td><td>' + (en ? '<span class="pill ok">Enrolled</span>' : '<span class="pill mute">Not listed</span>') + '</td><td>' + modCell(v) + '</td><td>' + wsCell(v) + '</td><td>' + compCell(v) + '</td><td>' + rolesCell(v) + '</td><td style="white-space:nowrap;color:var(--ink-soft);">' + fmtDate(v.createdAt) + '</td></tr>';
+      html += '<tr data-row="' + idx + '"><td style="color:var(--ink-muted);">' + (idx + 1) + '</td><td style="font-weight:600;">' + esc(v.name || '—') + '</td><td>' + esc(v.email || '—') + '</td><td>' + (en ? '<span class="pill ok">Enrolled</span>' : '<span class="pill mute">Not listed</span>') + '</td><td>' + modCell(v) + '</td><td>' + vidCell(v) + '</td><td>' + simCell(v) + '</td><td>' + wsCell(v) + '</td><td>' + compCell(v) + '</td><td>' + rolesCell(v) + '</td><td style="white-space:nowrap;color:var(--ink-soft);">' + fmtDate(v.createdAt) + '</td></tr>';
     });
-    rows.innerHTML = html || '<tr><td colspan="9" style="padding:22px;color:var(--ink-muted);">No accounts match.</td></tr>';
+    rows.innerHTML = html || '<tr><td colspan="11" style="padding:22px;color:var(--ink-muted);">No accounts match.</td></tr>';
     $('statTotal').textContent = USERS.length; $('stat7d').textContent = week; $('statEnrolled').textContent = enrolled + ' / ' + Object.keys(ENROL).length; $('statWs').textContent = ws;
   }
   $('learnerSearch').oninput = renderLearners;
