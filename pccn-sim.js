@@ -214,7 +214,7 @@
       story.className = 'psim-story' + ({ quote: ' quote', action: ' act', decision: ' dec', end: ' end', footage: ' foot' }[k] || '');
       if (k === 'title') h = '<div class="eb">' + esc(p.eyebrow) + '</div><h2>' + esc(p.title) + '</h2><div class="sub">' + esc(p.sub) + '</div><div class="chips">' + (p.chips || []).map(function(c){ return '<span>' + esc(c) + '</span>'; }).join('') + '</div>';
       else if (k === 'quote') h = '<div class="wrap"><div class="who">' + esc(p.who) + '</div>' + lines() + '</div>';
-      else if (k === 'action') h = '<div class="eb">' + (mode === 'live' ? 'The team’s action' : 'Your action') + '</div><div class="txt">' + esc(actionText || p.body) + '</div>';
+      else if (k === 'action') h = '<div class="eb">' + (rescuing ? 'The senior nurse steps in' : mode === 'live' ? 'The team’s action' : 'Your action') + '</div><div class="txt">' + esc(actionText || p.body) + '</div>';
       else if (k === 'decision') h = '<div class="eb">' + esc(p.eyebrow) + '</div><h2>' + esc(p.title) + '</h2>' + lines();
       else if (k === 'footage') h = '<div class="lbl">' + esc(p.label || 'Clinical footage') + '</div><video muted playsinline autoplay loop src="sims/media/' + esc(sg.footage) + '"></video><div class="cap"></div>';
       else h = '<div class="eb">' + esc(p.eyebrow || '') + '</div>' + lines();
@@ -284,14 +284,25 @@
       now.querySelectorAll('.psim-opt').forEach(function(b){ b.addEventListener('click', function(){ take(+b.getAttribute('data-i'), txt || sim.decisions[di].options[+b.getAttribute('data-i')].text); }); });
       now.querySelectorAll('[data-force]').forEach(function(b){ b.addEventListener('click', function(){ take(+b.getAttribute('data-force'), txt, true); }); });
     }
+    var rescuing = false;
     function take(i, txt, forced){
       var d = sim.decisions[di], o = d.options[i]; if (!o) return;
+      var repeat = !o.best && tried.indexOf(i) !== -1;
       probed = false; tried.push(i); answers.push({ d: di, text: txt, limb: i, forced: !!forced });
       mon.unlock();
-      play('d' + (di + 1) + 'o' + i, txt, function(){
-        if (o.best) { path.push(tried.slice()); tried = []; di++; }
-        if (di >= N) return ending(); ask();
-      });
+      var wrongs = tried.filter(function(x){ return !d.options[x].best; }).length;
+      var next = function(){
+        if (o.best) { path.push(tried.slice()); tried = []; di++; if (di >= N) return ending(); return ask(); }
+        if (wrongs >= 2) return rescue();   /* never more than two attempts: the senior nurse steps in and the case moves on */
+        ask();
+      };
+      if (repeat) return next();            /* same limb again: do not replay the same deterioration */
+      play('d' + (di + 1) + 'o' + i, txt, next);
+    }
+    function rescue(){
+      var d = sim.decisions[di], bi = -1; d.options.forEach(function(x, k){ if (x.best) bi = k; });
+      rescuing = true; tried.push(bi); answers.push({ d: di, text: '(The senior nurse stepped in)', limb: bi, rescue: true });
+      play('d' + (di + 1) + 'o' + bi, d.options[bi].text, function(){ rescuing = false; path.push(tried.slice()); tried = []; di++; if (di >= N) return ending(); ask(); });
     }
     function ending(){
       var detours = path.reduce(function(a, p){ return a + p.length - 1; }, 0), smooth = detours <= 1;
