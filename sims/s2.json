@@ -25,7 +25,7 @@
   {
    "id": "d1",
    "title": "Impression",
-   "prompt": "From the doorway: a loud cry that settles when his father speaks, fighting you off, walked in; breathing normal; pink. What is your impression — stable or unstable, life-threatening or not?",
+   "prompt": "What is your impression — stable or unstable, life-threatening or not, and which system is affected?",
    "options": [
     {
      "text": "Stable — PAT normal; minor head injury with a scalp wound",
@@ -102,78 +102,8 @@
   },
   {
    "id": "d3",
-   "title": "Triage category",
-   "prompt": "No loss of consciousness, no vomiting, alert and playing with his father's phone, pupils equal, a small laceration that has stopped oozing, vitals normal. Which level?",
-   "options": [
-    {
-     "text": "Level 2 · Emergent — any head injury with a wound, to be safe",
-     "vitals": {},
-     "outcome": "He takes the Level 2 cubicle. Ten minutes later a wheezing child arrives and has to wait in a chair.",
-     "best": false,
-     "note": "Over-triage has a cost: he takes a Level 2 slot while a child with breathing difficulty waits. Triage is about matching urgency to need, in both directions. Reserve Level 2 for red flags."
-    },
-    {
-     "text": "Level 4 · Less urgent — wound closure by the doctor, observation in the waiting area, re-triage if anything changes",
-     "vitals": {},
-     "outcome": "Level 4. He sits with his father, playing on the phone, within your sight.",
-     "best": true,
-     "note": "A low-risk head injury with a laceration needing closure is Level 4: seen within the hour, father told the warning signs, and you re-check him on your waiting-area rounds. Triaging down confidently is as important as triaging up."
-    },
-    {
-     "text": "Level 5 · Non-urgent — put a dressing on and send him to the OPD tomorrow",
-     "vitals": {},
-     "outcome": "His father is handed a dressing and told to come to OPD tomorrow. At the door he turns back: \"Is nobody going to stitch it?\"",
-     "best": false,
-     "note": "The laceration needs closure today, and a head injury needs a doctor's assessment and documented advice before discharge. Level 5 sends him away without either."
-    },
-    {
-     "text": "Level 3 · Urgent — in case he deteriorates",
-     "vitals": {},
-     "outcome": "Level 3. He will be seen a little sooner, but no one has yet told the father what to watch for.",
-     "best": false,
-     "note": "Defensible if your waiting area is unmonitored, but with no red flags the evidence supports Level 4 with clear re-triage criteria. Whichever level, what matters is that the re-triage triggers are set and the father knows them."
-    }
-   ]
-  },
-  {
-   "id": "d4",
-   "title": "Advice to the family while they wait",
-   "prompt": "Father asks: \"Is he going to be all right? What should I watch for?\" What do you tell him?",
-   "options": [
-    {
-     "text": "\"He's fine, don't worry, just wait for your turn.\"",
-     "vitals": {},
-     "outcome": "The father nods and sits down. He does not know what to watch for.",
-     "best": false,
-     "note": "Reassurance without instructions. The father is your best observer for the next hour; give him a job."
-    },
-    {
-     "text": "\"He looks well now. Come straight to me if he vomits, becomes drowsy or hard to wake, behaves strangely, has a fit, complains of a worsening headache, or if the wound starts bleeding again. Keep him sitting with you; no running about. I'll check on him every 15 minutes.\"",
-     "vitals": {},
-     "outcome": "The father repeats the warning signs back to you and sits where you can see them both.",
-     "best": true,
-     "note": "Specific warning signs in plain words, what to do if they appear, and a promise of regular review. This is family-centred care and it is also your safety net."
-    },
-    {
-     "text": "\"Keep him awake at all costs; if he sleeps he could slip into a coma.\"",
-     "vitals": {},
-     "outcome": "The father shakes the boy awake every few minutes. The child is tired and crying, and the father is frightened.",
-     "best": false,
-     "note": "A myth that frightens parents. A tired 4-year-old may sleep; what matters is that he is rousable. Teach the father to check that he wakes normally, not to keep him awake."
-    },
-    {
-     "text": "Hand him the printed head-injury leaflet and move to the next patient",
-     "vitals": {},
-     "outcome": "The father glances at the leaflet and folds it into his pocket.",
-     "best": false,
-     "note": "A leaflet supports a conversation; it does not replace one. Many parents will not read it, and he needs to know to come to you, not just to \"seek help\"."
-    }
-   ]
-  },
-  {
-   "id": "d5",
-   "title": "Re-triage",
-   "prompt": "Forty minutes later the father comes to the desk: \"Sister, he has vomited twice and now he wants to sleep.\" What do you do?",
+   "title": "Reassessment",
+   "prompt": "Forty minutes later the father comes to the desk: “Sister, he has vomited twice and now he wants to sleep.” Reassess him: what do you check, and what do you do?",
    "options": [
     {
      "text": "\"Vomiting is common after a fright; let him sleep, the doctor will see him soon.\"",
@@ -216,13 +146,18 @@
      "best": false,
      "note": "Red flags after head injury go to Level 2 with the doctor called now, not informed later."
     }
+   ],
+   "key": "Reassess now on a monitored bed — PAT and ABCDE with AVPU/GCS and pupils; two vomits and new drowsiness after head injury are red flags: upgrade to Level 2 and call the doctor now with ISBAR.",
+   "must": [
+    "reassess him (AVPU/GCS, pupils or vital signs)",
+    "escalate now — upgrade the triage level or call the doctor immediately"
    ]
   }
  ],
  "debrief": [
-  "Why is triaging down correctly as important as triaging up? What happens to the department when every child is Level 2?",
-  "Which single piece of advice to the father made the difference at the 40-minute mark?",
-  "List the head-injury red flags you would teach a new triage nurse."
+  "What made him stable on the PAT, and what did your head-injury screen look for?",
+  "Which change at 40 minutes made you reassess, and why does it need the doctor now?",
+  "Which warning signs should every family be told before they wait?"
  ],
  "takeHome": [
   "A stable PAT buys time for a focused assessment; it does not end the assessment.",

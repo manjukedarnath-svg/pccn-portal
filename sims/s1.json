@@ -25,7 +25,7 @@
   {
    "id": "d1",
    "title": "Impression",
-   "prompt": "From the doorway: irritable but consolable on her mother, good tone, looking at you; breathing fast with flaring, recessions and wheeze; pink, no mottling. What is your impression — stable or unstable, life-threatening or not, and which system is affected?",
+   "prompt": "What is your impression — stable or unstable, life-threatening or not, and which system is affected?",
    "key": "Unstable, non-life-threatening; breathing affected — respiratory distress.",
    "options": [
     {
@@ -69,7 +69,7 @@
   {
    "id": "d2",
    "title": "Intervention",
-   "prompt": "She is unstable with respiratory distress and wheeze, SpO₂ 89 % on room air. What is your intervention?",
+   "prompt": "What is your intervention now?",
    "key": "Start oxygen — any form is acceptable (nasal prongs, face mask, non-rebreather) — titrated to SpO₂ 94–98 %, and prepare nebulisation (salbutamol, oxygen-driven at 6–8 L/min).",
    "options": [
     {
@@ -132,92 +132,70 @@
   },
   {
    "id": "d3",
-   "title": "Triage category",
-   "prompt": "On oxygen her SpO₂ is 95 %, RR 56, HR 160, still recessing. Which triage level, and what does it mean for her?",
+   "title": "Reassessment",
+   "prompt": "Five minutes later. Reassess her: what do you check, and what do you do next?",
+   "key": "Reassess work of breathing, RR, HR, SpO₂ and air entry: better on oxygen but still in distress. Give the oxygen-driven salbutamol nebulisation, continue oxygen, keep her monitored as Level 2, reassess every 5 minutes and call the doctor (ISBAR).",
+   "must": [
+    "reassess her breathing or vital signs",
+    "give the nebulisation (with oxygen continued)",
+    "inform or call the doctor"
+   ],
    "options": [
     {
-     "text": "Level 1 · Resuscitation — straight to the resuscitation bay, call the team",
-     "vitals": {},
-     "outcome": "The resuscitation team gathers round a pink, alert infant on oxygen. Five minutes later an ambulance brings in a child in arrest — and the only resuscitation bay is occupied.",
-     "best": false,
-     "note": "Level 1 is for failure or arrest: apnoea, silent chest, unresponsive, hypotensive shock. She responded to oxygen and is still compensating. Over-triage here blocks the bay for the next child who needs it; the right answer is Level 2 with the doctor at the bedside in minutes."
-    },
-    {
-     "text": "Level 2 · Emergent — doctor to see within 10 minutes, continuous monitoring, nurse stays with her",
-     "vitals": {},
-     "outcome": "She stays on the monitored triage bed with you beside her: continuous SpO₂ and heart rate, reassessed every 5 minutes.",
+     "text": "Reassess breathing and vital signs; give the oxygen-driven salbutamol nebulisation, continue oxygen, keep her monitored as Level 2 and call the doctor",
      "best": true,
-     "note": "Respiratory distress needing oxygen is Level 2: continuous SpO₂ and heart-rate monitoring, reassess every 5 minutes, escalate immediately if she tires. She does not leave your sight."
-    },
-    {
-     "text": "Level 4 · Less urgent — she is pink on oxygen, she can wait her turn",
      "vitals": {
-      "spo2": 90,
-      "rr": 64
+      "spo2": 97,
+      "rr": 48,
+      "hr": 150
      },
-     "outcome": "She goes back to the waiting area on a portable cylinder. Twenty minutes later SpO₂ is 90 % and RR 64; the recessions are deeper.",
-     "best": false,
-     "note": "A pink SpO₂ on oxygen does not make her less urgent; it means the oxygen is working for now. The work of breathing is unchanged and infants tire without warning. Level 4 means she could wait an hour unmonitored."
+     "outcome": "After the nebulisation the wheeze is softer and the recessions ease: SpO₂ 97 % on oxygen, RR 48, HR 150. The registrar arrives within minutes and you hand over with ISBAR.",
+     "note": "Reassess after every intervention and at least every 5 minutes while she is unstable. Oxygen bought time; the oxygen-driven nebulisation treats the wheeze. Keep her monitored (Level 2) and escalate to the doctor with ISBAR — numbers and a timeframe."
     },
     {
-     "text": "Level 5 · Non-urgent — give a nebuliser and send to the OPD queue",
+     "text": "She is pink and saturating well now — stop the oxygen and send her back to the waiting area",
+     "best": false,
      "vitals": {
       "spo2": 86,
       "rr": 68,
       "hr": 178
      },
-     "outcome": "Her mother carries her to the OPD queue. Thirty minutes later she is rushed back: grey, RR 68, SpO₂ 86 %, HR 178.",
-     "best": false,
-     "note": "An infant on oxygen for respiratory distress is not an outpatient. This is the triage decision that leads to a collapse in the waiting area."
-    }
-   ]
-  },
-  {
-   "id": "d4",
-   "title": "ISBAR call to the doctor",
-   "prompt": "You phone the paediatric registrar. Which handover gets the doctor to the bedside fastest, with the right picture?",
-   "options": [
-    {
-     "text": "\"Doctor, there's a baby here with a cough and fever, can you come when you're free?\"",
-     "vitals": {},
-     "outcome": "\"I'll come when I finish here.\" Thirty minutes pass and the registrar has not arrived.",
-     "best": false,
-     "note": "No identification, no situation, no objective data, no request with a timeframe. \"When you're free\" invites a 40-minute wait."
+     "outcome": "Twenty minutes later her mother carries her back from the waiting area: grey and quiet, SpO₂ 86 %, RR 68, HR 178.",
+     "note": "A good saturation on oxygen means the oxygen is working, not that the problem is over. Distress on oxygen is Level 2 and stays monitored."
     },
     {
-     "text": "\"Doctor, this is Sister Rani in triage. I have an 8-month-old, 8 kg, in respiratory distress: RR 62, SpO₂ 89 % on air, now 95 % on 2 L nasal prongs, HR 160, wheeze both sides, recessions, Temp 38.2. I've triaged her Level 2. I need you at the bedside within 10 minutes.\"",
-     "vitals": {},
-     "outcome": "The registrar repeats the numbers back and says she is on her way. She is at the bedside in six minutes.",
-     "best": true,
-     "note": "ISBAR: Identify yourself and the patient, Situation in one line, Background and Assessment with numbers, and a Recommendation with a timeframe. The doctor can picture the child before arriving."
+     "text": "Leave the oxygen on and move to the next patient; recheck later",
+     "best": false,
+     "vitals": {
+      "spo2": 90,
+      "rr": 66,
+      "hr": 172
+     },
+     "outcome": "Thirty minutes pass. The nebuliser is still sitting unused and she is tiring: SpO₂ 90 %, RR 66, HR 172, the recessions deeper.",
+     "note": "Unstable children are reassessed every 5 minutes, and the treatment you prepared has to be given. Leaving her unobserved is how infants tire without anyone noticing."
     },
     {
-     "text": "\"Doctor, bed 3, 8 months, looks like bronchiolitis, I've started oxygen, see her after the ward round.\"",
-     "vitals": {},
-     "outcome": "The registrar finishes the ward round first. Fifty minutes pass before she arrives.",
+     "text": "Start bag-mask ventilation",
      "best": false,
-     "note": "A diagnosis is offered but no vital signs, no request and no timeframe. \"After the ward round\" could be an hour. State the numbers and what you need."
-    },
-    {
-     "text": "Send a WhatsApp message with the vitals to the on-call group and continue monitoring",
-     "vitals": {},
-     "outcome": "The message shows two grey ticks. Twenty-five minutes later nobody has replied.",
-     "best": false,
-     "note": "A Level 2 child needs a closed-loop call: you speak, the doctor confirms they are coming and when. A group message may not be read."
+     "vitals": {
+      "spo2": 92,
+      "hr": 180
+     },
+     "outcome": "She is awake and fights the mask; her abdomen distends and she vomits. SpO₂ 92 %, HR 180.",
+     "note": "Bag-mask ventilation is for apnoea or inadequate breathing. She is breathing fast with good effort and responding to treatment."
     }
    ]
   }
  ],
  "debrief": [
   "What was your impression, and which findings made her unstable but not yet life-threatening?",
-  "At which point would you have upgraded her to Level 1? Name three signs.",
-  "What would you check at each 5-minute reassessment while waiting for the doctor?"
+  "Why oxygen first, and why prepare the nebuliser at the same time?",
+  "What did you look at on reassessment, and what would have made you upgrade her to Level 1?"
  ],
  "takeHome": [
   "Impression first: stable or unstable, life-threatening or not, and which system — here, unstable non-life-threatening respiratory distress.",
   "Intervention: oxygen by any device to SpO₂ 94–98 %, and prepare an oxygen-driven salbutamol nebulisation for the wheeze.",
-  "Distress on oxygen is Level 2, never Level 4: monitored, reassessed every 5 minutes.",
-  "ISBAR with numbers and a timeframe gets the doctor to the bed."
+  "Reassess after every intervention and every 5 minutes while unstable; give the treatment you prepared and escalate with ISBAR."
  ],
  "references": [
   "AHA PALS Provider Manual 2020: Pediatric Assessment Triangle, respiratory distress and failure, oxygen therapy.",

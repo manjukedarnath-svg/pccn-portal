@@ -44,6 +44,10 @@
   '.psim-story.foot .lbl{position:absolute;left:12px;top:10px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:rgba(0,0,0,.55);padding:5px 10px;border-radius:999px;color:#ddd;}' +
   '.psim-skip{position:absolute;right:12px;bottom:10px;background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:999px;padding:6px 12px;font:600 12px Poppins,sans-serif;cursor:pointer;z-index:2;}' +
   '.psim-story.act .psim-skip{background:#EEE4EC;color:#1F0938;}' +
+  '.psim-ctrl{max-width:1120px;margin:10px auto 0;padding:0 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}' +
+  '.psim-ctrl button{min-width:44px;height:40px;padding:0 12px;border-radius:999px;border:1.5px solid #D8C2E0;background:#fff;color:#1F0938;font:700 14px Poppins,sans-serif;cursor:pointer;}' +
+  '.psim-ctrl button:hover{border-color:#D6246E;}.psim-ctrl button.pp{background:#1F0938;color:#fff;border-color:#1F0938;min-width:56px;}' +
+  '.psim-ctrl .tm{margin-left:auto;font:600 12.5px ui-monospace,Menlo,monospace;color:#6B5D82;}' +
   '.psim-body{max-width:1120px;margin:0 auto;padding:14px 16px 70px;}' +
   '.psim-ans{background:#fff;border:2px solid #1F0938;border-radius:16px;padding:16px;}' +
   '.psim-ans label{display:block;font-weight:700;font-size:15px;margin:0 0 4px;}.psim-ans .hint{font-size:13px;color:#6B5D82;margin:0 0 10px;}' +
@@ -175,6 +179,7 @@
     ov.innerHTML = '<div class="psim-top"><div><b>' + esc(sim.title) + (mode === 'live' ? ' · Live session' : '') + '</b><br><span>' + esc(sim.patient.age + ' · ' + sim.patient.weight + ' · ' + sim.patient.sex) + '</span></div>' +
       '<button class="psim-tb first" type="button" data-t="voice"></button><button class="psim-tb" type="button" data-t="beep"></button><button class="psim-tb" type="button" data-t="close">Close</button></div>' +
       '<div class="psim-stage"><div class="psim-story"></div><div class="psim-monwrap"><canvas class="psim-cv"></canvas></div></div>' +
+      '<div class="psim-ctrl"><button type="button" data-c="restart" title="Back to the start of this part" aria-label="Restart">\u21BA Restart</button><button type="button" data-c="back" title="Back 5 seconds" aria-label="Back 5 seconds">\u25C0\u25C0 5s</button><button type="button" data-c="play" class="pp" aria-label="Pause">\u275A\u275A Pause</button><button type="button" data-c="fwd" title="Forward 5 seconds" aria-label="Forward 5 seconds">5s \u25B6\u25B6</button><button type="button" data-c="end" title="Skip to the question" aria-label="Skip">Skip \u25B6|</button><span class="tm"></span></div>' +
       '<div class="psim-body"><div class="psim-now"></div></div>';
     document.body.appendChild(ov); var prevOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden';
     var stage = ov.querySelector('.psim-stage'), story = ov.querySelector('.psim-story'), now = ov.querySelector('.psim-now');
@@ -191,7 +196,18 @@
 
     /* ----- clip player ----- */
     var clip = null, clipName = '', clipStart = 0, clipDone = null, actionText = '', segIdx = -1, lineState = '', monShown = false, lastFrame = performance.now();
-    function tNow(){ return (performance.now() - clipStart) / 1000; }
+    var paused = false, pauseAt = 0;
+    function tNow(){ return paused ? pauseAt : (performance.now() - clipStart) / 1000; }
+    function footVid(){ return story.querySelector('video'); }
+    function setPP(){ var b = ov.querySelector('[data-c="play"]'); if (b) { b.textContent = paused ? '\u25B6 Play' : '\u275A\u275A Pause'; b.setAttribute('aria-label', paused ? 'Play' : 'Pause'); } }
+    function pauseClip(){ if (paused || !clip) return; pauseAt = tNow(); paused = true; vo.pause(); var v = footVid(); if (v) v.pause(); setPP(); }
+    function resumeClip(){ if (!paused || !clip) return; paused = false; if (pauseAt >= clip.duration) pauseAt = 0; clipStart = performance.now() - pauseAt * 1000; if (voiceOn && pauseAt < clip.duration) { try { vo.currentTime = pauseAt; } catch(e) {} vo.play().catch(function(){}); } var v = footVid(); if (v) v.play().catch(function(){}); setPP(); }
+    function seek(t){
+      if (!clip) return; t = Math.max(0, Math.min(clip.duration, t));
+      if (paused) pauseAt = t; else clipStart = performance.now() - t * 1000;
+      segIdx = -1; lineState = '';
+      if (voiceOn && !paused && t < clip.duration) { try { vo.currentTime = t; } catch(e) {} vo.play().catch(function(){}); } else vo.pause();
+    }
     function vitalsAt(t){
       var tl = clip.vitals, cur = tl[0].v, prev = tl[0].v, tc = 0;
       for (var i = 0; i < tl.length; i++) if (tl[i].t <= t) { prev = i ? tl[i - 1].v : tl[i].v; cur = tl[i].v; tc = tl[i].t; }
@@ -202,12 +218,20 @@
     function play(name, act, done){
       clip = live.clips[name]; clipName = name; actionText = act || ''; clipDone = done; segIdx = -1; lineState = '';
       if (!clip) { done(); return; }
-      clipStart = performance.now(); mon.set(vitalsAt(0), clip.alarm);
+      clipStart = performance.now(); paused = false; setPP(); mon.set(vitalsAt(0), clip.alarm);
       vo.pause(); if (voiceOn) { vo.src = 'sims/live/' + sim.id + '/voice/' + name + '.m4a'; vo.currentTime = 0; vo.play().catch(function(){}); }
       now.innerHTML = '';
       ov.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    function skip(){ if (!clip) return; clipStart = performance.now() - clip.duration * 1000; vo.pause(); }
+    function skip(){ if (!clip) return; seek(clip.duration); }
+    ov.querySelector('.psim-ctrl').addEventListener('click', function(e){
+      var b = e.target.closest('[data-c]'); if (!b || !clip) return; var c = b.getAttribute('data-c'), t = tNow();
+      if (c === 'play') { if (paused) resumeClip(); else if (t >= clip.duration) seek(0); else pauseClip(); }
+      else if (c === 'restart') { if (paused) { paused = false; setPP(); } seek(0); }
+      else if (c === 'back') seek(t - 5);
+      else if (c === 'fwd') seek(t + 5);
+      else if (c === 'end') seek(clip.duration);
+    });
     function renderSeg(sg, i){
       var p = sg.panel, k = p.kind, h = '';
       var lines = function(){ return '<div class="txt">' + sg.lines.map(function(l, j){ return '<span class="s" data-j="' + j + '">' + esc(l.text) + ' </span>'; }).join('') + '</div>'; };
@@ -218,9 +242,8 @@
       else if (k === 'decision') h = '<div class="eb">' + esc(p.eyebrow) + '</div><h2>' + esc(p.title) + '</h2>' + lines();
       else if (k === 'footage') h = '<div class="lbl">' + esc(p.label || 'Clinical footage') + '</div><video muted playsinline autoplay loop src="sims/media/' + esc(sg.footage) + '"></video><div class="cap"></div>';
       else h = '<div class="eb">' + esc(p.eyebrow || '') + '</div>' + lines();
-      story.innerHTML = h + '<button type="button" class="psim-skip">Skip ▸▸</button>';
-      story.querySelector('.psim-skip').addEventListener('click', skip);
-      var vid = story.querySelector('video'); if (vid) { var pr = vid.play(); if (pr && pr.catch) pr.catch(function(){}); }
+      story.innerHTML = h;
+      var vid = story.querySelector('video'); if (vid && paused) vid.removeAttribute('autoplay'); if (vid && !paused) { var pr = vid.play(); if (pr && pr.catch) pr.catch(function(){}); }
     }
     function frame(ts){
       if (closed) return;
@@ -234,7 +257,8 @@
           var cap = story.querySelector('.cap'); if (cap) { var cur = ''; sg.lines.forEach(function(l){ if (t >= l.t0) cur = l.text; }); cap.textContent = cur; } }
         if (clip.monitorOn !== null && clip.monitorOn !== undefined && t >= clip.monitorOn && !monShown) { monShown = true; stage.classList.add('mon'); mon.resize(); requestAnimationFrame(function(){ mon.resize(); stage.classList.add('shown'); }); mon.show(true); }
         lastV = vitalsAt(Math.min(t, clip.duration)); mon.set(lastV, clip.alarm);
-        if (t >= clip.duration && clipDone) { var f = clipDone; clipDone = null; var sk = story.querySelector('.psim-skip'); if (sk) sk.remove(); f(); }
+        var tm = ov.querySelector('.psim-ctrl .tm'); if (tm) { var sh = Math.min(t, clip.duration); var ppb = ov.querySelector('[data-c="play"]'); if (ppb && !paused) ppb.textContent = t >= clip.duration ? '\u25B6 Replay' : '\u275A\u275A Pause'; tm.textContent = Math.floor(sh / 60) + ':' + ('0' + Math.floor(sh % 60)).slice(-2) + ' / ' + Math.floor(clip.duration / 60) + ':' + ('0' + Math.floor(clip.duration % 60)).slice(-2); }
+        if (t >= clip.duration && clipDone) { var f = clipDone; clipDone = null; f(); }
       }
       if (monShown) { mon.step(dt); mon.draw(ts); }
       requestAnimationFrame(frame);
@@ -254,10 +278,11 @@
     }
     function ask(msg){
       var d = sim.decisions[di];
-      now.innerHTML = '<div class="psim-ans"><label for="psimA">' + (mode === 'live' ? 'Type the group’s answer' : 'What do you do?') + '</label>' +
-        '<p class="hint">' + esc(tried.length ? 'The situation has changed.' : d.title + '.') + ' Type it as you would say it at the bedside.</p>' +
+      var lab = tried.length ? 'The situation has changed \u2014 what do you do now?' : ({ Impression: 'Your impression', Intervention: 'Your intervention' }[d.title] || 'Your answer');
+      now.innerHTML = '<div class="psim-ans"><label for="psimA">' + esc(mode === 'live' ? lab.replace(/^Your /, 'The group\u2019s ') : lab) + '</label>' +
+        '<p class="hint">Type it as you would say it at the bedside.</p>' +
         (msg ? '<div class="probe">' + esc(msg) + '</div>' : '') +
-        '<textarea id="psimA" maxlength="800" placeholder="e.g. what you would do first, and how"></textarea>' +
+        '<textarea id="psimA" maxlength="800" placeholder="Type your answer here"></textarea>' +
         '<div class="row"><button type="button" class="psim-btn" data-act="send">Submit</button><span class="stat"></span></div>' + facultyPanel() + '</div>';
       var ta = now.querySelector('textarea'), btn = now.querySelector('[data-act="send"]'), stat = now.querySelector('.stat');
       setTimeout(function(){ try { ta.focus({ preventScroll: true }); } catch(e) {} var y = now.getBoundingClientRect().top + ov.scrollTop - 90; ov.scrollTo({ top: Math.max(0, y), behavior: 'smooth' }); }, 80);
