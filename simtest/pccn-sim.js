@@ -196,14 +196,14 @@
 
     /* ----- clip player ----- */
     var clip = null, clipName = '', clipStart = 0, clipDone = null, actionText = '', segIdx = -1, lineState = '', monShown = false, lastFrame = performance.now();
-    var paused = false, pauseAt = 0;
+    var paused = false, pauseAt = 0, startAt = 0;
     function tNow(){ return paused ? pauseAt : (performance.now() - clipStart) / 1000; }
     function footVid(){ return story.querySelector('video'); }
     function setPP(){ var b = ov.querySelector('[data-c="play"]'); if (b) { b.textContent = paused ? '\u25B6 Play' : '\u275A\u275A Pause'; b.setAttribute('aria-label', paused ? 'Play' : 'Pause'); } }
     function pauseClip(){ if (paused || !clip) return; pauseAt = tNow(); paused = true; vo.pause(); var v = footVid(); if (v) v.pause(); setPP(); }
-    function resumeClip(){ if (!paused || !clip) return; paused = false; if (pauseAt >= clip.duration) pauseAt = 0; clipStart = performance.now() - pauseAt * 1000; if (voiceOn && pauseAt < clip.duration) { try { vo.currentTime = pauseAt; } catch(e) {} vo.play().catch(function(){}); } var v = footVid(); if (v) v.play().catch(function(){}); setPP(); }
+    function resumeClip(){ if (!paused || !clip) return; paused = false; if (pauseAt >= clip.duration) pauseAt = startAt; clipStart = performance.now() - pauseAt * 1000; if (voiceOn && pauseAt < clip.duration) { try { vo.currentTime = pauseAt; } catch(e) {} vo.play().catch(function(){}); } var v = footVid(); if (v) v.play().catch(function(){}); setPP(); }
     function seek(t){
-      if (!clip) return; t = Math.max(0, Math.min(clip.duration, t));
+      if (!clip) return; t = Math.max(startAt, Math.min(clip.duration, t));
       if (paused) pauseAt = t; else clipStart = performance.now() - t * 1000;
       segIdx = -1; lineState = '';
       if (voiceOn && !paused && t < clip.duration) { try { vo.currentTime = t; } catch(e) {} vo.play().catch(function(){}); } else vo.pause();
@@ -218,16 +218,18 @@
     function play(name, act, done){
       clip = live.clips[name]; clipName = name; actionText = act || ''; clipDone = done; segIdx = -1; lineState = '';
       if (!clip) { done(); return; }
-      clipStart = performance.now(); paused = false; setPP(); mon.set(vitalsAt(0), clip.alarm);
-      vo.pause(); if (voiceOn) { vo.src = 'sims/live/' + sim.id + '/voice/' + name + '.m4a'; vo.currentTime = 0; vo.play().catch(function(){}); }
+      /* the 'your action' card is not shown (the typed answer is already on screen); kept only when the senior nurse steps in */
+      startAt = (!rescuing && clip.segs[0] && clip.segs[0].panel.kind === 'action') ? clip.segs[0].t1 : 0;
+      clipStart = performance.now() - startAt * 1000; paused = false; setPP(); mon.set(vitalsAt(startAt), clip.alarm);
+      vo.pause(); if (voiceOn) { vo.src = 'sims/live/' + sim.id + '/voice/' + name + '.m4a'; try { vo.currentTime = startAt; } catch(e) {} vo.play().catch(function(){}); }
       now.innerHTML = '';
       ov.scrollTo({ top: 0, behavior: 'smooth' });
     }
     function skip(){ if (!clip) return; seek(clip.duration); }
     ov.querySelector('.psim-ctrl').addEventListener('click', function(e){
       var b = e.target.closest('[data-c]'); if (!b || !clip) return; var c = b.getAttribute('data-c'), t = tNow();
-      if (c === 'play') { if (paused) resumeClip(); else if (t >= clip.duration) seek(0); else pauseClip(); }
-      else if (c === 'restart') { if (paused) { paused = false; setPP(); } seek(0); }
+      if (c === 'play') { if (paused) resumeClip(); else if (t >= clip.duration) seek(startAt); else pauseClip(); }
+      else if (c === 'restart') { if (paused) { paused = false; setPP(); } seek(startAt); }
       else if (c === 'back') seek(t - 5);
       else if (c === 'fwd') seek(t + 5);
       else if (c === 'end') seek(clip.duration);
