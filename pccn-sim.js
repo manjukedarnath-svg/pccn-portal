@@ -292,7 +292,7 @@
         var txt = ta.value.trim(); if (txt.length < 3) { stat.textContent = 'Type what you would do.'; return; }
         btn.disabled = true; stat.textContent = 'Reading your answer…';
         if (judgeOk === false) return choices(txt);
-        fetch(judgeUrl(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sim: sim.id, decision: di, answer: txt, probed: probed, after: tried.length ? lastOutcome : '', now: lastV && monShown ? { hr: Math.round(lastV.hr), rr: Math.round(lastV.rr), spo2: Math.round(lastV.spo2), bp: lastV.bp, o2: lastV.o2 || '' } : null }) })
+        fetch(judgeUrl(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ set: window.PCCN_SIM_SET || '', sim: sim.id, decision: di, answer: txt, probed: probed, after: tried.length ? lastOutcome : '', now: lastV && monShown ? { hr: Math.round(lastV.hr), rr: Math.round(lastV.rr), spo2: Math.round(lastV.spo2), bp: lastV.bp, o2: lastV.o2 || '' } : null }) })
           .then(function(r){ return r.json(); })
           .then(function(j){
             if (j.choice !== undefined && j.choice !== null) return take(j.choice, txt);
