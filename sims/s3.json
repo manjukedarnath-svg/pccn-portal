@@ -25,7 +25,7 @@
   {
    "id": "d1",
    "title": "Impression",
-   "prompt": "What is your impression — stable or unstable, life-threatening or not, and which system is affected?",
+   "prompt": "What is your impression?",
    "options": [
     {
      "text": "Unstable, non-life-threatening — mild distress; turn the prongs up and recheck at the 2 am round",
@@ -64,10 +64,73 @@
      "note": "Agitation in a hypoxaemic child is the hypoxaemia. Comfort measures are good; they are not the treatment."
     }
    ],
-   "key": "Unstable — breathing: severe respiratory distress with impending respiratory failure (lower airway / lung tissue). Escalate now.",
+   "key": "Unstable · Life-threatening (impending respiratory failure) · Respiratory",
    "must": [
     "severe respiratory distress or impending respiratory failure"
-   ]
+   ],
+   "pick": {
+    "groups": [
+     {
+      "id": "stab",
+      "label": "Stable or unstable?",
+      "opts": [
+       "Stable",
+       "Unstable"
+      ]
+     },
+     {
+      "id": "threat",
+      "label": "Life-threatening or not?",
+      "opts": [
+       "Life-threatening",
+       "Non-life-threatening"
+      ]
+     },
+     {
+      "id": "sys",
+      "label": "Which system is affected?",
+      "opts": [
+       "Respiratory",
+       "Circulation",
+       "Neurological"
+      ]
+     }
+    ],
+    "map": [
+     {
+      "when": {
+       "stab": "Stable"
+      },
+      "limb": 3
+     },
+     {
+      "when": {
+       "sys": "Circulation"
+      },
+      "limb": 3
+     },
+     {
+      "when": {
+       "sys": "Neurological"
+      },
+      "limb": 3
+     },
+     {
+      "when": {
+       "threat": "Life-threatening",
+       "sys": "Respiratory"
+      },
+      "limb": 1
+     },
+     {
+      "when": {
+       "threat": "Non-life-threatening",
+       "sys": "Respiratory"
+      },
+      "limb": 0
+     }
+    ]
+   }
   },
   {
    "id": "d2",

@@ -63,6 +63,9 @@
   '.psim-fac .fo{display:flex;gap:8px;align-items:flex-start;margin:8px 0 0;font-size:13.5px;}.psim-fac .fo button{flex:none;}' +
   '.psim-fac .fo .star{color:#0F6B52;font-weight:800;}' +
   '.psim-note{font-size:13px;color:#6B5D82;margin:8px 0 0;}' +
+  '.pk{margin:10px 0 4px;}.pkl{font-size:13px;font-weight:600;color:#6B5D82;margin:0 0 6px;}' +
+  '.pko{min-height:44px;padding:8px 16px;margin:0 8px 8px 0;border-radius:999px;border:1.5px solid #D8C2E0;background:#fff;color:#1F0938;font:600 14.5px Poppins,sans-serif;cursor:pointer;}' +
+  '.pko.on{background:#1F0938;color:#fff;border-color:#1F0938;}' +
   '.psim-end{background:#EBF8F4;border:1px solid #BFE6D8;border-radius:14px;padding:16px;}' +
   '.psim-db h3{font-size:18px;margin:26px 0 10px;}.psim-db ol,.psim-db ul{padding-left:20px;margin:0;}.psim-db li{margin:0 0 8px;font-size:14.5px;}' +
   '.psim-row{background:#fff;border:1px solid #EEE4EC;border-radius:14px;padding:14px;margin:0 0 10px;}.psim-row h5{margin:0 0 8px;font-size:14px;}' +
@@ -278,8 +281,44 @@
         return '<div class="fo"><button type="button" class="psim-btn ghost" style="padding:6px 12px;min-height:34px;font-size:12.5px;" data-force="' + i + '">Run</button><div>' + (o.best ? '<span class="star">★ </span>' : '') + esc(o.text) + '</div></div>';
       }).join('') + '<p class="psim-note">★ moves the case on. Learners do not see this panel.</p></details>';
     }
+    function askPick(){
+      var d = sim.decisions[di], P = d.pick, sel = {}, multi = !!P.multi;
+      var lab = tried.length ? 'The situation has changed \u2014 ' + (d.title === 'Impression' ? 'what is your impression now?' : 'what do you do now?') : ('Your ' + d.title.toLowerCase());
+      var optV = function(o){ return typeof o === 'string' ? o : o.v; };
+      now.innerHTML = '<div class="psim-ans"><label>' + esc(mode === 'live' ? lab.replace(/^Your /, 'The group\u2019s ') : lab) + '</label>' + (multi ? '<p class="hint">Choose all that apply.</p>' : '') +
+        P.groups.map(function(g){ return '<div class="pk" data-g="' + g.id + '">' + (multi ? '' : '<div class="pkl">' + esc(g.label) + '</div>') + g.opts.map(function(o){ return '<button type="button" class="pko" data-v="' + esc(optV(o)) + '">' + esc(optV(o)) + '</button>'; }).join('') + '</div>'; }).join('') +
+        '<div class="row"><button type="button" class="psim-btn" data-act="pick">Submit</button><span class="stat"></span></div>' + facultyPanel() + '</div>';
+      now.querySelectorAll('.pk').forEach(function(gr){ gr.addEventListener('click', function(e){
+        var b = e.target.closest('.pko'); if (!b) return; var g = gr.getAttribute('data-g'), v = b.getAttribute('data-v');
+        if (multi) {
+          var cur = sel[g] || [];
+          if (/^None/.test(v)) cur = cur.indexOf(v) !== -1 ? [] : [v];
+          else { cur = cur.filter(function(x){ return !/^None/.test(x); }); cur = cur.indexOf(v) !== -1 ? cur.filter(function(x){ return x !== v; }) : cur.concat([v]); }
+          sel[g] = cur; gr.querySelectorAll('.pko').forEach(function(x){ x.classList.toggle('on', cur.indexOf(x.getAttribute('data-v')) !== -1); });
+        } else { sel[g] = v; gr.querySelectorAll('.pko').forEach(function(x){ x.classList.toggle('on', x === b); }); }
+      }); });
+      now.querySelectorAll('[data-force]').forEach(function(b){ b.addEventListener('click', function(){ take(+b.getAttribute('data-force'), sim.decisions[di].options[+b.getAttribute('data-force')].text, true); }); });
+      now.querySelector('[data-act="pick"]').addEventListener('click', function(){
+        var st = now.querySelector('.stat'), limb = -1, txt;
+        if (multi) {
+          var chosen = [].concat.apply([], P.groups.map(function(g){ return sel[g.id] || []; }));
+          if (!chosen.length) { st.textContent = 'Choose at least one.'; return; }
+          P.map.some(function(r){ var ok = (!r.all || r.all.every(function(x){ return chosen.indexOf(x) !== -1; })) && (!r.any || r.any.some(function(x){ return chosen.indexOf(x) !== -1; })); if (ok) limb = r.limb; return ok; });
+          var grades = {}; P.groups.forEach(function(g){ g.opts.forEach(function(o){ if (typeof o !== 'string') grades[o.v] = o.grade; }); });
+          txt = chosen.join(' \u00b7 '); lastGrades = chosen.map(function(c){ return grades[c] || ''; });
+        } else {
+          if (!sel.stab) { st.textContent = 'Choose stable or unstable.'; return; }
+          if (sel.stab !== 'Stable' && (!sel.threat || !sel.sys)) { st.textContent = 'Choose all three.'; return; }
+          P.map.some(function(r){ var ok = Object.keys(r.when).every(function(k){ return sel[k] === r.when[k]; }); if (ok) limb = r.limb; return ok; });
+          txt = [sel.stab, sel.threat, sel.sys].filter(Boolean).join(' \u00b7 '); lastGrades = null;
+        }
+        take(limb < 0 ? 0 : limb, txt);
+      });
+      setTimeout(function(){ var y = now.getBoundingClientRect().top + ov.scrollTop - 90; ov.scrollTo({ top: Math.max(0, y), behavior: 'smooth' }); }, 80);
+    }
     function ask(msg){
       var d = sim.decisions[di];
+      if (d.pick) return askPick();
       var lab = tried.length ? 'The situation has changed \u2014 what do you do now?' : ({ Impression: 'Your impression', Intervention: 'Your intervention' }[d.title] || 'Your answer');
       now.innerHTML = '<div class="psim-ans"><label for="psimA">' + esc(mode === 'live' ? lab.replace(/^Your /, 'The group\u2019s ') : lab) + '</label>' +
         '<p class="hint">Type it as you would say it at the bedside.</p>' +
@@ -311,11 +350,11 @@
       now.querySelectorAll('.psim-opt').forEach(function(b){ b.addEventListener('click', function(){ take(+b.getAttribute('data-i'), txt || sim.decisions[di].options[+b.getAttribute('data-i')].text); }); });
       now.querySelectorAll('[data-force]').forEach(function(b){ b.addEventListener('click', function(){ take(+b.getAttribute('data-force'), txt, true); }); });
     }
-    var rescuing = false, lastV = null, lastOutcome = '';
+    var rescuing = false, lastV = null, lastOutcome = '', lastGrades = null;
     function take(i, txt, forced){
       var d = sim.decisions[di], o = d.options[i]; if (!o) return;
       var repeat = !o.best && tried.indexOf(i) !== -1; lastOutcome = o.outcome || '';
-      probed = false; tried.push(i); answers.push({ d: di, text: txt, limb: i, forced: !!forced });
+      probed = false; tried.push(i); answers.push({ d: di, text: txt, limb: i, forced: !!forced, grades: lastGrades || undefined }); lastGrades = null;
       mon.unlock();
       var wrongs = tried.filter(function(x){ return !d.options[x].best; }).length;
       var next = function(){
@@ -338,7 +377,7 @@
     function finish(smooth, detours){
       var firstTime = path.filter(function(p){ return p.length === 1; }).length;
       var rec = { completedAt: new Date().toISOString(), path: path, firstTime: firstTime, detours: detours, of: N, mode: mode,
-        answers: answers.map(function(a){ return { d: a.d, t: String(a.text || '').slice(0, 400), l: a.limb === undefined ? null : a.limb, p: a.probe || null, f: a.forced || undefined }; }) };
+        answers: answers.map(function(a){ return { d: a.d, t: String(a.text || '').slice(0, 400), l: a.limb === undefined ? null : a.limb, p: a.probe || null, f: a.forced || undefined, g: a.grades || undefined }; }) };
       if (mode !== 'live') {
         persist(sim, rec);
         var need = BYMOD[sim.module] || [sim.id];

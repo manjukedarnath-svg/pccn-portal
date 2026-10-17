@@ -25,7 +25,7 @@
   {
    "id": "d1",
    "title": "Impression",
-   "prompt": "What is your impression — stable or unstable, life-threatening or not, and which system is affected?",
+   "prompt": "What is your impression?",
    "options": [
     {
      "text": "Stable — PAT normal; minor head injury with a scalp wound",
@@ -56,10 +56,65 @@
      "note": "Crying raises the rate but there is no flaring, no recession, no abnormal sound. Work of breathing is normal. Count the rate again once he settles."
     }
    ],
-   "key": "Stable — PAT normal; no immediate threat. Minor head injury with a scalp laceration.",
+   "key": "Stable",
    "must": [
     "stable / no immediate threat"
-   ]
+   ],
+   "pick": {
+    "groups": [
+     {
+      "id": "stab",
+      "label": "Stable or unstable?",
+      "opts": [
+       "Stable",
+       "Unstable"
+      ]
+     },
+     {
+      "id": "threat",
+      "label": "Life-threatening or not?",
+      "opts": [
+       "Life-threatening",
+       "Non-life-threatening"
+      ]
+     },
+     {
+      "id": "sys",
+      "label": "Which system is affected?",
+      "opts": [
+       "Respiratory",
+       "Circulation",
+       "Neurological"
+      ]
+     }
+    ],
+    "map": [
+     {
+      "when": {
+       "stab": "Stable"
+      },
+      "limb": 0
+     },
+     {
+      "when": {
+       "sys": "Neurological"
+      },
+      "limb": 1
+     },
+     {
+      "when": {
+       "sys": "Circulation"
+      },
+      "limb": 2
+     },
+     {
+      "when": {
+       "sys": "Respiratory"
+      },
+      "limb": 3
+     }
+    ]
+   }
   },
   {
    "id": "d2",

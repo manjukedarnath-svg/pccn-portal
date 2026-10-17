@@ -25,8 +25,8 @@
   {
    "id": "d1",
    "title": "Impression",
-   "prompt": "What is your impression — stable or unstable, life-threatening or not, and which system is affected?",
-   "key": "Unstable, non-life-threatening; breathing affected — respiratory distress.",
+   "prompt": "What is your impression?",
+   "key": "Unstable · Non-life-threatening · Respiratory",
    "options": [
     {
      "text": "Stable — a well infant with a cough; she can wait in the routine queue",
@@ -60,31 +60,103 @@
      "vitals": {},
      "outcome": "You ask for an IV line and a fluid bolus. While the trolley is prepared nobody attends to her breathing; the recessions are deeper.",
      "note": "Tachycardia alone is not shock. Her circulation-to-skin side is normal: pink, warm, CRT 2 s. Fever, distress and crying all raise the heart rate. Shock needs abnormal circulation signs: pallor, mottling, cool extremities, delayed CRT."
+    },
+    {
+     "text": "Unstable — neurological: an irritable infant, check the brain first",
+     "best": false,
+     "vitals": {
+      "spo2": 87,
+      "rr": 66
+     },
+     "outcome": "You check her pupils and blood sugar and ask about fits. Meanwhile nobody attends to her breathing: the recessions are deeper and SpO₂ drifts to 87 %.",
+     "note": "Her irritability comes from hypoxia and the work of breathing. She is consolable, with good tone and interaction, so appearance is normal — the problem is breathing."
     }
    ],
    "must": [
     "respiratory distress or breathing affected (a nurse who names respiratory distress meets this; she need not write the words stable/unstable)"
-   ]
+   ],
+   "pick": {
+    "groups": [
+     {
+      "id": "stab",
+      "label": "Stable or unstable?",
+      "opts": [
+       "Stable",
+       "Unstable"
+      ]
+     },
+     {
+      "id": "threat",
+      "label": "Life-threatening or not?",
+      "opts": [
+       "Life-threatening",
+       "Non-life-threatening"
+      ]
+     },
+     {
+      "id": "sys",
+      "label": "Which system is affected?",
+      "opts": [
+       "Respiratory",
+       "Circulation",
+       "Neurological"
+      ]
+     }
+    ],
+    "map": [
+     {
+      "when": {
+       "stab": "Stable"
+      },
+      "limb": 0
+     },
+     {
+      "when": {
+       "sys": "Circulation"
+      },
+      "limb": 3
+     },
+     {
+      "when": {
+       "sys": "Neurological"
+      },
+      "limb": 4
+     },
+     {
+      "when": {
+       "threat": "Life-threatening"
+      },
+      "limb": 2
+     },
+     {
+      "when": {
+       "threat": "Non-life-threatening",
+       "sys": "Respiratory"
+      },
+      "limb": 1
+     }
+    ]
+   }
   },
   {
    "id": "d2",
    "title": "Intervention",
-   "prompt": "What is your intervention now?",
-   "key": "Start oxygen — any form is acceptable (nasal prongs, face mask, non-rebreather) — titrated to SpO₂ 94–98 %, and prepare nebulisation (salbutamol, oxygen-driven at 6–8 L/min).",
+   "prompt": "What is your intervention? Choose all that apply.",
+   "key": "Oxygen — non-rebreather mask (correct) or nasal cannula (acceptable) — and give the salbutamol nebulisation (correct); assessing ABCDE is acceptable alongside. Doing none of these is unsafe.",
    "options": [
     {
-     "text": "Start oxygen (any device) titrated to SpO₂ 94–98 % and prepare a salbutamol nebulisation",
+     "text": "Start oxygen (NRM or nasal cannula) and give the salbutamol nebulisation",
      "best": true,
      "vitals": {
       "spo2": 95,
       "rr": 56,
       "hr": 160
      },
-     "outcome": "Oxygen on; she settles on her mother’s lap. SpO₂ rises to 95 %, RR 56, HR 160. The salbutamol nebuliser is drawn up and ready, to be driven with oxygen at 6–8 L/min.",
+     "outcome": "Oxygen on; she settles on her mother’s lap. The salbutamol nebulisation runs, driven with oxygen at 6–8 L/min. SpO₂ rises to 95 %, RR 56, HR 160.",
      "note": "Oxygen first, by whatever device she tolerates, to a target of 94–98 %; then treat the wheeze — prepare an oxygen-driven salbutamol nebulisation. Reassess within minutes."
     },
     {
-     "text": "Start oxygen only, and keep watching",
+     "text": "Start oxygen only",
      "best": false,
      "vitals": {
       "spo2": 94,
@@ -95,7 +167,7 @@
      "note": "Oxygen treats the hypoxaemia, not the bronchospasm. With a wheeze, prepare the nebuliser at the same time."
     },
     {
-     "text": "Give a salbutamol nebulisation with room air or a compressor, without oxygen",
+     "text": "Give the nebulisation without oxygen",
      "best": false,
      "vitals": {
       "spo2": 86,
@@ -115,7 +187,7 @@
      "note": "An IV is not an A or B intervention, and the struggle will worsen her breathing. Nothing here needs IV access yet."
     },
     {
-     "text": "No oxygen yet — observe for 15 minutes and recheck",
+     "text": "None of these — observe and recheck",
      "best": false,
      "vitals": {
       "spo2": 86,
@@ -128,28 +200,93 @@
    "must": [
     "oxygen by any device",
     "nebulisation prepared or given"
-   ]
+   ],
+   "pick": {
+    "multi": true,
+    "groups": [
+     {
+      "id": "iv",
+      "label": "Your intervention",
+      "opts": [
+       {
+        "v": "Start oxygen — nasal cannula",
+        "grade": "ok"
+       },
+       {
+        "v": "Start oxygen — non-rebreather mask (NRM)",
+        "grade": "correct"
+       },
+       {
+        "v": "Assess ABCDE",
+        "grade": "ok"
+       },
+       {
+        "v": "Give salbutamol nebulisation",
+        "grade": "correct"
+       },
+       {
+        "v": "None of these",
+        "grade": "bad"
+       }
+      ]
+     }
+    ],
+    "map": [
+     {
+      "any": [
+       "None of these"
+      ],
+      "limb": 4
+     },
+     {
+      "any": [
+       "Start oxygen — nasal cannula",
+       "Start oxygen — non-rebreather mask (NRM)"
+      ],
+      "all": [
+       "Give salbutamol nebulisation"
+      ],
+      "limb": 0
+     },
+     {
+      "all": [
+       "Give salbutamol nebulisation"
+      ],
+      "limb": 2
+     },
+     {
+      "any": [
+       "Start oxygen — nasal cannula",
+       "Start oxygen — non-rebreather mask (NRM)"
+      ],
+      "limb": 1
+     },
+     {
+      "limb": 4
+     }
+    ]
+   }
   },
   {
    "id": "d3",
    "title": "Reassessment",
-   "prompt": "Five minutes later. Reassess her: what do you check, and what do you do next?",
-   "key": "Reassess work of breathing, RR, HR, SpO₂ and air entry: better on oxygen but still in distress. Give the oxygen-driven salbutamol nebulisation, continue oxygen, keep her monitored as Level 2, reassess every 5 minutes and call the doctor (ISBAR).",
+   "prompt": "Ten minutes later. Reassess her: what do you check, and what do you do next?",
+   "key": "Reassess work of breathing, RR, HR, SpO₂ and air entry: better but still in distress. Continue oxygen, repeat the nebulisation if needed, keep her monitored as Level 2, reassess every 5 minutes and call the doctor (ISBAR).",
    "must": [
     "reassess her breathing or vital signs",
-    "give the nebulisation (with oxygen continued)",
+    "continue treatment (oxygen / nebulisation) and keep monitoring",
     "inform or call the doctor"
    ],
    "options": [
     {
-     "text": "Reassess breathing and vital signs; give the oxygen-driven salbutamol nebulisation, continue oxygen, keep her monitored as Level 2 and call the doctor",
+     "text": "Reassess breathing and vital signs; continue oxygen, repeat the nebulisation if needed, keep her monitored as Level 2 and call the doctor",
      "best": true,
      "vitals": {
       "spo2": 97,
       "rr": 48,
       "hr": 150
      },
-     "outcome": "After the nebulisation the wheeze is softer and the recessions ease: SpO₂ 97 % on oxygen, RR 48, HR 150. The registrar arrives within minutes and you hand over with ISBAR.",
+     "outcome": "The wheeze is softer and the recessions ease: SpO₂ 97 % on oxygen, RR 48, HR 150. The registrar arrives within minutes and you hand over with ISBAR.",
      "note": "Reassess after every intervention and at least every 5 minutes while she is unstable. Oxygen bought time; the oxygen-driven nebulisation treats the wheeze. Keep her monitored (Level 2) and escalate to the doctor with ISBAR — numbers and a timeframe."
     },
     {
@@ -171,7 +308,7 @@
       "rr": 66,
       "hr": 172
      },
-     "outcome": "Thirty minutes pass. The nebuliser is still sitting unused and she is tiring: SpO₂ 90 %, RR 66, HR 172, the recessions deeper.",
+     "outcome": "Nobody reassesses her. Thirty minutes later she is tiring: SpO₂ 90 %, RR 66, HR 172, the recessions deeper.",
      "note": "Unstable children are reassessed every 5 minutes, and the treatment you prepared has to be given. Leaving her unobserved is how infants tire without anyone noticing."
     },
     {
@@ -194,7 +331,7 @@
  ],
  "takeHome": [
   "Impression first: stable or unstable, life-threatening or not, and which system — here, unstable non-life-threatening respiratory distress.",
-  "Intervention: oxygen by any device to SpO₂ 94–98 %, and prepare an oxygen-driven salbutamol nebulisation for the wheeze.",
+  "Intervention: oxygen (non-rebreather mask, or nasal cannula) and an oxygen-driven salbutamol nebulisation for the wheeze.",
   "Reassess after every intervention and every 5 minutes while unstable; give the treatment you prepared and escalate with ISBAR."
  ],
  "references": [

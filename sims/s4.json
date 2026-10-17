@@ -25,7 +25,7 @@
   {
    "id": "d1",
    "title": "Impression",
-   "prompt": "What is your impression — stable or unstable, life-threatening or not, and which system is affected?",
+   "prompt": "What is your impression?",
    "options": [
     {
      "text": "Unstable — breathing: respiratory distress, RR 32 is fast",
@@ -64,10 +64,73 @@
      "note": "Dehydration that produces mottling, CRT 4 s and lethargy is hypovolaemic shock and needs IV fluid now. ORS Plan A/B is for a child who is alert and can drink."
     }
    ],
-   "key": "Unstable, life-threatening — circulation: shock (decompensated, most likely septic).",
+   "key": "Unstable · Life-threatening · Circulation (shock)",
    "must": [
     "shock / circulation affected"
-   ]
+   ],
+   "pick": {
+    "groups": [
+     {
+      "id": "stab",
+      "label": "Stable or unstable?",
+      "opts": [
+       "Stable",
+       "Unstable"
+      ]
+     },
+     {
+      "id": "threat",
+      "label": "Life-threatening or not?",
+      "opts": [
+       "Life-threatening",
+       "Non-life-threatening"
+      ]
+     },
+     {
+      "id": "sys",
+      "label": "Which system is affected?",
+      "opts": [
+       "Respiratory",
+       "Circulation",
+       "Neurological"
+      ]
+     }
+    ],
+    "map": [
+     {
+      "when": {
+       "stab": "Stable"
+      },
+      "limb": 3
+     },
+     {
+      "when": {
+       "sys": "Respiratory"
+      },
+      "limb": 0
+     },
+     {
+      "when": {
+       "sys": "Neurological"
+      },
+      "limb": 2
+     },
+     {
+      "when": {
+       "threat": "Life-threatening",
+       "sys": "Circulation"
+      },
+      "limb": 1
+     },
+     {
+      "when": {
+       "threat": "Non-life-threatening",
+       "sys": "Circulation"
+      },
+      "limb": 3
+     }
+    ]
+   }
   },
   {
    "id": "d2",
