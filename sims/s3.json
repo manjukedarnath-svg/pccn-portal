@@ -195,7 +195,6 @@
    "tag": "R · Reassessment",
    "label": "Your reassessment",
    "prompt": "One hour on HFNC 28 L/min, FiO₂ 0.5. Reassess him: is it working, and what do you do now?",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,
@@ -304,7 +303,6 @@
    "tag": "EC · Effective communication — parents",
    "label": "Your communication with the mother",
    "prompt": "His mother looks at the machine: “Sister, what is this big machine? Is he going to the ICU?”",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,
@@ -384,7 +382,6 @@
    "tag": "EC · Effective communication — team",
    "label": "Your communication with the team",
    "prompt": "The resident is still in the emergency room. How do you communicate with the team?",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,
@@ -470,7 +467,6 @@
    "tag": "T · Transport",
    "label": "Your transfer plan",
    "prompt": "The resident asks where he should be looked after for the rest of the night.",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,

@@ -163,7 +163,6 @@
    "tag": "R · Reassessment",
    "label": "Your reassessment",
    "prompt": "Forty minutes later the father comes to the desk: “Sister, he has vomited twice and now he wants to sleep.”",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,
@@ -257,7 +256,6 @@
    "tag": "EC · Effective communication — parents",
    "label": "Your communication with the father",
    "prompt": "The father is shaking: “Sister, is it serious? It is my fault — I left him on the chair.”",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,
@@ -337,7 +335,6 @@
    "tag": "EC · Effective communication — team",
    "label": "Your communication with the doctor",
    "prompt": "You call the doctor. What do you say and do?",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,
@@ -419,7 +416,6 @@
    "tag": "T · Transport",
    "label": "Your transfer plan",
    "prompt": "The CT scanner is ready. How does he go, and where does he go after the scan?",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,

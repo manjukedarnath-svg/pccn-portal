@@ -204,7 +204,6 @@
    "tag": "R · Reassessment",
    "label": "Your reassessment",
    "prompt": "After two boluses (40 mL/kg) and the antibiotic: HR 140, BP 80/42, CRT 3 s, still cold to the wrists and lethargic; chest clear, liver 1 cm. Reassess her: what is happening, and what do you do now?",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,
@@ -315,7 +314,6 @@
    "tag": "EC · Effective communication — parents",
    "label": "Your communication with the father",
    "prompt": "Her father stops you: “Is she going to die? I only gave her the syrup from the medical shop.”",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,
@@ -390,7 +388,6 @@
    "tag": "EC · Effective communication — team",
    "label": "Your communication with the team",
    "prompt": "The adrenaline infusion is about to start and the PICU must be told. How does the team communicate?",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,
@@ -472,7 +469,6 @@
    "tag": "T · Transport",
    "label": "Your transfer plan",
    "prompt": "Meera needs intensive care. Where does she go, and how?",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,
