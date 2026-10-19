@@ -71,6 +71,7 @@
   '.psim-db h3{font-size:18px;margin:26px 0 10px;}.psim-db ol,.psim-db ul{padding-left:20px;margin:0;}.psim-db li{margin:0 0 8px;font-size:14.5px;}' +
   '.psim-row{background:#fff;border:1px solid #EEE4EC;border-radius:14px;padding:14px;margin:0 0 10px;}.psim-row h5{margin:0 0 8px;font-size:14px;}' +
   '.psim-row .pa{font-size:13.5px;color:#4A3B5C;margin:0 0 6px;padding-left:12px;border-left:3px solid #E2D6EA;}.psim-row .pa q{font-style:italic;color:#1F0938;}' +
+  '.th-r{display:flex;gap:10px;align-items:flex-start;margin:0 0 10px;font-size:14px;line-height:1.45;}.th-r span{flex:0 0 auto;min-width:34px;height:26px;padding:0 6px;border-radius:13px;background:#4A1A73;color:#fff;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;}' +
   '.fl{position:relative;margin:4px 0 0;}.fl-node{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1.5px solid #E2D6EA;border-radius:14px;padding:12px 14px;}' +
   '.fl-dot{flex:0 0 auto;min-width:40px;height:40px;padding:0 6px;border-radius:20px;display:flex;align-items:center;justify-content:center;font:700 13px Poppins,sans-serif;color:#fff;background:#1B9E7E;}' +
   '.fl-node.det .fl-dot{background:#E08A00;}.fl-node.res .fl-dot{background:#7A3FA8;}.fl-node.det{border-color:#F3D19A;}.fl-node.res{border-color:#CDB4E3;}' +
@@ -431,7 +432,7 @@
       now.innerHTML = '<div class="psim-db"><h3 style="margin-top:6px;">' + (mode === 'live' ? 'The team’s path' : 'Your path') + '</h3>' +
         '<div class="fl-key"><span class="ok">First time</span><span class="det">Detour</span><span class="res">Senior nurse</span></div>' +
         '<div class="fl">' + flow + '<div class="fl-arr"></div><div class="fl-end ' + (smooth ? 'ok' : 'det') + '"><b>Outcome</b><br>' + esc(smooth ? sim.ending.smooth : sim.ending.detour) + '</div></div>' +
-        '<h3>Take-home</h3><ul>' + sim.takeHome.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ul>' +
+        '<h3>Take-home \u00b7 DIRECT</h3><div class="th">' + sim.takeHome.map(function(q){ return typeof q === 'string' ? '<div class="th-r"><span></span><div>' + esc(q) + '</div></div>' : '<div class="th-r"><span>' + esc(q.k) + '</span><div><b>' + esc(q.h) + '.</b> ' + esc(q.t) + '</div></div>'; }).join('') + '</div>' +
         '<details class="fl-more"><summary>Teaching point for each step</summary><ol>' + sim.decisions.map(function(d){ var b = d.options.filter(function(o){ return o.best; })[0]; return '<li><b>' + esc(d.title) + '.</b> ' + esc(b.note || '') + '</li>'; }).join('') + '</ol></details>' +
         '<details class="fl-more"><summary>Debrief questions and references</summary><ol>' + sim.debrief.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ol>' +
         '<ul class="psim-refs">' + sim.references.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ul></details>' +

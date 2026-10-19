@@ -556,11 +556,36 @@
   "What told you the shock was fluid-refractory, and why adrenaline in cold shock?"
  ],
  "takeHome": [
-  "Lethargy with mottled skin is shock; hypotension (SBP below 70 + 2 × age) makes it decompensated.",
-  "First five minutes: oxygen, monitoring, IV/IO within 5 minutes, glucose, culture, antibiotic within the hour.",
-  "Cold shock = cold limbs, weak pulses, prolonged CRT. Warm shock = flash CRT, bounding pulses.",
-  "10–20 mL/kg isotonic crystalloid over 5–10 minutes; reassess perfusion, liver and chest after every bolus.",
-  "Shock after 40–60 mL/kg is fluid-refractory: adrenaline for cold shock, peripherally if needed, and call PICU."
+  {
+   "k": "D",
+   "h": "Detection",
+   "t": "Lethargy, mottling and cold peripheries = shock; hypotension (SBP below 70 + 2 × age) makes it decompensated."
+  },
+  {
+   "k": "I",
+   "h": "Intervention",
+   "t": "First five minutes: oxygen, monitoring, IV/IO, glucose, culture, 20 mL/kg push–pull, antibiotic within the hour."
+  },
+  {
+   "k": "R",
+   "h": "Reassessment",
+   "t": "Reassess after every bolus; shock after 40–60 mL/kg is fluid-refractory — adrenaline in cold shock."
+  },
+  {
+   "k": "EC",
+   "h": "Parents",
+   "t": "Honest and kind, never falsely reassure, keep the parent close, promise the next update."
+  },
+  {
+   "k": "EC",
+   "h": "Team",
+   "t": "Closed-loop drug orders, named roles, and an ISBAR handover with fluids, antibiotic time and drug rates."
+  },
+  {
+   "k": "T",
+   "h": "Transport",
+   "t": "Stabilise first; PICU with a doctor and nurse escort; never stop a vasoactive infusion in transit."
+  }
  ],
  "references": [
   "Surviving Sepsis Campaign International Guidelines for the Management of Septic Shock in Children (Weiss et al., 2020): fluid boluses, adrenaline/noradrenaline over dopamine, peripheral vasoactive infusion.",

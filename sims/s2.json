@@ -499,11 +499,36 @@
   "Which warning signs should every family be told before they wait?"
  ],
  "takeHome": [
-  "A stable PAT buys time for a focused assessment; it does not end the assessment.",
-  "Screen head injuries for red flags before wound care.",
-  "Triage down with confidence when there are no red flags — and set re-triage triggers.",
-  "Give parents specific warning signs and a route back to you.",
-  "Triage is dynamic: a change in the child changes the level, and the doctor is called now."
+  {
+   "k": "D",
+   "h": "Detection",
+   "t": "A stable PAT buys time for a focused head-injury screen; it does not end the assessment."
+  },
+  {
+   "k": "I",
+   "h": "Intervention",
+   "t": "Screen for red flags (mechanism, loss of consciousness, vomiting, drowsiness) before wound care."
+  },
+  {
+   "k": "R",
+   "h": "Reassessment",
+   "t": "Triage is dynamic: repeated vomiting or drowsiness means full reassessment, upgrade and the doctor now."
+  },
+  {
+   "k": "EC",
+   "h": "Parents",
+   "t": "Acknowledge, never blame; explain simply; tell them exactly what to watch for and when to call."
+  },
+  {
+   "k": "EC",
+   "h": "Team",
+   "t": "Name the change with numbers (AVPU, pupils, HR), ask for review now, read back the orders."
+  },
+  {
+   "k": "T",
+   "h": "Transport",
+   "t": "Escort a drowsy child to CT with monitoring and suction; plan HDU/PICU or a neurosurgical centre."
+  }
  ],
  "references": [
   "AHA PALS Provider Manual 2020: Pediatric Assessment Triangle.",

@@ -553,10 +553,36 @@
   "Which nursing checks keep a child safe on high flow overnight?"
  ],
  "takeHome": [
-  "Grunting, SpO₂ falling on oxygen and agitation = impending failure: escalate while the child is still compensating.",
-  "HFNC at 2 L/kg/min is the step after nasal prongs; bridge with a non-rebreather while setting up.",
-  "Response to HFNC shows in HR and RR within 1–2 hours; the nursing care keeps it safe.",
-  "If HFNC fails — rising RR and HR, falling SpO₂, drowsiness or apnoea — escalate: bag-mask at 1 breath every 2–3 s and call the intensivist."
+  {
+   "k": "D",
+   "h": "Detection",
+   "t": "Grunting, falling SpO₂ on oxygen and agitation = impending respiratory failure: escalate early."
+  },
+  {
+   "k": "I",
+   "h": "Intervention",
+   "t": "HFNC at 2 L/kg/min, heated and humidified; bridge with a non-rebreather while you set it up."
+  },
+  {
+   "k": "R",
+   "h": "Reassessment",
+   "t": "HR and RR falling in 1–2 hours shows response; check the circuit, prongs and feeds every hour."
+  },
+  {
+   "k": "EC",
+   "h": "Parents",
+   "t": "Explain the machine in plain words, say what you are watching, give the parent a safe job."
+  },
+  {
+   "k": "EC",
+   "h": "Team",
+   "t": "ISBAR with numbers, read back the settings, and agree escalation triggers in advance."
+  },
+  {
+   "k": "T",
+   "h": "Transport",
+   "t": "HFNC needs HDU-level monitoring; move with oxygen, monitor, airway kit and a trained escort."
+  }
  ],
  "references": [
   "AHA PALS Provider Manual 2020: respiratory distress and failure, rescue breathing rates (1 breath every 2–3 s), bag-mask technique.",
