@@ -71,6 +71,17 @@
   '.psim-db h3{font-size:18px;margin:26px 0 10px;}.psim-db ol,.psim-db ul{padding-left:20px;margin:0;}.psim-db li{margin:0 0 8px;font-size:14.5px;}' +
   '.psim-row{background:#fff;border:1px solid #EEE4EC;border-radius:14px;padding:14px;margin:0 0 10px;}.psim-row h5{margin:0 0 8px;font-size:14px;}' +
   '.psim-row .pa{font-size:13.5px;color:#4A3B5C;margin:0 0 6px;padding-left:12px;border-left:3px solid #E2D6EA;}.psim-row .pa q{font-style:italic;color:#1F0938;}' +
+  '.fl{position:relative;margin:4px 0 0;}.fl-node{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1.5px solid #E2D6EA;border-radius:14px;padding:12px 14px;}' +
+  '.fl-dot{flex:0 0 auto;min-width:40px;height:40px;padding:0 6px;border-radius:20px;display:flex;align-items:center;justify-content:center;font:700 13px Poppins,sans-serif;color:#fff;background:#1B9E7E;}' +
+  '.fl-node.det .fl-dot{background:#E08A00;}.fl-node.res .fl-dot{background:#7A3FA8;}.fl-node.det{border-color:#F3D19A;}.fl-node.res{border-color:#CDB4E3;}' +
+  '.fl-body{flex:1;min-width:0;}.fl-t{font-weight:700;font-size:15px;color:#1F0938;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}' +
+  '.fl-chip{font:600 11px Poppins,sans-serif;padding:2px 9px;border-radius:999px;background:#E3F5EE;color:#0F6B52;}.det .fl-chip{background:#FFF4DC;color:#8A5A00;}.res .fl-chip{background:#F1E8F8;color:#5B2B86;}' +
+  '.fl-c{font-size:13.5px;color:#4A3B5C;margin-top:4px;}.fl-n{font-size:12.5px;color:#6A5A78;margin-top:6px;padding-top:6px;border-top:1px dashed #E2D6EA;}' +
+  '.fl-arr{width:2px;height:18px;background:#CDB4E3;margin:0 0 0 33px;position:relative;}.fl-arr:after{content:"";position:absolute;left:-4px;bottom:-2px;border:5px solid transparent;border-top-color:#CDB4E3;}' +
+  '.fl-det{display:flex;gap:8px;margin:0 0 8px 34px;padding:8px 12px;background:#FFF8EA;border:1px dashed #F3D19A;border-radius:12px;font-size:12.5px;color:#6B4A00;}.fl-x{font-size:16px;line-height:1;}' +
+  '.fl-end{border-radius:14px;padding:14px 16px;font-size:14px;background:#EBF8F4;border:1.5px solid #BFE6D8;}.fl-end.det{background:#FFF8EA;border-color:#F3D19A;}' +
+  '.fl-key{display:flex;gap:14px;font-size:12px;color:#6A5A78;margin:0 0 10px;}.fl-key span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:5px;margin-right:5px;vertical-align:-1px;background:#1B9E7E;}.fl-key .det:before{background:#E08A00;}.fl-key .res:before{background:#7A3FA8;}' +
+  '.fl-more{margin-top:18px;font-size:14px;}.fl-more summary{cursor:pointer;font-weight:700;}.fl-more ol{margin:10px 0;}' +
   '.psim-row .tp{font-size:13.5px;background:#F4EEF7;border-radius:10px;padding:10px 12px;margin-top:8px;}.psim-refs{font-size:12.5px;color:#6A5A78;}';
 
   var modNo = (location.pathname.match(/Module(\d\d)/) || [0, '00'])[1];
@@ -401,17 +412,29 @@
         var need = BYMOD[sim.module] || [sim.id];
         if (need.every(function(x){ return !!saved(x); })) document.dispatchEvent(new CustomEvent('pccn:step', { detail: { id: 'sim' } }));
       }
-      var rows = sim.decisions.map(function(d, k){
+      var short = function(t, n){ t = String(t || ''); return t.length > n ? t.slice(0, n - 1).replace(/\s+\S*$/, '') + '…' : t; };
+      var flow = sim.decisions.map(function(d, k){
         var best = d.options.filter(function(o){ return o.best; })[0];
-        var mine = answers.filter(function(a){ return a.d === k && a.limb !== undefined; });
-        return '<div class="psim-row"><h5>' + (k + 1) + '. ' + esc(d.title) + '</h5>' +
-          mine.map(function(a){ return '<p class="pa"><q>' + esc(a.text) + '</q><br><i>→ ' + esc(d.options[a.limb].outcome) + '</i></p>'; }).join('') +
-          '<div class="tp"><b>Teaching point.</b> ' + esc(best.note) + '</div></div>';
-      }).join('');
-      now.innerHTML = '<div class="psim-db"><div class="psim-end"><b>What happened next</b><br>' + esc(smooth ? sim.ending.smooth : sim.ending.detour) + '</div><h3>' + (mode === 'live' ? 'The team’s path through the case' : 'Your path through the case') + '</h3>' + rows +
-        '<h3>Debrief</h3><ol>' + sim.debrief.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ol>' +
+        var mine = answers.filter(function(a){ return a.d === k && a.limb !== undefined && a.limb !== null; });
+        var detours = mine.filter(function(a){ return !d.options[a.limb].best; });
+        var last = mine[mine.length - 1] || {}, rescued = !!last.rescue;
+        var st = rescued ? 'res' : detours.length ? 'det' : 'ok';
+        var ab = (d.tag || String(k + 1)).split(' · ')[0];
+        return detours.map(function(a){
+            return '<div class="fl-det"><span class="fl-x">↳</span><div><b>' + esc(short(a.text, 70)) + '</b><br>' + esc(short(d.options[a.limb].outcome, 90)) + '</div></div>';
+          }).join('') +
+          '<div class="fl-node ' + st + '"><div class="fl-dot">' + esc(ab) + '</div><div class="fl-body"><div class="fl-t">' + esc(d.title) +
+          '<span class="fl-chip">' + (st === 'ok' ? 'First time' : st === 'det' ? 'After ' + detours.length + ' detour' + (detours.length > 1 ? 's' : '') : 'Senior nurse stepped in') + '</span></div>' +
+          '<div class="fl-c">' + esc(short(rescued ? best.text : last.text, 90)) + '</div>' +
+          '</div></div>';
+      }).join('<div class="fl-arr"></div>');
+      now.innerHTML = '<div class="psim-db"><h3 style="margin-top:6px;">' + (mode === 'live' ? 'The team’s path' : 'Your path') + '</h3>' +
+        '<div class="fl-key"><span class="ok">First time</span><span class="det">Detour</span><span class="res">Senior nurse</span></div>' +
+        '<div class="fl">' + flow + '<div class="fl-arr"></div><div class="fl-end ' + (smooth ? 'ok' : 'det') + '"><b>Outcome</b><br>' + esc(smooth ? sim.ending.smooth : sim.ending.detour) + '</div></div>' +
         '<h3>Take-home</h3><ul>' + sim.takeHome.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ul>' +
-        '<h3>References</h3><ul class="psim-refs">' + sim.references.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ul>' +
+        '<details class="fl-more"><summary>Teaching point for each step</summary><ol>' + sim.decisions.map(function(d){ var b = d.options.filter(function(o){ return o.best; })[0]; return '<li><b>' + esc(d.title) + '.</b> ' + esc(b.note || '') + '</li>'; }).join('') + '</ol></details>' +
+        '<details class="fl-more"><summary>Debrief questions and references</summary><ol>' + sim.debrief.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ol>' +
+        '<ul class="psim-refs">' + sim.references.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ul></details>' +
         '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;"><button type="button" class="psim-btn" data-act="again">Run the case again</button><button type="button" class="psim-btn ghost" data-act="close">Back to the module</button></div></div>';
       now.querySelector('[data-act="again"]').addEventListener('click', function(){ closed = true; vo.pause(); ov.remove(); document.body.style.overflow = prevOverflow; run(sim, live, opts, onClose); });
       now.querySelector('[data-act="close"]').addEventListener('click', close);
