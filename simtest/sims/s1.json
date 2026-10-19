@@ -619,9 +619,36 @@
   "What did you look at on reassessment, and what would have made you upgrade her to Level 1?"
  ],
  "takeHome": [
-  "Impression first: stable or unstable, life-threatening or not, and which system — here, unstable non-life-threatening respiratory distress.",
-  "Intervention: oxygen (non-rebreather mask, or nasal cannula) and an oxygen-driven salbutamol nebulisation for the wheeze.",
-  "Reassess after every intervention and every 5 minutes while unstable; give the treatment you prepared and escalate with ISBAR."
+  {
+   "k": "D",
+   "h": "Detection",
+   "t": "Unstable, not life-threatening, respiratory: increased work of breathing in a consolable infant."
+  },
+  {
+   "k": "I",
+   "h": "Intervention",
+   "t": "Oxygen (non-rebreather or nasal cannula) plus an oxygen-driven salbutamol nebulisation."
+  },
+  {
+   "k": "R",
+   "h": "Reassessment",
+   "t": "Repeat PAT, ABCDE and the chest after every intervention; better numbers on oxygen do not mean off oxygen."
+  },
+  {
+   "k": "EC",
+   "h": "Parents",
+   "t": "Simple words in her language, a job at the bedside, and clear signs to call you."
+  },
+  {
+   "k": "EC",
+   "h": "Team",
+   "t": "ISBAR with numbers, a clear request with a time, and read back every order."
+  },
+  {
+   "k": "T",
+   "h": "Transport",
+   "t": "HDU or monitored bed; move on oxygen with an oximeter and an escort, the bed ready before she arrives."
+  }
  ],
  "references": [
   "AHA PALS Provider Manual 2020: Pediatric Assessment Triangle, respiratory distress and failure, oxygen therapy.",
