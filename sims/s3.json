@@ -247,7 +247,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: Check HR and RR are falling and SpO₂ is 94–98 %; Check work of breathing: grunting, recessions, tracheal tug; Check the circuit: prongs less than half the nostril, humidifier on, water chamber filled",
+     "text": "Check HR and RR are falling and SpO₂ is 94–98 %; Check work of breathing: grunting, recessions, tracheal tug; Check the circuit: prongs less than half the nostril, humidifier on, water chamber filled",
      "outcome": "HR 130, RR 44, SpO₂ 96 % on FiO₂ 0.45; no grunting, mild recessions. The prongs fit well and the humidifier is at 37 °C. HFNC is working.",
      "vitals": {
       "hr": 130,
@@ -347,7 +347,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: Explain simply: warm, moist air with oxygen that helps him breathe with less effort; Tell her what you are watching and that you will check him every hour; Give her a job: keep him calm on her lap, no milk by mouth, call you if the prongs slip",
+     "text": "Explain simply: warm, moist air with oxygen that helps him breathe with less effort; Tell her what you are watching and that you will check him every hour; Give her a job: keep him calm on her lap, no milk by mouth, call you if the prongs slip",
      "outcome": "She holds him upright on her lap and he falls asleep. At 3 am she calls you because a prong has slipped — you fix it before his saturation falls.",
      "vitals": {},
      "best": true,
@@ -427,7 +427,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: ISBAR to the resident with numbers: grunting, SpO₂ 90 % on 2 L, RR 58; now on HFNC 28 L/min, FiO₂ 0.5, RR 48; Agree when to escalate: HR/RR not falling in 1–2 hours or FiO₂ above 0.6 → call the PICU; Read back the HFNC settings you are given",
+     "text": "ISBAR to the resident with numbers: grunting, SpO₂ 90 % on 2 L, RR 58; now on HFNC 28 L/min, FiO₂ 0.5, RR 48; Agree when to escalate: HR/RR not falling in 1–2 hours or FiO₂ above 0.6 → call the PICU; Read back the HFNC settings you are given",
      "outcome": "The resident confirms the settings, reviews him at 2 am and informs the PICU registrar. Everyone knows when to call.",
      "vitals": {},
      "best": true,
@@ -513,7 +513,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: HDU/PICU — continuous SpO₂ monitoring and 1:2 nursing for a child on HFNC; Move him on HFNC or a non-rebreather with a full portable cylinder, monitor, bag-mask and suction; A trained nurse escorts him and hands over with ISBAR",
+     "text": "HDU/PICU — continuous SpO₂ monitoring and 1:2 nursing for a child on HFNC; Move him on HFNC or a non-rebreather with a full portable cylinder, monitor, bag-mask and suction; A trained nurse escorts him and hands over with ISBAR",
      "outcome": "He moves to the HDU on HFNC, monitored, with you beside him and his mother following. The HDU nurse takes the ISBAR handover and he sleeps.",
      "vitals": {},
      "best": true,

@@ -210,7 +210,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: Move him to a monitored bed and repeat the PAT and ABCDE; Check AVPU/GCS and the pupils; Upgrade him to Level 2 and get the doctor now",
+     "text": "Move him to a monitored bed and repeat the PAT and ABCDE; Check AVPU/GCS and the pupils; Upgrade him to Level 2 and get the doctor now",
      "outcome": "On a monitored bed: drowsy but rousable to voice, pupils equal, HR 96, BP 104/64, glucose normal. The doctor is at the bedside in four minutes.",
      "vitals": {
       "hr": 96,
@@ -300,7 +300,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: Acknowledge his worry; do not blame him; Explain simply: the vomiting and sleepiness need the doctor and a scan now; Ask him to stay with his son and tell you at once if he is harder to wake, vomits again or has a fit",
+     "text": "Acknowledge his worry; do not blame him; Explain simply: the vomiting and sleepiness need the doctor and a scan now; Ask him to stay with his son and tell you at once if he is harder to wake, vomits again or has a fit",
      "outcome": "He steadies and stays at his son’s side, watching as you showed him. He understands why the scan is needed and signs the consent.",
      "vitals": {},
      "best": true,
@@ -380,7 +380,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: ISBAR with the change: head injury an hour ago, vomited twice, now drowsy, rouses to voice, pupils equal, HR 96; Ask for review now, and say why: his level of consciousness has changed; Read back the orders: CT head, neuro observations every 15 minutes",
+     "text": "ISBAR with the change: head injury an hour ago, vomited twice, now drowsy, rouses to voice, pupils equal, HR 96; Ask for review now, and say why: his level of consciousness has changed; Read back the orders: CT head, neuro observations every 15 minutes",
      "outcome": "“I am coming.” The doctor is at the bedside in four minutes and orders a CT head and 15-minute neuro observations; you read the orders back.",
      "vitals": {},
      "best": true,
@@ -462,7 +462,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: A nurse (and the doctor) escorts him with monitor, oxygen and suction; AVPU and pupils checked before leaving; After the CT: admit to the HDU/PICU for neuro observations; If the CT shows a bleed: call ahead and transfer, stabilised and escorted, to a centre with paediatric neurosurgery",
+     "text": "A nurse (and the doctor) escorts him with monitor, oxygen and suction; AVPU and pupils checked before leaving; After the CT: admit to the HDU/PICU for neuro observations; If the CT shows a bleed: call ahead and transfer, stabilised and escorted, to a centre with paediatric neurosurgery",
      "outcome": "He goes to CT on the monitor with you beside him. The scan shows a small extradural haematoma; the neurosurgeon is called and he goes to theatre with his records and a clear handover.",
      "vitals": {},
      "best": true,

@@ -256,7 +256,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: After each bolus: HR, BP, CRT, limb temperature, mental status; Look for fluid overload: crackles, liver size, SpO₂, work of breathing; Fluid-refractory cold shock: tell the doctor and prepare adrenaline (a peripheral line is acceptable)",
+     "text": "After each bolus: HR, BP, CRT, limb temperature, mental status; Look for fluid overload: crackles, liver size, SpO₂, work of breathing; Fluid-refractory cold shock: tell the doctor and prepare adrenaline (a peripheral line is acceptable)",
      "outcome": "Adrenaline at 0.1 microgram/kg/min through the peripheral line. Warm to the elbows, HR 128, BP 92/50, CRT 2 s, alert. She passes 60 mL of urine.",
      "vitals": {
       "hr": 128,
@@ -358,7 +358,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: Find a quiet moment; tell him honestly she is very sick with an infection affecting her circulation; Explain what the team is doing and that she is going to the PICU; Keep him close to her where possible and tell him when he will get the next update",
+     "text": "Find a quiet moment; tell him honestly she is very sick with an infection affecting her circulation; Explain what the team is doing and that she is going to the PICU; Keep him close to her where possible and tell him when he will get the next update",
      "outcome": "He sits by her trolley holding her hand. He shows you the syrup — paracetamol — and says she has no allergies. He knows the doctor will speak to him after the PICU admission.",
      "vitals": {},
      "best": true,
@@ -433,7 +433,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: Closed loop: repeat back drug, dose, dilution and rate before starting; Name the roles: airway and monitor, IV and drugs, recorder; ISBAR to the PICU: 40 mL/kg given, antibiotic time, glucose, adrenaline rate and response",
+     "text": "Closed loop: repeat back drug, dose, dilution and rate before starting; Name the roles: airway and monitor, IV and drugs, recorder; ISBAR to the PICU: 40 mL/kg given, antibiotic time, glucose, adrenaline rate and response",
      "outcome": "“Adrenaline 0.1 microgram per kg per minute — running.” “Confirmed.” The recorder notes the time. The PICU registrar repeats back your ISBAR and has a bed and a pump ready.",
      "vitals": {},
      "best": true,
@@ -515,7 +515,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: PICU — in-house, or a tertiary PICU after stabilisation and a call ahead; Doctor and nurse escort; monitor, oxygen, two working IV lines, adrenaline on a syringe pump with a spare syringe, resuscitation drugs; Before leaving: airway safe, BP and glucose rechecked, lines secured, records and consent with her",
+     "text": "PICU — in-house, or a tertiary PICU after stabilisation and a call ahead; Doctor and nurse escort; monitor, oxygen, two working IV lines, adrenaline on a syringe pump with a spare syringe, resuscitation drugs; Before leaving: airway safe, BP and glucose rechecked, lines secured, records and consent with her",
      "outcome": "She leaves warm to the elbows on adrenaline, with you and the doctor beside her. In the PICU the bed, pump and team are ready.",
      "vitals": {},
      "best": true,

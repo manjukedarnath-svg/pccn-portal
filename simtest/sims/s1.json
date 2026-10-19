@@ -275,7 +275,6 @@
    "tag": "R · Reassessment",
    "label": "Your reassessment",
    "prompt": "Ten minutes later. Reassess her: what do you check, and what do you do next?",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,
@@ -322,13 +321,12 @@
    },
    "options": [
     {
-     "text": "All the correct elements: Repeat the PAT and ABCDE: work of breathing, RR, HR, SpO₂; Listen to the chest: air entry and wheeze after the nebulisation; Continue oxygen; repeat the nebulisation if the wheeze persists; recheck every 5–10 minutes",
+     "text": "Repeat the PAT and ABCDE: work of breathing, RR, HR, SpO₂; Listen to the chest: air entry and wheeze after the nebulisation; Continue oxygen; repeat the nebulisation if the wheeze persists; recheck every 5–10 minutes",
      "outcome": "RR 48, HR 150, SpO₂ 97 % on oxygen. The recessions ease and the wheeze is softer; she is starting to look around. The treatment is working — and she still needs oxygen.",
      "vitals": {
       "spo2": 97,
       "rr": 48,
-      "hr": 150,
-      "o2": "O₂ on · neb given"
+      "hr": 150
      },
      "best": true,
      "note": "Reassess after every intervention and every 5–10 minutes while she is unstable: PAT, ABCDE and the chest. Better numbers on oxygen do not mean she is ready to come off it."
@@ -373,7 +371,6 @@
    "tag": "EC · Effective communication — parents",
    "label": "Your communication with the mother",
    "prompt": "Her mother is crying: “Sister, what is happening to her? Why the mask? Will she be all right?”",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,
@@ -416,7 +413,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: Introduce yourself and explain in simple words, in her language: her chest is tight, the oxygen and the nebuliser help her breathe; Keep the baby on her lap and let her help hold the mask; Tell her what happens next — admission and monitoring — and which signs to call you for",
+     "text": "Introduce yourself and explain in simple words, in her language: her chest is tight, the oxygen and the nebuliser help her breathe; Keep the baby on her lap and let her help hold the mask; Tell her what happens next — admission and monitoring — and which signs to call you for",
      "outcome": "The mother calms and holds the mask close to her daughter’s face; the baby settles on her lap. She repeats back: “If she breathes faster or stops feeding, I call you.”",
      "vitals": {},
      "best": true,
@@ -454,7 +451,6 @@
    "tag": "EC · Effective communication — team",
    "label": "Your communication with the doctor",
    "prompt": "The registrar answers your call. What do you say and do?",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,
@@ -497,7 +493,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: ISBAR with numbers: who you are, the child, situation, background, assessment (SpO₂ 89 → 97 %, RR 64 → 48), recommendation; Ask for a clear action and a time: “Please review her within 15 minutes”; Read back every order you are given (closed loop)",
+     "text": "ISBAR with numbers: who you are, the child, situation, background, assessment (SpO₂ 89 → 97 %, RR 64 → 48), recommendation; Ask for a clear action and a time: “Please review her within 15 minutes”; Read back every order you are given (closed loop)",
      "outcome": "“Clear, sister — I am coming. Continue the oxygen and repeat the nebulisation if the wheeze returns.” You read the order back; she is reviewed within 10 minutes.",
      "vitals": {},
      "best": true,
@@ -537,7 +533,6 @@
    "tag": "T · Transport",
    "label": "Your transfer plan",
    "prompt": "The registrar asks you to move her. Where does she go, and how?",
-   "clip": false,
    "pick": {
     "multi": true,
     "auto": true,
@@ -580,7 +575,7 @@
    },
    "options": [
     {
-     "text": "All the correct elements: Admit to the paediatric HDU / a monitored ward bed; Move her on oxygen with a pulse oximeter, a nurse escort and her mother with her; Call ahead: the receiving bed has oxygen, suction and a monitor ready",
+     "text": "Admit to the paediatric HDU / a monitored ward bed; Move her on oxygen with a pulse oximeter, a nurse escort and her mother with her; Call ahead: the receiving bed has oxygen, suction and a monitor ready",
      "outcome": "She reaches the HDU on oxygen, saturating 97 %, her mother beside her. The bed is ready and the HDU nurse takes your ISBAR handover.",
      "vitals": {},
      "best": true,
