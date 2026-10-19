@@ -130,7 +130,8 @@
       "limb": 3
      }
     ]
-   }
+   },
+   "tag": "D · Detection"
   },
   {
    "id": "d2",
@@ -194,61 +195,362 @@
     "oxygen",
     "IV or IO access",
     "an isotonic fluid bolus (10–20 mL/kg)"
-   ]
+   ],
+   "tag": "I · Intervention"
   },
   {
    "id": "d3",
    "title": "Reassessment",
+   "tag": "R · Reassessment",
+   "label": "Your reassessment",
    "prompt": "After two boluses (40 mL/kg) and the antibiotic: HR 140, BP 80/42, CRT 3 s, still cold to the wrists and lethargic; chest clear, liver 1 cm. Reassess her: what is happening, and what do you do now?",
+   "clip": false,
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your reassessment",
+      "opts": [
+       {
+        "v": "After each bolus: HR, BP, CRT, limb temperature, mental status",
+        "grade": "correct"
+       },
+       {
+        "v": "Third and fourth boluses until the BP is normal",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Look for fluid overload: crackles, liver size, SpO₂, work of breathing",
+        "grade": "correct"
+       },
+       {
+        "v": "Recheck glucose; send a blood gas and lactate",
+        "grade": "ok"
+       },
+       {
+        "v": "Fluid-refractory cold shock: tell the doctor and prepare adrenaline (a peripheral line is acceptable)",
+        "grade": "correct"
+       },
+       {
+        "v": "Furosemide — she has had 800 mL",
+        "grade": "bad",
+        "limb": 3
+       },
+       {
+        "v": "Measure urine output",
+        "grade": "ok"
+       },
+       {
+        "v": "Wait for a central line before starting any infusion",
+        "grade": "bad",
+        "limb": 4
+       }
+      ]
+     }
+    ]
+   },
    "options": [
     {
-     "text": "Third and fourth boluses until the BP is normal",
-     "vitals": {
-      "note": "After bolus 4: crackles at both bases, liver 3 cm, RR 40."
-     },
-     "outcome": "After the fourth bolus: crackles at both bases, liver 3 cm, RR 40, SpO₂ 92 %.",
-     "best": false,
-     "note": "Shock that persists after 40–60 mL/kg is fluid-refractory; more fluid without a vasoactive drug risks overload. Reassess the liver and chest after every bolus and start preparing the infusion now."
-    },
-    {
-     "text": "Fluid-refractory cold septic shock: tell the doctor, prepare an adrenaline infusion (0.05–0.3 micrograms/kg/min, can run through a peripheral or IO line while central access is arranged), continue monitoring every 5 minutes, call PICU",
+     "text": "All the correct elements: After each bolus: HR, BP, CRT, limb temperature, mental status; Look for fluid overload: crackles, liver size, SpO₂, work of breathing; Fluid-refractory cold shock: tell the doctor and prepare adrenaline (a peripheral line is acceptable)",
+     "outcome": "Adrenaline at 0.1 microgram/kg/min through the peripheral line. Warm to the elbows, HR 128, BP 92/50, CRT 2 s, alert. She passes 60 mL of urine.",
      "vitals": {
       "hr": 128,
       "bp": "92/50",
       "crt": 2,
-      "avpu": "A",
-      "note": "Adrenaline 0.1 microgram/kg/min running via peripheral line. Warmer to the elbows. Passed urine 60 mL. PICU accepting."
+      "avpu": "A"
      },
-     "outcome": "Adrenaline at 0.1 microgram/kg/min through the peripheral line. Warm to the elbows, HR 128, BP 92/50, CRT 2 s, alert. She passes 60 mL of urine. PICU accepts her.",
      "best": true,
-     "note": "Persistent shock after 40–60 mL/kg is fluid-refractory. In cold shock, adrenaline is the first-line vasoactive, started early and peripherally if needed. Reassess continuously and arrange PICU."
+     "note": "Persistent shock after 40–60 mL/kg is fluid-refractory. Reassess after every bolus, look for overload, and in cold shock start adrenaline — peripherally if needed."
     },
     {
-     "text": "Start dopamine as the first drug and wait for a central line before any infusion",
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "Part of the picture is missed; 20 minutes pass before the team decides on adrenaline. BP 76/40, CRT 4 s.",
      "vitals": {
+      "bp": "76/40",
       "crt": 4,
-      "bp": "76/40"
+      "hr": 146
      },
-     "outcome": "Forty minutes pass waiting for a central line with no vasoactive drug running. BP 76/40, CRT 4 s.",
-     "best": false,
-     "note": "Adrenaline (cold shock) or noradrenaline (warm shock) are preferred over dopamine. Waiting for a central line delays the drug; a dilute infusion can run peripherally with site checks every 15 minutes."
+     "best": false
     },
     {
-     "text": "Furosemide — she has had 800 mL and must be overloaded",
+     "text": "Third and fourth boluses until the BP is normal",
+     "outcome": "After the fourth bolus: crackles at both bases, liver 3 cm, RR 40, SpO₂ 92 %.",
      "vitals": {
-      "crt": 5,
+      "rr": 40,
+      "spo2": 92
+     },
+     "best": false,
+     "alarm": true
+    },
+    {
+     "text": "Furosemide — she has had 800 mL",
+     "outcome": "Furosemide given. BP falls to 70/36, CRT 5 s, she responds only to pain.",
+     "vitals": {
       "bp": "70/36",
+      "crt": 5,
       "avpu": "P"
      },
-     "outcome": "Furosemide given. BP falls to 70/36, CRT 5 s, she responds only to pain.",
      "best": false,
-     "note": "There are no signs of overload (chest clear, liver 1 cm, not breathless) and she is still hypotensive. A diuretic now deepens the shock. Overload is a clinical diagnosis, not a volume count."
+     "alarm": true
+    },
+    {
+     "text": "Wait for a central line before starting any infusion",
+     "outcome": "Forty minutes pass waiting for a central line with no vasoactive drug running. BP 76/40, CRT 4 s.",
+     "vitals": {
+      "bp": "76/40",
+      "crt": 4
+     },
+     "best": false
     }
-   ],
-   "key": "Still in shock after 40–60 mL/kg with no overload = fluid-refractory cold shock: tell the doctor, prepare adrenaline 0.05–0.3 micrograms/kg/min (can run peripherally or IO while central access is arranged), reassess every 5 minutes and call PICU.",
-   "must": [
-    "recognise fluid-refractory shock (still in shock after fluids)",
-    "prepare or start a vasoactive drug (adrenaline)"
+   ]
+  },
+  {
+   "id": "d4",
+   "title": "Communication with the parents",
+   "tag": "EC · Effective communication — parents",
+   "label": "Your communication with the father",
+   "prompt": "Her father stops you: “Is she going to die? I only gave her the syrup from the medical shop.”",
+   "clip": false,
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your communication with the father",
+      "opts": [
+       {
+        "v": "Find a quiet moment; tell him honestly she is very sick with an infection affecting her circulation",
+        "grade": "correct"
+       },
+       {
+        "v": "“She will be absolutely fine”",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Explain what the team is doing and that she is going to the PICU",
+        "grade": "correct"
+       },
+       {
+        "v": "Keep him close to her where possible and tell him when he will get the next update",
+        "grade": "correct"
+       },
+       {
+        "v": "Ask what syrup and medicines she was given, and about allergies",
+        "grade": "ok"
+       },
+       {
+        "v": "“Why did you wait three days?”",
+        "grade": "bad",
+        "limb": 3
+       }
+      ]
+     }
+    ]
+   },
+   "options": [
+    {
+     "text": "All the correct elements: Find a quiet moment; tell him honestly she is very sick with an infection affecting her circulation; Explain what the team is doing and that she is going to the PICU; Keep him close to her where possible and tell him when he will get the next update",
+     "outcome": "He sits by her trolley holding her hand. He shows you the syrup — paracetamol — and says she has no allergies. He knows the doctor will speak to him after the PICU admission.",
+     "vitals": {},
+     "best": true,
+     "note": "Be honest and kind, never falsely reassure, keep the parent close, and promise a time for the next update."
+    },
+    {
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "He stands in the corridor not knowing what is happening, stopping staff to ask and pulling the team away from her.",
+     "vitals": {},
+     "best": false
+    },
+    {
+     "text": "“She will be absolutely fine”",
+     "outcome": "When she is shifted to the PICU on an infusion he feels deceived and refuses consent until the consultant comes.",
+     "vitals": {},
+     "best": false
+    },
+    {
+     "text": "“Why did you wait three days?”",
+     "outcome": "He goes silent and leaves the bay; the team loses the history of what she was given at home.",
+     "vitals": {},
+     "best": false
+    }
+   ]
+  },
+  {
+   "id": "d5",
+   "title": "Team communication",
+   "tag": "EC · Effective communication — team",
+   "label": "Your communication with the team",
+   "prompt": "The adrenaline infusion is about to start and the PICU must be told. How does the team communicate?",
+   "clip": false,
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your communication with the team",
+      "opts": [
+       {
+        "v": "Closed loop: repeat back drug, dose, dilution and rate before starting",
+        "grade": "correct"
+       },
+       {
+        "v": "“Start the adrenaline” — without saying the dose or rate",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Name the roles: airway and monitor, IV and drugs, recorder",
+        "grade": "correct"
+       },
+       {
+        "v": "ISBAR to the PICU: 40 mL/kg given, antibiotic time, glucose, adrenaline rate and response",
+        "grade": "correct"
+       },
+       {
+        "v": "A second nurse checks the infusion and the pump",
+        "grade": "ok"
+       },
+       {
+        "v": "Hand over “septic child on adrenaline — rest is in the file”",
+        "grade": "bad",
+        "limb": 3
+       }
+      ]
+     }
+    ]
+   },
+   "options": [
+    {
+     "text": "All the correct elements: Closed loop: repeat back drug, dose, dilution and rate before starting; Name the roles: airway and monitor, IV and drugs, recorder; ISBAR to the PICU: 40 mL/kg given, antibiotic time, glucose, adrenaline rate and response",
+     "outcome": "“Adrenaline 0.1 microgram per kg per minute — running.” “Confirmed.” The recorder notes the time. The PICU registrar repeats back your ISBAR and has a bed and a pump ready.",
+     "vitals": {},
+     "best": true,
+     "note": "Closed-loop orders, named roles and a structured handover prevent medication errors and lost information."
+    },
+    {
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "The drug starts, but the PICU team arrive not knowing how much fluid she has had or when the antibiotic went in; time is lost re-checking.",
+     "vitals": {},
+     "best": false
+    },
+    {
+     "text": "“Start the adrenaline” — without saying the dose or rate",
+     "outcome": "The infusion is started at ten times the intended rate. Within minutes HR 190, BP 140/90.",
+     "vitals": {
+      "hr": 190,
+      "bp": "140/90"
+     },
+     "best": false,
+     "alarm": true
+    },
+    {
+     "text": "Hand over “septic child on adrenaline — rest is in the file”",
+     "outcome": "In the PICU the antibiotic is nearly repeated and the fluid total is unknown; she is given a bolus she did not need. RR 40, SpO₂ 93 %.",
+     "vitals": {
+      "rr": 40,
+      "spo2": 93
+     },
+     "best": false
+    }
+   ]
+  },
+  {
+   "id": "d6",
+   "title": "Transfer",
+   "tag": "T · Transport",
+   "label": "Your transfer plan",
+   "prompt": "Meera needs intensive care. Where does she go, and how?",
+   "clip": false,
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your transfer plan",
+      "opts": [
+       {
+        "v": "PICU — in-house, or a tertiary PICU after stabilisation and a call ahead",
+        "grade": "correct"
+       },
+       {
+        "v": "Paediatric ward with 4-hourly observations",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Doctor and nurse escort; monitor, oxygen, two working IV lines, adrenaline on a syringe pump with a spare syringe, resuscitation drugs",
+        "grade": "correct"
+       },
+       {
+        "v": "Before leaving: airway safe, BP and glucose rechecked, lines secured, records and consent with her",
+        "grade": "correct"
+       },
+       {
+        "v": "Her father travels with her",
+        "grade": "ok"
+       },
+       {
+        "v": "Stop the adrenaline for the transfer and restart it in the PICU",
+        "grade": "bad",
+        "limb": 3
+       }
+      ]
+     }
+    ]
+   },
+   "options": [
+    {
+     "text": "All the correct elements: PICU — in-house, or a tertiary PICU after stabilisation and a call ahead; Doctor and nurse escort; monitor, oxygen, two working IV lines, adrenaline on a syringe pump with a spare syringe, resuscitation drugs; Before leaving: airway safe, BP and glucose rechecked, lines secured, records and consent with her",
+     "outcome": "She leaves warm to the elbows on adrenaline, with you and the doctor beside her. In the PICU the bed, pump and team are ready.",
+     "vitals": {},
+     "best": true,
+     "note": "Stabilise first, then move to the right place with the right team and kit; never interrupt a vasoactive infusion in transit."
+    },
+    {
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "The move happens, but not every piece was in place; at the PICU door the spare syringe and her records are missing.",
+     "vitals": {},
+     "best": false
+    },
+    {
+     "text": "Paediatric ward with 4-hourly observations",
+     "outcome": "On the ward at 3 am she is cold to the knees, BP 70/38, responding only to pain.",
+     "vitals": {
+      "bp": "70/38",
+      "crt": 5,
+      "avpu": "P",
+      "hr": 160
+     },
+     "best": false,
+     "alarm": true
+    },
+    {
+     "text": "Stop the adrenaline for the transfer and restart it in the PICU",
+     "outcome": "In the lift, off adrenaline, her BP falls to 64/32 and she becomes unresponsive.",
+     "vitals": {
+      "bp": "64/32",
+      "hr": 170,
+      "avpu": "P",
+      "crt": 5
+     },
+     "best": false,
+     "alarm": true
+    }
    ]
   }
  ],

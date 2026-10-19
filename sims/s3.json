@@ -2,7 +2,7 @@
  "id": "s3",
  "module": "02",
  "title": "Escalation Drill",
- "subtitle": "3-year-old with worsening bronchiolitis — from nasal prongs to bag-mask",
+ "subtitle": "3-year-old with worsening bronchiolitis — from nasal prongs to high flow",
  "duration": "12–15 min",
  "patient": {
   "age": "3 years",
@@ -130,7 +130,8 @@
       "limb": 0
      }
     ]
-   }
+   },
+   "tag": "D · Detection"
   },
   {
    "id": "d2",
@@ -185,51 +186,368 @@
    "key": "Escalate respiratory support: HFNC at about 2 L/kg/min, heated and humidified, FiO2 titrated to SpO2 94–98 %, with a non-rebreather mask as a bridge while it is set up.",
    "must": [
     "high-flow nasal cannula (HFNC)"
-   ]
+   ],
+   "tag": "I · Intervention"
   },
   {
    "id": "d3",
    "title": "Reassessment",
+   "tag": "R · Reassessment",
+   "label": "Your reassessment",
    "prompt": "One hour on HFNC 28 L/min, FiO₂ 0.5. Reassess him: is it working, and what do you do now?",
+   "clip": false,
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your reassessment",
+      "opts": [
+       {
+        "v": "Check HR and RR are falling and SpO₂ is 94–98 %",
+        "grade": "correct"
+       },
+       {
+        "v": "Wean the flow to 10 L/min now that he is better",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Check work of breathing: grunting, recessions, tracheal tug",
+        "grade": "correct"
+       },
+       {
+        "v": "Check the circuit: prongs less than half the nostril, humidifier on, water chamber filled",
+        "grade": "correct"
+       },
+       {
+        "v": "Turn FiO₂ to 1.0 to be safe overnight",
+        "grade": "bad",
+        "limb": 3
+       },
+       {
+        "v": "Score PEWS and chart it",
+        "grade": "ok"
+       },
+       {
+        "v": "Start oral feeds now that he is comfortable",
+        "grade": "bad",
+        "limb": 4
+       },
+       {
+        "v": "Pass a nasogastric tube; nil by mouth for now",
+        "grade": "ok"
+       }
+      ]
+     }
+    ]
+   },
    "options": [
     {
-     "text": "He is better; wean the flow to 10 L/min and let him sleep",
+     "text": "All the correct elements: Check HR and RR are falling and SpO₂ is 94–98 %; Check work of breathing: grunting, recessions, tracheal tug; Check the circuit: prongs less than half the nostril, humidifier on, water chamber filled",
+     "outcome": "HR 130, RR 44, SpO₂ 96 % on FiO₂ 0.45; no grunting, mild recessions. The prongs fit well and the humidifier is at 37 °C. HFNC is working.",
+     "vitals": {
+      "hr": 130,
+      "rr": 44,
+      "spo2": 96
+     },
+     "best": true,
+     "note": "A fall in HR and RR in the first 1–2 hours is the sign of response. Then the nursing checks — prongs, humidity, feeds, position — keep him safe overnight."
+    },
+    {
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "Part of the picture is checked. At 3 am the prongs have slipped and he is grunting again: RR 54, SpO₂ 92 %.",
+     "vitals": {
+      "rr": 54,
+      "spo2": 92,
+      "hr": 148
+     },
+     "best": false
+    },
+    {
+     "text": "Wean the flow to 10 L/min now that he is better",
+     "outcome": "Flow weaned to 10 L/min. Within 40 minutes RR is 54, SpO₂ 91 %, and the recessions are back.",
      "vitals": {
       "spo2": 91,
-      "rr": 54
+      "rr": 54,
+      "hr": 150
      },
-     "outcome": "Flow weaned to 10 L/min. Within 40 minutes RR is 54, SpO₂ 91 %, and the recessions are back.",
-     "best": false,
-     "note": "Improvement after one hour means it is working; it is not a reason to remove the support that is working. Weaning is a daytime, team decision, FiO₂ first and then flow."
+     "best": false
     },
     {
-     "text": "HFNC is working (HR and RR falling, SpO₂ up within 1–2 hours). Continue; check the prongs fill less than half of each nostril, check the nasal bridge and ears for pressure, keep him nil by mouth or on NG feeds per protocol, head up, reassess every 30 minutes, document.",
-     "vitals": {},
-     "outcome": "Prongs checked, nasal bridge padded, NG feeds started, head up. He sleeps on HFNC with his mother beside him.",
-     "best": true,
-     "note": "A fall in HR and RR in the first 1–2 hours is the sign of response. Then the nursing care that keeps it safe: prong size, skin, feeding plan, positioning and a reassessment schedule."
-    },
-    {
-     "text": "Start oral feeds now that he is comfortable",
-     "vitals": {},
-     "outcome": "He takes a few sips of milk, coughs and splutters. SpO₂ dips to 89 % and he is breathing faster.",
-     "best": false,
-     "note": "A child at RR 44 on high flow is at risk of aspiration; feeding is by NG or IV until he is clearly settling. Follow your unit protocol."
-    },
-    {
-     "text": "Increase FiO₂ to 1.0 to be safe overnight",
+     "text": "Turn FiO₂ to 1.0 to be safe overnight",
+     "outcome": "FiO₂ turned to 1.0. The monitor reads 100 % — and will keep reading high even as he tires.",
      "vitals": {
       "spo2": 100
      },
-     "outcome": "FiO₂ turned to 1.0. The monitor reads 100 % — and will keep reading high even as he tires.",
+     "best": false
+    },
+    {
+     "text": "Start oral feeds now that he is comfortable",
+     "outcome": "He takes a few sips of milk, coughs and splutters. SpO₂ dips to 89 % and he is breathing faster.",
+     "vitals": {
+      "spo2": 89,
+      "rr": 58,
+      "hr": 156
+     },
      "best": false,
-     "note": "SpO₂ 95 % is in target. Unneeded oxygen hides deterioration (the saturation stays high while the child tires) and is not harmless. Titrate to 94–98 %."
+     "alarm": true
     }
-   ],
-   "key": "HR and RR falling and SpO₂ in target within 1–2 hours means HFNC is working: continue it, check prong size (<50 % of the nostril) and skin, NG feeds or nil by mouth, head up, reassess every 30 minutes and document.",
-   "must": [
-    "recognise it is working (HR, RR or SpO2 improving)",
-    "continue HFNC with nursing care (prongs/skin, feeding plan or positioning)"
+   ]
+  },
+  {
+   "id": "d4",
+   "title": "Communication with the parents",
+   "tag": "EC · Effective communication — parents",
+   "label": "Your communication with the mother",
+   "prompt": "His mother looks at the machine: “Sister, what is this big machine? Is he going to the ICU?”",
+   "clip": false,
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your communication with the mother",
+      "opts": [
+       {
+        "v": "Explain simply: warm, moist air with oxygen that helps him breathe with less effort",
+        "grade": "correct"
+       },
+       {
+        "v": "“Don’t ask questions now, I am busy”",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Tell her what you are watching and that you will check him every hour",
+        "grade": "correct"
+       },
+       {
+        "v": "Give her a job: keep him calm on her lap, no milk by mouth, call you if the prongs slip",
+        "grade": "correct"
+       },
+       {
+        "v": "“He will be fine by morning”",
+        "grade": "bad",
+        "limb": 3
+       },
+       {
+        "v": "Be honest: if he does not improve, he may need the PICU",
+        "grade": "ok"
+       }
+      ]
+     }
+    ]
+   },
+   "options": [
+    {
+     "text": "All the correct elements: Explain simply: warm, moist air with oxygen that helps him breathe with less effort; Tell her what you are watching and that you will check him every hour; Give her a job: keep him calm on her lap, no milk by mouth, call you if the prongs slip",
+     "outcome": "She holds him upright on her lap and he falls asleep. At 3 am she calls you because a prong has slipped — you fix it before his saturation falls.",
+     "vitals": {},
+     "best": true,
+     "note": "Explain the machine in plain words, say what you are watching, and give the parent a safe job at the bedside."
+    },
+    {
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "She stays quiet and anxious. At 2:30 am she gives him a bottle of milk to settle him; he coughs and his saturation dips to 91 %.",
+     "vitals": {
+      "spo2": 91,
+      "rr": 52
+     },
+     "best": false
+    },
+    {
+     "text": "“Don’t ask questions now, I am busy”",
+     "outcome": "Frightened, she keeps lifting the prongs to look at his nose; each time his saturation dips.",
+     "vitals": {
+      "spo2": 91
+     },
+     "best": false
+    },
+    {
+     "text": "“He will be fine by morning”",
+     "outcome": "At 4 am he needs more oxygen and the doctor talks of the PICU. The mother is angry: “You said he would be fine.”",
+     "vitals": {},
+     "best": false
+    }
+   ]
+  },
+  {
+   "id": "d5",
+   "title": "Team communication",
+   "tag": "EC · Effective communication — team",
+   "label": "Your communication with the team",
+   "prompt": "The resident is still in the emergency room. How do you communicate with the team?",
+   "clip": false,
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your communication with the team",
+      "opts": [
+       {
+        "v": "ISBAR to the resident with numbers: grunting, SpO₂ 90 % on 2 L, RR 58; now on HFNC 28 L/min, FiO₂ 0.5, RR 48",
+        "grade": "correct"
+       },
+       {
+        "v": "Agree when to escalate: HR/RR not falling in 1–2 hours or FiO₂ above 0.6 → call the PICU",
+        "grade": "correct"
+       },
+       {
+        "v": "“Sir, the child is serious” — with no numbers",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Read back the HFNC settings you are given",
+        "grade": "correct"
+       },
+       {
+        "v": "Tell the charge nurse he needs closer nursing (1:2)",
+        "grade": "ok"
+       },
+       {
+        "v": "Note it in the file and tell the morning team",
+        "grade": "bad",
+        "limb": 3
+       }
+      ]
+     }
+    ]
+   },
+   "options": [
+    {
+     "text": "All the correct elements: ISBAR to the resident with numbers: grunting, SpO₂ 90 % on 2 L, RR 58; now on HFNC 28 L/min, FiO₂ 0.5, RR 48; Agree when to escalate: HR/RR not falling in 1–2 hours or FiO₂ above 0.6 → call the PICU; Read back the HFNC settings you are given",
+     "outcome": "The resident confirms the settings, reviews him at 2 am and informs the PICU registrar. Everyone knows when to call.",
+     "vitals": {},
+     "best": true,
+     "note": "ISBAR with numbers, a read-back of the settings, and escalation triggers agreed in advance."
+    },
+    {
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "The resident knows he is on high flow, but nobody has said when to escalate; by 4 am the FiO₂ has crept up to 0.7 before anyone calls.",
+     "vitals": {
+      "spo2": 93,
+      "rr": 56,
+      "hr": 150
+     },
+     "best": false
+    },
+    {
+     "text": "“Sir, the child is serious” — with no numbers",
+     "outcome": "The resident asks you to “keep watching”. Nobody senior reviews him for two hours.",
+     "vitals": {
+      "rr": 54
+     },
+     "best": false
+    },
+    {
+     "text": "Note it in the file and tell the morning team",
+     "outcome": "At 7 am the day team finds him grunting on FiO₂ 0.8, which had crept up overnight.",
+     "vitals": {
+      "spo2": 91,
+      "rr": 62,
+      "hr": 162
+     },
+     "best": false,
+     "alarm": true
+    }
+   ]
+  },
+  {
+   "id": "d6",
+   "title": "Transfer",
+   "tag": "T · Transport",
+   "label": "Your transfer plan",
+   "prompt": "The resident asks where he should be looked after for the rest of the night.",
+   "clip": false,
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your transfer plan",
+      "opts": [
+       {
+        "v": "HDU/PICU — continuous SpO₂ monitoring and 1:2 nursing for a child on HFNC",
+        "grade": "correct"
+       },
+       {
+        "v": "Stay on the general ward with 4-hourly observations",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Move him on HFNC or a non-rebreather with a full portable cylinder, monitor, bag-mask and suction",
+        "grade": "correct"
+       },
+       {
+        "v": "A trained nurse escorts him and hands over with ISBAR",
+        "grade": "correct"
+       },
+       {
+        "v": "His mother goes with him; his notes and charts go too",
+        "grade": "ok"
+       },
+       {
+        "v": "Send him to the PICU with the ward attendant",
+        "grade": "bad",
+        "limb": 3
+       }
+      ]
+     }
+    ]
+   },
+   "options": [
+    {
+     "text": "All the correct elements: HDU/PICU — continuous SpO₂ monitoring and 1:2 nursing for a child on HFNC; Move him on HFNC or a non-rebreather with a full portable cylinder, monitor, bag-mask and suction; A trained nurse escorts him and hands over with ISBAR",
+     "outcome": "He moves to the HDU on HFNC, monitored, with you beside him and his mother following. The HDU nurse takes the ISBAR handover and he sleeps.",
+     "vitals": {},
+     "best": true,
+     "note": "A child on HFNC needs HDU-level monitoring. Move him with oxygen, monitoring, airway kit and a trained escort."
+    },
+    {
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "The move happens, but not every piece was in place; he arrives with the monitor off and is unwatched for several minutes.",
+     "vitals": {
+      "spo2": 92
+     },
+     "best": false
+    },
+    {
+     "text": "Stay on the general ward with 4-hourly observations",
+     "outcome": "At the 4 am check he is grunting on FiO₂ 0.7, RR 64 — nobody had looked since midnight.",
+     "vitals": {
+      "spo2": 90,
+      "rr": 64,
+      "hr": 166
+     },
+     "best": false,
+     "alarm": true
+    },
+    {
+     "text": "Send him to the PICU with the ward attendant",
+     "outcome": "In the lift the cylinder runs low and the attendant cannot read the monitor; he arrives with SpO₂ 85 %.",
+     "vitals": {
+      "spo2": 85,
+      "hr": 170
+     },
+     "best": false,
+     "alarm": true
+    }
    ]
   }
  ],
@@ -249,7 +567,8 @@
   "IAP ICC PCCN Module 02: 3 E's, oxygen delivery devices, HFNC, bag-mask ventilation."
  ],
  "ending": {
-  "smooth": "The intensivist intubates him with you assisting, and he is transferred to PICU stable on the ventilator. His mother was kept informed throughout.",
-  "detour": "He is intubated and transferred to PICU, but after a longer period of hypoxaemia; the team watch closely for aspiration and hypoxic injury."
- }
+  "smooth": "He stays on HFNC in the HDU overnight. By the morning his HR and RR have settled and the FiO₂ is down to 0.3. His mother was kept informed throughout.",
+  "detour": "He reaches the HDU, but after a longer spell of hypoxaemia; he needs a PICU review and a higher FiO₂ through the night."
+ },
+ "endClip": false
 }
