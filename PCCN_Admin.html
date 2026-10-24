@@ -504,6 +504,7 @@ main{flex:1;}
       <button type="button" data-tab="learners" class="on">Learners</button>
       <button type="button" data-tab="enrol">Enrolments</button>
       <button type="button" data-tab="settings">Settings</button>
+      <button type="button" data-tab="faculty">Faculty</button>
       <button type="button" data-tab="admins">Admins</button>
       <button type="button" data-tab="comp">Competency</button>
     </div>
@@ -604,6 +605,26 @@ main{flex:1;}
       </div>
     </section>
 
+    <!-- ===== Faculty ===== -->
+    <section class="adm-panel" data-panel="faculty">
+      <div class="adm-grid2">
+        <div class="adm-card">
+          <h3>Add or edit a faculty member</h3>
+          <p class="muted">Faculty sign in with this email and open the <a href="PCCN_Faculty_Portal.html" target="_blank" rel="noopener">Faculty area</a>, where they see only the modules ticked here, with the brief and the faculty guide to download. They need a registered course account with the same email.</p>
+          <label class="adm-label">Name<input id="fName" class="adm-input" placeholder="Ms Neetu Taneja"></label>
+          <label class="adm-label">Email<input id="fEmail" class="adm-input" type="email" placeholder="name@example.com"></label>
+          <div class="adm-label">Modules</div>
+          <div id="fMods" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px 14px;margin:6px 0 10px;"></div>
+          <div id="fTasks"></div>
+          <button type="button" id="fSave" class="adm-btn">Save faculty member</button> <button type="button" id="fClear" class="adm-btn ghost">Clear</button> <span id="fMsg" class="muted"></span>
+        </div>
+        <div class="adm-card" style="padding:0;overflow:auto;">
+          <div style="padding:14px 20px;"><h3 style="margin:0;">Faculty list <span id="facCount" class="muted" style="font-weight:400;"></span></h3><p class="muted" style="margin:4px 0 0;">Tap Edit to change modules or assignments.</p></div>
+          <table class="adm-table"><thead><tr><th>Name</th><th>Email</th><th>Modules</th><th>Account</th><th></th></tr></thead><tbody id="facRows"></tbody></table>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== Admins ===== -->
     <section class="adm-panel" data-panel="admins">
       <div class="adm-grid2">
@@ -689,7 +710,7 @@ main{flex:1;}
   var ekey = function(e){ return String(e || '').trim().toLowerCase(); };
   var fmtDate = function(ts){ var d = ts && ts.toDate ? ts.toDate() : (ts ? new Date(ts) : null); return d && !isNaN(d) ? d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'; };
   var MODULES = (window.PCCN_MODULES || []).map(function(m){ return { n: m.n, key: 'mod' + String(m.n).padStart(2, '0'), short: m.short }; });
-  var db, ME, USERS = [], ENROL = {}, ADMINS = {}, SITE = {}, VIDEOS = {}, COMP = [];
+  var db, ME, USERS = [], ENROL = {}, ADMINS = {}, SITE = {}, VIDEOS = {}, COMP = [], FAC = {};
 
   /* tabs */
   document.querySelectorAll('#admTabs button').forEach(function(b){ b.onclick = function(){
@@ -707,8 +728,9 @@ main{flex:1;}
       db.collection('admins').get().then(function(s){ ADMINS = {}; s.forEach(function(d){ ADMINS[d.id] = d.data() || {}; }); }),
       db.collection('config').doc('site').get().then(function(d){ SITE = d.exists ? d.data() : {}; }),
       db.collection('config').doc('videos').get().then(function(d){ VIDEOS = d.exists ? d.data() : {}; }),
-      db.collection('competency').get().then(function(s){ COMP = []; s.forEach(function(d){ var x = d.data(); x._id = d.id; COMP.push(x); }); }).catch(function(){ COMP = []; })
-    ]).then(function(){ renderLearners(); renderEnrol(); renderSettings(); renderAdmins(); renderComp(); });
+      db.collection('competency').get().then(function(s){ COMP = []; s.forEach(function(d){ var x = d.data(); x._id = d.id; COMP.push(x); }); }).catch(function(){ COMP = []; }),
+      db.collection('faculty').get().then(function(s){ FAC = {}; s.forEach(function(d){ FAC[d.id] = d.data(); }); }).catch(function(){ FAC = {}; })
+    ]).then(function(){ renderLearners(); renderEnrol(); renderSettings(); renderAdmins(); renderComp(); renderFaculty(); });
   }
 
   /* ---------- learners ---------- */
@@ -870,6 +892,42 @@ main{flex:1;}
     var latest = COMP.slice().sort(function(a, b){ return tsNum(b.submittedAt) - tsNum(a.submittedAt); }).slice(0, 12);
     $('cRows').innerHTML = latest.map(function(c){ return '<tr><td style="font-weight:600;">' + esc(c.name || '—') + (c.courseRegistrant ? ' <span class="pill plum">course</span>' : '') + '</td><td>' + esc([c.unit, c.city].filter(Boolean).join(', ')) + '</td><td>' + (c.declaredTotal || '') + '/36</td><td>' + (c.status === 'verified' ? '<span class="pill ok">Verified ' + (c.verifiedTotal || '') + (c.band ? ' · ' + c.band : '') + '</span>' : '<span class="pill mute">Declared</span>') + '</td><td style="white-space:nowrap;">' + fmtDate(c.submittedAt) + '</td></tr>'; }).join('') || '<tr><td colspan="5" style="padding:18px;color:var(--ink-muted);">No submissions yet.</td></tr>';
   }
+
+  /* ---------- faculty ---------- */
+  function fModList(){ return MODULES.map(function(m){ return String(m.n).padStart(2, '0'); }); }
+  function drawFacForm(sel, tasks){
+    sel = sel || []; tasks = tasks || {};
+    $('fMods').innerHTML = MODULES.map(function(m){ var k = String(m.n).padStart(2, '0'); return '<label style="display:flex;gap:8px;align-items:center;font-size:.86rem;"><input type="checkbox" data-fm="' + k + '" style="width:auto;"' + (sel.indexOf(k) !== -1 ? ' checked' : '') + '> ' + k + ' · ' + esc(m.short) + '</label>'; }).join('');
+    drawTasks(tasks);
+  }
+  function drawTasks(tasks){
+    var keep = tasks || {}; document.querySelectorAll('[data-ft]').forEach(function(i){ keep[i.dataset.ft] = i.value; });
+    var on = [].map.call(document.querySelectorAll('[data-fm]:checked'), function(c){ return c.dataset.fm; });
+    $('fTasks').innerHTML = on.map(function(k){ return '<label class="adm-label">Module ' + k + ' — what they teach (optional)<input class="adm-input" data-ft="' + k + '" placeholder="e.g. V20 Status Epilepticus · live webinar lead" value="' + esc(keep[k] || '') + '"></label>'; }).join('');
+  }
+  $('fMods').addEventListener('change', function(){ drawTasks(); });
+  function renderFaculty(){
+    var byEmail = {}; USERS.forEach(function(u){ if (u.email) byEmail[ekey(u.email)] = u; });
+    var keys = Object.keys(FAC).sort(function(a, b){ return (FAC[a].name || a).localeCompare(FAC[b].name || b); }); $('facCount').textContent = '· ' + keys.length;
+    $('facRows').innerHTML = keys.map(function(k){ var f = FAC[k];
+      return '<tr><td style="font-weight:600;">' + esc(f.name || '—') + '</td><td>' + esc(k) + '</td><td>' + (f.modules || []).map(function(m){ return '<span class="pill plum" title="' + esc((f.tasks || {})[m] || '') + '">M' + esc(m) + '</span>'; }).join(' ') + '</td><td>' + (byEmail[k] ? '<span class="pill ok">Registered</span>' : '<span class="pill mute">Not yet</span>') + '</td><td style="white-space:nowrap;"><button type="button" class="adm-btn ghost" style="padding:6px 10px;font-size:.76rem;" data-fedit="' + esc(k) + '">Edit</button> <button type="button" class="adm-btn danger" style="padding:6px 10px;font-size:.76rem;" data-fdel="' + esc(k) + '">Remove</button></td></tr>'; }).join('') || '<tr><td colspan="5" style="padding:22px;color:var(--ink-muted);">No faculty added yet.</td></tr>';
+    if (!$('fMods').innerHTML) drawFacForm();
+  }
+  $('facRows').addEventListener('click', function(e){
+    var ed = e.target.closest('[data-fedit]'), del = e.target.closest('[data-fdel]');
+    if (ed) { var f = FAC[ed.dataset.fedit] || {}; $('fName').value = f.name || ''; $('fEmail').value = ed.dataset.fedit; $('fTasks').innerHTML = ''; drawFacForm(f.modules || [], f.tasks || {}); $('fName').scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    if (del && confirm('Remove ' + del.dataset.fdel + ' from the faculty list? They lose access to the Faculty area.')) db.collection('faculty').doc(del.dataset.fdel).delete().then(loadAll).catch(function(err){ alert('Could not remove: ' + (err.code || err.message)); });
+  });
+  $('fClear').onclick = function(){ $('fName').value = ''; $('fEmail').value = ''; $('fTasks').innerHTML = ''; drawFacForm(); say('fMsg', ''); };
+  $('fSave').onclick = function(){
+    var email = ekey($('fEmail').value); if (!/@/.test(email)) return say('fMsg', 'Email needed.', true);
+    var mods = [].map.call(document.querySelectorAll('[data-fm]:checked'), function(c){ return c.dataset.fm; }); if (!mods.length) return say('fMsg', 'Tick at least one module.', true);
+    var tasks = {}; document.querySelectorAll('[data-ft]').forEach(function(i){ if (i.value.trim()) tasks[i.dataset.ft] = i.value.trim(); });
+    say('fMsg', 'Saving…');
+    db.collection('faculty').doc(email).set({ name: $('fName').value.trim(), email: email, modules: mods, tasks: tasks, updatedBy: ME.uid, updatedAt: firebase.firestore.FieldValue.serverTimestamp() })
+      .then(function(){ say('fMsg', 'Saved. They can now open the Faculty area.'); $('fName').value = ''; $('fEmail').value = ''; $('fTasks').innerHTML = ''; drawFacForm(); return loadAll(); })
+      .catch(function(e){ say('fMsg', 'Could not save: ' + (e.code || e.message) + (e.code === 'permission-denied' ? ' — publish the latest firestore.rules from the repo in the Firebase console.' : ''), true); });
+  };
 
   /* ---------- admins ---------- */
   function renderAdmins(){

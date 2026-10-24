@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faculty Area — PCCN Certificate Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="pccn-styles.css">
+<style>
+body{background:var(--paper,#FBF8FA);font-family:Poppins,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink,#2C0E4F);margin:0;display:flex;flex-direction:column;min-height:100vh;}
+.fa-head{background:linear-gradient(135deg,#2C0E4F,#1F0938);color:#fff;padding:40px 24px 34px;}
+.fa-head-inner,.fa-wrap{max-width:1100px;margin:0 auto;}
+.fa-eb{font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#F7A8CB;}
+.fa-head h1{font:700 clamp(1.6rem,3.4vw,2.3rem)/1.2 Poppins,sans-serif;color:#fff;margin:8px 0 6px;}
+.fa-head p{margin:0;color:#E3D2EE;max-width:720px;line-height:1.55;}
+.fa-wrap{padding:26px 24px 60px;width:100%;box-sizing:border-box;flex:1;}
+.fa-msg{background:#fff;border:1px solid #EEE4EC;border-radius:16px;padding:28px;line-height:1.6;}
+.fa-mods{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px;}
+.fa-mod{border:1.5px solid #D8C2E0;background:#fff;color:#1F0938;border-radius:14px;padding:10px 16px;font:600 .92rem Poppins,sans-serif;cursor:pointer;text-align:left;}
+.fa-mod small{display:block;font-weight:500;color:#6B5D82;font-size:.76rem;}
+.fa-mod.on{background:#1F0938;color:#fff;border-color:#1F0938;}.fa-mod.on small{color:#E3D2EE;}
+.fa-mod.mine:not(.on){border-color:#D6246E;}
+.fa-card{background:#fff;border:1px solid #EEE4EC;border-radius:18px;padding:24px 26px;margin:0 0 18px;}
+.fa-card h2{margin:0 0 6px;font:700 1.35rem Poppins,sans-serif;color:#1F0938;}
+.fa-task{background:#FBEAF2;border-left:6px solid #D6246E;border-radius:12px;padding:12px 16px;margin:12px 0 4px;font-weight:500;}
+.fa-dl{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;}
+.fa-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;background:#D6246E;color:#fff;font-weight:700;font-size:.9rem;text-decoration:none;border:none;cursor:pointer;}
+.fa-btn.ghost{background:#fff;color:#1F0938;border:1.5px solid #1F0938;}
+.fa-tabs{display:flex;gap:4px;border-bottom:1px solid #EEE4EC;margin:4px 0 18px;overflow-x:auto;}
+.fa-tabs button{padding:12px 16px;border:none;background:none;font:700 .9rem Poppins,sans-serif;color:#6B5D82;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;}
+.fa-tabs button.on{color:#D6246E;border-bottom-color:#D6246E;}
+.fa-body{line-height:1.6;font-size:.95rem;}
+.fa-body h3{font:700 1.02rem Poppins,sans-serif;color:#D6246E;margin:22px 0 6px;}.fa-body h3:first-child{margin-top:4px;}
+.fa-body table{border-collapse:collapse;width:100%;margin:8px 0 14px;font-size:.88rem;display:block;overflow-x:auto;}
+.fa-body th{background:#2C0E4F;color:#fff;text-align:left;padding:8px 10px;}.fa-body td{border:1px solid #EEE4EC;padding:8px 10px;vertical-align:top;}
+.fa-body li p{margin:0;}.fa-body ul{padding-left:20px;}
+.fa-note{color:#6B5D82;font-size:.85rem;}
+@media (max-width:640px){.fa-card{padding:18px;}.fa-wrap{padding:18px 14px 40px;}}
+</style>
+</head>
+<body>
+<nav class="pccn-nav dark">
+  <div class="pccn-nav-inner">
+    <a href="PCCN_Landing_Page.html" class="pccn-brand" style="text-decoration:none;">
+      <span class="pccn-brand-mark">P</span>
+      <span class="pccn-brand-word"><b style="color:var(--pink);">PCCN</b><span>Certificate Course</span></span>
+    </a>
+    <div class="pccn-nav-links">
+      <a href="PCCN_Landing_Page.html">Home</a>
+      <a href="PCCN_Course_Hub.html">Curriculum</a>
+      <a href="PCCN_Online_Sessions.html">Online Sessions</a>
+      <a href="PCCN_Faculty.html">Faculty</a>
+    </div>
+    <div class="pccn-nav-actions" id="navAuthArea"></div>
+  </div>
+</nav>
+
+<header class="fa-head"><div class="fa-head-inner">
+  <div class="fa-eb">PCCN · Faculty area</div>
+  <h1 id="faTitle">Faculty area</h1>
+  <p>Everything you need to prepare your module: what to cover in each lecture video, the live webinar, the virtual simulation, and the faculty guide to download.</p>
+</div></header>
+
+<main class="fa-wrap">
+  <div id="faMsg" class="fa-msg">Checking your faculty access…</div>
+  <div id="faBody" style="display:none;">
+    <div class="fa-mods" id="faMods"></div>
+    <div id="faModule"></div>
+  </div>
+</main>
+
+<footer class="pccn-footer"><div class="pccn-footer-inner">
+  <span>PCCN — Pediatric Critical Care Nursing Certificate Course · IAP Intensive Care Chapter</span>
+  <span><a href="mailto:stepin.iapicc@gmail.com">stepin.iapicc@gmail.com</a></span>
+</div></footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="pccn-firebase-config.js"></script>
+<script src="pccn-auth.js"></script>
+<script src="pccn-gate.js"></script>
+<script src="pccn-modules-data.js"></script>
+<script src="pccn-faculty-data.js"></script>
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var MODS = (window.PCCN_MODULES || []).map(function(m){ return { k: String(m.n).padStart(2, '0'), short: String(m.short || m.title || '').replace(/<[^>]+>/g, ' ') }; });
+  var DATA = window.PCCN_FACULTY_MODULES || {}, COMMON = window.PCCN_FACULTY_COMMON || {};
+  var PAGES = { '01': 'PCCN_Module01_Initial_Assessment.html', '02': 'PCCN_Module02_Respiratory_Support.html', '03': 'PCCN_Module03_Shock_Hemodynamics.html', '04': 'PCCN_Module04_Arrhythmias_BLS_PALS.html' };
+  var ME = { name: '', modules: [], tasks: {}, admin: false }, cur = null, tab = 'overview';
+
+  function title(k){ var m = MODS.filter(function(x){ return x.k === k; })[0]; return m ? m.short : ''; }
+  function modPage(k){ return PAGES[k] || ('PCCN_Module.html?m=' + parseInt(k, 10)); }
+
+  function renderMods(){
+    var list = ME.admin ? MODS.map(function(m){ return m.k; }) : ME.modules.slice().sort();
+    $('faMods').innerHTML = list.map(function(k){
+      return '<button type="button" class="fa-mod' + (k === cur ? ' on' : '') + (ME.modules.indexOf(k) !== -1 ? ' mine' : '') + '" data-k="' + k + '">Module ' + k + '<small>' + esc(title(k)) + '</small></button>';
+    }).join('');
+  }
+  function section(html, empty){ return html ? '<div class="fa-body">' + html + '</div>' : '<p class="fa-note">' + esc(empty) + '</p>'; }
+
+  function renderModule(){
+    var k = cur, d = DATA[k] || {}, t = ME.tasks[k];
+    var tabs = [['overview', 'Overview & downloads'], ['lectures', 'Lecture videos'], ['webinar', 'Live webinar'], ['sims', 'Simulation']];
+    if (d.dose) tabs.push(['dose', 'Dose table']);
+    if (d.lab) tabs.push(['lab', 'Hands-on']);
+    tabs.push(['prep', 'How to prepare']);
+    if (!tabs.some(function(x){ return x[0] === tab; })) tab = 'overview';
+    var dl = (d.downloads || []).map(function(x, i){ return '<a class="fa-btn' + (i ? ' ghost' : '') + '" href="' + esc(x.href) + '" download target="_blank" rel="noopener">⬇ ' + esc(x.label) + '</a>'; }).join('');
+    var body;
+    if (tab === 'overview') {
+      body = '<div class="fa-body">' +
+        (t ? '<div class="fa-task"><b>Your assignment:</b> ' + esc(t) + '</div>' : (ME.modules.indexOf(k) !== -1 ? '<div class="fa-task">You are faculty for this module. The course office will confirm your exact sessions.</div>' : '')) +
+        (d.pending ? '<p>' + esc(d.pending) + '</p>' : '') +
+        (dl ? '<h3>Download</h3><div class="fa-dl">' + dl + '</div>' : '<p class="fa-note">The faculty guide for this module is in preparation. It will appear here as soon as it is approved.</p>') +
+        '<h3>See it as a learner</h3><div class="fa-dl"><a class="fa-btn ghost" href="' + modPage(k) + '" target="_blank" rel="noopener">Open the Module ' + k + ' page</a></div>' +
+        '<h3>Your checklist</h3><ul><li>Read the brief in the tabs above and the faculty guide.</li><li>Script and slide outline cover every <b>Must cover</b> point.</li><li>Doses per kg with the maximum, matching the course dose table.</li><li>Record within the length cap; upload as YouTube Unlisted or Google Drive and send the link to the course office.</li><li>For the live webinar: polls, case cards and breakout answer keys ready one week before.</li></ul></div>';
+    }
+    else if (tab === 'lectures') body = section(d.lectures, 'The lecture brief for this module is in preparation.');
+    else if (tab === 'webinar') body = d.webinar ? '<div class="fa-body"><h3>' + esc(d.webinarTitle || '') + '</h3>' + d.webinar + '<p class="fa-note">Rules and running order for every webinar are in the Live webinars faculty guide.</p></div>' : section('', 'The live webinar brief for this module is in preparation.');
+    else if (tab === 'sims') body = section(d.sims, 'The simulation brief for this module is in preparation.');
+    else if (tab === 'dose') body = section(d.dose, '');
+    else if (tab === 'lab') body = section(d.lab, '');
+    else body = '<div class="fa-body"><h3>Production rules</h3>' + (COMMON.rules || '') + '<h3>Running order of every video</h3>' + (COMMON.order || '') + '<h3>Teaching style</h3>' + (COMMON.style || '') + '</div>';
+    $('faModule').innerHTML = '<section class="fa-card"><div class="fa-eb" style="color:#D6246E;">Module ' + k + '</div><h2>' + esc(title(k)) + '</h2>' +
+      '<div class="fa-tabs">' + tabs.map(function(x){ return '<button type="button" data-tab="' + x[0] + '" class="' + (x[0] === tab ? 'on' : '') + '">' + x[1] + '</button>'; }).join('') + '</div>' + body + '</section>';
+  }
+
+  $('faMods').addEventListener('click', function(e){ var b = e.target.closest('[data-k]'); if (!b) return; cur = b.dataset.k; tab = 'overview'; renderMods(); renderModule(); try { history.replaceState(null, '', '?m=' + cur); } catch(x) {} });
+  $('faModule').addEventListener('click', function(e){ var b = e.target.closest('[data-tab]'); if (!b) return; tab = b.dataset.tab; renderModule(); });
+
+  function show(){
+    var want = (new URLSearchParams(location.search).get('m') || '').padStart(2, '0');
+    var list = ME.admin ? MODS.map(function(m){ return m.k; }) : ME.modules;
+    cur = list.indexOf(want) !== -1 ? want : (ME.modules[0] || list[0]);
+    $('faTitle').textContent = 'Welcome' + (ME.name ? ', ' + ME.name : '');
+    $('faMsg').style.display = ME.admin && !ME.modules.length ? 'block' : 'none';
+    if (ME.admin && !ME.modules.length) $('faMsg').innerHTML = '<b>Admin view.</b> You can open every module. Faculty see only the modules assigned to them in Admin → Faculty.';
+    $('faBody').style.display = 'block'; renderMods(); renderModule();
+  }
+
+  PCCN_AUTH.requireLogin();
+  PCCN_AUTH.onChange(function(u){
+    if (!u) return;
+    var db = PCCN_AUTH.db(); if (!db) { $('faMsg').textContent = 'The course database is unavailable. Please try again later.'; return; }
+    var key = String(u.email || '').trim().toLowerCase();
+    ME.name = u.displayName || '';
+    Promise.all([
+      db.collection('admins').doc(u.uid).get().then(function(d){ ME.admin = d.exists; }).catch(function(){ ME.admin = false; }),
+      db.collection('faculty').doc(key).get().then(function(d){ if (d.exists) { var x = d.data(); ME.modules = (x.modules || []).map(function(m){ return String(m).padStart(2, '0'); }); ME.tasks = x.tasks || {}; ME.name = x.name || ME.name; } }).catch(function(){})
+    ]).then(function(){
+      if (!ME.admin && !ME.modules.length) {
+        $('faMsg').innerHTML = '<b>This area is for PCCN faculty.</b><br><br>You are signed in as <b>' + esc(u.email || '') + '</b>, which is not on the faculty list yet. If you are teaching on the course, write to <a href="mailto:stepin.iapicc@gmail.com?subject=PCCN%20faculty%20access">stepin.iapicc@gmail.com</a> with your name and module, and the course office will add you.';
+        return;
+      }
+      show();
+    });
+  });
+})();
+</script>
+</body>
+</html>
