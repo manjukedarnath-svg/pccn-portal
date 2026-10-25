@@ -31,6 +31,12 @@ service cloud.firestore {
       allow read: if request.auth != null && (isAdmin() || (request.auth.token.email != null && request.auth.token.email.lower() == email));
       allow write: if isAdmin();
     }
+    // faculty list, keyed by lowercase email: { name, email, modules: ["01","05"], tasks: { "05": "V20 Status Epilepticus · webinar lead" } }
+    // admins manage it; a faculty member may read only their own entry (Faculty area page)
+    match /faculty/{email} {
+      allow read: if request.auth != null && (isAdmin() || (request.auth.token.email != null && request.auth.token.email.lower() == email));
+      allow write: if isAdmin();
+    }
     // site settings and video links: public to read (module pages do not require sign-in), admins write
     match /config/{doc} {
       allow read: if true;

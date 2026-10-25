@@ -68,6 +68,12 @@
       var a = document.createElement('a'); a.href = 'PCCN_Competency_Results.html'; a.textContent = 'Verify competencies'; a.className = 'pccn-director-link';
       a.style.cssText = 'padding:8px 14px;border-radius:999px;font-size:.85rem;font-weight:700;color:#fff;background:#0F7159;text-decoration:none;white-space:nowrap;'; area.insertBefore(a, area.firstChild); navFit();
     }).catch(function(){});
+    if (user.email) db.collection('faculty').doc(emailKey(user.email)).get().then(function(d){
+      if (!d.exists || document.querySelector('a.pccn-faculty-link')) return;
+      var area = document.getElementById('navAuthArea') || document.querySelector('.pccn-nav-actions'); if (!area) return;
+      var a = document.createElement('a'); a.href = 'PCCN_Faculty_Portal.html'; a.textContent = 'Faculty area'; a.className = 'pccn-faculty-link';
+      a.style.cssText = 'padding:8px 14px;border-radius:999px;font-size:.85rem;font-weight:700;color:#fff;background:#D6246E;text-decoration:none;white-space:nowrap;'; area.insertBefore(a, area.firstChild); navFit();
+    }).catch(function(){});
     db.collection('admins').doc(user.uid).get().then(function(d){
       if (!d.exists) return;
       if (document.querySelector('a[href="PCCN_Admin.html"].pccn-admin-link')) return;
