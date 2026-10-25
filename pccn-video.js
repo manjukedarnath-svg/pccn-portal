@@ -32,9 +32,11 @@
     if (typeof v === 'string') v = { url: v };
     if (v.yt) return { yt: v.yt };
     if (v.drive) return { drive: v.drive };
+    if (v.mp4) return { mp4: v.mp4 };
     var u = v.url || '', m;
     if ((m = u.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?v=|embed\/|shorts\/|live\/))([\w-]{6,})/))) return { yt: m[1] };
     if ((m = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=)([\w-]{10,})/))) return { drive: m[1] };
+    if (/\.mp4(\?|$)/i.test(u)) return { mp4: u };
     if (/^https?:\/\//.test(u)) return { url: u };
     return null;
   }
@@ -64,6 +66,16 @@
           var t = setInterval(function(){ try { var d = p.getDuration(), c = p.getCurrentTime(); if (d > 0 && c / d >= 0.9) { mark(id, w); clearInterval(t); } } catch(e) {} }, 5000);
         } catch(e) {}
       });
+    } else if (link.mp4) {
+      fr.style.paddingTop = '56.25%';
+      var vd = document.createElement('video'); vd.controls = true; vd.setAttribute('playsinline', ''); vd.preload = 'metadata';
+      vd.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;background:#1F0938;';
+      vd.src = link.mp4;
+      var tr = document.createElement('track'); tr.kind = 'subtitles'; tr.srclang = 'en'; tr.label = 'English'; tr.src = link.mp4.replace(/\.mp4(\?.*)?$/i, '.vtt'); vd.appendChild(tr);
+      fr.appendChild(vd);
+      vd.addEventListener('ended', function(){ mark(id, w); });
+      vd.addEventListener('timeupdate', function(){ if (vd.duration && vd.currentTime / vd.duration >= 0.9) mark(id, w); });
+      return;
     } else {
       ifr.src = link.drive ? 'https://drive.google.com/file/d/' + encodeURIComponent(link.drive) + '/preview' : link.url;
       fr.appendChild(ifr);
