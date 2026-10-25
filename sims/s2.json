@@ -25,7 +25,7 @@
   {
    "id": "d1",
    "title": "Impression",
-   "prompt": "From the doorway: a loud cry that settles when his father speaks, fighting you off, walked in; breathing normal; pink. What is your impression — stable or unstable, life-threatening or not?",
+   "prompt": "What is your impression?",
    "options": [
     {
      "text": "Stable — PAT normal; minor head injury with a scalp wound",
@@ -56,10 +56,66 @@
      "note": "Crying raises the rate but there is no flaring, no recession, no abnormal sound. Work of breathing is normal. Count the rate again once he settles."
     }
    ],
-   "key": "Stable — PAT normal; no immediate threat. Minor head injury with a scalp laceration.",
+   "key": "Stable",
    "must": [
     "stable / no immediate threat"
-   ]
+   ],
+   "pick": {
+    "groups": [
+     {
+      "id": "stab",
+      "label": "Stable or unstable?",
+      "opts": [
+       "Stable",
+       "Unstable"
+      ]
+     },
+     {
+      "id": "threat",
+      "label": "Life-threatening or not?",
+      "opts": [
+       "Life-threatening",
+       "Non-life-threatening"
+      ]
+     },
+     {
+      "id": "sys",
+      "label": "Which system is affected?",
+      "opts": [
+       "Respiratory",
+       "Circulation",
+       "Neurological"
+      ]
+     }
+    ],
+    "map": [
+     {
+      "when": {
+       "stab": "Stable"
+      },
+      "limb": 0
+     },
+     {
+      "when": {
+       "sys": "Neurological"
+      },
+      "limb": 1
+     },
+     {
+      "when": {
+       "sys": "Circulation"
+      },
+      "limb": 2
+     },
+     {
+      "when": {
+       "sys": "Respiratory"
+      },
+      "limb": 3
+     }
+    ]
+   },
+   "tag": "D · Detection"
   },
   {
    "id": "d2",
@@ -98,138 +154,381 @@
    "key": "Focused head-injury assessment first — mechanism and height of fall, loss of consciousness, vomiting, behaviour, seizure, headache; scalp and pupils — with a full set of vital signs; wound care after that.",
    "must": [
     "head-injury screen or neurological check before wound care"
-   ]
+   ],
+   "tag": "I · Intervention"
   },
   {
    "id": "d3",
-   "title": "Triage category",
-   "prompt": "No loss of consciousness, no vomiting, alert and playing with his father's phone, pupils equal, a small laceration that has stopped oozing, vitals normal. Which level?",
+   "title": "Reassessment",
+   "tag": "R · Reassessment",
+   "label": "Your reassessment",
+   "prompt": "Forty minutes later the father comes to the desk: “Sister, he has vomited twice and now he wants to sleep.”",
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your reassessment",
+      "opts": [
+       {
+        "v": "Move him to a monitored bed and repeat the PAT and ABCDE",
+        "grade": "correct"
+       },
+       {
+        "v": "Let him sleep — vomiting is common after a fright",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Check AVPU/GCS and the pupils",
+        "grade": "correct"
+       },
+       {
+        "v": "Check the blood glucose",
+        "grade": "ok"
+       },
+       {
+        "v": "Upgrade him to Level 2 and get the doctor now",
+        "grade": "correct"
+       },
+       {
+        "v": "Give an anti-emetic and put him back in the queue",
+        "grade": "bad",
+        "limb": 3
+       },
+       {
+        "v": "Nil by mouth; head end up 30°",
+        "grade": "ok"
+       }
+      ]
+     }
+    ]
+   },
    "options": [
     {
-     "text": "Level 2 · Emergent — any head injury with a wound, to be safe",
-     "vitals": {},
-     "outcome": "He takes the Level 2 cubicle. Ten minutes later a wheezing child arrives and has to wait in a chair.",
-     "best": false,
-     "note": "Over-triage has a cost: he takes a Level 2 slot while a child with breathing difficulty waits. Triage is about matching urgency to need, in both directions. Reserve Level 2 for red flags."
-    },
-    {
-     "text": "Level 4 · Less urgent — wound closure by the doctor, observation in the waiting area, re-triage if anything changes",
-     "vitals": {},
-     "outcome": "Level 4. He sits with his father, playing on the phone, within your sight.",
+     "text": "Move him to a monitored bed and repeat the PAT and ABCDE; Check AVPU/GCS and the pupils; Upgrade him to Level 2 and get the doctor now",
+     "outcome": "On a monitored bed: drowsy but rousable to voice, pupils equal, HR 96, BP 104/64, glucose normal. The doctor is at the bedside in four minutes.",
+     "vitals": {
+      "hr": 96,
+      "bp": "104/64",
+      "avpu": "V"
+     },
      "best": true,
-     "note": "A low-risk head injury with a laceration needing closure is Level 4: seen within the hour, father told the warning signs, and you re-check him on your waiting-area rounds. Triaging down confidently is as important as triaging up."
+     "note": "Triage is dynamic: repeated vomiting and drowsiness after a head injury are red flags. Reassess fully, upgrade, and get the doctor now."
     },
     {
-     "text": "Level 5 · Non-urgent — put a dressing on and send him to the OPD tomorrow",
-     "vitals": {},
-     "outcome": "His father is handed a dressing and told to come to OPD tomorrow. At the door he turns back: \"Is nobody going to stitch it?\"",
-     "best": false,
-     "note": "The laceration needs closure today, and a head injury needs a doctor's assessment and documented advice before discharge. Level 5 sends him away without either."
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "You catch part of the change, but without a full set of observations nobody sees how drowsy he is getting; he is upgraded 15 minutes later. HR 88.",
+     "vitals": {
+      "hr": 88,
+      "avpu": "V"
+     },
+     "best": false
     },
     {
-     "text": "Level 3 · Urgent — in case he deteriorates",
-     "vitals": {},
-     "outcome": "Level 3. He will be seen a little sooner, but no one has yet told the father what to watch for.",
+     "text": "Let him sleep — vomiting is common after a fright",
+     "outcome": "Twenty minutes later the father shouts from the waiting area: the boy is very hard to wake. HR 68, rouses only to pain, left pupil slightly larger than the right.",
+     "vitals": {
+      "hr": 68,
+      "avpu": "P"
+     },
      "best": false,
-     "note": "Defensible if your waiting area is unmonitored, but with no red flags the evidence supports Level 4 with clear re-triage criteria. Whichever level, what matters is that the re-triage triggers are set and the father knows them."
+     "alarm": true
+    },
+    {
+     "text": "Give an anti-emetic and put him back in the queue",
+     "outcome": "After the anti-emetic he sleeps in the queue. On your next round he rouses only to voice and his HR is 64.",
+     "vitals": {
+      "hr": 64,
+      "avpu": "V"
+     },
+     "best": false,
+     "alarm": true
     }
    ]
   },
   {
    "id": "d4",
-   "title": "Advice to the family while they wait",
-   "prompt": "Father asks: \"Is he going to be all right? What should I watch for?\" What do you tell him?",
+   "title": "Communication with the parents",
+   "tag": "EC · Effective communication — parents",
+   "label": "Your communication with the father",
+   "prompt": "The father is shaking: “Sister, is it serious? It is my fault — I left him on the chair.”",
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your communication with the father",
+      "opts": [
+       {
+        "v": "Acknowledge his worry; do not blame him",
+        "grade": "correct"
+       },
+       {
+        "v": "“Children fall all the time — nothing to worry about”",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Explain simply: the vomiting and sleepiness need the doctor and a scan now",
+        "grade": "correct"
+       },
+       {
+        "v": "Ask him to stay with his son and tell you at once if he is harder to wake, vomits again or has a fit",
+        "grade": "correct"
+       },
+       {
+        "v": "“Why was a four-year-old left on a chair?”",
+        "grade": "bad",
+        "limb": 3
+       },
+       {
+        "v": "Make sure the doctor explains the CT and takes his consent",
+        "grade": "ok"
+       }
+      ]
+     }
+    ]
+   },
    "options": [
     {
-     "text": "\"He's fine, don't worry, just wait for your turn.\"",
+     "text": "Acknowledge his worry; do not blame him; Explain simply: the vomiting and sleepiness need the doctor and a scan now; Ask him to stay with his son and tell you at once if he is harder to wake, vomits again or has a fit",
+     "outcome": "He steadies and stays at his son’s side, watching as you showed him. He understands why the scan is needed and signs the consent.",
      "vitals": {},
-     "outcome": "The father nods and sits down. He does not know what to watch for.",
-     "best": false,
-     "note": "Reassurance without instructions. The father is your best observer for the next hour; give him a job."
-    },
-    {
-     "text": "\"He looks well now. Come straight to me if he vomits, becomes drowsy or hard to wake, behaves strangely, has a fit, complains of a worsening headache, or if the wound starts bleeding again. Keep him sitting with you; no running about. I'll check on him every 15 minutes.\"",
-     "vitals": {},
-     "outcome": "The father repeats the warning signs back to you and sits where you can see them both.",
      "best": true,
-     "note": "Specific warning signs in plain words, what to do if they appear, and a promise of regular review. This is family-centred care and it is also your safety net."
+     "note": "With a frightened parent: acknowledge first, explain simply and honestly, and give them a job — what to watch for and when to call."
     },
     {
-     "text": "\"Keep him awake at all costs; if he sleeps he could slip into a coma.\"",
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "He nods but does not know what to watch for; he steps out to phone the family and his son is left alone on the bed.",
      "vitals": {},
-     "outcome": "The father shakes the boy awake every few minutes. The child is tired and crying, and the father is frightened.",
-     "best": false,
-     "note": "A myth that frightens parents. A tired 4-year-old may sleep; what matters is that he is rousable. Teach the father to check that he wakes normally, not to keep him awake."
+     "best": false
     },
     {
-     "text": "Hand him the printed head-injury leaflet and move to the next patient",
-     "vitals": {},
-     "outcome": "The father glances at the leaflet and folds it into his pocket.",
-     "best": false,
-     "note": "A leaflet supports a conversation; it does not replace one. Many parents will not read it, and he needs to know to come to you, not just to \"seek help\"."
+     "text": "“Children fall all the time — nothing to worry about”",
+     "outcome": "Reassured, he takes his son out to the corridor for some air. Ten minutes later you find the boy asleep on the bench, hard to rouse.",
+     "vitals": {
+      "avpu": "V",
+      "hr": 84
+     },
+     "best": false
+    },
+    {
+     "text": "“Why was a four-year-old left on a chair?”",
+     "outcome": "He falls silent, guilt-stricken, and stops talking to the team; he does not tell you that his son has vomited a third time.",
+     "vitals": {
+      "hr": 86
+     },
+     "best": false
     }
    ]
   },
   {
    "id": "d5",
-   "title": "Re-triage",
-   "prompt": "Forty minutes later the father comes to the desk: \"Sister, he has vomited twice and now he wants to sleep.\" What do you do?",
+   "title": "Team communication",
+   "tag": "EC · Effective communication — team",
+   "label": "Your communication with the doctor",
+   "prompt": "You call the doctor. What do you say and do?",
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your communication with the doctor",
+      "opts": [
+       {
+        "v": "ISBAR with the change: head injury an hour ago, vomited twice, now drowsy, rouses to voice, pupils equal, HR 96",
+        "grade": "correct"
+       },
+       {
+        "v": "“Doctor, please see the head-injury boy when you are free”",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Ask for review now, and say why: his level of consciousness has changed",
+        "grade": "correct"
+       },
+       {
+        "v": "Read back the orders: CT head, neuro observations every 15 minutes",
+        "grade": "correct"
+       },
+       {
+        "v": "Tell the triage desk he has been upgraded so the queue is re-ordered",
+        "grade": "ok"
+       },
+       {
+        "v": "Send the message through the attendant",
+        "grade": "bad",
+        "limb": 3
+       }
+      ]
+     }
+    ]
+   },
    "options": [
     {
-     "text": "\"Vomiting is common after a fright; let him sleep, the doctor will see him soon.\"",
-     "vitals": {
-      "hr": 68,
-      "avpu": "V",
-      "note": "Drowsy, rouses to voice, pupils equal, HR falling."
-     },
-     "outcome": "Twenty minutes later the father shouts from the waiting area: the boy is very hard to wake. HR 68, rouses only to pain, left pupil slightly larger than the right.",
-     "best": false,
-     "note": "Two vomits and new drowsiness after a head injury are red flags. This is exactly the change your advice was designed to catch. Act on it."
-    },
-    {
-     "text": "Bring him to a monitored bed, repeat the PAT and ABCDE with pupils, upgrade to Level 2 and call the doctor now with an ISBAR handover: \"4-year-old, head injury 1 hour ago, now vomited twice and drowsy, I need you here now\"",
-     "vitals": {
-      "hr": 96,
-      "avpu": "V",
-      "note": "Drowsy but rousable, pupils equal, no further vomiting. Doctor at the bedside in 4 minutes."
-     },
-     "outcome": "On a monitored bed: drowsy but rousable, pupils equal, HR 96, no further vomiting. The doctor is at the bedside in 4 minutes and a CT is arranged.",
+     "text": "ISBAR with the change: head injury an hour ago, vomited twice, now drowsy, rouses to voice, pupils equal, HR 96; Ask for review now, and say why: his level of consciousness has changed; Read back the orders: CT head, neuro observations every 15 minutes",
+     "outcome": "“I am coming.” The doctor is at the bedside in four minutes and orders a CT head and 15-minute neuro observations; you read the orders back.",
+     "vitals": {},
      "best": true,
-     "note": "Triage is dynamic: a change in the child changes the category. Re-assess, upgrade, escalate with numbers and a timeframe. The earlier advice to the father is what brought him to you in time."
+     "note": "Name the change, give the numbers, ask for review now and close the loop on every order."
     },
     {
-     "text": "Give an anti-emetic and put him back in the queue",
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "The doctor has to ask what changed and how drowsy he is; the review and the CT request take longer.",
+     "vitals": {},
+     "best": false
+    },
+    {
+     "text": "“Doctor, please see the head-injury boy when you are free”",
+     "outcome": "The doctor finishes the suturing list first. When he arrives 30 minutes later the boy rouses only to pain.",
+     "vitals": {
+      "avpu": "P",
+      "hr": 70
+     },
+     "best": false,
+     "alarm": true
+    },
+    {
+     "text": "Send the message through the attendant",
+     "outcome": "The attendant tells the doctor “the child in bed 4 is sleeping”. Nobody comes.",
      "vitals": {
       "avpu": "V",
-      "hr": 64
+      "hr": 76
      },
-     "outcome": "After the anti-emetic he sleeps in the queue. On your next round he rouses only to voice and HR is 64.",
-     "best": false,
-     "note": "Treating the symptom hides the sign. Vomiting after head injury is information, not a nuisance."
+     "best": false
+    }
+   ]
+  },
+  {
+   "id": "d6",
+   "title": "Transfer",
+   "tag": "T · Transport",
+   "label": "Your transfer plan",
+   "prompt": "The CT scanner is ready. How does he go, and where does he go after the scan?",
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your transfer plan",
+      "opts": [
+       {
+        "v": "A nurse (and the doctor) escorts him with monitor, oxygen and suction; AVPU and pupils checked before leaving",
+        "grade": "correct"
+       },
+       {
+        "v": "Send him to CT with his father and the ward attendant",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "After the CT: admit to the HDU/PICU for neuro observations",
+        "grade": "correct"
+       },
+       {
+        "v": "If the CT shows a bleed: call ahead and transfer, stabilised and escorted, to a centre with paediatric neurosurgery",
+        "grade": "correct"
+       },
+       {
+        "v": "His CT request, notes and observation chart go with him",
+        "grade": "ok"
+       },
+       {
+        "v": "Send him back to the waiting area until the CT report comes",
+        "grade": "bad",
+        "limb": 3
+       }
+      ]
+     }
+    ]
+   },
+   "options": [
+    {
+     "text": "A nurse (and the doctor) escorts him with monitor, oxygen and suction; AVPU and pupils checked before leaving; After the CT: admit to the HDU/PICU for neuro observations; If the CT shows a bleed: call ahead and transfer, stabilised and escorted, to a centre with paediatric neurosurgery",
+     "outcome": "He goes to CT on the monitor with you beside him. The scan shows a small extradural haematoma; the neurosurgeon is called and he goes to theatre with his records and a clear handover.",
+     "vitals": {},
+     "best": true,
+     "note": "Transport is part of care: an escort and monitoring for a drowsy child, the right destination after the scan, and a planned transfer if your hospital cannot treat what you find."
     },
     {
-     "text": "Move him up one level to Level 3 and let the doctor know at the next round",
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "The move happens, but not every piece was in place; the team loses time sorting out monitoring and where he should go next.",
+     "vitals": {},
+     "best": false
+    },
+    {
+     "text": "Send him to CT with his father and the ward attendant",
+     "outcome": "In the CT room he vomits lying flat and nobody with him can suction. SpO₂ 88 %, HR 72.",
      "vitals": {
-      "avpu": "V"
+      "spo2": 88,
+      "hr": 72
      },
-     "outcome": "Level 3. The doctor is at the far end of the department and will see him on the round. Fifteen minutes later he is harder to wake.",
      "best": false,
-     "note": "Red flags after head injury go to Level 2 with the doctor called now, not informed later."
+     "alarm": true
+    },
+    {
+     "text": "Send him back to the waiting area until the CT report comes",
+     "outcome": "Unmonitored in the waiting area he vomits again and becomes harder to rouse; the report is back before anyone looks at him.",
+     "vitals": {
+      "avpu": "P",
+      "hr": 66
+     },
+     "best": false,
+     "alarm": true
     }
    ]
   }
  ],
  "debrief": [
-  "Why is triaging down correctly as important as triaging up? What happens to the department when every child is Level 2?",
-  "Which single piece of advice to the father made the difference at the 40-minute mark?",
-  "List the head-injury red flags you would teach a new triage nurse."
+  "What made him stable on the PAT, and what did your head-injury screen look for?",
+  "Which change at 40 minutes made you reassess, and why does it need the doctor now?",
+  "Which warning signs should every family be told before they wait?"
  ],
  "takeHome": [
-  "A stable PAT buys time for a focused assessment; it does not end the assessment.",
-  "Screen head injuries for red flags before wound care.",
-  "Triage down with confidence when there are no red flags — and set re-triage triggers.",
-  "Give parents specific warning signs and a route back to you.",
-  "Triage is dynamic: a change in the child changes the level, and the doctor is called now."
+  {
+   "k": "D",
+   "h": "Detection",
+   "t": "A stable PAT buys time for a focused head-injury screen; it does not end the assessment."
+  },
+  {
+   "k": "I",
+   "h": "Intervention",
+   "t": "Screen for red flags (mechanism, loss of consciousness, vomiting, drowsiness) before wound care."
+  },
+  {
+   "k": "R",
+   "h": "Reassessment",
+   "t": "Triage is dynamic: repeated vomiting or drowsiness means full reassessment, upgrade and the doctor now."
+  },
+  {
+   "k": "EC",
+   "h": "Parents",
+   "t": "Acknowledge, never blame; explain simply; tell them exactly what to watch for and when to call."
+  },
+  {
+   "k": "EC",
+   "h": "Team",
+   "t": "Name the change with numbers (AVPU, pupils, HR), ask for review now, read back the orders."
+  },
+  {
+   "k": "T",
+   "h": "Transport",
+   "t": "Escort a drowsy child to CT with monitoring and suction; plan HDU/PICU or a neurosurgical centre."
+  }
  ],
  "references": [
   "AHA PALS Provider Manual 2020: Pediatric Assessment Triangle.",

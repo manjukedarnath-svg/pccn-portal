@@ -25,8 +25,8 @@
   {
    "id": "d1",
    "title": "Impression",
-   "prompt": "From the doorway: irritable but consolable on her mother, good tone, looking at you; breathing fast with flaring, recessions and wheeze; pink, no mottling. What is your impression — stable or unstable, life-threatening or not, and which system is affected?",
-   "key": "Unstable, non-life-threatening; breathing affected — respiratory distress.",
+   "prompt": "What is your impression?",
+   "key": "Unstable · Non-life-threatening · Respiratory",
    "options": [
     {
      "text": "Stable — a well infant with a cough; she can wait in the routine queue",
@@ -60,31 +60,104 @@
      "vitals": {},
      "outcome": "You ask for an IV line and a fluid bolus. While the trolley is prepared nobody attends to her breathing; the recessions are deeper.",
      "note": "Tachycardia alone is not shock. Her circulation-to-skin side is normal: pink, warm, CRT 2 s. Fever, distress and crying all raise the heart rate. Shock needs abnormal circulation signs: pallor, mottling, cool extremities, delayed CRT."
+    },
+    {
+     "text": "Unstable — neurological: an irritable infant, check the brain first",
+     "best": false,
+     "vitals": {
+      "spo2": 87,
+      "rr": 66
+     },
+     "outcome": "You check her pupils and blood sugar and ask about fits. Meanwhile nobody attends to her breathing: the recessions are deeper and SpO₂ drifts to 87 %.",
+     "note": "Her irritability comes from hypoxia and the work of breathing. She is consolable, with good tone and interaction, so appearance is normal — the problem is breathing."
     }
    ],
    "must": [
     "respiratory distress or breathing affected (a nurse who names respiratory distress meets this; she need not write the words stable/unstable)"
-   ]
+   ],
+   "pick": {
+    "groups": [
+     {
+      "id": "stab",
+      "label": "Stable or unstable?",
+      "opts": [
+       "Stable",
+       "Unstable"
+      ]
+     },
+     {
+      "id": "threat",
+      "label": "Life-threatening or not?",
+      "opts": [
+       "Life-threatening",
+       "Non-life-threatening"
+      ]
+     },
+     {
+      "id": "sys",
+      "label": "Which system is affected?",
+      "opts": [
+       "Respiratory",
+       "Circulation",
+       "Neurological"
+      ]
+     }
+    ],
+    "map": [
+     {
+      "when": {
+       "stab": "Stable"
+      },
+      "limb": 0
+     },
+     {
+      "when": {
+       "sys": "Circulation"
+      },
+      "limb": 3
+     },
+     {
+      "when": {
+       "sys": "Neurological"
+      },
+      "limb": 4
+     },
+     {
+      "when": {
+       "threat": "Life-threatening"
+      },
+      "limb": 2
+     },
+     {
+      "when": {
+       "threat": "Non-life-threatening",
+       "sys": "Respiratory"
+      },
+      "limb": 1
+     }
+    ]
+   },
+   "tag": "D · Detection"
   },
   {
    "id": "d2",
    "title": "Intervention",
-   "prompt": "She is unstable with respiratory distress and wheeze, SpO₂ 89 % on room air. What is your intervention?",
-   "key": "Start oxygen — any form is acceptable (nasal prongs, face mask, non-rebreather) — titrated to SpO₂ 94–98 %, and prepare nebulisation (salbutamol, oxygen-driven at 6–8 L/min).",
+   "prompt": "What is your intervention? Choose all that apply.",
+   "key": "Oxygen — non-rebreather mask (correct) or nasal cannula (acceptable) — and give the salbutamol nebulisation (correct); assessing ABCDE is acceptable alongside. Doing none of these is unsafe.",
    "options": [
     {
-     "text": "Start oxygen (any device) titrated to SpO₂ 94–98 % and prepare a salbutamol nebulisation",
+     "text": "Start oxygen (NRM or nasal cannula) and give the salbutamol nebulisation",
      "best": true,
      "vitals": {
       "spo2": 95,
       "rr": 56,
       "hr": 160
      },
-     "outcome": "Oxygen on; she settles on her mother’s lap. SpO₂ rises to 95 %, RR 56, HR 160. The salbutamol nebuliser is drawn up and ready, to be driven with oxygen at 6–8 L/min.",
+     "outcome": "Oxygen on; she settles on her mother’s lap. The salbutamol nebulisation runs, driven with oxygen at 6–8 L/min. SpO₂ rises to 95 %, RR 56, HR 160.",
      "note": "Oxygen first, by whatever device she tolerates, to a target of 94–98 %; then treat the wheeze — prepare an oxygen-driven salbutamol nebulisation. Reassess within minutes."
     },
     {
-     "text": "Start oxygen only, and keep watching",
+     "text": "Start oxygen only",
      "best": false,
      "vitals": {
       "spo2": 94,
@@ -95,7 +168,7 @@
      "note": "Oxygen treats the hypoxaemia, not the bronchospasm. With a wheeze, prepare the nebuliser at the same time."
     },
     {
-     "text": "Give a salbutamol nebulisation with room air or a compressor, without oxygen",
+     "text": "Give the nebulisation without oxygen",
      "best": false,
      "vitals": {
       "spo2": 86,
@@ -115,7 +188,7 @@
      "note": "An IV is not an A or B intervention, and the struggle will worsen her breathing. Nothing here needs IV access yet."
     },
     {
-     "text": "No oxygen yet — observe for 15 minutes and recheck",
+     "text": "None of these — observe and recheck",
      "best": false,
      "vitals": {
       "spo2": 86,
@@ -128,96 +201,454 @@
    "must": [
     "oxygen by any device",
     "nebulisation prepared or given"
-   ]
+   ],
+   "pick": {
+    "multi": true,
+    "groups": [
+     {
+      "id": "iv",
+      "label": "Your intervention",
+      "opts": [
+       {
+        "v": "Start oxygen — nasal cannula",
+        "grade": "ok"
+       },
+       {
+        "v": "Start oxygen — non-rebreather mask (NRM)",
+        "grade": "correct"
+       },
+       {
+        "v": "Assess ABCDE",
+        "grade": "ok"
+       },
+       {
+        "v": "Give salbutamol nebulisation",
+        "grade": "correct"
+       },
+       {
+        "v": "None of these",
+        "grade": "bad"
+       }
+      ]
+     }
+    ],
+    "map": [
+     {
+      "any": [
+       "None of these"
+      ],
+      "limb": 4
+     },
+     {
+      "any": [
+       "Start oxygen — nasal cannula",
+       "Start oxygen — non-rebreather mask (NRM)"
+      ],
+      "all": [
+       "Give salbutamol nebulisation"
+      ],
+      "limb": 0
+     },
+     {
+      "all": [
+       "Give salbutamol nebulisation"
+      ],
+      "limb": 2
+     },
+     {
+      "any": [
+       "Start oxygen — nasal cannula",
+       "Start oxygen — non-rebreather mask (NRM)"
+      ],
+      "limb": 1
+     },
+     {
+      "limb": 4
+     }
+    ]
+   },
+   "tag": "I · Intervention"
   },
   {
    "id": "d3",
-   "title": "Triage category",
-   "prompt": "On oxygen her SpO₂ is 95 %, RR 56, HR 160, still recessing. Which triage level, and what does it mean for her?",
+   "title": "Reassessment",
+   "tag": "R · Reassessment",
+   "label": "Your reassessment",
+   "prompt": "Ten minutes later. Reassess her: what do you check, and what do you do next?",
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your reassessment",
+      "opts": [
+       {
+        "v": "Repeat the PAT and ABCDE: work of breathing, RR, HR, SpO₂",
+        "grade": "correct"
+       },
+       {
+        "v": "Stop the oxygen — SpO₂ is 95 % now",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Listen to the chest: air entry and wheeze after the nebulisation",
+        "grade": "correct"
+       },
+       {
+        "v": "Score PEWS and chart it",
+        "grade": "ok"
+       },
+       {
+        "v": "Continue oxygen; repeat the nebulisation if the wheeze persists; recheck every 5–10 minutes",
+        "grade": "correct"
+       },
+       {
+        "v": "Check she can breastfeed and has passed urine",
+        "grade": "ok"
+       },
+       {
+        "v": "Move to the next patient and recheck at the next round",
+        "grade": "bad",
+        "limb": 3
+       }
+      ]
+     }
+    ]
+   },
    "options": [
     {
-     "text": "Level 1 · Resuscitation — straight to the resuscitation bay, call the team",
-     "vitals": {},
-     "outcome": "The resuscitation team gathers round a pink, alert infant on oxygen. Five minutes later an ambulance brings in a child in arrest — and the only resuscitation bay is occupied.",
-     "best": false,
-     "note": "Level 1 is for failure or arrest: apnoea, silent chest, unresponsive, hypotensive shock. She responded to oxygen and is still compensating. Over-triage here blocks the bay for the next child who needs it; the right answer is Level 2 with the doctor at the bedside in minutes."
-    },
-    {
-     "text": "Level 2 · Emergent — doctor to see within 10 minutes, continuous monitoring, nurse stays with her",
-     "vitals": {},
-     "outcome": "She stays on the monitored triage bed with you beside her: continuous SpO₂ and heart rate, reassessed every 5 minutes.",
+     "text": "Repeat the PAT and ABCDE: work of breathing, RR, HR, SpO₂; Listen to the chest: air entry and wheeze after the nebulisation; Continue oxygen; repeat the nebulisation if the wheeze persists; recheck every 5–10 minutes",
+     "outcome": "RR 48, HR 150, SpO₂ 97 % on oxygen. The recessions ease and the wheeze is softer; she is starting to look around. The treatment is working — and she still needs oxygen.",
+     "vitals": {
+      "spo2": 97,
+      "rr": 48,
+      "hr": 150
+     },
      "best": true,
-     "note": "Respiratory distress needing oxygen is Level 2: continuous SpO₂ and heart-rate monitoring, reassess every 5 minutes, escalate immediately if she tires. She does not leave your sight."
+     "note": "Reassess after every intervention and every 5–10 minutes while she is unstable: PAT, ABCDE and the chest. Better numbers on oxygen do not mean she is ready to come off it."
     },
     {
-     "text": "Level 4 · Less urgent — she is pink on oxygen, she can wait her turn",
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "You record some numbers but not the full picture. Ten minutes later her mother calls you: RR 60, SpO₂ 93 %, the recessions are back. A full PAT, ABCDE and chest check would have caught it earlier.",
+     "vitals": {
+      "spo2": 93,
+      "rr": 60,
+      "hr": 164
+     },
+     "best": false
+    },
+    {
+     "text": "Stop the oxygen — SpO₂ is 95 % now",
+     "outcome": "Off oxygen she drifts to SpO₂ 88 % within minutes; RR 64, HR 172. The monitor alarms.",
+     "vitals": {
+      "spo2": 88,
+      "rr": 64,
+      "hr": 172
+     },
+     "best": false,
+     "alarm": true
+    },
+    {
+     "text": "Move to the next patient and recheck at the next round",
+     "outcome": "Nobody reassesses her. Thirty minutes later she is tiring: SpO₂ 90 %, RR 66, HR 172, the recessions deeper.",
      "vitals": {
       "spo2": 90,
-      "rr": 64
+      "rr": 66,
+      "hr": 172
      },
-     "outcome": "She goes back to the waiting area on a portable cylinder. Twenty minutes later SpO₂ is 90 % and RR 64; the recessions are deeper.",
      "best": false,
-     "note": "A pink SpO₂ on oxygen does not make her less urgent; it means the oxygen is working for now. The work of breathing is unchanged and infants tire without warning. Level 4 means she could wait an hour unmonitored."
-    },
-    {
-     "text": "Level 5 · Non-urgent — give a nebuliser and send to the OPD queue",
-     "vitals": {
-      "spo2": 86,
-      "rr": 68,
-      "hr": 178
-     },
-     "outcome": "Her mother carries her to the OPD queue. Thirty minutes later she is rushed back: grey, RR 68, SpO₂ 86 %, HR 178.",
-     "best": false,
-     "note": "An infant on oxygen for respiratory distress is not an outpatient. This is the triage decision that leads to a collapse in the waiting area."
+     "alarm": true
     }
    ]
   },
   {
    "id": "d4",
-   "title": "ISBAR call to the doctor",
-   "prompt": "You phone the paediatric registrar. Which handover gets the doctor to the bedside fastest, with the right picture?",
+   "title": "Communication with the parents",
+   "tag": "EC · Effective communication — parents",
+   "label": "Your communication with the mother",
+   "prompt": "Her mother is crying: “Sister, what is happening to her? Why the mask? Will she be all right?”",
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your communication with the mother",
+      "opts": [
+       {
+        "v": "Introduce yourself and explain in simple words, in her language: her chest is tight, the oxygen and the nebuliser help her breathe",
+        "grade": "correct"
+       },
+       {
+        "v": "“Don’t worry, it is nothing serious”",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Keep the baby on her lap and let her help hold the mask",
+        "grade": "correct"
+       },
+       {
+        "v": "Ask her to wait outside so the team can work",
+        "grade": "bad",
+        "limb": 3
+       },
+       {
+        "v": "Tell her what happens next — admission and monitoring — and which signs to call you for",
+        "grade": "correct"
+       },
+       {
+        "v": "Ask what she has understood and whether she has questions",
+        "grade": "ok"
+       }
+      ]
+     }
+    ]
+   },
    "options": [
     {
-     "text": "\"Doctor, there's a baby here with a cough and fever, can you come when you're free?\"",
+     "text": "Introduce yourself and explain in simple words, in her language: her chest is tight, the oxygen and the nebuliser help her breathe; Keep the baby on her lap and let her help hold the mask; Tell her what happens next — admission and monitoring — and which signs to call you for",
+     "outcome": "The mother calms and holds the mask close to her daughter’s face; the baby settles on her lap. She repeats back: “If she breathes faster or stops feeding, I call you.”",
      "vitals": {},
-     "outcome": "\"I'll come when I finish here.\" Thirty minutes pass and the registrar has not arrived.",
-     "best": false,
-     "note": "No identification, no situation, no objective data, no request with a timeframe. \"When you're free\" invites a 40-minute wait."
-    },
-    {
-     "text": "\"Doctor, this is Sister Rani in triage. I have an 8-month-old, 8 kg, in respiratory distress: RR 62, SpO₂ 89 % on air, now 95 % on 2 L nasal prongs, HR 160, wheeze both sides, recessions, Temp 38.2. I've triaged her Level 2. I need you at the bedside within 10 minutes.\"",
-     "vitals": {},
-     "outcome": "The registrar repeats the numbers back and says she is on her way. She is at the bedside in six minutes.",
      "best": true,
-     "note": "ISBAR: Identify yourself and the patient, Situation in one line, Background and Assessment with numbers, and a Recommendation with a timeframe. The doctor can picture the child before arriving."
+     "note": "Parents are part of the team: honest, simple words in their language, a job at the bedside, and clear signs to call you."
     },
     {
-     "text": "\"Doctor, bed 3, 8 months, looks like bronchiolitis, I've started oxygen, see her after the ward round.\"",
-     "vitals": {},
-     "outcome": "The registrar finishes the ward round first. Fifty minutes pass before she arrives.",
-     "best": false,
-     "note": "A diagnosis is offered but no vital signs, no request and no timeframe. \"After the ward round\" could be an hour. State the numbers and what you need."
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "She nods but looks lost. A few minutes later she lifts the mask off to feed the baby and the SpO₂ dips to 92 %.",
+     "vitals": {
+      "spo2": 92
+     },
+     "best": false
     },
     {
-     "text": "Send a WhatsApp message with the vitals to the on-call group and continue monitoring",
+     "text": "“Don’t worry, it is nothing serious”",
+     "outcome": "She relaxes — and when the doctor later talks of admission she is angry and frightened: “But sister said it was nothing.” Her trust in the team is lost.",
      "vitals": {},
-     "outcome": "The message shows two grey ticks. Twenty-five minutes later nobody has replied.",
+     "best": false
+    },
+    {
+     "text": "Ask her to wait outside so the team can work",
+     "outcome": "Away from her mother the baby screams and fights the mask: RR 60, HR 168, SpO₂ 92 %.",
+     "vitals": {
+      "rr": 60,
+      "hr": 168,
+      "spo2": 92
+     },
+     "best": false
+    }
+   ]
+  },
+  {
+   "id": "d5",
+   "title": "Team communication",
+   "tag": "EC · Effective communication — team",
+   "label": "Your communication with the doctor",
+   "prompt": "The registrar answers your call. What do you say and do?",
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your communication with the doctor",
+      "opts": [
+       {
+        "v": "ISBAR with numbers: who you are, the child, situation, background, assessment (SpO₂ 89 → 97 %, RR 64 → 48), recommendation",
+        "grade": "correct"
+       },
+       {
+        "v": "“Doctor, the baby is not looking good, please come”",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Ask for a clear action and a time: “Please review her within 15 minutes”",
+        "grade": "correct"
+       },
+       {
+        "v": "Read back every order you are given (closed loop)",
+        "grade": "correct"
+       },
+       {
+        "v": "Chart the times of the oxygen and the nebulisation",
+        "grade": "ok"
+       },
+       {
+        "v": "Write it in the notes and tell the doctor at the next round",
+        "grade": "bad",
+        "limb": 3
+       }
+      ]
+     }
+    ]
+   },
+   "options": [
+    {
+     "text": "ISBAR with numbers: who you are, the child, situation, background, assessment (SpO₂ 89 → 97 %, RR 64 → 48), recommendation; Ask for a clear action and a time: “Please review her within 15 minutes”; Read back every order you are given (closed loop)",
+     "outcome": "“Clear, sister — I am coming. Continue the oxygen and repeat the nebulisation if the wheeze returns.” You read the order back; she is reviewed within 10 minutes.",
+     "vitals": {},
+     "best": true,
+     "note": "Speak with a number, not an adjective: ISBAR, a clear request with a time, and closed-loop read-back of every order."
+    },
+    {
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "The registrar has to ask three questions to get the numbers and what you want; the review is delayed by 15 minutes.",
+     "vitals": {},
+     "best": false
+    },
+    {
+     "text": "“Doctor, the baby is not looking good, please come”",
+     "outcome": "“How bad is she? I am busy in the ward.” Without numbers the call goes into the queue; she is seen 40 minutes later.",
+     "vitals": {
+      "rr": 58,
+      "spo2": 94
+     },
+     "best": false
+    },
+    {
+     "text": "Write it in the notes and tell the doctor at the next round",
+     "outcome": "No one senior knows about her. An hour later she is tiring on the trolley: SpO₂ 91 %, RR 64, HR 170.",
+     "vitals": {
+      "spo2": 91,
+      "rr": 64,
+      "hr": 170
+     },
      "best": false,
-     "note": "A Level 2 child needs a closed-loop call: you speak, the doctor confirms they are coming and when. A group message may not be read."
+     "alarm": true
+    }
+   ]
+  },
+  {
+   "id": "d6",
+   "title": "Transfer",
+   "tag": "T · Transport",
+   "label": "Your transfer plan",
+   "prompt": "The registrar asks you to move her. Where does she go, and how?",
+   "pick": {
+    "multi": true,
+    "auto": true,
+    "best": 0,
+    "partial": 1,
+    "groups": [
+     {
+      "id": "g",
+      "label": "Your transfer plan",
+      "opts": [
+       {
+        "v": "Admit to the paediatric HDU / a monitored ward bed",
+        "grade": "correct"
+       },
+       {
+        "v": "Discharge home on salbutamol syrup; review in OPD tomorrow",
+        "grade": "bad",
+        "limb": 2
+       },
+       {
+        "v": "Move her on oxygen with a pulse oximeter, a nurse escort and her mother with her",
+        "grade": "correct"
+       },
+       {
+        "v": "Admit to the PICU",
+        "grade": "ok"
+       },
+       {
+        "v": "Call ahead: the receiving bed has oxygen, suction and a monitor ready",
+        "grade": "correct"
+       },
+       {
+        "v": "Let the mother carry her to the ward; oxygen can start there",
+        "grade": "bad",
+        "limb": 3
+       }
+      ]
+     }
+    ]
+   },
+   "options": [
+    {
+     "text": "Admit to the paediatric HDU / a monitored ward bed; Move her on oxygen with a pulse oximeter, a nurse escort and her mother with her; Call ahead: the receiving bed has oxygen, suction and a monitor ready",
+     "outcome": "She reaches the HDU on oxygen, saturating 97 %, her mother beside her. The bed is ready and the HDU nurse takes your ISBAR handover.",
+     "vitals": {},
+     "best": true,
+     "note": "Right place, right way: a monitored bed matched to her needs, moved on oxygen with monitoring and an escort, the receiving team ready before she arrives."
+    },
+    {
+     "text": "Some correct elements, nothing unsafe (partial)",
+     "outcome": "She gets there, but not everything was in place: on arrival the team sets up oxygen and the monitor while she goes unwatched for several minutes.",
+     "vitals": {
+      "spo2": 93
+     },
+     "best": false
+    },
+    {
+     "text": "Discharge home on salbutamol syrup; review in OPD tomorrow",
+     "outcome": "Twelve hours later she is brought back by ambulance, grey and exhausted: SpO₂ 84 %, RR 70, HR 180.",
+     "vitals": {
+      "spo2": 84,
+      "rr": 70,
+      "hr": 180
+     },
+     "best": false,
+     "alarm": true
+    },
+    {
+     "text": "Let the mother carry her to the ward; oxygen can start there",
+     "outcome": "Halfway down the corridor without oxygen she turns dusky: SpO₂ 86 %, HR 174.",
+     "vitals": {
+      "spo2": 86,
+      "hr": 174
+     },
+     "best": false,
+     "alarm": true
     }
    ]
   }
  ],
  "debrief": [
   "What was your impression, and which findings made her unstable but not yet life-threatening?",
-  "At which point would you have upgraded her to Level 1? Name three signs.",
-  "What would you check at each 5-minute reassessment while waiting for the doctor?"
+  "Why oxygen first, and why prepare the nebuliser at the same time?",
+  "What did you look at on reassessment, and what would have made you upgrade her to Level 1?"
  ],
  "takeHome": [
-  "Impression first: stable or unstable, life-threatening or not, and which system — here, unstable non-life-threatening respiratory distress.",
-  "Intervention: oxygen by any device to SpO₂ 94–98 %, and prepare an oxygen-driven salbutamol nebulisation for the wheeze.",
-  "Distress on oxygen is Level 2, never Level 4: monitored, reassessed every 5 minutes.",
-  "ISBAR with numbers and a timeframe gets the doctor to the bed."
+  {
+   "k": "D",
+   "h": "Detection",
+   "t": "Unstable, not life-threatening, respiratory: increased work of breathing in a consolable infant."
+  },
+  {
+   "k": "I",
+   "h": "Intervention",
+   "t": "Oxygen (non-rebreather or nasal cannula) plus an oxygen-driven salbutamol nebulisation."
+  },
+  {
+   "k": "R",
+   "h": "Reassessment",
+   "t": "Repeat PAT, ABCDE and the chest after every intervention; better numbers on oxygen do not mean off oxygen."
+  },
+  {
+   "k": "EC",
+   "h": "Parents",
+   "t": "Simple words in her language, a job at the bedside, and clear signs to call you."
+  },
+  {
+   "k": "EC",
+   "h": "Team",
+   "t": "ISBAR with numbers, a clear request with a time, and read back every order."
+  },
+  {
+   "k": "T",
+   "h": "Transport",
+   "t": "HDU or monitored bed; move on oxygen with an oximeter and an escort, the bed ready before she arrives."
+  }
  ],
  "references": [
   "AHA PALS Provider Manual 2020: Pediatric Assessment Triangle, respiratory distress and failure, oxygen therapy.",

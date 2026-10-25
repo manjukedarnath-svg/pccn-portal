@@ -44,6 +44,10 @@
   '.psim-story.foot .lbl{position:absolute;left:12px;top:10px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;background:rgba(0,0,0,.55);padding:5px 10px;border-radius:999px;color:#ddd;}' +
   '.psim-skip{position:absolute;right:12px;bottom:10px;background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:999px;padding:6px 12px;font:600 12px Poppins,sans-serif;cursor:pointer;z-index:2;}' +
   '.psim-story.act .psim-skip{background:#EEE4EC;color:#1F0938;}' +
+  '.psim-ctrl{max-width:1120px;margin:10px auto 0;padding:0 16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}' +
+  '.psim-ctrl button{min-width:44px;height:40px;padding:0 12px;border-radius:999px;border:1.5px solid #D8C2E0;background:#fff;color:#1F0938;font:700 14px Poppins,sans-serif;cursor:pointer;}' +
+  '.psim-ctrl button:hover{border-color:#D6246E;}.psim-ctrl button.pp{background:#1F0938;color:#fff;border-color:#1F0938;min-width:56px;}' +
+  '.psim-ctrl .tm{margin-left:auto;font:600 12.5px ui-monospace,Menlo,monospace;color:#6B5D82;}' +
   '.psim-body{max-width:1120px;margin:0 auto;padding:14px 16px 70px;}' +
   '.psim-ans{background:#fff;border:2px solid #1F0938;border-radius:16px;padding:16px;}' +
   '.psim-ans label{display:block;font-weight:700;font-size:15px;margin:0 0 4px;}.psim-ans .hint{font-size:13px;color:#6B5D82;margin:0 0 10px;}' +
@@ -59,10 +63,26 @@
   '.psim-fac .fo{display:flex;gap:8px;align-items:flex-start;margin:8px 0 0;font-size:13.5px;}.psim-fac .fo button{flex:none;}' +
   '.psim-fac .fo .star{color:#0F6B52;font-weight:800;}' +
   '.psim-note{font-size:13px;color:#6B5D82;margin:8px 0 0;}' +
+  '.pk{margin:10px 0 4px;}.pkl{font-size:13px;font-weight:600;color:#6B5D82;margin:0 0 6px;}' +
+  '.pko{min-height:44px;max-width:100%;padding:9px 16px;margin:0 8px 8px 0;border-radius:22px;text-align:left;white-space:normal;line-height:1.35;border:1.5px solid #D8C2E0;background:#fff;color:#1F0938;font:600 14.5px Poppins,sans-serif;cursor:pointer;}' +
+  '.dtag{display:inline-block;font:700 11px Poppins,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:#4A1A73;border-radius:999px;padding:4px 10px;margin:0 0 8px;}.psim-ans .qq{font-size:15.5px;line-height:1.5;margin:0 0 10px;color:#1F0938;}' +
+  '.pko.on{background:#1F0938;color:#fff;border-color:#1F0938;}' +
   '.psim-end{background:#EBF8F4;border:1px solid #BFE6D8;border-radius:14px;padding:16px;}' +
   '.psim-db h3{font-size:18px;margin:26px 0 10px;}.psim-db ol,.psim-db ul{padding-left:20px;margin:0;}.psim-db li{margin:0 0 8px;font-size:14.5px;}' +
   '.psim-row{background:#fff;border:1px solid #EEE4EC;border-radius:14px;padding:14px;margin:0 0 10px;}.psim-row h5{margin:0 0 8px;font-size:14px;}' +
   '.psim-row .pa{font-size:13.5px;color:#4A3B5C;margin:0 0 6px;padding-left:12px;border-left:3px solid #E2D6EA;}.psim-row .pa q{font-style:italic;color:#1F0938;}' +
+  '.th-r{display:flex;gap:10px;align-items:flex-start;margin:0 0 10px;font-size:14px;line-height:1.45;}.th-r span{flex:0 0 auto;min-width:34px;height:26px;padding:0 6px;border-radius:13px;background:#4A1A73;color:#fff;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;}' +
+  '.fl{position:relative;margin:4px 0 0;}.fl-node{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1.5px solid #E2D6EA;border-radius:14px;padding:12px 14px;}' +
+  '.fl-dot{flex:0 0 auto;min-width:40px;height:40px;padding:0 6px;border-radius:20px;display:flex;align-items:center;justify-content:center;font:700 13px Poppins,sans-serif;color:#fff;background:#1B9E7E;}' +
+  '.fl-node.det .fl-dot{background:#E08A00;}.fl-node.res .fl-dot{background:#7A3FA8;}.fl-node.det{border-color:#F3D19A;}.fl-node.res{border-color:#CDB4E3;}' +
+  '.fl-body{flex:1;min-width:0;}.fl-t{font-weight:700;font-size:15px;color:#1F0938;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}' +
+  '.fl-chip{font:600 11px Poppins,sans-serif;padding:2px 9px;border-radius:999px;background:#E3F5EE;color:#0F6B52;}.det .fl-chip{background:#FFF4DC;color:#8A5A00;}.res .fl-chip{background:#F1E8F8;color:#5B2B86;}' +
+  '.fl-c{font-size:13.5px;color:#4A3B5C;margin-top:4px;}.fl-n{font-size:12.5px;color:#6A5A78;margin-top:6px;padding-top:6px;border-top:1px dashed #E2D6EA;}' +
+  '.fl-arr{width:2px;height:18px;background:#CDB4E3;margin:0 0 0 33px;position:relative;}.fl-arr:after{content:"";position:absolute;left:-4px;bottom:-2px;border:5px solid transparent;border-top-color:#CDB4E3;}' +
+  '.fl-det{display:flex;gap:8px;margin:0 0 8px 34px;padding:8px 12px;background:#FFF8EA;border:1px dashed #F3D19A;border-radius:12px;font-size:12.5px;color:#6B4A00;}.fl-x{font-size:16px;line-height:1;}' +
+  '.fl-end{border-radius:14px;padding:14px 16px;font-size:14px;background:#EBF8F4;border:1.5px solid #BFE6D8;}.fl-end.det{background:#FFF8EA;border-color:#F3D19A;}' +
+  '.fl-key{display:flex;gap:14px;font-size:12px;color:#6A5A78;margin:0 0 10px;}.fl-key span:before{content:"";display:inline-block;width:10px;height:10px;border-radius:5px;margin-right:5px;vertical-align:-1px;background:#1B9E7E;}.fl-key .det:before{background:#E08A00;}.fl-key .res:before{background:#7A3FA8;}' +
+  '.fl-more{margin-top:18px;font-size:14px;}.fl-more summary{cursor:pointer;font-weight:700;}.fl-more ol{margin:10px 0;}' +
   '.psim-row .tp{font-size:13.5px;background:#F4EEF7;border-radius:10px;padding:10px 12px;margin-top:8px;}.psim-refs{font-size:12.5px;color:#6A5A78;}';
 
   var modNo = (location.pathname.match(/Module(\d\d)/) || [0, '00'])[1];
@@ -175,6 +195,7 @@
     ov.innerHTML = '<div class="psim-top"><div><b>' + esc(sim.title) + (mode === 'live' ? ' · Live session' : '') + '</b><br><span>' + esc(sim.patient.age + ' · ' + sim.patient.weight + ' · ' + sim.patient.sex) + '</span></div>' +
       '<button class="psim-tb first" type="button" data-t="voice"></button><button class="psim-tb" type="button" data-t="beep"></button><button class="psim-tb" type="button" data-t="close">Close</button></div>' +
       '<div class="psim-stage"><div class="psim-story"></div><div class="psim-monwrap"><canvas class="psim-cv"></canvas></div></div>' +
+      '<div class="psim-ctrl"><button type="button" data-c="restart" title="Back to the start of this part" aria-label="Restart">\u21BA Restart</button><button type="button" data-c="back" title="Back 5 seconds" aria-label="Back 5 seconds">\u25C0\u25C0 5s</button><button type="button" data-c="play" class="pp" aria-label="Pause">\u275A\u275A Pause</button><button type="button" data-c="fwd" title="Forward 5 seconds" aria-label="Forward 5 seconds">5s \u25B6\u25B6</button><button type="button" data-c="end" title="Skip to the question" aria-label="Skip">Skip \u25B6|</button><span class="tm"></span></div>' +
       '<div class="psim-body"><div class="psim-now"></div></div>';
     document.body.appendChild(ov); var prevOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden';
     var stage = ov.querySelector('.psim-stage'), story = ov.querySelector('.psim-story'), now = ov.querySelector('.psim-now');
@@ -191,7 +212,18 @@
 
     /* ----- clip player ----- */
     var clip = null, clipName = '', clipStart = 0, clipDone = null, actionText = '', segIdx = -1, lineState = '', monShown = false, lastFrame = performance.now();
-    function tNow(){ return (performance.now() - clipStart) / 1000; }
+    var paused = false, pauseAt = 0, startAt = 0;
+    function tNow(){ return paused ? pauseAt : (performance.now() - clipStart) / 1000; }
+    function footVid(){ return story.querySelector('video'); }
+    function setPP(){ var b = ov.querySelector('[data-c="play"]'); if (b) { b.textContent = paused ? '\u25B6 Play' : '\u275A\u275A Pause'; b.setAttribute('aria-label', paused ? 'Play' : 'Pause'); } }
+    function pauseClip(){ if (paused || !clip) return; pauseAt = tNow(); paused = true; vo.pause(); var v = footVid(); if (v) v.pause(); setPP(); }
+    function resumeClip(){ if (!paused || !clip) return; paused = false; if (pauseAt >= clip.duration) pauseAt = startAt; clipStart = performance.now() - pauseAt * 1000; if (voiceOn && pauseAt < clip.duration) { try { vo.currentTime = pauseAt; } catch(e) {} vo.play().catch(function(){}); } var v = footVid(); if (v) v.play().catch(function(){}); setPP(); }
+    function seek(t){
+      if (!clip) return; t = Math.max(startAt, Math.min(clip.duration, t));
+      if (paused) pauseAt = t; else clipStart = performance.now() - t * 1000;
+      segIdx = -1; lineState = '';
+      if (voiceOn && !paused && t < clip.duration) { try { vo.currentTime = t; } catch(e) {} vo.play().catch(function(){}); } else vo.pause();
+    }
     function vitalsAt(t){
       var tl = clip.vitals, cur = tl[0].v, prev = tl[0].v, tc = 0;
       for (var i = 0; i < tl.length; i++) if (tl[i].t <= t) { prev = i ? tl[i - 1].v : tl[i].v; cur = tl[i].v; tc = tl[i].t; }
@@ -200,14 +232,24 @@
       o.bp = f < .5 ? prev.bp : cur.bp; o.avpu = f < .5 ? prev.avpu : cur.avpu; o.o2 = cur.o2; return o;
     }
     function play(name, act, done){
-      clip = live.clips[name]; clipName = name; actionText = act || ''; clipDone = done; segIdx = -1; lineState = '';
+      ov.querySelector('.psim-ctrl').style.visibility = ''; clip = live.clips[name]; clipName = name; actionText = act || ''; clipDone = done; segIdx = -1; lineState = '';
       if (!clip) { done(); return; }
-      clipStart = performance.now(); mon.set(vitalsAt(0), clip.alarm);
-      vo.pause(); if (voiceOn) { vo.src = 'sims/live/' + sim.id + '/voice/' + name + '.m4a'; vo.currentTime = 0; vo.play().catch(function(){}); }
+      /* the 'your action' card is not shown (the typed answer is already on screen); kept only when the senior nurse steps in */
+      startAt = (!rescuing && clip.segs[0] && clip.segs[0].panel.kind === 'action') ? clip.segs[0].t1 : 0;
+      clipStart = performance.now() - startAt * 1000; paused = false; setPP(); mon.set(vitalsAt(startAt), clip.alarm);
+      vo.pause(); if (voiceOn) { vo.src = 'sims/live/' + sim.id + '/voice/' + name + '.m4a'; try { vo.currentTime = startAt; } catch(e) {} vo.play().catch(function(){}); }
       now.innerHTML = '';
       ov.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    function skip(){ if (!clip) return; clipStart = performance.now() - clip.duration * 1000; vo.pause(); }
+    function skip(){ if (!clip) return; seek(clip.duration); }
+    ov.querySelector('.psim-ctrl').addEventListener('click', function(e){
+      var b = e.target.closest('[data-c]'); if (!b || !clip) return; var c = b.getAttribute('data-c'), t = tNow();
+      if (c === 'play') { if (paused) resumeClip(); else if (t >= clip.duration) seek(startAt); else pauseClip(); }
+      else if (c === 'restart') { if (paused) { paused = false; setPP(); } seek(startAt); }
+      else if (c === 'back') seek(t - 5);
+      else if (c === 'fwd') seek(t + 5);
+      else if (c === 'end') seek(clip.duration);
+    });
     function renderSeg(sg, i){
       var p = sg.panel, k = p.kind, h = '';
       var lines = function(){ return '<div class="txt">' + sg.lines.map(function(l, j){ return '<span class="s" data-j="' + j + '">' + esc(l.text) + ' </span>'; }).join('') + '</div>'; };
@@ -218,9 +260,8 @@
       else if (k === 'decision') h = '<div class="eb">' + esc(p.eyebrow) + '</div><h2>' + esc(p.title) + '</h2>' + lines();
       else if (k === 'footage') h = '<div class="lbl">' + esc(p.label || 'Clinical footage') + '</div><video muted playsinline autoplay loop src="sims/media/' + esc(sg.footage) + '"></video><div class="cap"></div>';
       else h = '<div class="eb">' + esc(p.eyebrow || '') + '</div>' + lines();
-      story.innerHTML = h + '<button type="button" class="psim-skip">Skip ▸▸</button>';
-      story.querySelector('.psim-skip').addEventListener('click', skip);
-      var vid = story.querySelector('video'); if (vid) { var pr = vid.play(); if (pr && pr.catch) pr.catch(function(){}); }
+      story.innerHTML = h;
+      var vid = story.querySelector('video'); if (vid && paused) vid.removeAttribute('autoplay'); if (vid && !paused) { var pr = vid.play(); if (pr && pr.catch) pr.catch(function(){}); }
     }
     function frame(ts){
       if (closed) return;
@@ -234,7 +275,8 @@
           var cap = story.querySelector('.cap'); if (cap) { var cur = ''; sg.lines.forEach(function(l){ if (t >= l.t0) cur = l.text; }); cap.textContent = cur; } }
         if (clip.monitorOn !== null && clip.monitorOn !== undefined && t >= clip.monitorOn && !monShown) { monShown = true; stage.classList.add('mon'); mon.resize(); requestAnimationFrame(function(){ mon.resize(); stage.classList.add('shown'); }); mon.show(true); }
         lastV = vitalsAt(Math.min(t, clip.duration)); mon.set(lastV, clip.alarm);
-        if (t >= clip.duration && clipDone) { var f = clipDone; clipDone = null; var sk = story.querySelector('.psim-skip'); if (sk) sk.remove(); f(); }
+        var tm = ov.querySelector('.psim-ctrl .tm'); if (tm) { var sh = Math.min(t, clip.duration); var ppb = ov.querySelector('[data-c="play"]'); if (ppb && !paused) ppb.textContent = t >= clip.duration ? '\u25B6 Replay' : '\u275A\u275A Pause'; tm.textContent = Math.floor(sh / 60) + ':' + ('0' + Math.floor(sh % 60)).slice(-2) + ' / ' + Math.floor(clip.duration / 60) + ':' + ('0' + Math.floor(clip.duration % 60)).slice(-2); }
+        if (t >= clip.duration && clipDone) { var f = clipDone; clipDone = null; f(); }
       }
       if (monShown) { mon.step(dt); mon.draw(ts); }
       requestAnimationFrame(frame);
@@ -252,12 +294,52 @@
         return '<div class="fo"><button type="button" class="psim-btn ghost" style="padding:6px 12px;min-height:34px;font-size:12.5px;" data-force="' + i + '">Run</button><div>' + (o.best ? '<span class="star">★ </span>' : '') + esc(o.text) + '</div></div>';
       }).join('') + '<p class="psim-note">★ moves the case on. Learners do not see this panel.</p></details>';
     }
+    function askPick(){
+      var d = sim.decisions[di], P = d.pick, sel = {}, multi = !!P.multi;
+      var lab = tried.length ? 'The situation has changed \u2014 ' + (d.title === 'Impression' ? 'what is your impression now?' : 'what do you do now?') : (d.label || 'Your ' + d.title.toLowerCase());
+      var optV = function(o){ return typeof o === 'string' ? o : o.v; };
+      var showQ = d.prompt && !tried.length && di > 0 && sim.decisions[di - 1].clip === false;
+      now.innerHTML = '<div class="psim-ans">' + (d.tag ? '<div class="dtag">' + esc(d.tag) + '</div>' : '') + (showQ ? '<p class="qq">' + esc(d.prompt) + '</p>' : '') + '<label>' + esc(mode === 'live' ? lab.replace(/^Your /, 'The group\u2019s ') : lab) + '</label>' + (multi ? '<p class="hint">Choose all that apply.</p>' : '') +
+        P.groups.map(function(g){ return '<div class="pk" data-g="' + g.id + '">' + (multi ? '' : '<div class="pkl">' + esc(g.label) + '</div>') + g.opts.map(function(o){ return '<button type="button" class="pko" data-v="' + esc(optV(o)) + '">' + esc(optV(o)) + '</button>'; }).join('') + '</div>'; }).join('') +
+        '<div class="row"><button type="button" class="psim-btn" data-act="pick">Submit</button><span class="stat"></span></div>' + facultyPanel() + '</div>';
+      now.querySelectorAll('.pk').forEach(function(gr){ gr.addEventListener('click', function(e){
+        var b = e.target.closest('.pko'); if (!b) return; var g = gr.getAttribute('data-g'), v = b.getAttribute('data-v');
+        if (multi) {
+          var cur = sel[g] || [];
+          if (/^None/.test(v)) cur = cur.indexOf(v) !== -1 ? [] : [v];
+          else { cur = cur.filter(function(x){ return !/^None/.test(x); }); cur = cur.indexOf(v) !== -1 ? cur.filter(function(x){ return x !== v; }) : cur.concat([v]); }
+          sel[g] = cur; gr.querySelectorAll('.pko').forEach(function(x){ x.classList.toggle('on', cur.indexOf(x.getAttribute('data-v')) !== -1); });
+        } else { sel[g] = v; gr.querySelectorAll('.pko').forEach(function(x){ x.classList.toggle('on', x === b); }); }
+      }); });
+      now.querySelectorAll('[data-force]').forEach(function(b){ b.addEventListener('click', function(){ take(+b.getAttribute('data-force'), sim.decisions[di].options[+b.getAttribute('data-force')].text, true); }); });
+      now.querySelector('[data-act="pick"]').addEventListener('click', function(){
+        var st = now.querySelector('.stat'), limb = -1, txt;
+        if (multi) {
+          var chosen = [].concat.apply([], P.groups.map(function(g){ return sel[g.id] || []; }));
+          if (!chosen.length) { st.textContent = 'Choose at least one.'; return; }
+          if (P.auto) { var bad = null, cor = []; P.groups.forEach(function(g){ g.opts.forEach(function(o){ if (typeof o === 'string') return; if (o.grade === 'correct') cor.push(o.v); if (o.grade === 'bad' && bad === null && chosen.indexOf(o.v) !== -1) bad = o.limb; }); });
+            limb = bad !== null ? bad : cor.every(function(x){ return chosen.indexOf(x) !== -1; }) ? P.best : P.partial; }
+          else P.map.some(function(r){ var ok = (!r.all || r.all.every(function(x){ return chosen.indexOf(x) !== -1; })) && (!r.any || r.any.some(function(x){ return chosen.indexOf(x) !== -1; })); if (ok) limb = r.limb; return ok; });
+          var grades = {}; P.groups.forEach(function(g){ g.opts.forEach(function(o){ if (typeof o !== 'string') grades[o.v] = o.grade; }); });
+          txt = chosen.join(' \u00b7 '); lastGrades = chosen.map(function(c){ return grades[c] || ''; });
+        } else {
+          if (!sel.stab) { st.textContent = 'Choose stable or unstable.'; return; }
+          if (sel.stab !== 'Stable' && (!sel.threat || !sel.sys)) { st.textContent = 'Choose all three.'; return; }
+          P.map.some(function(r){ var ok = Object.keys(r.when).every(function(k){ return sel[k] === r.when[k]; }); if (ok) limb = r.limb; return ok; });
+          txt = [sel.stab, sel.threat, sel.sys].filter(Boolean).join(' \u00b7 '); lastGrades = null;
+        }
+        take(limb < 0 ? 0 : limb, txt);
+      });
+      setTimeout(function(){ var y = now.getBoundingClientRect().top + ov.scrollTop - 90; ov.scrollTo({ top: Math.max(0, y), behavior: 'smooth' }); }, 80);
+    }
     function ask(msg){
       var d = sim.decisions[di];
-      now.innerHTML = '<div class="psim-ans"><label for="psimA">' + (mode === 'live' ? 'Type the group’s answer' : 'What do you do?') + '</label>' +
-        '<p class="hint">' + esc(tried.length ? 'The situation has changed.' : d.title + '.') + ' Type it as you would say it at the bedside.</p>' +
+      if (d.pick) return askPick();
+      var lab = tried.length ? 'The situation has changed \u2014 what do you do now?' : ({ Impression: 'Your impression', Intervention: 'Your intervention' }[d.title] || 'Your answer');
+      now.innerHTML = '<div class="psim-ans"><label for="psimA">' + esc(mode === 'live' ? lab.replace(/^Your /, 'The group\u2019s ') : lab) + '</label>' +
+        '<p class="hint">Type it as you would say it at the bedside.</p>' +
         (msg ? '<div class="probe">' + esc(msg) + '</div>' : '') +
-        '<textarea id="psimA" maxlength="800" placeholder="e.g. what you would do first, and how"></textarea>' +
+        '<textarea id="psimA" maxlength="800" placeholder="Type your answer here"></textarea>' +
         '<div class="row"><button type="button" class="psim-btn" data-act="send">Submit</button><span class="stat"></span></div>' + facultyPanel() + '</div>';
       var ta = now.querySelector('textarea'), btn = now.querySelector('[data-act="send"]'), stat = now.querySelector('.stat');
       setTimeout(function(){ try { ta.focus({ preventScroll: true }); } catch(e) {} var y = now.getBoundingClientRect().top + ov.scrollTop - 90; ov.scrollTo({ top: Math.max(0, y), behavior: 'smooth' }); }, 80);
@@ -267,7 +349,7 @@
         var txt = ta.value.trim(); if (txt.length < 3) { stat.textContent = 'Type what you would do.'; return; }
         btn.disabled = true; stat.textContent = 'Reading your answer…';
         if (judgeOk === false) return choices(txt);
-        fetch(judgeUrl(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sim: sim.id, decision: di, answer: txt, probed: probed, after: tried.length ? lastOutcome : '', now: lastV && monShown ? { hr: Math.round(lastV.hr), rr: Math.round(lastV.rr), spo2: Math.round(lastV.spo2), bp: lastV.bp, o2: lastV.o2 || '' } : null }) })
+        fetch(judgeUrl(), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ set: window.PCCN_SIM_SET || '', sim: sim.id, decision: di, answer: txt, probed: probed, after: tried.length ? lastOutcome : '', now: lastV && monShown ? { hr: Math.round(lastV.hr), rr: Math.round(lastV.rr), spo2: Math.round(lastV.spo2), bp: lastV.bp, o2: lastV.o2 || '' } : null }) })
           .then(function(r){ return r.json(); })
           .then(function(j){
             if (j.choice !== undefined && j.choice !== null) return take(j.choice, txt);
@@ -284,11 +366,11 @@
       now.querySelectorAll('.psim-opt').forEach(function(b){ b.addEventListener('click', function(){ take(+b.getAttribute('data-i'), txt || sim.decisions[di].options[+b.getAttribute('data-i')].text); }); });
       now.querySelectorAll('[data-force]').forEach(function(b){ b.addEventListener('click', function(){ take(+b.getAttribute('data-force'), txt, true); }); });
     }
-    var rescuing = false, lastV = null, lastOutcome = '';
+    var rescuing = false, lastV = null, lastOutcome = '', lastGrades = null;
     function take(i, txt, forced){
       var d = sim.decisions[di], o = d.options[i]; if (!o) return;
       var repeat = !o.best && tried.indexOf(i) !== -1; lastOutcome = o.outcome || '';
-      probed = false; tried.push(i); answers.push({ d: di, text: txt, limb: i, forced: !!forced });
+      probed = false; tried.push(i); answers.push({ d: di, text: txt, limb: i, forced: !!forced, grades: lastGrades || undefined }); lastGrades = null;
       mon.unlock();
       var wrongs = tried.filter(function(x){ return !d.options[x].best; }).length;
       var next = function(){
@@ -297,37 +379,63 @@
         ask();
       };
       if (repeat) return next();            /* same limb again: do not replay the same deterioration */
+      if (d.clip === false || !live.clips['d' + (di + 1) + 'o' + i]) return textOut(o, next);
       play('d' + (di + 1) + 'o' + i, txt, next);
+    }
+    function textOut(o, next){
+      clip = null; vo.pause(); ov.querySelector('.psim-ctrl').style.visibility = 'hidden';
+      var v = {}; Object.keys(lastV || {}).forEach(function(k){ v[k] = lastV[k]; });
+      Object.keys(o.vitals || {}).forEach(function(k){ if (k !== 'note') v[k] = o.vitals[k]; });
+      if (lastV) { lastV = v; mon.set(v, !!o.alarm); }
+      story.className = 'psim-story' + (rescuing ? ' act' : '');
+      story.innerHTML = '<div class="eb">' + (rescuing ? 'The senior nurse steps in' : 'What happens') + '</div><div class="txt">' + esc(o.outcome) + '</div>';
+      var tm = ov.querySelector('.psim-ctrl .tm'); if (tm) tm.textContent = '';
+      ov.scrollTo({ top: 0, behavior: 'smooth' });
+      next();
     }
     function rescue(){
       var d = sim.decisions[di], bi = -1; d.options.forEach(function(x, k){ if (x.best) bi = k; });
       rescuing = true; tried.push(bi); answers.push({ d: di, text: '(The senior nurse stepped in)', limb: bi, rescue: true });
+      if (d.clip === false || !live.clips['d' + (di + 1) + 'o' + bi]) return textOut(d.options[bi], function(){ rescuing = false; path.push(tried.slice()); tried = []; di++; if (di >= N) return ending(); ask(); });
       play('d' + (di + 1) + 'o' + bi, d.options[bi].text, function(){ rescuing = false; path.push(tried.slice()); tried = []; di++; if (di >= N) return ending(); ask(); });
     }
     function ending(){
       var detours = path.reduce(function(a, p){ return a + p.length - 1; }, 0), smooth = detours <= 1;
+      if (sim.endClip === false) { clip = null; ov.querySelector('.psim-ctrl').style.visibility = 'hidden'; story.className = 'psim-story end'; story.innerHTML = '<div class="eb">Outcome</div><div class="txt">' + esc(smooth ? sim.ending.smooth : sim.ending.detour) + '</div>'; return finish(smooth, detours); }
       play(smooth ? 'end_smooth' : 'end_detour', '', function(){ finish(smooth, detours); });
     }
     function finish(smooth, detours){
       var firstTime = path.filter(function(p){ return p.length === 1; }).length;
       var rec = { completedAt: new Date().toISOString(), path: path, firstTime: firstTime, detours: detours, of: N, mode: mode,
-        answers: answers.map(function(a){ return { d: a.d, t: String(a.text || '').slice(0, 400), l: a.limb === undefined ? null : a.limb, p: a.probe || null, f: a.forced || undefined }; }) };
+        answers: answers.map(function(a){ return { d: a.d, t: String(a.text || '').slice(0, 400), l: a.limb === undefined ? null : a.limb, p: a.probe || null, f: a.forced || undefined, g: a.grades || undefined }; }) };
       if (mode !== 'live') {
         persist(sim, rec);
         var need = BYMOD[sim.module] || [sim.id];
         if (need.every(function(x){ return !!saved(x); })) document.dispatchEvent(new CustomEvent('pccn:step', { detail: { id: 'sim' } }));
       }
-      var rows = sim.decisions.map(function(d, k){
+      var short = function(t, n){ t = String(t || ''); return t.length > n ? t.slice(0, n - 1).replace(/\s+\S*$/, '') + '…' : t; };
+      var flow = sim.decisions.map(function(d, k){
         var best = d.options.filter(function(o){ return o.best; })[0];
-        var mine = answers.filter(function(a){ return a.d === k && a.limb !== undefined; });
-        return '<div class="psim-row"><h5>' + (k + 1) + '. ' + esc(d.title) + '</h5>' +
-          mine.map(function(a){ return '<p class="pa"><q>' + esc(a.text) + '</q><br><i>→ ' + esc(d.options[a.limb].outcome) + '</i></p>'; }).join('') +
-          '<div class="tp"><b>Teaching point.</b> ' + esc(best.note) + '</div></div>';
-      }).join('');
-      now.innerHTML = '<div class="psim-db"><div class="psim-end"><b>What happened next</b><br>' + esc(smooth ? sim.ending.smooth : sim.ending.detour) + '</div><h3>' + (mode === 'live' ? 'The team’s path through the case' : 'Your path through the case') + '</h3>' + rows +
-        '<h3>Debrief</h3><ol>' + sim.debrief.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ol>' +
-        '<h3>Take-home</h3><ul>' + sim.takeHome.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ul>' +
-        '<h3>References</h3><ul class="psim-refs">' + sim.references.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ul>' +
+        var mine = answers.filter(function(a){ return a.d === k && a.limb !== undefined && a.limb !== null; });
+        var detours = mine.filter(function(a){ return !d.options[a.limb].best; });
+        var last = mine[mine.length - 1] || {}, rescued = !!last.rescue;
+        var st = rescued ? 'res' : detours.length ? 'det' : 'ok';
+        var ab = (d.tag || String(k + 1)).split(' · ')[0];
+        return detours.map(function(a){
+            return '<div class="fl-det"><span class="fl-x">↳</span><div><b>' + esc(short(a.text, 70)) + '</b><br>' + esc(short(d.options[a.limb].outcome, 90)) + '</div></div>';
+          }).join('') +
+          '<div class="fl-node ' + st + '"><div class="fl-dot">' + esc(ab) + '</div><div class="fl-body"><div class="fl-t">' + esc(d.title) +
+          '<span class="fl-chip">' + (st === 'ok' ? 'First time' : st === 'det' ? 'After ' + detours.length + ' detour' + (detours.length > 1 ? 's' : '') : 'Senior nurse stepped in') + '</span></div>' +
+          '<div class="fl-c">' + esc(short(rescued ? best.text : last.text, 90)) + '</div>' +
+          '</div></div>';
+      }).join('<div class="fl-arr"></div>');
+      now.innerHTML = '<div class="psim-db"><h3 style="margin-top:6px;">' + (mode === 'live' ? 'The team’s path' : 'Your path') + '</h3>' +
+        '<div class="fl-key"><span class="ok">First time</span><span class="det">Detour</span><span class="res">Senior nurse</span></div>' +
+        '<div class="fl">' + flow + '<div class="fl-arr"></div><div class="fl-end ' + (smooth ? 'ok' : 'det') + '"><b>Outcome</b><br>' + esc(smooth ? sim.ending.smooth : sim.ending.detour) + '</div></div>' +
+        '<h3>Take-home \u00b7 DIRECT</h3><div class="th">' + sim.takeHome.map(function(q){ return typeof q === 'string' ? '<div class="th-r"><span></span><div>' + esc(q) + '</div></div>' : '<div class="th-r"><span>' + esc(q.k) + '</span><div><b>' + esc(q.h) + '.</b> ' + esc(q.t) + '</div></div>'; }).join('') + '</div>' +
+        '<details class="fl-more"><summary>Teaching point for each step</summary><ol>' + sim.decisions.map(function(d){ var b = d.options.filter(function(o){ return o.best; })[0]; return '<li><b>' + esc(d.title) + '.</b> ' + esc(b.note || '') + '</li>'; }).join('') + '</ol></details>' +
+        '<details class="fl-more"><summary>Debrief questions and references</summary><ol>' + sim.debrief.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ol>' +
+        '<ul class="psim-refs">' + sim.references.map(function(q){ return '<li>' + esc(q) + '</li>'; }).join('') + '</ul></details>' +
         '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;"><button type="button" class="psim-btn" data-act="again">Run the case again</button><button type="button" class="psim-btn ghost" data-act="close">Back to the module</button></div></div>';
       now.querySelector('[data-act="again"]').addEventListener('click', function(){ closed = true; vo.pause(); ov.remove(); document.body.style.overflow = prevOverflow; run(sim, live, opts, onClose); });
       now.querySelector('[data-act="close"]').addEventListener('click', close);
